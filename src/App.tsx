@@ -31,9 +31,8 @@ export const App: React.FC = () => {
     const handleHashChange = () => {
       const fullHash = window.location.hash.replace('#', '').toLowerCase();
       if (fullHash.startsWith('news?id=')) {
-        const idParts = fullHash.split('id=');
-        const id = idParts.length > 1 ? idParts : '';
-        setActiveArticleId(id);
+        const articleId = fullHash.includes('id=') ? fullHash.substring(fullHash.indexOf('id=') + 3) : '';
+        setActiveArticleId(articleId);
         setCurrentPage('news');
       } else if (['home', 'services', 'calculator', 'network', 'news', 'contact', 'admin'].includes(fullHash)) {
         setActiveArticleId('');
