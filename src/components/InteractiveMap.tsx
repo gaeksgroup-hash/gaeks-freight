@@ -87,10 +87,8 @@ export const InteractiveMap: React.FC = () => {
           </p>
         </div>
 
-        {/* Interactive Map Visual + Data Panel */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           
-          {/* Visual Interactive SVG Schematic */}
           <div className="lg:col-span-7 bg-brand-darkBlue/70 border border-brand-steel/40 rounded-3xl p-6 sm:p-8 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-brand-steel/40 pb-4 mb-6">
@@ -101,7 +99,6 @@ export const InteractiveMap: React.FC = () => {
                 <span className="text-[11px] text-slate-400">Pilih rute untuk melihat detail transit</span>
               </div>
 
-              {/* Rute Origin Selector Pills */}
               <div className="flex flex-wrap gap-2.5 mb-8">
                 {GLOBAL_ROUTES.map((route) => (
                   <button
@@ -118,18 +115,15 @@ export const InteractiveMap: React.FC = () => {
                 ))}
               </div>
 
-              {/* Schematic Map Graphic */}
               <div className="relative bg-brand-navy rounded-2xl p-6 border border-brand-steel/30 min-h-[260px] flex flex-col justify-center">
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
                   
-                  {/* Origin Box */}
                   <div className="w-full sm:w-auto bg-brand-darkBlue p-4 rounded-xl border border-brand-orange/40 text-center sm:text-left">
                     <span className="text-[10px] text-brand-orange uppercase font-bold tracking-wider block">Pelabuhan Muat Asal</span>
                     <h4 className="text-lg font-black text-white">{selectedRoute.originName}</h4>
                     <span className="text-xs text-slate-400">{selectedRoute.originCountry}</span>
                   </div>
 
-                  {/* Flow Arrow & Mode Indicator */}
                   <div className="flex flex-col items-center justify-center space-y-1 my-2 sm:my-0">
                     <div className="flex items-center space-x-3 text-brand-orange">
                       <Ship className="w-5 h-5 animate-pulse" />
@@ -141,16 +135,16 @@ export const InteractiveMap: React.FC = () => {
                     <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase">Jalur Maritim & Udara</span>
                   </div>
 
-                  {/* Destination Port Box */}
                   <div className="w-full sm:w-auto bg-brand-darkBlue p-4 rounded-xl border border-emerald-500/40 text-center sm:text-left">
                     <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-wider block">Pelabuhan Tujuan Bongkar</span>
                     <h4 className="text-lg font-black text-white">{selectedRoute.destinationPort.split(' ')[0]}</h4>
-                    <span className="text-xs text-slate-400">{selectedRoute.destinationPort.match(/\((.*?)\)/)?. || 'Indonesia'}</span>
+                    <span className="text-xs text-slate-400">
+                      {selectedRoute.destinationPort.match(/\((.*?)\)/)?. || 'Indonesia'}
+                    </span>
                   </div>
 
                 </div>
 
-                {/* 3 Gateway Hub Status in Indonesia */}
                 <div className="mt-8 pt-6 border-t border-brand-steel/30 grid grid-cols-3 gap-2 text-center">
                   <div className={`p-2 rounded-lg ${selectedRoute.destinationPort.includes('Jakarta') ? 'bg-brand-orange/20 border border-brand-orange' : 'bg-brand-darkBlue/50'}`}>
                     <span className="text-[11px] font-bold block text-white">Jakarta</span>
@@ -175,14 +169,13 @@ export const InteractiveMap: React.FC = () => {
             </div>
           </div>
 
-          {/* Route Specification Details */}
           <div className="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-8 shadow-xl flex flex-col justify-between">
             <div>
               <span className="text-xs font-bold text-brand-orange uppercase tracking-wider block mb-1">
                 Estimasi Waktu & Frekuensi
               </span>
               <h3 className="text-2xl font-black text-brand-navy mb-6">
-                {selectedRoute.originName} $\rightarrow$ {selectedRoute.destinationPort.split(' ')[0]}
+                {selectedRoute.originName} &rarr; {selectedRoute.destinationPort.split(' ')[0]}
               </h3>
 
               <div className="space-y-4">
