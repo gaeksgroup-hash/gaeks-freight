@@ -20,13 +20,13 @@ export const UI_TEXT = {
   },
   hero: {
     badge: { 
-      id: 'International Logistics & Customs Brokerage', 
-      en: 'International Logistics & Customs Brokerage', 
-      zh: '国际货运与专业清关代理' 
+      id: 'International Freight Forwarder & Customs Brokerage', 
+      en: 'International Freight Forwarder & Customs Brokerage', 
+      zh: '国际货运与专业报关代理' 
     },
     radarLive: { 
       id: 'Radar Maritim Aktif', 
-      en: 'Vessel Radar Live', 
+      en: 'Vessel Telemetry Active', 
       zh: '船舶雷达实时监测' 
     },
     titlePrefix: { 
@@ -47,7 +47,7 @@ export const UI_TEXT = {
     subtitle: {
       id: 'Solusi terintegrasi kargo laut (FCL/LCL), kargo udara prioritas, dan legalitas kepabeanan PPJK langsung ke Jakarta (Tanjung Priok), Semarang (Tanjung Emas), dan Surabaya (Tanjung Perak).',
       en: 'Integrated ocean freight (FCL/LCL), priority air cargo, and PPJK customs brokerage directly into Jakarta (Tanjung Priok), Semarang (Tanjung Emas), and Surabaya (Tanjung Perak).',
-      zh: '整合海运集装箱（整箱/拼箱）、优先空运及专业PPJK清关代理，直通雅加达、三宝垄及泗水主要海港。'
+      zh: '整合海运集装箱（整箱/拼箱）、优先空运及专业PPJK报关代理，直通雅加达、三宝垄及泗水主要海港。'
     },
     commodityTitle: { 
       id: 'Komoditas Ekspor-Impor Sangat Beragam:', 
@@ -81,9 +81,9 @@ export const UI_TEXT = {
     badge: { id: 'Pusat Wawasan & Regulasi Logistik', en: 'Logistics Intelligence Hub', zh: '物流情报与法规中心' },
     title: { id: 'News & Updates', en: 'News & Updates', zh: '新闻与行业动态' },
     intro: {
-      id: 'Pusat wawasan dan informasi resmi Gaek Freight yang menyajikan kumpulan seluruh berita terkini, analisis regulasi pabean, pergerakan tarif angkut kontainer, dan dinamika maritim global untuk memandu keputusan strategis ekspor-impor Anda.',
-      en: 'Official insights and intelligence hub by Gaek Freight delivering curated updates on customs policies, freight rates, port operations, and global maritime supply chains to empower your trade decisions.',
-      zh: 'Gaek Freight 官方物流与政策情报中心，为您提供全面的海关关税法规、国际海运运价走势、港口运营动态及全球供应链深度解析，助力企业把控进出口战略。'
+      id: 'Portal wawasan resmi yang menghadirkan kompilasi berita maritim global, regulasi pabean, kebijakan perdagangan luar negeri, dan pergerakan rantai pasok internasional secara objektif dan terpercaya.',
+      en: 'Official intelligence portal delivering objective news and in-depth analyses on global maritime trade, customs compliance, freight indices, and international supply chain dynamics.',
+      zh: '权威国际物流动态与海关关税政策发布中心，为外贸企业提供客观、严谨的全球航运、关税法规及进出口供应链情报。'
     },
     newsletterTitle: { id: 'Langganan Buletin Intelijen Logistik', en: 'Subscribe to Logistics Intelligence', zh: '订阅物流情报简报' },
     newsletterDesc: {
@@ -96,9 +96,9 @@ export const UI_TEXT = {
     tag: { id: 'Simulasi Geografi Jaringan Maritim', en: 'Geographic Maritime Simulator', zh: '印尼海运地理网络模拟' },
     title: { id: 'Koneksi Pelabuhan Indonesia ke Koridor Global', en: 'Indonesian Ports Connected Globally', zh: '印尼各主要港口直通全球主要贸易通道' },
     desc: {
-      id: 'Klik pada pelabuhan utama Indonesia di bawah ini untuk melihat jadwal pelayaran langsung, waktu transit, dan alokasi liner internasional yang dilayani Gaek Freight.',
-      en: 'Click any major Indonesian port below to inspect direct sailing schedules, transit times, and international liner capacity served by Gaek Freight.',
-      zh: '点击下方印尼主要枢纽海港，查看 Gaek Freight 承运的国际直航船期、在途时效及班轮舱位分布。'
+      id: 'Klik pada titik simpul pelabuhan Indonesia (Jakarta, Semarang, Surabaya, dll.) untuk melihat jalur pelayaran maritim, waktu transit, dan integrasi feeder antar-pulau.',
+      en: 'Click any major Indonesian port node (Jakarta, Semarang, Surabaya, etc.) to inspect active maritime shipping lanes, transit times, and inter-island feeder integration.',
+      zh: '点击下方印尼主要枢纽海港（雅加达、三宝垄、泗水等），查看国际直航船期、在途时效及群岛驳船网络分布。'
     }
   }
 };

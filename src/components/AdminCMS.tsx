@@ -58,7 +58,9 @@ export const AdminCMS: React.FC = () => {
       content: newContent,
       imageUrl: newImageUrl,
       author: authorName,
-      publishedDate: customDate
+      publishedDate: customDate,
+      readTime: '5 min read',
+      sources: ['Kementerian Perdagangan RI', 'Ditjen Bea dan Cukai (DJBC)']
     };
 
     const updated = [newArt, ...articles];

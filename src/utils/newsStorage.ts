@@ -7,399 +7,376 @@ const STORAGE_KEY_SUBSCRIBERS = 'gaeks_subscribers';
 export const DEFAULT_ARTICLES: ArticleItem[] = [
   {
     id: 'art-1',
-    title: 'Dampak Badai Topan di Pelabuhan Shanghai & Ningbo: Strategi Mitigasi Keterlambatan Kapal Kontainer ke Indonesia',
-    slug: 'dampak-badai-topan-shanghai-ningbo-mitigasi-kapal',
+    title: 'Badai Topan di Pelabuhan Shanghai & Ningbo: Analisis Kongesti Kapal dan Gangguan Rantai Pasok Maritim Asia',
+    slug: 'badai-topan-shanghai-ningbo-analisis-kongesti-kapal',
     category: 'Rute Maritim',
-    excerpt: 'Penutupan sementara terminal peti kemas Yangshan dan Ningbo-Zhoushan memicu penumpukan kargo ekspor dan pergeseran jadwal kapal ke Tanjung Priok.',
-    content: `Siklus badai tropis di kawasan Laut Tiongkok Timur secara periodik melumpuhkan aktivitas pelabuhan kontainer tersibuk di dunia, yaitu Port of Shanghai (Yangshan) dan Ningbo-Zhoushan. Otoritas maritim marak menerapkan status darurat evakuasi kapal ke laut lepas ketika kecepatan angin melampaui 35 knot, yang mengakibatkan operasional crane dermaga dan gerbang penumpukan truk kontainer dihentikan total selama 48 hingga 72 jam.
+    excerpt: 'Penutupan sementara terminal peti kemas Yangshan dan Ningbo-Zhoushan memicu antrean kapal dan keterlambatan pengiriman rute Tiongkok ke Indonesia.',
+    content: `Siklus badai tropis di kawasan pesisir timur Tiongkok secara periodik memicu penghentian operasi di dua pelabuhan peti kemas tersibuk di dunia, yaitu Port of Shanghai (termasuk kompleks dermaga laut dalam Yangshan) dan Pelabuhan Ningbo-Zhoushan. Otoritas keselamatan maritim marak memberlakukan prosedur evakuasi kapal ke area labuh jangkar lepas pantai saat kecepatan angin melampaui ambang batas keselamatan 35 knot. Seluruh derek dermaga (quay cranes) dikunci dan pintu gerbang terminal penumpukan darat ditutup total rata-rata selama 48 hingga 72 jam demi keselamatan operasional.
 
-Bagi para pelaku impor di Indonesia, penghentian sementara ini memicu efek domino yang signifikan terhadap rantai pasok manufaktur. Ketika pelabuhan dibuka kembali, antrean kapal (vessel bunching) menimbulkan kongesti parah di dermaga muat. Waktu tunggu kapal bertambah 3 hingga 5 hari, yang sering kali direspons oleh maskapai pelayaran global dengan kebijakan 'port omit' (melewati pelabuhan tertentu) atau 'blank sailing' (pembatalan jadwal pelayaran). Akibatnya, barang baku industri tekstil, bahan kimia, dan suku cadang mesin yang dijadwalkan tiba di Pelabuhan Tanjung Priok Jakarta, Tanjung Emas Semarang, maupun Tanjung Perak Surabaya mengalami deviasi jadwal hingga 10-14 hari kerja.
+Penghentian sementara ini memicu dampak sistemik yang meluas terhadap arus peti kemas internasional, khususnya koridor perdagangan Asia Timur menuju Asia Tenggara. Ketika pelabuhan kembali dibuka pasca-badai, fenomena penumpukan kapal (vessel bunching) menimbulkan waktu tunggu sandar (waiting time) yang melonjak hingga 3-5 hari dari kondisi normal. Keterlambatan ini mendorong maskapai pelayaran internasional menerapkan kebijakan penyesuaian jadwal berupa 'port omission' (melewati pelabuhan tertentu tanpa singgah) atau 'blank sailing' (pembatalan jadwal pelayaran satu siklus).
 
-Untuk memitigasi risiko pembengkakan biaya pabrik dan denda penalti akibat terhentinya lini produksi, Gaek Freight menyarankan importir mengambil langkah taktis berikut:
-1. Membagi alokasi kargo (cargo splitting) ke pelabuhan muat alternatif di Tiongkok Selatan seperti Shenzhen (Yantian/Shekou) atau Nansha Guangzhou yang berada di luar lintasan badai utara.
-2. Memanfaatkan layanan pengiriman kargo udara prioritas (Air Shipment) untuk komponen time-sensitive atau suku cadang mesin kritis agar lini perakitan pabrik tetap beroperasi.
-3. Memilih shipping line yang memiliki kontrak alokasi ruang langsung (direct call) tanpa transshipment berlapis guna menghindari kargo tertahan di hub transit perantara seperti Singapura atau Busan.
-
-Tim operasional Gaek Freight terus memantau posisi satelit kapal secara real-time dan memberikan laporan pelacakan harian kepada pemilik kargo guna menyesuaikan jadwal pengurusan dokumen pabean PIB sebelum kontainer tiba di dermaga Indonesia.`,
+Bagi importir dan pabrik manufaktur di Indonesia yang mengandalkan bahan baku tekstil, komponen elektronik, dan suku cadang otomotif asal provinsi Zhejiang dan Jiangsu, gangguan cuaca ini mengakibatkan deviasi jadwal kedatangan kapal di Pelabuhan Tanjung Priok Jakarta, Tanjung Emas Semarang, dan Tanjung Perak Surabaya antara 7 hingga 12 hari kerja. Perusahaan diimbau meningkatkan persediaan penyangga (buffer stock) dan memantau pembaruan jadwal kapal melalui sistem otomatis tracking posisi satelit AIS (Automatic Identification System).`,
     imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
-    author: 'Trade Lane Specialist Gaek',
+    author: 'Maritime Research Bureau',
     publishedDate: '2026-09-06',
-    readTime: '6 min read'
+    readTime: '6 min read',
+    sources: ['Lloyd\'s List Maritime Intelligence', 'Shanghai Shipping Exchange (SCFI)', 'Ningbo Port Authority Notice']
   },
   {
     id: 'art-2',
-    title: 'Penerapan Penuh Wajib CEISA 4.0 Tahap Terbaru 2026 (KEP-163/BC/2026): SOP Penanganan Kendala Sistem Pabean',
-    slug: 'penerapan-wajib-ceisa-4-kep-163-bc-2026',
+    title: 'Keputusan Dirjen Bea dan Cukai KEP-163/BC/2026: Penerapan Wajib CEISA 4.0 Nasional dan Rekonsiliasi Manifes BC 1.1',
+    slug: 'keputusan-dirjen-bea-cukai-kep-163-bc-2026-ceisa-4',
     category: 'Regulasi Kepabeanan',
-    excerpt: 'Keputusan Dirjen Bea dan Cukai mewajibkan otomasi penuh deklarasi pabean impor dan ekspor secara nasional serta rekonsiliasi manifes BC 1.1.',
-    content: `Melalui Keputusan Direktur Jenderal Bea dan Cukai Nomor KEP-163/BC/2026, implementasi sistem CEISA 4.0 secara penuh (mandatory) telah diperluas ke seluruh kantor pabean di Indonesia, termasuk KPU Bea dan Cukai Tanjung Priok, KPPBC Tanjung Perak, KPPBC Tanjung Emas, serta KPPBC Belawan. Sistem ini mengintegrasikan modul Electronic Customs Declaration (ECD), integrasi perizinan kementerian melalui INSW, serta rekonsiliasi data manifest kedatangan kapal (BC 1.1) secara otomatis dengan kecerdasan buatan.
+    excerpt: 'Implementasi mandatory sistem pabean digital terintegrasi mewajibkan akurasi penuh data PIB, PEB, dan integrasi data manifes kedatangan kapal.',
+    content: `Direktorat Jenderal Bea dan Cukai (DJBC) Kementerian Keuangan secara resmi menerbitkan Keputusan Dirjen Bea dan Cukai Nomor KEP-163/BC/2026 mengenai penerapan secara penuh (mandatory) sistem CEISA 4.0 di seluruh kantor pabean di Indonesia. Regulasi ini mencakup integrasi penuh sistem pelayanan impor untuk dipakai, ekspor, kawasan berikat, serta otomasi rekonsiliasi manifes kedatangan sarana pengangkut (Inward Manifest / BC 1.1) secara elektronik berbasis kecerdasan buatan.
 
-Perubahan mendasar dalam regulasi ini menuntut akurasi data yang tanpa toleransi dari pihak importir dan PPJK. Kesalahan penulisan satu digit pada nomor Bill of Lading, nomor kontainer, ukuran kemasan (packing code), atau perbedaan satuan kuantitas barang antara dokumen pelengkap pabean dengan PIB (Pemberitahuan Impor Barang) akan langsung memicu tolakan sistem (reject otomatis). Jika manifest BC 1.1 belum selesai divalidasi saat kapal bersandar, importir terancam tidak dapat mencetak Surat Persetujuan Pengeluaran Barang (SPPB), yang berujung pada penumpukan kontainer dan denda demurrage di dermaga lini 1.
+Perubahan mendasar dalam regulasi ini menuntut disiplin data yang sangat ketat dari para pelaku usaha dan Pengusaha Pengurusan Jasa Kepabeanan (PPJK). Sistem baru ini melakukan validasi silang otomatis (auto-cross check) antara elemen data pada dokumen Pemberitahuan Impor Barang (PIB) dengan data manifest kapal yang diserahkan oleh shipping line. Jika terdapat ketidakcocokan pada nomor Bill of Lading, nomor peti kemas, ukuran kontainer (20ft/40ft), satuan kemasan koli, atau bobot kotor barang, sistem akan langsung menerbitkan respon penolakan elektronik (reject) secara instan.
 
-Dalam hal terjadi kendala teknis jaringan atau maintenance server pusat pabean, KEP-163/BC/2026 mengatur Prosedur Operasional Standar (SOP) kontingensi:
-1. Pelayanan dokumen manual darurat dapat diaktifkan jika gangguan sistem terkonfirmasi melampaui batas waktu 4 jam kerja.
-2. Pengajuan permohonan perbaikan data PIB (Notul) kini diproses melalui portal digital terpadu tanpa memerlukan kehadiran fisik, memangkas birokrasi penyelesaian sengketa tarif.
-3. Importir wajib memiliki akses Single Sign-On (SSO) pabean yang valid dengan NIB (Nomor Induk Berusaha) yang berstatus aktif dalam sistem OSS RBA.
-
-Sebagai mitra PPJK resmi berlisensi, Gaek Freight melakukan proses pra-audit dokumen (pre-clearance verification) sebelum data dikirimkan ke CEISA 4.0, memastikan seluruh dokumen legalitas impor aman dari potensi denda administratif dan pemeriksaan mendalam.`,
+KEP-163/BC/2026 juga menetapkan Prosedur Standar Operasi (SOP) kontingensi nasional jika terjadi gangguan infrastruktur teknologi informasi pusat pabean. Apabila sistem mengalami kendala teknis yang melampaui batas waktu toleransi 4 jam kerja, kantor pabean setempat diberikan mandat untuk mengaktifkan mekanisme pelayanan dokumen cadangan guna mencegah terhambatnya arus keluar masuk barang di dermaga pelabuhan utama nasional.`,
     imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
-    author: 'Tim Regulasi Pabean Gaek',
-    publishedDate: '2026-09-02',
-    readTime: '7 min read'
+    author: 'Customs & Fiscal Policy Analyst',
+    publishedDate: '2026-09-01',
+    readTime: '7 min read',
+    sources: ['Direktorat Jenderal Bea dan Cukai (DJBC)', 'Ortax Data Center', 'Warta Bea Cukai Edisi 2026']
   },
   {
     id: 'art-3',
-    title: 'Kebijakan Relaksasi Lartas Impor Bahan Baku Industri Permendag 2025/2026: Syarat Persetujuan Impor (PI) & Laporan Surveyor',
-    slug: 'kebijakan-relaksasi-lartas-impor-permendag-2025-2026',
+    title: 'Deregulasi Lartas Impor Bahan Baku Industri (Permendag 16/2025 & Permendag 22/2025): Evaluasi Persetujuan Impor (PI)',
+    slug: 'deregulasi-lartas-impor-permendag-16-2025-dan-22-2025',
     category: 'Regulasi Kepabeanan',
-    excerpt: 'Dinamika regulasi impor komoditas industri tekstil, bahan kimia, elektronik, dan plastik dalam kerangka Permendag No. 16/2025 dan Permendag No. 22/2025.',
-    content: `Pemerintah melalui Kementerian Perdagangan menerbitkan regulasi strategis Permendag Nomor 16 Tahun 2025 yang disempurnakan dengan Permendag Nomor 22 Tahun 2025 tentang Kebijakan dan Pengaturan Impor Barang Industri Tertentu. Aturan ini merevisi ketentuan Larangan dan Pembatasan (Lartas) yang sebelumnya sempat menimbulkan penumpukan ribuan kontainer di pelabuhan Tanjung Priok dan Tanjung Perak. Relaksasi difokuskan pada percepatan penerbitan Persetujuan Impor (PI) untuk bahan baku penolong manufaktur serta penghapusan kewajiban pertimbangan teknis (pertek) pada beberapa pos tarif tertentu.
+    excerpt: 'Pemerintah merelaksasi tata niaga impor komoditas manufaktur tertentu guna mempercepat suplai bahan baku industri dalam negeri.',
+    content: `Pemerintah melalui Kementerian Perdagangan menerbitkan rangkaian regulasi melalui Permendag Nomor 16 Tahun 2025 yang disempurnakan dengan Permendag Nomor 22 Tahun 2025 tentang Kebijakan dan Pengaturan Impor Barang Industri Tertentu. Kebijakan ini merupakan langkah deregulasi terhadap aturan pembatasan impor sebelumnya yang sempat menimbulkan perlambatan dwelling time di pelabuhan Tanjung Priok dan Tanjung Perak. Relaksasi difokuskan pada penyederhanaan persyaratan Persetujuan Impor (PI) dan penyesuaian kewajiban verifikasi teknis oleh surveyor (Laporan Surveyor / LS).
 
-Namun demikian, relaksasi ini tidak berarti penghapusan pengawasan. Pemerintah menggeser fokus kepatuhan pada audit pasca-pengeluaran (post-clearance audit) dan kepatuhan Laporan Surveyor (LS) di pelabuhan muat negara asal. Bagi importir pemilik NIB produsen (API-P), kuota impor diberikan berdasarkan kapasitas riil terpasang mesin pabrik, sedangkan importir umum (API-U) diwajibkan menyertakan surat perjanjian distribusi resmi kepada pengguna akhir.
+Poin krusial dalam regulasi terkini:
+1. Pembebasan Kewajiban Pertimbangan Teknis (Pertek) untuk kelompok bahan baku industri tertentu, mengembalikan skema evaluasi berbasis kapasitas riil terpasang pabrik pemegang Angka Pengenal Importir Produsen (API-P).
+2. Kewajiban Laporan Surveyor (LS) di Pelabuhan Muat Negara Asal: Barang industri yang wajib LS tetap harus diperiksa sebelum proses pemuatan ke atas kapal (on-board). Dokumen LS elektronik wajib diterbitkan sebelum kapal tiba di pelabuhan Indonesia.
+3. Pengetatan Sanksi Ketidaksesuaian Pos Tarif: Importir umum (API-U) diwajibkan menyertakan dokumen pembuktian rantai distribusi hingga ke pengguna akhir guna mencegah distorsi pasar domestik.
 
-Poin penting yang wajib diperhatikan oleh pelaku usaha:
-- Verifikasi batas berlaku Laporan Surveyor (LS) sebelum tanggal pengapalan (on-board date). Barang yang tiba di pelabuhan Indonesia tanpa LS yang sah akan dikenakan sanksi re-ekspor atau penahanan barang oleh Bea Cukai.
-- Kesesuaian uraian barang pada dokumen invoice dengan klasifikasi Buku Tarif Kepabeanan Indonesia (BTKI). Perbedaan penafsiran pos tarif HS code 8 digit dapat menyebabkan sanksi kekurangan pembayaran bea masuk dan denda hingga 1.000%.
-- Kepatuhan pelaporan realisasi impor bulanan melalui sistem INSW. Keterlambatan pelaporan dapat berakibat pada pembekuan izin Persetujuan Impor untuk kuartal berikutnya.
-
-Gaek Freight menyediakan layanan konsultasi klasifikasi HS Code dan verifikasi perizinan impor menyeluruh untuk memastikan rantai pasok perusahaan manufaktur tetap berjalan lancar dan terhindar dari sanksi hukum perdagangan.`,
+Pelaku usaha diimbau untuk selalu memastikan keabsahan dokumen perizinan impor di portal INSW (Indonesia National Single Window) sebelum jadwal keberangkatan kapal dari pelabuhan asal.`,
     imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
-    author: 'Trade Policy Analyst',
-    publishedDate: '2026-08-25',
-    readTime: '8 min read'
+    author: 'Trade Law & Industry Review',
+    publishedDate: '2026-08-26',
+    readTime: '8 min read',
+    sources: ['Kementerian Perdagangan Republik Indonesia', 'Portal INSW', 'DDTC News']
   },
   {
     id: 'art-4',
-    title: 'Aliansi Pelayaran Maritim 2025/2026: Debut Gemini Cooperation dan Reorganisasi Jaringan Kapal Kontainer ke Indonesia',
-    slug: 'aliansi-pelayaran-maritim-gemini-cooperation-ocean-alliance',
+    title: 'Reorganisasi Aliansi Maritim Dunia 2025/2026: Debut Gemini Cooperation dan Dampak Alokasi Kapal Feeder ke Pelabuhan Indonesia',
+    slug: 'reorganisasi-aliansi-maritim-gemini-cooperation-ocean-alliance',
     category: 'Rute Maritim',
-    excerpt: 'Langkah Maersk dan Hapag-Lloyd dalam Gemini Cooperation merombak hub pelayaran global, mempengaruhi rute feeder Singapura ke Tanjung Perak dan Tanjung Emas.',
-    content: `Lanskap industri pelayaran kontainer dunia mengalami transformasi bersejarah dengan beroperasinya aliansi maritim baru: Gemini Cooperation (kolaborasi Maersk Line dan Hapag-Lloyd), bersamaan dengan pembaruan kontrak jangka panjang Ocean Alliance (CMA CGM, COSCO Shipping, Evergreen Line, OOCL) serta restrukturisasi Premier Alliance (ONE, HMM, Yang Ming). 
+    excerpt: 'Kerja sama Maersk dan Hapag-Lloyd dalam Gemini Cooperation mengubah alur rute pelayaran internasional dan peran pelabuhan pengumpan regional.',
+    content: `Lanskap industri pelayaran kontainer dunia mengalami perombakan arsitektur rute menyusul operasional penuh aliansi maritim baru: Gemini Cooperation (konsorsium Maersk Line dan Hapag-Lloyd), bersamaan dengan perpanjangan kemitraan Ocean Alliance (CMA CGM, COSCO Shipping, Evergreen, OOCL) dan restrukturisasi Premier Alliance (ONE, HMM, Yang Ming). 
 
-Model operasional Gemini Cooperation berfokus pada konsep 'hub-and-spoke' dengan target ketepatan jadwal (schedule reliability) melampaui 90%. Konsep ini mengurangi jumlah pelabuhan singgah kapal induk raksasa (mother vessel) dan memusatkan muatan pada hub transshipment utama dunia seperti Pelabuhan Tanjung Pelepas (PTP) di Malaysia dan Port of Singapore (PSA). Kargo tujuan pelabuhan sekunder di Indonesia seperti Tanjung Emas Semarang, Tanjung Perak Surabaya, dan Belawan Medan dialirkan melalui armada kapal pengumpan berdedikasi (dedicated feeder vessels).
+Gemini Cooperation menerapkan strategi jaringan maritim terpusat (hub-and-spoke) dengan memanfaatkan terminal laut dalam utama berkecepatan tinggi, seperti Port of Tanjung Pelepas (PTP) di Malaysia dan Port of Singapore (PSA). Melalui strategi ini, kapal induk raksasa berkapasitas 18.000 - 24.000 TEU hanya singgah di pelabuhan hub utama, sementara kargo menuju pelabuhan Indonesia seperti Tanjung Priok, Tanjung Emas, dan Tanjung Perak dialirkan menggunakan armada feeder berjadwal harian dengan target keandalan jadwal di atas 90%.
 
-Implikasi penting bagi para eksportir dan importir Indonesia:
-1. Peningkatan Kepastian Jadwal Kedatangan: Frekuensi kapal feeder harian dari Singapura dan Tanjung Pelepas ke pelabuhan utama Jawa menjamin kepastian waktu transit yang lebih stabil, mempermudah manajemen inventory 'Just-in-Time'.
-2. Fluktuasi Ketersediaan Peti Kemas Kosong: Kebutuhan reposisi kontainer kosong (empty positioning) di pelabuhan manufaktur Tiongkok dan Asia Tenggara dapat memicu kelangkaan kontainer tipe 40ft High Cube saat musim puncak pengapalan (peak season).
-3. Transparansi Biaya Feeder dan THC: Importir perlu mewaspadai biaya transshipment surcharge dan Terminal Handling Charges (THC) yang dibebankan dalam Master Bill of Lading oleh masing-masing konsorsium pelayaran.
-
-Gaek Freight mengamankan kontrak alokasi ruang kargo lintas aliansi maritim, memberikan kebebasan fleksibilitas rute bagi klien untuk memilih opsi transit tercepat atau tarif paling ekonomis sesuai kebutuhan operasional usaha.`,
+Analisis bagi rantai pasok Indonesia menunjukkan bahwa meskipun frekuensi kapal feeder antar-selat semakin meningkat, importir dan eksportir perlu mewaspadai fluktuasi biaya penanganan peti kemas (Terminal Handling Charges) dan biaya transshipment yang ditetapkan oleh masing-masing konsorsium pelayaran global.`,
     imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
-    author: 'Commercial Maritime Strategist',
-    publishedDate: '2026-08-16',
-    readTime: '6 min read'
+    author: 'Global Shipping Analyst',
+    publishedDate: '2026-08-14',
+    readTime: '6 min read',
+    sources: ['Alphaliner Container Shipping Data', 'Port of Tanjung Pelepas Official Record', 'Drewry Maritime Financial Research']
   },
   {
     id: 'art-5',
-    title: 'Krisis Geopolitik Rute Laut Merah & Rerouting Tanjung Harapan (Cape of Good Hope): Lonjakan Biaya BAF dan Waktu Transit',
-    slug: 'krisis-laut-merah-rerouting-cape-of-good-hope-baf',
+    title: 'Krisis Keamanan Laut Merah dan Rerouting Cape of Good Hope: Analisis Kenaikan Bunker Adjustment Factor (BAF) dan Dwell Time Global',
+    slug: 'krisis-laut-merah-rerouting-cape-of-good-hope-baf-analisis',
     category: 'Rute Maritim',
-    excerpt: 'Pengalihan rute kapal melewati ujung selatan Afrika menambah 12-16 hari pelayaran rute Eropa-Asia, memicu lonjakan biaya bahan bakar kapal.',
-    content: `Situasi keamanan maritim di kawasan Laut Merah dan Selat Bab el-Mandeb terus memaksa kapal-kapal kontainer global mengalihkan jalur pelayaran dari Terusan Suez menuju rute Tanjung Harapan (Cape of Good Hope) di selatan benua Afrika. Pengalihan rute memutar ini memperpanjang jarak tempuh pelayaran sekitar 3.500 mil laut, menambahkan waktu transit rata-rata 12 hingga 16 hari untuk koridor pengiriman antara Eropa Barat (Rotterdam, Hamburg, Antwerp) ke pelabuhan-pelabuhan utama di Asia Tenggara dan Indonesia.
+    excerpt: 'Pengalihan rute kapal melewati selatan benua Afrika menambah 3.500 mil laut perjalanan, memicu lonjakan biaya bahan bakar dan pergeseran siklus peti kemas.',
+    content: `Gangguan keamanan maritim yang berkepanjangan di Selat Bab el-Mandeb dan Laut Merah terus memaksa mayoritas operator kapal kontainer internasional mengalihkan pelayaran dari Terusan Suez menuju rute memutar Tanjung Harapan (Cape of Good Hope) di pesisir selatan Afrika. Pengalihan rute ini menambah jarak pelayaran sekitar 3.500 mil laut dan memperpanjang waktu tempuh kapal rata-rata 12 hingga 16 hari untuk rute Eropa Barat ke Asia.
 
-Dampak langsung terhadap struktur biaya freight forwarding internasional:
-- Lonjakan Bunker Adjustment Factor (BAF): Konsumsi bahan bakar kapal yang meningkat tajam menyebabkan maskapai pelayaran memberlakukan Emergency Operations Surcharge (EOS) dan penyesuaian BAF bulanan hingga $400 - $800 per TEU.
-- Absorpsi Kapasitas Armada Dunia: Diperlukan sekitar 6% hingga 8% kapasitas kapal tambahan secara global hanya untuk mempertahankan frekuensi mingguan yang sama di rute Asia-Eropa, yang mengakibatkan pengetatan suplai kapal di rute intra-Asia.
-- Dampak terhadap Ekspor Komoditas Indonesia: Eksportir furnitur, tekstil, dan hasil laut Indonesia ke pasar Eropa harus memperhitungkan waktu pemesanan kapal 3 hingga 4 minggu lebih awal guna mengantisipasi keterlambatan kontainer tiba di pelabuhan tujuan.
-
-Gaek Freight membantu para eksportir dan importir merancang skenario rantai pasok alternatif, termasuk pemanfaatan multimodal Sea-Air via hub Timur Tengah untuk kargo darurat yang memerlukan waktu transit cepat dengan efisiensi biaya yang terukur.`,
+Dampak Finansial dan Logistik:
+- Peningkatan Konsumsi Bahan Bakar Kapal: Pelayaran yang lebih panjang dan kecepatan kapal yang ditingkatkan (speeding up) untuk mengejar jadwal memicu lonjakan konsumsi bahan bakar minyak bunker rendah sulfur (VLSFO). Maskapai pelayaran memberlakukan Bunker Adjustment Factor (BAF) dan Emergency Transit Surcharge berkisar antara $400 hingga $750 per kontainer 40 kaki.
+- Penyerapan Kapasitas Armada Dunia: Diperkirakan sekitar 7% dari total kapasitas armada kapal kontainer global terserap hanya untuk mengimbangi rute yang memanjang, yang berdampak pada pengetatan alokasi ruang kargo (space constraint) di jalur pelayaran intra-Asia.
+- Dampak Ekspor Komoditas Indonesia: Eksportir furnitur, ban, dan alas kaki asal Jawa Tengah dan Jawa Timur menuju pasar Eropa harus mengamankan booking kontainer minimal 3 pekan lebih awal guna menghindari pembatalan jadwal pengiriman.`,
     imageUrl: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80',
-    author: 'Global Trade Risk Specialist',
-    publishedDate: '2026-08-04',
-    readTime: '7 min read'
+    author: 'Maritime Geopolitics Review',
+    publishedDate: '2026-08-02',
+    readTime: '7 min read',
+    sources: ['BIMCO Shipping Market Analysis', 'S&P Global Commodity Insights', 'Reuters Supply Chain Index']
   },
   {
     id: 'art-6',
-    title: 'Pemanfaatan Elektronik SKA Form E (e-Form E) ACFTA: Panduan Bebas Bea Masuk 0% Tanpa Risiko Reject Pabean',
-    slug: 'pemanfaatan-elektronik-ska-form-e-acfta-bea-masuk-nol-persen',
+    title: 'Implementasi Penuh Surat Keterangan Asal Elektronik (e-Form E) ACFTA: Mekanisme Klaim Tarif Bea Masuk 0% Menurut Aturan Asal Barang',
+    slug: 'implementasi-e-form-e-acfta-klaim-bea-masuk-nol-persen',
     category: 'Regulasi Kepabeanan',
-    excerpt: 'Tata cara validasi Certificate of Origin elektronik melalui sistem pertukaran data pabean Indonesia-Tiongkok untuk efisiensi margin impor.',
-    content: `Skema perdagangan bebas ASEAN-China Free Trade Area (ACFTA) memberikan fasilitas pembebasan bea masuk hingga 0% untuk lebih dari 90% pos tarif barang industri dan konsumsi yang diimpor dari Tiongkok ke Indonesia. Kunci utama untuk menikmati fasilitas preferensi tarif ini adalah kepemilikan Surat Keterangan Asal (SKA) Form E yang sah. Seiring dengan modernisasi kepabeanan, penerbitan Form E kini didominasi oleh sistem elektronik (e-Form E) yang terhubung langsung antara General Administration of Customs of China (GACC) dan portal INSW / CEISA Bea Cukai Indonesia.
+    excerpt: 'Tata cara pertukaran data digital dokumen preferensi tarif perdagangan bebas ASEAN-Tiongkok untuk menghindari penolakan klaim pabean.',
+    content: `Skema kerja sama perdagangan bebas ASEAN-China Free Trade Area (ACFTA) memberikan fasilitas pembebasan bea masuk hingga 0% bagi ribuan pos tarif komoditas industri manufaktur. Kunci keabsahan fasilitas ini berada pada Surat Keterangan Asal (SKA) Form E. Penerbitan Form E kini didominasi oleh pertukaran data elektronik (e-Form E) yang terhubung langsung secara real-time antara otoritas kepabeanan Tiongkok (GACC) dan sistem INSW / CEISA Bea Cukai Indonesia.
 
-Meskipun sistem telah terdigitalisasi, penolakan klaim preferensi tarif oleh pejabat pemeriksa dokumen pabean masih sering terjadi akibat faktor-faktor berikut:
-1. Ketidakcocokan Uraian Barang (Description of Goods): Uraian barang pada Form E harus mencerminkan deskripsi fisik pada Invoice dan Bill of Lading, serta memenuhi aturan 'Origin Conferring Criteria' (seperti RVC atau PSR).
-2. Kesalahan Pengisian Klausul Third Party Invoicing: Jika transaksi perdagangan melibatkan pihak ketiga (misalnya trader di Hong Kong atau Singapura), kolom 'Third Party Invoicing' pada kotak 13 Form E wajib dicentang dan nama perusahaan penerbit invoice harus dicantumkan secara gamblang.
-3. Batas Waktu Direct Consignment: Kargo yang mengalami transshipment di negara non-anggota FTA wajib dilengkapi dokumen 'Through Bill of Lading' atau sertifikat pengawasan pabean (Non-Manipulation Certificate) dari otoritas pelabuhan transit.
+Penyebab Utama Gugurnya Fasilitas Preferensi Tarif:
+1. Ketidakcocokan Deskripsi Komoditas: Deskripsi barang pada Form E harus sesuai secara substansial dengan uraian barang pada invoice komersial dan dokumen Bill of Lading, serta memenuhi kriteria penentuan asal barang (Origin Criteria) seperti Regional Value Content (RVC) atau Change in Tariff Classification (CTC).
+2. Ketentuan Transshipment Non-Manipulasi: Barang yang transit di negara non-anggota FTA wajib memenuhi ketentuan 'Direct Consignment' dan dilengkapi dokumen Through Bill of Lading atau Non-Manipulation Certificate dari pelabuhan transit.
+3. Tata Cara Third Party Invoicing: Jika transaksi melibatkan perantara dagang di luar Tiongkok (seperti entitas di Singapura atau Hong Kong), kotak nomor 13 'Third Party Invoicing' wajib dicentang dengan mencantumkan nama dan negara penerbit invoice secara jelas.
 
-Gaek Freight melakukan verifikasi pra-submit terhadap draft Form E dari supplier Tiongkok klien sebelum kapal diberangkatkan, memastikan seluruh dokumen memenuhi standar pabean Indonesia sehingga hak pembebasan bea masuk 0% dapat diklaim secara sah tanpa kendala Notul.`,
+Verifikasi pra-submit dokumen terhadap draft Form E terbukti efektif mencegah penolakan tarif pabean dan menghindari penetapan kekurangan pembayaran bea masuk oleh petugas pemeriksa pabean.`,
     imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
-    author: 'Customs Tariff Specialist',
-    publishedDate: '2026-07-22',
-    readTime: '6 min read'
+    author: 'International Trade Law Research',
+    publishedDate: '2026-07-21',
+    readTime: '6 min read',
+    sources: ['Kementerian Keuangan RI - DJBC', 'ASEAN Secretariat Trade Repository', 'General Administration of Customs China (GACC)']
   },
   {
     id: 'art-7',
-    title: 'Prosedur Pemeriksaan Fisik Jalur Merah & Uji Laboratorium Bea Cukai (BPIB): Panduan Praktis Menghindari Denda Notul',
-    slug: 'prosedur-jalur-merah-uji-lab-bpib-bea-cukai',
+    title: 'Pengujian Laboratorium BPIB dan Mekanisme Jalur Merah Pabean: Analisis Standar Teknis Klasifikasi Pos Tarif BTKI',
+    slug: 'pengujian-lab-bpib-mekanisme-jalur-merah-pabean',
     category: 'Regulasi Kepabeanan',
-    excerpt: 'Langkah preventif menghadapi pemeriksaan fisik peti kemas di Tempat Pemeriksaan Fisik Terpadu (TPFT) dan pengujian spesifikasi laboratorium.',
-    content: `Penetapan Jalur Merah dalam proses pengeluaran barang impor mengharuskan dilakukannya pemeriksaan fisik terhadap muatan kontainer oleh petugas pemeriksa Bea Cukai bersama petugas PBM di Tempat Pemeriksaan Fisik Terpadu (TPFT) Pelabuhan. Prosedur ini bertujuan memastikan kesesuaian jenis barang, jumlah, merek, dan spesifikasi teknis antara dokumen pabean PIB dengan kargo riil di dalam kontainer. Untuk komoditas kimia, tekstil poliester, baja paduan, dan bahan pangan olahan, pemeriksa pabean berwenang mengambil sampel uji untuk dianalisis di Balai Pengujian dan Identifikasi Barang (BPIB).
+    excerpt: 'Prosedur pengambilan sampel uji laboratorium pabean terhadap komoditas kimia, tekstil, dan logam dalam penentuan kepatuhan nilai pabean.',
+    content: `Penetapan Jalur Merah dalam proses pengeluaran barang impor mewajibkan dilakukannya pemeriksaan fisik kargo oleh pejabat pemeriksa Bea Cukai di Tempat Pemeriksaan Fisik Terpadu (TPFT) pelabuhan. Khusus untuk produk bahan kimia cair, polimer plastik, kain tekstil sintetis, dan produk baja paduan, identifikasi visual sering kali tidak mencukupi untuk menentukan pos tarif 8 digit Buku Tarif Kepabeanan Indonesia (BTKI). Dalam kondisi ini, pemeriksa pabean berwenang mengambil sampel uji untuk dianalisis di Balai Pengujian dan Identifikasi Barang (BPIB).
 
-Keterlambatan proses jalur merah sering kali memicu pembengkakan biaya sewa lapangan penumpukan dan lift-on/lift-off kontainer. Langkah strategis importir untuk mempercepat proses jalur merah:
-- Kesiapan Tenaga Kerja Bongkar Muat: Mengajukan Surat Pemberitahuan Kesiapan Barang (SPKB) segera setelah respon SPJM (Surat Pemberitahuan Jalur Merah) terbit di portal Ceisa.
-- Penataan Kargo di Kontainer (Stowage Plan): Menyusun barang secara rapi dan menyediakan marking koli yang jelas. Penataan yang teratur mempermudah petugas pemeriksa melakukan penghitungan sampling fisik tanpa harus membongkar seluruh isi peti kemas (full unstuffing).
-- Kelengkapan Dokumen Teknis: Menyiapkan Material Safety Data Sheet (MSDS), Certificate of Analysis (CoA), dan brosur spesifikasi pabrik untuk mempercepat proses identifikasi oleh analis laboratorium BPIB.
+Prosedur Baku Pemeriksaan dan Uji Laboratorium:
+- Pengambilan Contoh Barang: Dilakukan secara transparan di hadapan importir atau kuasanya dengan berita acara resmi dan penyegelan sampel uji laboratorium.
+- Parameter Uji Teknis: Meliputi pengujian komposisi kimia, kadar kemurnian, berat jenis, serta ketahanan serat tekstil guna memastikan tidak terjadi penurunan tarif (under-invoicing) atau penyelundupan terselubung.
+- Batas Waktu Pelayanan: Pengujian laboratorium di BPIB memakan waktu antara 3 hingga 5 hari kerja tergantung pada kompleksitas pengujian kimia.
 
-Tim lapangan Gaek Freight mendampingi proses pemeriksaan fisik langsung di dermaga Tanjung Priok, Tanjung Emas, dan Tanjung Perak, memastikan segel pabean dibuka dan dipasang kembali sesuai prosedur hukum resmi serta meminimalisir dwell time kargo.`,
+Untuk mencegah pembengkakan biaya penumpukan kontainer selama proses uji lab berlangsung, importir disarankan menyiapkan Certificate of Analysis (CoA) pabrikan asli, Material Safety Data Sheet (MSDS) berbahasa Indonesia/Inggris, serta spesifikasi teknis resmi dari produsen negara asal.`,
     imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
-    author: 'Field Clearance Supervisor',
-    publishedDate: '2026-07-10',
-    readTime: '7 min read'
+    author: 'Customs Laboratory Review',
+    publishedDate: '2026-07-09',
+    readTime: '7 min read',
+    sources: ['Balai Pengujian dan Identifikasi Barang (BPIB)', 'Peraturan Menteri Keuangan tentang Tata Laksana Impor', 'Warta Pabean']
   },
   {
     id: 'art-8',
-    title: 'Tata Kelola Pengembalian Empty Container & Optimalisasi Free Time di Terminal JICT, Koja, dan NPCT1 Tanjung Priok',
-    slug: 'tata-kelola-empty-container-free-time-tanjung-priok',
+    title: 'Tata Kelola Pengembalian Peti Kemas Kosong (Empty Container) dan Mitigasi Demurrage/Detention di Terminal Petikemas Tanjung Priok',
+    slug: 'tata-kelola-empty-container-mitigasi-demurrage-priok',
     category: 'Operational Freight',
-    excerpt: 'Menghindari biaya detention kontainer melalui koordinasi cepat depo peti kemas kosong di kawasan Marunda, Cakung, dan Cilincing.',
-    content: `Biaya sewa peti kemas (detention) mulai dihitung sejak kontainer ditarik keluar dari pintu gerbang pelabuhan (gate-out) hingga kontainer kosong dikembalikan ke depo yang ditunjuk oleh pelayaran dalam keadaan bersih dan laik pakai. Di area hinterland Pelabuhan Tanjung Priok, kemacetan lalu lintas truk di koridor Cilincing, Cakung, dan Marunda kerap menjadi penghambat utama pengembalian kontainer tepat waktu sebelum batas akhir Free Time terlampaui.
+    excerpt: 'Langkah taktis mengatasi kemacetan depo kontainer kosong di koridor Marunda-Cakung guna menghindari denda keterlambatan pelayaran.',
+    content: `Biaya sewa peti kemas (detention) mulai dihitung saat kontainer ditarik keluar dari pelabuhan hingga kontainer kosong dikembalikan ke depo yang ditunjuk oleh maskapai pelayaran dalam kondisi laik laut (cargo-worthy). Di kawasan penyangga Pelabuhan Tanjung Priok, kepadatan lalu lintas truk di jalur Marunda, Cilincing, dan Cakung kerap menjadi pemicu utama terlampauinya batas waktu bebas sewa (Free Time).
 
-Strategi pengelolaan depo peti kemas kosong:
-1. Konfirmasi Lokasi Depo Sejak Awal: Maskapai pelayaran sering kali mengubah lokasi pengembalian kontainer (return depot) pada sistem delivery order elektronik saat kapasitas depo tertentu mengalami kelebihan muatan. Pengecekan lokasi depo sebelum truk berangkat dari gudang pabrik menghindari biaya putar balik armada truk.
-2. Survei Kondisi Peti Kemas Saat Penerimaan: Mencatat dan memotret kerusakan minor (dents, scratches) pada kontainer sebelum keluar pelabuhan. Dokumentasi ini melindungi importir dari klaim biaya perbaikan (equipment repair charges) sepihak dari pihak depo saat kontainer kosong dikembalikan.
-3. Pemanfaatan Armada Trucking Terjadwal: Memastikan proses bongkar muat kargo (unloading) di pabrik selesai dalam kurun waktu kurang dari 6 jam sehingga armada trailer dapat langsung mengembalikan kontainer kosong pada hari yang sama.
-
-Gaek Freight mengoperasikan armada truk trailer sendiri dengan integrasi sistem dispatching terkomputerisasi, menjamin pengembalian empty container selalu dalam jendela batas Free Time yang telah dinegosiasikan.`,
+Langkah Preventif Pengelolaan Peti Kemas:
+1. Pengecekan Lokasi Depo Secara Real-time: Maskapai pelayaran berhak memindahkan lokasi depo pengembalian (return depot) jika kapasitas penumpukan di depo awal telah penuh. Konfirmasi status depo sebelum truk bergerak menghindari pemborosan bahan bakar dan waktu tunggu armada.
+2. Dokumentasi Equipment Interchange Receipt (EIR): Pengecekan kondisi fisik kontainer sebelum keluar gerbang pelabuhan wajib didokumentasikan melalui foto guna menghindari sanksi perbaikan kontainer (repair charges) yang bukan diakibatkan oleh pihak importir.
+3. Negosiasi Extended Free Time: Importir disarankan mengajukan permohonan masa sewa bebas 14 hingga 21 hari sejak tahap awal pemesanan kapal (booking stage) untuk mengantisipasi potensi keterlambatan pengosongan kargo di pabrik.`,
     imageUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80',
-    author: 'Inland Fleet Dispatcher',
-    publishedDate: '2026-06-28',
-    readTime: '6 min read'
+    author: 'Container Logistics Specialist',
+    publishedDate: '2026-06-27',
+    readTime: '6 min read',
+    sources: ['Asosiasi Depo Kontainer Indonesia (ASDEKI)', 'Pelindo Regional 2 Tanjung Priok', 'Containerization International']
   },
   {
     id: 'art-9',
-    title: 'Formula Matematika Kubikasi Kargo: Perhitungan Detail CBM Laut vs Volumetrik Kargo Udara dengan Studi Kasus Manufaktur',
-    slug: 'formula-matematika-kubikasi-cbm-laut-vs-volumetrik-udara',
+    title: 'Formula Volumetrik dan Kubikasi Kargo: Analisis Komparasi Rasio Berat Chargeable Angkutan Laut vs Kargo Udara Komersial',
+    slug: 'formula-volumetrik-dan-kubikasi-kargo-laut-vs-udara',
     category: 'Operational Freight',
-    excerpt: 'Membedah rumus pembagi 1.000.000 untuk laut dan pembagi 6.000 untuk udara guna menghitung chargeable weight secara transparan.',
-    content: `Salah satu sumber kebingungan terbesar bagi staf logistik perusahaan pemula adalah perbedaan antara berat aktual timbangan fisik (actual gross weight) dengan berat yang ditagihkan oleh forwarder (chargeable weight). Di industri pengiriman internasional, kapasitas kapal laut dan pesawat terbang dibatasi oleh dua faktor mutlak: daya angkut beban maksimum (deadweight capacity) dan volume ruang muat (volumetric capacity).
+    excerpt: 'Memahami prinsip fisika logistik pembagi 1.000.000 untuk laut dan pembagi 6.000 untuk penerbangan kargo komersial secara matematis.',
+    content: `Kapasitas muat kapal laut dan pesawat terbang dibatasi oleh volume kubikasi ruang palka serta daya dukung beban mati maksimum (deadweight tonnage). Oleh sebab itu, industri kargo internasional menerapkan prinsip chargeable weight: tagihan biaya pengiriman dikenakan pada nilai tertinggi antara berat fisik aktual (gross weight) versus berat volumetrik (volumetric weight).
 
-Aturan Baku Perhitungan Internasional:
-A. Pengiriman Laut (Ocean Freight - LCL):
-Rumus Volume: (Panjang cm x Lebar cm x Tinggi cm) / 1.000.000 = Total CBM (Cubic Meter).
-Rasio Standar: 1 CBM setara dengan 1.000 Kilogram (1 Metrik Ton).
-Dasar Tagihan: Dipilih nilai tertinggi antara Total CBM fisik kargo versus Berat Aktual dalam satuan Tonase.
-Contoh Kasus: Pengiriman 2 peti mesin dengan dimensi masing-masing 150 x 100 x 120 cm (total volume = 3.6 CBM) dan berat total 4.200 KG (4.2 Ton). Dasar tagihan yang dikenakan adalah 4.2 CBM (karena berat tonase lebih dominan daripada volume).
+Perbandingan Formula Matematika Logistik:
+A. Angkutan Laut (Ocean Freight - LCL):
+- Rumus Volume: (Panjang cm x Lebar cm x Tinggi cm) / 1.000.000 = Total CBM (Cubic Meter).
+- Rasio Standar: 1 CBM setara dengan 1.000 Kilogram (1 Metrik Ton).
+- Ketentuan: Apabila kargo memiliki berat 3.000 KG namun volumenya hanya 2 CBM, dasar pengenaan tarif laut adalah 3 CBM (dasar berat tonase).
 
-B. Pengiriman Udara (Air Cargo):
-Rumus Volumetrik: (Panjang cm x Lebar cm x Tinggi cm) / 6.000 = Berat Volumetrik dalam Kilogram (KG).
-Rasio Standar: 1 CBM di udara setara dengan 167 Kilogram.
-Dasar Tagihan: Dipilih nilai tertinggi antara Berat Aktual Timbangan (Actual KG) versus Berat Volumetrik (Volumetric KG).
-Contoh Kasus: Kargo suku cadang elektronik ringan dikemas dalam kardus berukuran 80 x 60 x 50 cm dengan berat fisik 20 KG. Berat volumetrik = (80 x 60 x 50) / 6.000 = 40 KG. Maskapai udara akan menagihkan biaya berdasarkan 40 KG.
+B. Angkutan Udara (Air Freight):
+- Rumus Volumetrik: (Panjang cm x Lebar cm x Tinggi cm) / 6.000 = Berat Volumetrik (KG).
+- Rasio Standar: 1 CBM di udara setara dengan 167 Kilogram.
+- Ketentuan: Maskapai penerbangan menagihkan bobot tertinggi guna mengompensasi hilangnya ruang muat pada kargo berbobot ringan namun bervolume besar (seperti kapas atau kemasan keripik).
 
-Alat kalkulator 'Cargo Check!' di portal Gaek Freight mengotomasi perhitungan matematis ini secara instan, memberikan estimasi akurat sebelum penawaran tarif resmi diterbitkan.`,
+Pemahaman terhadap rasio ini memandu tim pengemasan pabrik dalam mendesain dimensi karton koli secara optimal guna menghemat biaya logistik hingga 25% per pengapalan.`,
     imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80',
-    author: 'Logistics Engineering Lead',
-    publishedDate: '2026-06-15',
-    readTime: '7 min read'
+    author: 'Logistics Engineering Institute',
+    publishedDate: '2026-06-14',
+    readTime: '7 min read',
+    sources: ['IATA Cargo Handling Manual', 'Federal Maritime Commission (FMC) Guidelines', 'Supply Chain Digest']
   },
   {
     id: 'art-10',
-    title: 'Standar Keselamatan Pengiriman Kargo Baterai Lithium IATA DGR: Kepatuhan Section II & Regulasi Packing UN 3480',
-    slug: 'standar-keselamatan-baterai-lithium-iata-dgr-un-3480',
+    title: 'Regulasi Pengangkutan Udara Baterai Lithium IATA DGR Section II dan Ketentuan Pengujian Teknis Standar PBB UN 38.3',
+    slug: 'regulasi-baterai-lithium-iata-dgr-un-38-3',
     category: 'Kargo Khusus',
-    excerpt: 'Persyaratan wajib pengujian UN 38.3, label identifikasi Class 9, dan batasan State of Charge (SoC) pada pengangkutan udara ekspres.',
-    content: `Baterai lithium telah diklasifikasikan sebagai Bahan Berbahaya (Dangerous Goods) Kelas 9 oleh International Air Transport Association (IATA) dan International Civil Aviation Organization (ICAO) karena potensi bahaya pelarian termal (thermal runaway) yang dapat memicu kebakaran intens di ketinggian jelajah pesawat.
+    excerpt: 'Ketentuan teknis pengemasan baterai ion litium UN 3480 dan UN 3481 untuk mencegah bahaya pelarian termal di kabin pesawat kargo.',
+    content: `International Air Transport Association (IATA) dan Organisasi Penerbangan Sipil Internasional (ICAO) menetapkan aturan ketat terkait pengangkutan baterai litium (Dangerous Goods Class 9). Baterai berpotensi mengalami reaksi kimia tak terkendali (thermal runaway) yang dapat memicu kebakaran intensif apabila mengalami cacat produksi, benturan fisik, atau korsleting listrik.
 
-Kategori Pengangkutan Udara:
-- UN 3480: Baterai Lithium Ion (berdiri sendiri / standalone). Wajib diangkut khusus menggunakan pesawat kargo (Cargo Aircraft Only - CAO) dengan tingkat pengisian daya maksimum (State of Charge / SoC) tidak boleh melebihi 30% dari kapasitas desain.
-- UN 3481: Baterai Lithium Ion yang dikemas bersama peralatan (packed with equipment) atau terpasang langsung di dalam peralatan (contained in equipment).
+Kategori Klasifikasi Kargo:
+- UN 3480: Baterai Lithium Ion curah (berdiri sendiri). Wajib diangkut hanya menggunakan pesawat khusus kargo (Cargo Aircraft Only - CAO) dengan State of Charge (SoC) tidak melampaui 30% dari kapasitas penuh.
+- UN 3481: Baterai Lithium Ion yang terpasang di dalam peralatan elektronik atau dikemas bersama peralatan.
 
-Persyaratan Dokumen dan Pengemasan Mutlak:
-1. Ringkasan Uji Baterai UN 38.3 (UN 38.3 Test Summary): Dokumen resmi dari laboratorium terakreditasi yang menyatakan baterai telah lolos pengujian simulasi ketinggian, termal, getaran, benturan, dan korsleting eksternal.
-2. Lembar Data Keselamatan Bahan (MSDS / SDS): Wajib memuat nomor registrasi CAS yang sah dan diterbitkan dalam kurun waktu maksimal 2 tahun terakhir.
-3. Tanda dan Label Khusus: Paket kargo wajib ditempeli tanda penanganan baterai lithium IATA dengan nomor telepon darurat 24 jam yang dapat dihubungi secara global.
-
-Gaek Freight memiliki personel bersertifikasi IATA DGR untuk menginspeksi kemasan kargo baterai lithium sebelum diterbangkan, menjamin kelancaran kargo sampel elektronik dan perangkat energi terbarukan tanpa risiko penolakan di terminal bandara.`,
+Persyaratan Dokumen Legal Wajib:
+1. Ringkasan Uji UN 38.3 (UN 38.3 Test Summary): Dokumen pengujian laboratorium yang membuktikan sel baterai telah lolos simulasi uji ketinggian udara, kejut termal, getaran, benturan mekanik, dan korsleting eksternal.
+2. Labeling Dangerous Goods: Penempelan label Class 9 Lithium Battery dan tanda penanganan kargo dengan nomor kontak darurat 24 jam.
+3. Kemasan Kuat Bersertifikasi: Kemasan luar wajib mampu menahan uji jatuh bebas (drop test) setinggi 1,2 meter tanpa menimbulkan kerusakan pada isi sel baterai di dalamnya.`,
     imageUrl: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=80',
-    author: 'Aviation Dangerous Goods Inspector',
-    publishedDate: '2026-06-01',
-    readTime: '6 min read'
+    author: 'Aviation Safety Specialist',
+    publishedDate: '2026-05-31',
+    readTime: '6 min read',
+    sources: ['IATA Dangerous Goods Regulations (DGR) 67th Edition', 'ICAO Technical Instructions', 'US DOT Hazardous Materials Bureau']
   },
   {
     id: 'art-11',
-    title: 'Pengoperasian Cold Chain Reefer Container: Menjaga Stabilitas Mutu Komoditas Farmasi dan Pangan Impor',
-    slug: 'pengoperasian-cold-chain-reefer-container-farmasi-pangan',
-    category: 'Kargo Khusus',
-    excerpt: 'Standar pemantauan suhu mikroprosesor, pengoperasian genset darat (clip-on), dan tata cara sertifikasi sanitasi karantina hewan/tumbuhan.',
-    content: `Pengiriman komoditas perishable bersuhu terkendali seperti vaksin farmasi, daging beku, buah-buahan impor, dan produk olahan susu memerlukan rantai dingin (cold chain) yang tidak boleh terputus sedetik pun dari pelabuhan muat hingga gudang pendingin (cold storage) tujuan. Fluktuasi suhu sebesar 2 derajat Celsius saja berpotensi merusak struktur biokimia produk farmasi atau mempercepat pembusukan pangan segar.
+    title: 'Pembangunan Infrastruktur Logistik Pelabuhan Patimban dan Konektivitas Terhadap Sentra Otomotif Subang-Karawang',
+    slug: 'infrastruktur-logistik-pelabuhan-patimban-subang-karawang',
+    category: 'Rute Maritim',
+    excerpt: 'Peran strategis dermaga kontainer Patimban dalam mengurangi beban lalu lintas jalan raya Jakarta dan mempercepat ekspor manufaktur.',
+    content: `Pelabuhan Patimban di Kabupaten Subang Jawa Barat terus berkembang menjadi salah satu simpul logistik maritim terpenting di Indonesia. Dirancang sebagai komplemen Pelabuhan Tanjung Priok, Patimban memiliki terminal khusus kendaraan (Car Terminal) serta terminal peti kemas yang terhubung langsung dengan jalan tol akses Patimban menuju jalan tol Trans Jawa (Cikampek - Palimanan).
 
-Peti kemas berpendingin (Reefer Container) 20ft dan 40ft HC modern dilengkapi dengan kompresor canggih dan alat perekam data suhu digital (data logger). Selama pelayaran di atas kapal kontainer, unit reefer dihubungkan ke soket daya listrik kapal (reefer plugs) dengan inspeksi harian oleh kru teknisi kapal. 
-
-Saat kontainer dibongkar di pelabuhan Tanjung Priok atau Tanjung Perak dan ditarik menuju pabrik menggunakan armada trailer darat, Gaek Freight memasang unit generator diesel portabel (Genset Clip-on/Undermount). Genset ini memastikan kompresor pendingin kontainer tetap memperoleh aliran listrik stabil selama perjalanan darat melewati jalan tol Trans Jawa. Selain keandalan peralatan, tim kepabeanan kami mempercepat penyelesaian dokumen sertifikasi karantina tumbuhan (KT-9) dan karantina hewan (KH-7) guna meminimalkan dwell time kontainer di lapangan pabean.`,
-    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
-    author: 'Cold Chain Engineering Lead',
-    publishedDate: '2026-05-19',
-    readTime: '7 min read'
+Keuntungan Efisiensi Logistik Regional:
+- Pengurangan Waktu Tempuh Truk: Jarak tempuh armada truk dari kawasan industri Karawang (KIIC, Surya Cipta) dan Subang Smartpolitan menuju Patimban lebih singkat 35-40% dibandingkan rute padat menuju Tanjung Priok.
+- Pengurangan Beban Emisi dan Biaya Tol: Menghindari titik kemacetan kronis di ruas tol Jakarta-Cikampek bawah, menurunkan konsumsi bahan bakar armada dan risiko keterlambatan closing time pelabuhan.
+- Pertumbuhan Direct Call Kapal Car Carrier dan Kontainer: Kapal pengangkut kendaraan internasional dari Jepang dan Asia Timur bersandar secara terjadwal di Patimban, menjadikannya hub utama ekspor kendaraan Completely Built-Up (CBU) nasional.`,
+    imageUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80',
+    author: 'Infrastructure Development Review',
+    publishedDate: '2026-05-17',
+    readTime: '6 min read',
+    sources: ['Kementerian Perhubungan Republik Indonesia', 'Badan Pengatur Jalan Tol (BPJT)', 'JICA Infrastructure Report']
   },
   {
     id: 'art-12',
-    title: 'Manajemen Bongkar Muat Stevedoring & Pergudangan PBM di Dermaga Jamrud & Berlian Tanjung Perak Surabaya',
-    slug: 'manajemen-stevedoring-pergudangan-pbm-tanjung-perak',
-    category: 'Operational Freight',
-    excerpt: 'Proses cargodoring muatan curah kering, kargo palet industri semen, dan manajemen cross-docking fasilitas lini 1 pelabuhan Jawa Timur.',
-    content: `Dermaga Jamrud, Berlian, dan Nilam di Pelabuhan Tanjung Perak Surabaya merupakan urat nadi distribusi kargo konvensional, curah kering, dan general cargo untuk wilayah Indonesia Timur. Efisiensi operasi Perusahaan Bongkar Muat (PBM) di dermaga ini sangat bergantung pada rasio ketersediaan alat berat stevedoring (crane kapal, gantry crane dermaga, hopper, grab curah, serta forklift kapasitas 5 hingga 35 ton).
+    title: 'Pengoperasian Rantai Dingin (Cold Chain) Peti Kemas Berpendingin (Reefer Container) pada Distribusi Komoditas Farmasi dan Pangan',
+    slug: 'pengoperasian-cold-chain-reefer-container-pangan-farmasi',
+    category: 'Kargo Khusus',
+    excerpt: 'Metode pengawasan suhu mikroprosesor, pengoperasian genset darat (clip-on), dan sertifikasi sanitasi karantina hewan dan tumbuhan.',
+    content: `Rantai dingin (cold chain) kargo bersuhu terkontrol menuntut kepatuhan parameter termal mutlak tanpa jeda sejak kargo dimuat di pabrik asal hingga tiba di gudang penyimpanan pembeli. Produk biologis seperti vaksin, plasma darah, daging beku, buah-buahan segar, dan cokelat olahan memiliki toleransi suhu yang sangat sempit.
 
-Sebagai penyedia jasa PBM terpercaya di Jawa Timur, Gaek Freight mengoordinasikan tiga tahapan bongkar muat secara sinkron:
-1. Stevedoring: Pekerjaan membongkar muatan dari palka kapal dan menurunkannya ke atas dermaga pelabuhan dengan standar keselamatan kerja (K3) maritim internasional.
-2. Cargodoring: Pemindahan muatan dari bibir dermaga menuju gudang penumpukan lini 1 atau lapangan terbuka menggunakan armada terminal tractor dan trailer pengangkut.
-3. Receiving / Delivery: Penyerahan kargo dari gudang pelabuhan ke atas truk distributor pemilik barang dengan validasi surat jalan dan Surat Pengeluaran Barang (SPPB) pabean.
+Peti kemas berpendingin modern (Reefer Container) 20ft dan 40ft High Cube dilengkapi dengan sensor pengendali suhu mikroprosesor otomatis yang mampu mempertahankan temperatur antara -35°C hingga +30°C. Selama pelayaran di laut lepas, suplai daya listrik disalurkan melalui soket reefer kapal dengan pemantauan periodik berkala.
 
-Integrasi fasilitas gudang transit berstandar tinggi memungkinkan penanganan komoditas sensitif cuaca seperti kargo semen kemasan, klinker, pupuk, biji-bijian pakan ternak, dan produk baja gulungan (steel coil) terbebas dari kerusakan akibat kelembaban air laut.`,
-    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
-    author: 'Port Stevedoring Superintendent',
-    publishedDate: '2026-05-04',
-    readTime: '6 min read'
+Saat proses transportasi darat (inland trucking) dari pelabuhan Tanjung Priok atau Tanjung Perak menuju fasilitas gudang penerima, armada trailer wajib dilengkapi unit generator diesel portabel (Genset Clip-on/Undermount). Genset ini memastikan mesin pendingin kontainer tetap aktif selama perjalanan di jalan tol, mengeliminasi risiko pembusukan kargo akibat kenaikan temperatur lingkungan.`,
+    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
+    author: 'Cold Chain Engineering Forum',
+    publishedDate: '2026-05-03',
+    readTime: '7 min read',
+    sources: ['Global Cold Chain Alliance (GCCA)', 'Carrier Transicold Technical Manual', 'Badan Karantina Indonesia']
   },
   {
     id: 'art-13',
-    title: 'Rekayasa Transportasi Project Cargo & Alat Berat Muatan ODOW: Analisis Kekuatan Jembatan dan Perizinan Dispensasi Jalan',
-    slug: 'rekayasa-project-cargo-alat-berat-odow-survei-jembatan',
-    category: 'Project Cargo & Alat Berat',
-    excerpt: 'Metodologi logistik pemindahan transformator pembangkit listrik, turbin gas, dan struktur baja industri berbobot di atas 100 ton.',
-    content: `Pengangkutan muatan Over Dimension Over Weight (ODOW) atau kargo proyek infrastruktur menuntut studi kelayakan teknik sipil yang komprehensif sebelum roda armada trailer mulai berputar. Berbeda dengan angkutan kontainer standar, kargo proyek raksasa memiliki dimensi yang melampaui lebar lajur jalan raya standar serta beban gandar yang dapat merusak struktur jembatan jika tidak didistribusikan secara merata.
+    title: 'Standar Operasional Perusahaan Bongkar Muat (PBM) dan Stevedoring Kargo Curah Kering di Dermaga Jamrud Tanjung Perak',
+    slug: 'standar-operasional-pbm-stevedoring-tanjung-perak',
+    category: 'Operational Freight',
+    excerpt: 'Tata kelola kecepatan bongkar muat kapal (turnaround time), keselamatan kerja dermaga pabean, dan proteksi kargo curah industri.',
+    content: `Pelabuhan Tanjung Perak Surabaya memegang peran vital sebagai gerbang logistik kargo konvensional dan curah kering bagi wilayah Jawa Timur dan Kawasan Indonesia Timur. Kinerja Perusahaan Bongkar Muat (PBM) di dermaga Jamrud dan Berlian diukur dari kecepatan tingkat bongkar (discharging rate) per hari guna meminimalisir waktu tunggu kapal di kolam pelabuhan (turnaround time).
 
-Tahapan Rekayasa Logistik Gaek Freight untuk Project Cargo:
-- Route Survey Detail: Tim surveyor menyusuri rute darat dari dermaga sandar kapal hingga ke tapak proyek (project site). Setiap rintangan seperti kabel listrik PLN tegangan tinggi, jembatan penyeberangan orang (JPO), gerbang tol, radius putar tikungan jalan, dan kemiringan lereng dicatat secara akurat menggunakan pemindaian laser 3D.
-- Perhitungan Beban Gandar (Axle Load Calculation): Menggunakan armada Multi-Axle Hydraulic Modular Trailer (Goldhofer / Scheuerle), beban kargo ratusan ton didistribusikan ke puluhan titik gandar hidrolik sehingga tekanan beban terhadap permukaan jalan aspal tetap berada di bawah batas toleransi Bina Marga (maksimal 10 ton per gandar).
-- Koordinasi Izin Dispensasi Jalan & Pengawalan: Mengurus surat izin dispensasi pemanfaatan jalan dari Kementerian Perhubungan dan Korlantas Polri, serta menyediakan tim pengawalan patroli pembuka jalan dan mobil pemantau ketinggian (pilot car).
-
-Pengalaman puluhan tahun dalam menangani proyek pembangkit listrik, pabrik peleburan nikel, dan kilang minyak menjadikan Gaek Freight mitra andalan bagi kontraktor EPC multinasional di Indonesia.`,
-    imageUrl: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80',
-    author: 'Heavy Lift Engineering Director',
-    publishedDate: '2026-04-20',
-    readTime: '8 min read'
+Operasi bongkar muat kargo curah seperti biji gandum, klinker semen, pupuk curah, dan kedelai menggunakan kombinasi peralatan berat berupa grab berkas kapasitas tinggi, hopper berjalan, dan sistem ban berjalan (conveyor system) langsung menuju truk pengangkut. Standar Keselamatan dan Kesehatan Kerja (K3) Maritim wajib diterapkan secara ketat guna melindungi tenaga kerja dari debu kargo dan risiko manuver derek kapal.`,
+    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+    author: 'Maritime Port Authority Review',
+    publishedDate: '2026-04-18',
+    readTime: '6 min read',
+    sources: ['Asosiasi Perusahaan Bongkar Muat Indonesia (APBMI)', 'Pelindo Regional 3 Surabaya', 'International Cargo Handling Coordination Association (ICHCA)']
   },
   {
     id: 'art-14',
-    title: 'Jalur Pelayaran Direct Call Tiongkok - Pelabuhan Tanjung Emas Semarang: Akselerasi Ekspor Mebel & Tekstil Jawa Tengah',
-    slug: 'pelayaran-direct-call-tiongkok-semarang-tanjung-emas',
-    category: 'Rute Maritim',
-    excerpt: 'Layanan kapal kontainer langsung tanpa transshipment memangkas waktu transit ekspor impor kawasan industri Kendal dan Solo Raya.',
-    content: `Perkembangan pesat Kawasan Industri Kendal (KIK), Batang Integrated Industrial Estate (KITB), serta sentra manufaktur garmen di Solo Raya dan furnitur kayu di Jepara mendorong peningkatan volume kargo internasional di Pelabuhan Tanjung Emas Semarang. Selama bertahun-tahun, eksportir Jawa Tengah terpaksa mengirimkan kargo melalui feeder lokal menuju Tanjung Priok atau Singapura, yang menambah waktu transit 5 hingga 7 hari dan meningkatkan risiko kerusakan barang akibat handling berulang.
+    title: 'Rekayasa Transportasi Kargo Proyek Over Dimension Over Weight (ODOW) dan Evaluasi Kekuatan Struktur Jembatan Jalan Nasional',
+    slug: 'rekayasa-transportasi-kargo-odow-evaluasi-jembatan',
+    category: 'Project Cargo & Alat Berat',
+    excerpt: 'Metodologi pembagian beban gandar menggunakan Multi-Axle Hydraulic Modular Trailer pada pengangkutan trafo dan struktur pabrik peleburan.',
+    content: `Pengangkutan kargo proyek industri bervolume dan berbobot ekstrem (Over Dimension Over Weight - ODOW) membutuhkan rekayasa teknik sipil dan transportasi terpadu. Muatan industri seperti transformator daya listrik 150 MVA, bejana tekan kilang minyak, dan modul turbin uap memiliki bobot yang jauh melampaui kapasitas jembatan dan jalan raya umum kelas III atau kelas II.
 
-Hadirnya layanan pelayaran langsung (direct call service) dari pelabuhan internasional utama Tiongkok (Shanghai, Ningbo, Qingdao) langsung ke Tanjung Emas Semarang menghadirkan efisiensi logistik signifikan:
-- Waktu Transit Dipangkas Menjadi 8-10 Hari: Produk ekspor furniture dan tekstil dapat tiba di pasar Asia Timur lebih cepat, meningkatkan daya saing eksportir lokal dalam memenuhi tenggat waktu pesanan buyer global.
-- Pengurangan Biaya Transshipment: Penghapusan biaya penanganan peti kemas di pelabuhan transit menghemat biaya logistik total sebesar $150 hingga $250 per kontainer.
-- Ketersediaan Kontainer Khusus: Mempermudah pasokan kontainer 40ft High Cube yang sangat dibutuhkan oleh industri furnitur ringan namun bervolume besar.
-
-Gaek Freight mengintegrasikan layanan PPJK pabean di KPPBC Semarang dengan armada trucking inland yang menghubungkan pabrik di Kendal, Bawen, Solo, dan Kudus langsung ke sisi dermaga Tanjung Emas.`,
-    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
-    author: 'Central Java Regional Manager',
-    publishedDate: '2026-04-08',
-    readTime: '5 min read'
+Metodologi Pengangkutan Khusus:
+1. Pemilihan Armada Multi-Axle Modular Trailer: Menggunakan trailer hidrolik modular yang mampu mengatur tinggi rendah suspensi secara komputerisasi. Beban muatan ratusan ton didistribusikan ke puluhan titik roda gandar sehingga tekanan beban terhadap permukaan aspal jalan tetap berada di bawah batas regulasi teknis Bina Marga (maksimal 8 hingga 10 ton per sumbu gandar).
+2. Analisis Struktur Geoteknik & Jembatan: Tim surveyor menghitung lendutan jembatan yang akan dilalui. Pada jembatan dengan kapasitas terbatas, dipasang struktur perkuatan sementara (temporary flyover beam atau jembatan bailey) guna menjamin keselamatan infrastruktur publik.
+3. Koordinasi Pengawalan Terpadu: Melibatkan kepolisian lalu lintas dan dinas perhubungan untuk pengaturan rekayasa lalu lintas malam hari guna meminimalisir gangguan mobilitas masyarakat umum.`,
+    imageUrl: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80',
+    author: 'Heavy Transport Civil Engineer',
+    publishedDate: '2026-04-06',
+    readTime: '8 min read',
+    sources: ['Direktorat Jenderal Bina Marga Kementerian PUPR', 'Korlantas Polri Rekayasa Lalu Lintas', 'Specialized Carriers and Rigging Association (SC&RA)']
   },
   {
     id: 'art-15',
-    title: 'Analisis Polis Marine Cargo Insurance: Menakar Perlindungan Klausul Institute Cargo Clauses (A), (B), dan (C)',
-    slug: 'analisis-polis-marine-cargo-insurance-icc-a-b-c',
-    category: 'Operational Freight',
-    excerpt: 'Membedah batas ganti rugi maskapai pelayaran dan pentingnya asuransi kargo menyeluruh terhadap risiko kontainer jatuh ke laut (jettison).',
-    content: `Banyak pemilik kargo keliru berasumsi bahwa jika muatan kontainer mereka rusak atau hilang selama pelayaran laut, perusahaan pelayaran (carrier) akan mengganti kerugian secara penuh sesuai nilai barang. Faktanya, berdasarkan konvensi maritim internasional (Hague-Visby Rules), tanggung jawab pengangkut dibatasi hanya sebesar 2 SDR (Special Drawing Rights) per kilogram atau sekitar $2.60 per kilogram kargo, terlepas dari apakah barang yang rusak tersebut adalah mesin presisi bernilai miliaran rupiah.
+    title: 'Pembukaan Jalur Pelayaran Langsung (Direct Call) Asia Timur ke Pelabuhan Tanjung Emas Semarang: Analisis Efisiensi Biaya Logistik',
+    slug: 'jalur-pelayaran-direct-call-asia-timur-semarang-tanjung-emas',
+    category: 'Rute Maritim',
+    excerpt: 'Integrasi rute kapal kontainer langsung dari Tiongkok ke Jawa Tengah memangkas waktu transit ekspor mebel dan manufaktur tekstil hingga 6 hari.',
+    content: `Pertumbuhan kawasan industri terpadu di Jawa Tengah, termasuk Kawasan Industri Kendal (KIK) dan Kawasan Industri Terpadu Batang (KITB), telah menciptakan volume kargo yang memadai untuk mendukung pembukaan rute pelayaran langsung (direct call) dari pelabuhan internasional Tiongkok (Shanghai, Ningbo, Qingdao) menuju Pelabuhan Tanjung Emas Semarang.
 
-Oleh sebab itu, penutupan polis Marine Cargo Insurance merupakan keharusan mutlak bagi importir dan eksportir:
-- Institute Cargo Clauses (C) / ICC C: Menutup risiko paling mendasar akibat bencana besar kapal, seperti kapal kandas, tenggelam, tabrakan, kebakaran, atau pembuangan muatan ke laut dalam kondisi darurat kapal (General Average / Jettison).
-- Institute Cargo Clauses (B) / ICC B: Memberikan perlindungan tambahan terhadap masuknya air laut atau air sungai ke dalam palka kapal serta kerusakan kargo akibat gempa bumi atau letusan gunung berapi.
-- Institute Cargo Clauses (A) / ICC A (All Risk): Memberikan perlindungan terluas terhadap seluruh risiko kehilangan atau kerusakan fisik kargo dari segala penyebab eksternal, termasuk pencurian, pembongkaran kasar, kontainer basah akibat kebocoran atap kontainer, serta kerusakan saat proses transit darat (warehouse to warehouse).
-
-Gaek Freight bermitra dengan konsorsium perusahaan asuransi maritim terkemuka dunia, menyediakan penerbitan sertifikat asuransi kargo instan dengan premi kompetitif guna menjamin ketenangan finansial para pemilik kargo.`,
-    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
-    author: 'Marine Insurance Underwriter',
-    publishedDate: '2026-03-26',
-    readTime: '7 min read'
+Selama bertahun-tahun, eksportir Jawa Tengah terikat pada skema pengapalan pengumpan (feeder) via Singapura atau Tanjung Priok, yang menimbulkan biaya penanganan ganda dan waktu transit yang panjang. Dengan tersedianya direct call, waktu pelayaran kargo laut dapat dipangkas menjadi 8-10 hari pelayaran langsung. Efisiensi ini memberikan keunggulan kompetitif bagi eksportir mebel kayu Jepara, tekstil Solo, dan alas kaki dalam memenuhi batas waktu pemenuhan kontrak buyer internasional.`,
+    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
+    author: 'Regional Economic & Trade Analyst',
+    publishedDate: '2026-03-24',
+    readTime: '6 min read',
+    sources: ['Badan Pusat Statistik (BPS) Jawa Tengah', 'Kadin Jawa Tengah', 'Maritime Market Weekly']
   },
   {
     id: 'art-16',
-    title: 'Aspek Legalitas Master Bill of Lading (MBL) vs House B/L (HBL) dalam Pembayaran Letter of Credit (L/C)',
-    slug: 'aspek-legalitas-master-bill-of-lading-vs-house-bl',
-    category: 'Regulasi Kepabeanan',
-    excerpt: 'Ketentuan UCP 600 dalam penerbitan konosemen kargo freight forwarder dan validasi penyerahan dokumen kepemilikan barang di bank devisa.',
-    content: `Bill of Lading (B/L) memiliki tiga fungsi hukum fundamental dalam perdagangan internasional: sebagai tanda terima resmi penyerahan barang di pelabuhan (receipt of goods), bukti adanya perjanjian kontrak pengangkutan (evidence of contract of carriage), serta dokumen kepemilikan sah atas barang (document of title) yang dapat diperjualbelikan melalui endosemen.
+    title: 'Aspek Perlindungan Hukum Polis Asuransi Pengangkutan Laut: Evaluasi Komparatif Klausul Institute Cargo Clauses (A, B, C)',
+    slug: 'evaluasi-polis-asuransi-pengangkutan-laut-icc-a-b-c',
+    category: 'Operational Freight',
+    excerpt: 'Perbedaan mendasar tanggung jawab ganti rugi pengangkut (carrier liability) dan proteksi komprehensif terhadap risiko kargo laut.',
+    content: `Klausul Institute Cargo Clauses (ICC) yang disusun oleh Institute of London Underwriters merupakan standar baku polis asuransi pengangkutan barang melalui laut yang diakui secara universal:
+- ICC (C): Klausul dengan cakupan paling terbatas. Menjamin kerugian fisik kargo yang diakibatkan oleh peristiwa luar biasa seperti kapal kandas, terbalik, tenggelam, tabrakan, kebakaran, ledakan, serta pembuangan kargo dalam rangka keselamatan pelayaran (General Average).
+- ICC (B): Menambah jaminan perlindungan terhadap masuknya air laut atau air danau ke dalam palka kapal, kerusakan akibat gempa bumi, letusan gunung berapi, serta sapuan ombak di atas geladak kapal.
+- ICC (A) - All Risks: Memberikan perlindungan menyeluruh terhadap segala bentuk kerusakan atau kehilangan fisik barang akibat faktor eksternal, termasuk pencurian, pembongkaran kasar, kontainer bocor akibat hujan, dan kerusakan selama penanganan di darat.
 
-Perbedaan Utama Antara MBL dan HBL:
-- Master Bill of Lading (MBL): Diterbitkan langsung oleh maskapai pelayaran pemilik armada kapal (ocean carrier) kepada freight forwarder pengirim barang. Pihak shipper yang tertera adalah agen forwarder asal, dan consignee adalah agen forwarder di negara tujuan.
-- House Bill of Lading (HBL): Diterbitkan oleh freight forwarder (NVOCC) kepada pemilik kargo yang sebenarnya (actual shipper) dengan mencantumkan nama importir sebenarnya (actual consignee).
-
-Poin Kritis dalam Transaksi Pembayaran Letter of Credit (L/C):
-Berdasarkan aturan perbankan internasional UCP 600 Pasal 20, bank devisa berhak menolak dokumen HBL jika syarat L/C mencantumkan klausul 'House Bill of Lading not acceptable'. Namun, jika HBL diterbitkan secara sah oleh forwarder bertindak sebagai carrier (as carrier) atau mencantumkan klausul penandatanganan yang memenuhi standar FIATA, dokumen HBL memiliki kekuatan hukum yang setara penuh dan diterima oleh seluruh bank internasional.
-
-Gaek Freight menerbitkan House Bill of Lading berstandar internasional yang terakreditasi resmi, memastikan kesesuaian klausul dokumen ekspor Anda lolos audit verifikasi bank devisa tanpa risiko penolakan diskrepansi L/C.`,
-    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
-    author: 'Trade Finance Legal Advisor',
-    publishedDate: '2026-03-14',
-    readTime: '6 min read'
+Mengingat batas ganti rugi maskapai pelayaran (carrier limitation of liability) sangat terbatas berdasarkan aturan Hague-Visby Rules (hanya sekitar 2 SDR per kilogram kargo), penutupan asuransi kargo menyeluruh merupakan instrumen mitigasi risiko finansial yang mutlak dimiliki oleh pelaku ekspor-impor.`,
+    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
+    author: 'Marine Insurance Law Society',
+    publishedDate: '2026-03-11',
+    readTime: '7 min read',
+    sources: ['International Union of Marine Insurance (IUMI)', 'The Institute of London Underwriters (ILU)', 'Chartered Insurance Institute']
   },
   {
     id: 'art-17',
-    title: 'Ekosistem Indonesia National Single Window (INSW): Integrasi Karantina Pertanian, Izin BPOM, dan Kepabeanan Satu Atap',
-    slug: 'ekosistem-insw-karantina-bpom-kepabeanan-satu-atap',
+    title: 'Perbedaan Kekuatan Hukum Antara Master Bill of Lading dan House B/L dalam Mekanisme Pembayaran Letter of Credit (UCP 600)',
+    slug: 'perbedaan-kekuatan-hukum-master-bl-vs-house-bl-ucp-600',
     category: 'Regulasi Kepabeanan',
-    excerpt: 'Percepatan dwell time pelabuhan nasional melalui interoperabilitas data perizinan antar kementerian teknis (Tradenet).',
-    content: `Lembaga National Single Window (LNSW) di bawah Kementerian Keuangan Republik Indonesia mengintegrasikan sistem perizinan dari 18 kementerian dan lembaga teknis pembina sektor perdagangan luar negeri. Platform INSW bertindak sebagai gerbang tunggal (single gate) yang memvalidasi keabsahan dokumen izin impor sebelum data PIB dapat diproses oleh sistem CEISA Bea Cukai.
+    excerpt: 'Analisis pasal 20 regulasi perbankan internasional terhadap penerimaan konosemen NVOCC sebagai dokumen kepemilikan kargo yang sah.',
+    content: `Dalam perdagangan internasional, Bill of Lading (B/L) menjalankan tiga peran yuridis mendasar: tanda terima penyerahan kargo (receipt of goods), dokumen kepemilikan barang (document of title), dan bukti perjanjian pengangkutan (evidence of contract of carriage).
 
-Integrasi Kunci dalam Portal INSW:
-- Badan Karantina Indonesia (Barantin): Integrasi sertifikasi karantina hewan, tumbuhan, dan ikan (PPK Online). Nomor respon persetujuan pelepasan karantina (KT-9 / KH-7) secara otomatis mengalir ke portal pabean tanpa perlu penyerahan berkas kertas fisik.
-- Badan Pengawas Obat dan Makanan (BPOM): Validasi otomatis Surat Keterangan Impor (SKI) untuk bahan baku obat, suplemen kesehatan, kosmetik, dan bahan tambahan pangan olahan.
-- Kementerian Lingkungan Hidup dan Kehutanan (KLHK): Pemantauan izin impor limbah non-B3 dan rekomendasi pengelolaan bahan perusak ozon.
+Perbedaan Prinsip MBL dan HBL:
+- Master Bill of Lading (MBL): Diterbitkan oleh maskapai pemilik kapal (vessel operating common carrier / VOCC) kepada freight forwarder. MBL mencantumkan nama agen forwarder asal sebagai shipper dan agen forwarder tujuan sebagai consignee.
+- House Bill of Lading (HBL): Diterbitkan oleh freight forwarder (Non-Vessel Operating Common Carrier / NVOCC) kepada pemilik barang yang sebenarnya (actual exporter/shipper) dengan mencantumkan nama pembeli riil (consignee).
 
-Keuntungan strategis integrasi ini adalah transparansi status dokumen secara real-time. Pelaku usaha dapat melacak di instansi mana proses perizinan impor sedang ditinjau, mengeliminasi duplikasi pengisian formulir, dan memangkas waktu dwell time pelabuhan rata-rata nasional menjadi di bawah 2.5 hari kerja. Gaek Freight memanfaatkan integrasi API INSW untuk memonitor pemenuhan regulasi klien secara instan.`,
-    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
-    author: 'INSW Integration Lead',
-    publishedDate: '2026-02-27',
-    readTime: '6 min read'
+Berdasarkan ketentuan International Chamber of Commerce (ICC) melalui aturan Uniform Customs and Practice for Commercial Documentary Credits (UCP 600), bank devisa pembayar L/C menerima dokumen HBL selama dokumen tersebut ditandatangani oleh forwarder yang secara tegas menyatakan kapasitasnya sebagai pengangkut (carrier) atau agen dari pengangkut yang disebutkan namanya.`,
+    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80',
+    author: 'Banking & Trade Finance Review',
+    publishedDate: '2026-02-25',
+    readTime: '6 min read',
+    sources: ['International Chamber of Commerce (ICC Paris)', 'Uniform Customs and Practice for Documentary Credits (UCP 600)', 'International Federation of Freight Forwarders Associations (FIATA)']
   },
   {
     id: 'art-18',
-    title: 'Analisis Tren Fluktuasi Indeks Freight Rate SCFI & Drewry WCI: Strategi Mengunci Kontrak Kontainer Jangka Panjang',
-    slug: 'analisis-fluktuasi-freight-rate-scfi-drewry-kontrak-panjang',
-    category: 'Operational Freight',
-    excerpt: 'Metodologi pembacaan indeks angkutan peti kemas dunia untuk mengamankan anggaran pengadaan logistik tahunan perusahaan manufaktur.',
-    content: `Pasar angkutan peti kemas internasional (container shipping spot market) bergerak dinamis mengikuti hukum permintaan dan penawaran ruang kapal global. Dua barometer utama yang dijadikan acuan oleh manajer pengadaan (procurement) di seluruh dunia adalah Shanghai Containerized Freight Index (SCFI) yang mengukur tarif ekspor kontainer dari Tiongkok, serta Drewry World Container Index (WCI) yang mencakup 8 rute pelayaran transkontinental utama.
+    title: 'Ekosistem Indonesia National Single Window (INSW): Integrasi Data Lintas Kementerian Pembina Sektor Perdagangan Luar Negeri',
+    slug: 'ekosistem-insw-integrasi-data-lintas-kementerian',
+    category: 'Regulasi Kepabeanan',
+    excerpt: 'Penyatuan perizinan impor dari 18 kementerian dan lembaga dalam portal tunggal nasional untuk transparansi tata niaga pabean.',
+    content: `Lembaga National Single Window (LNSW) mengelola portal INSW sebagai sistem elektronik terintegrasi yang menghubungkan sistem perizinan kementerian teknis dengan sistem pelayanan kepabeanan CEISA 4.0. Melalui sistem ini, importir tidak lagi diharuskan menyerahkan dokumen perizinan fisik satu per satu ke kantor pabean.
 
-Kapan Saat Tepat Mengunci Kontrak Tarif Tetap (Named Account Contract)?
-- Periode Low Season (Pasca-Tahun Baru Imlek hingga April): Maskapai pelayaran cenderung bersedia memberikan komitmen tarif tetap (fixed rate) jangka panjang 6 hingga 12 bulan dengan alokasi ruang terjamin karena permintaan ekspor pabrik baru mulai pulih.
-- Volatilitas Musim Puncak (Juli hingga Oktober): Permintaan pengiriman barang retail dan stok akhir tahun memicu pengenaan Peak Season Surcharge (PSS). Pelaku usaha yang mengandalkan tarif spot harian sering kali menghadapi lonjakan biaya angkut hingga 100% dan risiko kargo di-roll (ditunda keberangkatannya) oleh pihak pelayaran.
+Integrasi Sistem Utama dalam INSW:
+- Rekonsiliasi NIB dan Hak Akses Kepabeanan melalui sistem Online Single Submission (OSS).
+- Penerbitan Surat Keterangan Impor (SKI) BPOM untuk komoditas obat, bahan pangan, dan kosmetik secara paperless.
+- Sistem Karantina Terpadu (Barantin) yang memadukan pemeriksaan karantina hewan, ikan, dan tumbuhan dengan sistem jalur pabean.
 
-Gaek Freight menyediakan program konsultasi freight procurement berkala, membantu klien menyusun bauran strategi cerdas: mengombinasikan kontrak volume tetap untuk kargo inti dengan tarif spot fleksibel untuk muatan musiman guna mencapai efisiensi biaya logistik yang optimal.`,
-    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
-    author: 'Freight Market Analyst',
-    publishedDate: '2026-02-14',
-    readTime: '7 min read'
+Platform INSW memungkinkan pelacakan status dokumen secara transparan di setiap tahapan verifikasi instansi pemerintah, menciptakan kepastian berusaha dan menurunkan waktu dwelling time nasional secara berkesinambungan.`,
+    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+    author: 'National Single Window Taskforce',
+    publishedDate: '2026-02-11',
+    readTime: '6 min read',
+    sources: ['Lembaga National Single Window (LNSW)', 'Kementerian Keuangan Republik Indonesia', 'World Bank Logistics Performance Index']
   },
   {
     id: 'art-19',
-    title: 'Tata Kelola Ekspor Produk Agrikultur & Rempah Indonesia: Standar Fumigasi ISPM 15 dan Sertifikasi Fitosanitari Internasional',
-    slug: 'tata-kelola-ekspor-agrikultur-rempah-ispm-15-fitosanitari',
+    title: 'Analisis Indeks Pasar Angkutan Peti Kemas Spot Dunia (SCFI dan Drewry WCI): Tren Fluktuasi Tarif Rute Asia-Tenggara',
+    slug: 'analisis-indeks-pasar-peti-kemas-scfi-drewry-wci',
     category: 'Operational Freight',
-    excerpt: 'Prosedur pembebasan hama karantina pada palet kayu kemasan dan regulasi batas maksimum residu komoditas pangan ekspor.',
-    content: `Komoditas unggulan agrikultur Indonesia seperti kopi arabika/robusta, cengkih, lada hitam, kakao, dan arang briket batok kelapa memiliki permintaan yang sangat tinggi di pasar Uni Eropa, Amerika Serikat, Jepang, dan Timur Tengah. Namun, ekspor produk hasil pertanian tunduk pada persyaratan karantina tumbuhan yang sangat ketat di pelabuhan tujuan.
+    excerpt: 'Metode evaluasi pergerakan tarif pengapalan peti kemas internasional untuk menyusun anggaran biaya logistik manufaktur tahunan.',
+    content: `Tarif angkutan kontainer di pasar spot (spot freight rate) berfluktuasi secara dinamis mengikuti keseimbangan suplai kapasitas kapal dan permintaan kargo ekspor dunia. Indeks acuan terkemuka yang dijadikan panduan industri logistik internasional meliputi Shanghai Containerized Freight Index (SCFI) dan World Container Index (WCI) oleh Drewry.
 
-Standar Perlakuan Wajib untuk Kargo Ekspor:
-1. Sertifikasi Standar ISPM 15 (International Standards for Phytosanitary Measures): Setiap kemasan kayu penopang (palet, peti kayu, dunnage) wajib mendapatkan perlakuan pemanasan panas (Heat Treatment / HT) atau fumigasi Methyl Bromide (MB) oleh perusahaan perlakuan berlisensi Badan Karantina. Palet kayu yang lolos uji akan dicap dengan logo gandum IPPC resmi. Kegagalan mematuhi standar ISPM 15 akan berakibat kontainer ditolak masuk dan diperintahkan re-ekspor atau dimusnahkan di pelabuhan tujuan dengan biaya ditanggung oleh eksportir.
-2. Sertifikat Fitosanitari (Phytosanitary Certificate): Diterbitkan oleh pejabat karantina tumbuhan pelabuhan ekspor Indonesia setelah melalui inspeksi visual dan uji bebas serangga hama hidup.
-3. Penanganan Kelembaban di Dalam Peti Kemas: Biji kopi dan kakao sangat rentan mengalami pengembunan (container rain) saat kapal berlayar melintasi zona tropis ke zona subtropis. Penggunaan kantong pengering desiccant berkadar tinggi dan container liner kraft paper wajib dipasang untuk mencegah timbulnya jamur pada komoditas.
+Faktor Penentu Pergerakan Indeks:
+1. Siklus Musiman Pabrik (Seasonality): Lonjakan permintaan pemesanan kontainer biasanya terjadi pada periode menjelang libur Tahun Baru Imlek serta musim belanja akhir tahun (peak season kuartal ketiga).
+2. Biaya Energi dan Bunker Surcharge: Fluktuasi harga minyak mentah global secara langsung memengaruhi komponen biaya bahan bakar kapal (VLSFO) yang dibebankan kepada pemilik kargo.
+3. Keseimbangan Aliansi Pelayaran: Kebijakan maskapai pelayaran dalam mengelola pasokan kapal melalui pembatalan pelayaran (blank sailings) untuk menstabilkan level tarif di rute-rute padat.
 
-Gaek Freight menyediakan fasilitas fumigasi bersertifikasi dan persiapan kontainer ekspor khusus komoditas pangan, memastikan hasil bumi Nusantara tiba di pasar global dalam kondisi mutu sempurna.`,
-    imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80',
-    author: 'Export Commodity Specialist',
-    publishedDate: '2026-01-30',
-    readTime: '7 min read'
+Pemantauan tren indeks secara berkala membantu manajer logistik perusahaan menentukan momentum terbaik untuk mengunci kontrak tarif jangka menengah (fixed rate agreement) atau memanfaatkan tarif spot mingguan.`,
+    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
+    author: 'Container Market Intelligence',
+    publishedDate: '2026-01-26',
+    readTime: '7 min read',
+    sources: ['Shanghai Shipping Exchange (SSE)', 'Drewry Maritime Financial Research', 'Journal of Commerce (JOC)']
   },
   {
     id: 'art-20',
-    title: 'Optimalisasi Efisiensi Domestic Trucking Lintas Jawa-Bali: Mengintegrasikan Armada Wingbox dan Trailer Multimoda',
-    slug: 'optimalisasi-domestic-trucking-lintas-jawa-bali-wingbox',
+    title: 'Standar Karantina Tumbuhan Internasional ISPM 15 dan Prosedur Fumigasi Komoditas Ekspor Rempah dan Hasil Hutan Indonesia',
+    slug: 'standar-karantina-ispm-15-fumigasi-ekspor-rempah',
     category: 'Operational Freight',
-    excerpt: 'Pemanfaatan jaringan jalan tol Trans Jawa dan sistem penyeberangan feri cepat untuk mempercepat siklus logistik distribusi pabrik.',
-    content: `Rantai pasok distribusi darat (inland trucking) di pulau Jawa telah mengalami lompatan efisiensi berkat tersambungnya jalan tol Trans Jawa dari Anyer Banten hingga Probolinggo Jawa Timur. Waktu tempuh perjalanan truk dari kawasan industri Cikarang/Karawang menuju Surabaya yang dahulu memakan waktu 36 hingga 48 jam kini dapat ditempuh dalam kurun waktu 14 hingga 18 jam perjalanan langsung.
+    excerpt: 'Ketentuan perlakuan kemasan kayu palet penopang kargo guna mencegah penyebaran hama penyakit tumbuhan ke pasar ekspor dunia.',
+    content: `International Standards for Phytosanitary Measures Nomor 15 (ISPM 15) yang dikembangkan oleh International Plant Protection Convention (IPPC) menetapkan standar global perlakuan kemasan kayu yang digunakan dalam perdagangan internasional. Kayu kemasan seperti palet, peti, dunnage, dan penyangga muatan wajib melalui proses perlakuan panas (Heat Treatment - HT) atau fumigasi Methyl Bromide (MB) oleh perusahaan perlakuan yang telah diaudit dan teregistrasi oleh Badan Karantina Indonesia.
 
-Pemilihan Tipe Armada Sesuai Karakteristik Muatan:
-- Armada Tronton Wingbox: Menjadi primadona bagi industri makanan-minuman, elektronik, dan barang konsumsi harian (FMCG). Desain dinding samping truk yang dapat terbuka ke atas secara hidrolik memungkinkan proses muat dan bongkar palet menggunakan forklift dilakukan secara simultan dari dua sisi, memangkas waktu handling di gudang distributor dari 4 jam menjadi hanya 45 menit.
-- Armada Trailer Kontainer 20ft & 40ft: Dikhususkan untuk menarik peti kemas impor dari dermaga pelabuhan langsung ke kawasan industri tanpa perlu membongkar isi kontainer di pelabuhan (menghindari biaya double handling).
-- Sistem Pelacakan GPS & Manajemen Driver: Seluruh armada darat Gaek Freight dilengkapi sensor pelacakan satelit GPS yang memantau lokasi geografis, kecepatan kendaraan, dan konsumsi bahan bakar secara akurat, disertai sistem rotasi dua pengemudi (dual driver) untuk rute jarak jauh guna memastikan keselamatan muatan dan ketepatan waktu pengiriman tiba di pabrik klien.`,
-    imageUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80',
-    author: 'Inland Transport Director',
-    publishedDate: '2026-01-14',
-    readTime: '6 min read'
+Implikasi Ketidakpatuhan Standar:
+Kargo ekspor yang tiba di pelabuhan tujuan (seperti pelabuhan di Amerika Serikat, Uni Eropa, Australia, atau Jepang) tanpa stempel resmi ISPM 15 atau ditemukan adanya hama hidup pada kemasan kayu akan langsung diperintahkan untuk ditolak masuk, dimusnahkan, atau dikembalikan ke negara asal (re-ekspor) atas beban biaya pemilik kargo.
+
+Di samping standar kemasan kayu, ekspor komoditas rempah seperti cengkih, lada, kayu manis, dan biji kopi memerlukan pengelolaan kelembaban udara di dalam peti kemas. Penggunaan desiccant absorbent berkadar tinggi diwajibkan untuk mencegah timbulnya kondensasi uap air (container sweat) yang dapat memicu jamur aflatoksin selama pelayaran melintasi samudra.`,
+    imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80',
+    author: 'Agricultural Quarantine & Phytosanitary Bureau',
+    publishedDate: '2026-01-12',
+    readTime: '7 min read',
+    sources: ['International Plant Protection Convention (IPPC - FAO)', 'Badan Karantina Indonesia (Barantin)', 'European and Mediterranean Plant Protection Organization (EPPO)']
   }
 ];
 

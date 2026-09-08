@@ -1,3 +1,4 @@
+// filepath: /src/components/ServicesCarousel.tsx
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight } from 'lucide-react';
 import { ServiceDetail } from '../types/freight';
@@ -86,12 +87,12 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Auto-scroll Timer: otomatis geser ke samping tiap 4.5 detik
+  // Auto-scroll dipercepat: setiap 1800ms (1.8 detik) berganti ke slide berikutnya
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setCurrentIndex(prev => (prev === DETAILED_SERVICES.length - 1 ? 0 : prev + 1));
-    }, 4500);
+    }, 1800);
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -108,70 +109,69 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   return (
     <section 
       id="services" 
-      className="py-24 bg-brand-surface border-y border-brand-border text-white"
+      className="py-20 bg-slate-50 border-y border-slate-200 text-slate-900"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
           <div>
-            <div className="flex items-center space-x-2 text-brand-cyan text-xs font-black uppercase tracking-widest mb-2">
-              <span className="w-2 h-2 rounded-full bg-brand-emerald animate-ping" />
-              <span>Live Auto-Scrolling Services</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
+            <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
+              Integrated Logistics Solutions
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Services Portfolio Gaek Freight
             </h2>
-            <p className="mt-3 text-slate-400 text-sm sm:text-base max-w-2xl">
-              Didukung legalitas pabean resmi, armada truk sendiri, pergudangan pelabuhan, dan slot liner dunia.
+            <p className="mt-2 text-slate-600 text-sm sm:text-base max-w-2xl">
+              Didukung legalitas pabean resmi, armada trucking darat, fasilitas pergudangan pelabuhan, dan slot liner dunia.
             </p>
           </div>
 
           <div className="flex items-center space-x-3 mt-6 md:mt-0">
-            <button onClick={handlePrev} className="p-3.5 rounded-xl border border-brand-border bg-brand-card text-white hover:bg-brand-cyan hover:text-slate-950 transition-colors shadow-sm">
+            <button onClick={handlePrev} className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-blue-600 hover:text-white transition-colors shadow-sm">
               <ChevronLeft className="w-5 h-5" />
             </button>
-            <span className="text-xs font-bold text-slate-400">
+            <span className="text-xs font-bold text-slate-500">
               {currentIndex + 1} / {DETAILED_SERVICES.length}
             </span>
-            <button onClick={handleNext} className="p-3.5 rounded-xl border border-brand-border bg-brand-card text-white hover:bg-brand-cyan hover:text-slate-950 transition-colors shadow-sm">
+            <button onClick={handleNext} className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-blue-600 hover:text-white transition-colors shadow-sm">
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Featured Service Card */}
-        <div className="bg-brand-card rounded-3xl border border-brand-border overflow-hidden shadow-2xl">
+        {/* Featured Service Card (Clean Light Corporate) */}
+        <div className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch">
             
-            <div className="lg:col-span-5 relative min-h-[320px] lg:min-h-full overflow-hidden">
+            <div className="lg:col-span-5 relative min-h-[320px] lg:min-h-full overflow-hidden bg-slate-100">
               <img src={current.imageUrl} alt={current.title} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
-              <div className="absolute top-4 left-4 bg-brand-obsidian/90 backdrop-blur-md text-brand-cyan px-3.5 py-1.5 rounded-full text-xs font-black border border-brand-border">
+              <div className="absolute top-4 left-4 bg-slate-900/90 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full text-xs font-black border border-white/20">
                 {current.category}
               </div>
             </div>
 
             <div className="lg:col-span-7 p-8 sm:p-12 flex flex-col justify-between space-y-6">
               <div>
-                <span className="hidden lg:inline-block text-xs font-bold text-brand-cyan uppercase tracking-wider mb-2">
+                <span className="hidden lg:inline-block text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">
                   {current.category}
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">{current.title}</h3>
-                <p className="mt-2 text-base font-semibold text-slate-300">"{current.tagline}"</p>
-                <p className="mt-4 text-sm sm:text-base text-slate-400 leading-relaxed">{current.description}</p>
+                <h3 className="text-2xl sm:text-3xl font-black text-slate-900">{current.title}</h3>
+                <p className="mt-2 text-base font-semibold text-slate-700">"{current.tagline}"</p>
+                <p className="mt-4 text-sm sm:text-base text-slate-600 leading-relaxed">{current.description}</p>
 
-                <div className="mt-5 p-4 bg-brand-obsidian border border-brand-border rounded-xl text-xs text-slate-300">
-                  <strong className="text-brand-cyan font-bold block mb-1">Kesesuaian Komoditas:</strong>
+                <div className="mt-5 p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">
+                  <strong className="text-blue-700 font-bold block mb-1">Kesesuaian Komoditas:</strong>
                   {current.commodities}
                 </div>
 
-                <div className="mt-6 pt-4 border-t border-brand-border">
-                  <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3">Keunggulan & Cakupan:</h4>
+                <div className="mt-6 pt-4 border-t border-slate-100">
+                  <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">Keunggulan & Cakupan:</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                     {current.features.map((feat, idx) => (
-                      <div key={idx} className="flex items-start space-x-2 text-xs sm:text-sm text-slate-300">
-                        <CheckCircle2 className="w-4 h-4 text-brand-emerald flex-shrink-0 mt-0.5" />
+                      <div key={idx} className="flex items-start space-x-2 text-xs sm:text-sm text-slate-700">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0 mt-0.5" />
                         <span>{feat}</span>
                       </div>
                     ))}
@@ -179,16 +179,16 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                 </div>
               </div>
 
-              <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-brand-border">
+              <div className="pt-4 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100">
                 <button
                   onClick={() => onSelectService(current.title)}
-                  className="inline-flex items-center space-x-2 bg-gradient-to-r from-brand-cyan to-brand-emerald text-slate-950 px-6 py-3 rounded-xl font-black text-sm shadow-md shadow-cyan-500/20 transition-all hover:scale-105"
+                  className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all hover:scale-105"
                 >
                   <span>Konsultasikan Komoditas Ini</span>
-                  <ArrowUpRight className="w-4 h-4 stroke-" />
+                  <ArrowUpRight className="w-4 h-4 stroke-[2.2]" />
                 </button>
-                <div className="text-xs font-semibold text-slate-400">
-                  Standar: <span className="text-white font-bold">{current.equipment}</span>
+                <div className="text-xs font-semibold text-slate-500">
+                  Standar: <span className="text-slate-900 font-bold">{current.equipment}</span>
                 </div>
               </div>
             </div>
@@ -196,7 +196,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* Interactive Service Selector Pills */}
+        {/* Carousel Slider Quick Selectors */}
         <div className="mt-8 flex overflow-x-auto pb-2 gap-3 no-scrollbar">
           {DETAILED_SERVICES.map((s, idx) => (
             <button
@@ -204,8 +204,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               onClick={() => setCurrentIndex(idx)}
               className={`flex-shrink-0 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                 idx === currentIndex
-                  ? 'bg-brand-cyan text-slate-950 shadow-md shadow-cyan-500/20'
-                  : 'bg-brand-card text-slate-400 border border-brand-border hover:text-white'
+                  ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20'
+                  : 'bg-white text-slate-600 border border-slate-200 hover:border-blue-400'
               }`}
             >
               {s.title}

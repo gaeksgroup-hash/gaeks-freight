@@ -41,7 +41,7 @@ export interface DomesticPortRoute {
   portName: string;
   city: string;
   code: string;
-  coordinates: { x: number; y: number };
+  region: string;
   activeRoutes: { destination: string; transit: string; freq: string; liner: string }[];
 }
 
@@ -56,6 +56,7 @@ export interface ArticleItem {
   author: string;
   publishedDate: string;
   readTime?: string;
+  sources?: string[];
 }
 
 export interface NewsletterSubscriber {

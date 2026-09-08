@@ -67,7 +67,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-slate-950">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
       <Navbar 
         currentTab={currentPage} 
         onNavigate={navigateTo} 
@@ -99,6 +99,7 @@ export const App: React.FC = () => {
             activeDetailId={activeArticleId} 
             onBackToList={() => navigateTo('news')}
             onSelectArticle={handleOpenArticleDetail}
+            currentLang={currentLang}
           />
         )}
 
