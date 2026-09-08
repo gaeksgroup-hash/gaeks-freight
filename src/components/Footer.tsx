@@ -1,22 +1,20 @@
-// filepath: /src/components/Footer.tsx
 import React from 'react';
-import { Ship, Mail, Phone, MapPin, ExternalLink, Lock } from 'lucide-react';
+import { Ship, Mail, Phone, MapPin, Lock } from 'lucide-react';
 
 export const Footer: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavigate }) => {
   return (
-    <footer className="bg-brand-navy border-t border-brand-darkBlue text-slate-400 text-sm">
+    <footer className="bg-slate-950 border-t border-slate-800/80 text-slate-400 text-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center space-x-3">
-              <div className="bg-brand-orange p-2 rounded-lg text-white">
+              <div className="bg-gradient-to-tr from-brand-orange to-amber-500 p-2 rounded-lg text-white">
                 <Ship className="w-5 h-5" />
               </div>
-              <span className="text-lg font-black text-white tracking-wider">GAEKS FREIGHT</span>
+              <span className="text-lg font-extrabold text-white tracking-wider">GAEKS GROUP</span>
             </div>
-            <p className="text-xs leading-relaxed">
-              Solusi International Freight Forwarding, Custom Brokerage PPJK, Bongkar Muat PBM, Pergudangan, dan Domestic Trucking terintegrasi di bawah <strong>GAEKS GROUP</strong>.
+            <p className="text-xs leading-relaxed text-slate-400">
+              Perusahaan penyedia jasa International Freight Forwarding, Custom Clearance PPJK Ceisa 4.0, Stevedoring PBM, Pergudangan Transit, dan Inland Trucking terpadu.
             </p>
             <div className="text-xs text-slate-500">
               © {new Date().getFullYear()} GAEKS GROUP (gaeks.com). All rights reserved.
@@ -24,12 +22,12 @@ export const Footer: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavi
           </div>
 
           <div className="space-y-3">
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider">7 Layanan Kargo</h4>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider">7 Layanan Utama</h4>
             <ul className="space-y-1.5 text-xs">
               <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">PPJK (Customs Clearance)</button></li>
               <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">Gudang & PBM</button></li>
               <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">Domestic Trucking</button></li>
-              <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">Project Cargo (ODOW)</button></li>
+              <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">Project Cargo & Heavy Lift</button></li>
               <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">Ocean Freight LCL & FCL</button></li>
               <li><button onClick={() => onNavigate('services')} className="hover:text-brand-orange">Air Shipment Priority</button></li>
             </ul>
@@ -43,22 +41,8 @@ export const Footer: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavi
               <li><button onClick={() => onNavigate('network')} className="hover:text-white">Peta Rute Maritim Global</button></li>
               <li><button onClick={() => onNavigate('news')} className="hover:text-white">Berita & Regulasi Kargo</button></li>
               <li><button onClick={() => onNavigate('contact')} className="hover:text-white">Formulir Contact Us</button></li>
-              <li>
-                <a 
-                  href="https://dgp.gaeks.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
-                  className="flex items-center space-x-1 text-brand-orange font-semibold hover:underline"
-                >
-                  <span>DGP (Digital Gaeks Product)</span>
-                  <ExternalLink className="w-3 h-3" />
-                </a>
-              </li>
               <li className="pt-2">
-                <button 
-                  onClick={() => onNavigate('admin')} 
-                  className="flex items-center space-x-1 text-[11px] text-slate-500 hover:text-brand-orange transition-colors"
-                >
+                <button onClick={() => onNavigate('admin')} className="flex items-center space-x-1.5 text-[11px] text-slate-500 hover:text-brand-orange transition-colors">
                   <Lock className="w-3 h-3" />
                   <span>Portal CMS (@gaeks.com)</span>
                 </button>
@@ -82,7 +66,7 @@ export const Footer: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavi
                 </a>
               </li>
               <li className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 text-slate-400 flex-shrink-0" />
+                <Mail className="w-4 h-4 text-slate-500 flex-shrink-0" />
                 <a href="mailto:info@gaeks.com" className="hover:text-white">
                   info@gaeks.com
                 </a>
@@ -93,7 +77,6 @@ export const Footer: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavi
               </li>
             </ul>
           </div>
-
         </div>
       </div>
     </footer>

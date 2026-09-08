@@ -1,4 +1,3 @@
-// filepath: /tailwind.config.js
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -7,19 +6,21 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
         brand: {
-          navy: '#0A192F',
-          darkBlue: '#172A45',
-          steel: '#303C55',
+          navy: '#030816',
+          darkBlue: '#0A152E',
+          card: '#0F1E3D',
+          steel: '#22355D',
           orange: '#FF5722',
-          orangeHover: '#E64A19',
+          orangeHover: '#EA430D',
+          amber: '#F59E0B',
           surface: '#F8FAFC',
-          border: '#E2E8F0'
+          border: '#1E293B'
         }
-      },
-      fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif']
       }
     },
   },

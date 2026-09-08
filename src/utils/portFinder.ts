@@ -1,4 +1,3 @@
-// filepath: /src/utils/portFinder.ts
 import { PortEntry } from '../types/freight';
 import portsData from './ports.json';
 

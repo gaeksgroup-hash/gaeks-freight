@@ -1,4 +1,3 @@
-// filepath: /src/types/freight.ts
 export type ShippingMode = 'ocean' | 'air';
 
 export interface PortEntry {

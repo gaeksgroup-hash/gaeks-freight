@@ -1,4 +1,3 @@
-// filepath: /src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -50,7 +49,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-brand-surface text-slate-800">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans">
       <Navbar currentTab={currentPage} onNavigate={navigateTo} />
 
       <main className="flex-grow">

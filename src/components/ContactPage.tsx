@@ -1,4 +1,3 @@
-// filepath: /src/components/ContactPage.tsx
 import React, { useState } from 'react';
 import { Phone, Mail, MapPin, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
 
@@ -12,7 +11,7 @@ export const ContactPage: React.FC = () => {
 
   const handleSendWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Halo GAEKS FREIGHT (gaeks.com), saya ingin konsultasi kargo:
+    const text = `Halo GAEKS GROUP (gaeks.com), saya ingin konsultasi kargo:
 - Nama: ${name}
 - Perusahaan: ${company || '-'}
 - Kontak: ${phone} | ${email}
@@ -29,26 +28,24 @@ export const ContactPage: React.FC = () => {
   };
 
   return (
-    <section className="pt-32 pb-24 bg-brand-surface min-h-screen">
+    <section className="pt-32 pb-24 bg-slate-950 text-white min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div className="max-w-3xl mb-12">
           <span className="text-xs font-black uppercase tracking-widest text-brand-orange block mb-2">
-            Hubungi GAEKS FREIGHT
+            Hubungi GAEKS GROUP
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-brand-navy tracking-tight">
+          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
             Konsultasi Rute, Kepabeanan, & Tarif Kargo
           </h1>
-          <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
             Tim freight specialist kami siap merespons kebutuhan ekspor, impor, custom clearance PPJK, pergudangan PBM, hingga distribusi inland trucking Anda.
           </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          
           <div className="lg:col-span-5 space-y-6">
-            <div className="bg-brand-navy text-white rounded-3xl p-8 space-y-6 shadow-xl">
-              <h3 className="text-xl font-black border-b border-brand-darkBlue pb-4">
+            <div className="bg-brand-darkBlue text-white rounded-3xl p-8 space-y-6 border border-slate-800 shadow-xl">
+              <h3 className="text-xl font-black border-b border-slate-800 pb-4">
                 Kontak Resmi Operasional
               </h3>
 
@@ -81,7 +78,7 @@ export const ContactPage: React.FC = () => {
                   <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="text-xs text-slate-400 block font-semibold">Wilayah Pelabuhan Utama</span>
-                    <span className="text-xs sm:text-sm text-slate-200 leading-relaxed block">
+                    <span className="text-xs sm:text-sm text-slate-300 leading-relaxed block">
                       Tanjung Priok (Jakarta), Tanjung Emas (Semarang), Tanjung Perak (Surabaya).
                     </span>
                   </div>
@@ -91,7 +88,7 @@ export const ContactPage: React.FC = () => {
                   <Clock className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div>
                     <span className="text-xs text-slate-400 block font-semibold">Jam Operasional</span>
-                    <span className="text-xs text-slate-200 block">
+                    <span className="text-xs text-slate-300 block">
                       Senin - Sabtu: 08.00 - 18.00 WIB (Monitoring 24/7)
                     </span>
                   </div>
@@ -99,40 +96,40 @@ export const ContactPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="bg-white rounded-2xl border border-brand-border p-6 shadow-sm flex items-center space-x-3 text-slate-700">
+            <div className="bg-brand-darkBlue rounded-2xl border border-slate-800 p-6 shadow-sm flex items-center space-x-3 text-slate-300">
               <ShieldCheck className="w-6 h-6 text-brand-orange flex-shrink-0" />
               <p className="text-xs leading-relaxed">
-                Kerahasiaan dokumen invoice, packing list, dan perizinan kepabeanan Anda dilindungi oleh kode etik PPJK resmi.
+                Kerahasiaan dokumen invoice, packing list, dan perizinan kepabeanan Anda dilindungi oleh standar operasional PPJK resmi.
               </p>
             </div>
           </div>
 
-          <div className="lg:col-span-7 bg-white rounded-3xl border border-brand-border p-8 sm:p-10 shadow-xl">
-            <h3 className="text-2xl font-black text-brand-navy mb-2">Formulir Pertanyaan & Permintaan Tarif</h3>
-            <p className="text-xs sm:text-sm text-slate-500 mb-6">
-              Kirimkan detail kebutuhan kargo Anda, tim kami akan merespons dalam 1x24 jam kerja.
+          <div className="lg:col-span-7 bg-brand-darkBlue rounded-3xl border border-slate-800 p-8 sm:p-10 shadow-xl">
+            <h3 className="text-2xl font-black text-white mb-2">Formulir Permintaan Penawaran Tarif</h3>
+            <p className="text-xs sm:text-sm text-slate-400 mb-6">
+              Kirimkan detail spesifikasi kargo Anda, tim kami akan merespons dalam 1x24 jam kerja.
             </p>
 
             <form onSubmit={handleSendWhatsApp} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Nama Lengkap *</label>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap *</label>
                   <input
                     type="text"
                     required
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-orange focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
                     placeholder="Nama Anda"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Nama Perusahaan</label>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">Nama Perusahaan</label>
                   <input
                     type="text"
                     value={company}
                     onChange={(e) => setCompanyName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-orange focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
                     placeholder="PT / CV..."
                   />
                 </div>
@@ -140,35 +137,35 @@ export const ContactPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp *</label>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">Nomor WhatsApp *</label>
                   <input
                     type="tel"
                     required
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-orange focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
                     placeholder="0812xxxxxxx"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Alamat Email *</label>
+                  <label className="block text-xs font-bold text-slate-300 mb-1">Alamat Email *</label>
                   <input
                     type="email"
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-orange focus:outline-none"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
                     placeholder="email@perusahaan.com"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Layanan yang Dibutuhkan</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Layanan yang Dibutuhkan</label>
                 <select
                   value={service}
                   onChange={(e) => setService(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold focus:ring-2 focus:ring-brand-orange focus:outline-none bg-white"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm font-semibold text-white focus:outline-none"
                 >
                   <option value="PPJK (Customs Clearance)">PPJK (Customs Clearance)</option>
                   <option value="Gudang / PBM (Bongkar Muat)">Gudang / PBM (Bongkar Muat)</option>
@@ -181,13 +178,13 @@ export const ContactPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Rincian Kargo / Komoditas</label>
+                <label className="block text-xs font-bold text-slate-300 mb-1">Rincian Kargo / Komoditas</label>
                 <textarea
                   rows={4}
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Sebutkan rute pengiriman, jenis komoditas, perkiraan tonase/CBM, dan target waktu pengiriman..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:ring-2 focus:ring-brand-orange focus:outline-none"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
                 />
               </div>
 
@@ -203,7 +200,7 @@ export const ContactPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={handleSendMail}
-                  className="flex items-center justify-center space-x-2 bg-brand-navy hover:bg-brand-darkBlue text-white py-3.5 px-4 rounded-xl font-bold text-sm shadow-md transition-all"
+                  className="flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white py-3.5 px-4 rounded-xl font-bold text-sm shadow-md transition-all border border-slate-700"
                 >
                   <Mail className="w-4 h-4 text-brand-orange" />
                   <span>Kirim via Email Resmi</span>
@@ -211,9 +208,7 @@ export const ContactPage: React.FC = () => {
               </div>
             </form>
           </div>
-
         </div>
-
       </div>
     </section>
   );

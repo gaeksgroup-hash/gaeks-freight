@@ -1,77 +1,60 @@
-<!-- filepath: /index.html -->
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
-    <!-- Primary SEO Metadata -->
-    <title>GAEKS FREIGHT | International Freight Forwarder & Customs Clearance</title>
-    <meta name="description" content="Layanan ekspedisi kargo internasional terpercaya dari GAEKS GROUP. Ocean Freight (FCL/LCL), Air Freight, PPJK Customs Clearance, dan inland trucking ke seluruh dunia." />
-    <meta name="keywords" content="freight forwarding indonesia, jasa ekspor impor, customs clearance ppjk, sewa container fcl lcl, kargo udara internasional, gaeks group, gaeks freight" />
-    <meta name="robots" content="index, follow" />
+    <title>GAEKS GROUP | International Freight Forwarder, PPJK & Supply Chain Logistics</title>
+    <meta name="description" content="Portal resmi GAEKS GROUP (GAEKS FREIGHT). Solusi terpadu Ocean Freight (FCL/LCL), Air Cargo Priority, Custom Brokerage PPJK Ceisa 4.0, Gudang PBM, dan Domestic Trucking ke seluruh Indonesia." />
+    <meta name="keywords" content="freight forwarding indonesia, jasa ekspor impor, ppjk bea cukai, sewa container fcl lcl, kargo udara internasional, pergudangan pbm pelabuhan, inland trucking, tanjung priok, tanjung emas, tanjung perak, gaeks group, gaeks freight" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large" />
     <link rel="canonical" href="https://gaeks.com/" />
 
-    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gaeks.com/" />
-    <meta property="og:title" content="GAEKS FREIGHT | Global Logistics & Supply Chain Solutions" />
-    <meta property="og:description" content="Tarif kompetitif pengiriman FCL/LCL, air freight prioritas, dan legalitas kepabeanan terintegrasi." />
-    <meta property="og:image" content="https://gaeks.com/og-image.jpg" />
+    <meta property="og:site_name" content="GAEKS GROUP" />
+    <meta property="og:title" content="GAEKS GROUP | International Freight Forwarding & Logistics Solutions" />
+    <meta property="og:description" content="Layanan kargo laut, kargo udara ekspres, legalitas pabean PPJK, dan armada trucking darat terintegrasi dengan kepastian jadwal dan tarif kompetitif." />
+    <meta property="og:image" content="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80" />
 
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Schema.org JSON-LD Structured Data for SEO -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "LogisticsService",
-      "name": "GAEKS FREIGHT",
-      "legalName": "GAEKS GROUP",
-      "url": "https://gaeks.com",
-      "logo": "https://gaeks.com/logo.png",
-      "description": "Layanan International Freight Forwarding, Custom Brokerage PPJK, dan Domestik Trucking di Indonesia.",
-      "serviceArea": {
-        "@type": "AdministrativeArea",
-        "name": "Worldwide"
-      },
-      "hasOfferCatalog": {
-        "@type": "OfferCatalog",
-        "name": "Freight Forwarding Services",
-        "itemListElement": [
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Ocean Freight (FCL & LCL)"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Air Freight International"
-            }
-          },
-          {
-            "@type": "Offer",
-            "itemOffered": {
-              "@type": "Service",
-              "name": "Customs Brokerage & Clearance (PPJK)"
-            }
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://gaeks.com/#organization",
+          "name": "GAEKS GROUP",
+          "url": "https://gaeks.com/",
+          "logo": "https://gaeks.com/logo.png",
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+62-856-0856-1745",
+            "contactType": "Customer Service & Sales",
+            "email": "Sales01@gaeks.com",
+            "areaServed": "ID",
+            "availableLanguage": ["Indonesian", "English"]
           }
-        ]
-      }
+        },
+        {
+          "@type": "LogisticsService",
+          "@id": "https://gaeks.com/#service",
+          "name": "GAEKS FREIGHT",
+          "provider": { "@id": "https://gaeks.com/#organization" },
+          "serviceType": "International Freight Forwarding & Customs Brokerage",
+          "areaServed": "Worldwide"
+        }
+      ]
     }
     </script>
-    <script type="module" crossorigin src="./assets/index-B2BArxy_.js"></script>
-    <link rel="modulepreload" crossorigin href="./assets/vendor-BZ2d-VQm.js">
-    <link rel="stylesheet" crossorigin href="./assets/index-D3ggrE41.css">
+    <script type="module" crossorigin src="./assets/index-CfF1Nj-O.js"></script>
+    <link rel="modulepreload" crossorigin href="./assets/vendor-CgWj44ig.js">
+    <link rel="stylesheet" crossorigin href="./assets/index-95Z1C3ap.css">
   </head>
-  <body class="bg-brand-surface text-slate-800 antialiased font-sans">
+  <body class="bg-slate-950 text-slate-100 antialiased font-sans selection:bg-brand-orange selection:text-white">
     <div id="root"></div>
   </body>
 </html>
