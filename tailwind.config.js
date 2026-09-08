@@ -11,15 +11,24 @@ export default {
       },
       colors: {
         brand: {
-          navy: '#030816',
-          darkBlue: '#0A152E',
-          card: '#0F1E3D',
-          steel: '#22355D',
-          orange: '#FF5722',
-          orangeHover: '#EA430D',
-          amber: '#F59E0B',
-          surface: '#F8FAFC',
-          border: '#1E293B'
+          obsidian: '#050B14',
+          surface: '#0A1322',
+          card: '#0F1E34',
+          border: '#1E2E4A',
+          cyan: '#00F2FE',
+          cyanGlow: '#0EA5E9',
+          emerald: '#10B981',
+          slate: '#94A3B8'
+        }
+      },
+      animation: {
+        'marquee': 'marquee 25s linear infinite',
+        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(0%)' },
+          '100%': { transform: 'translateX(-50%)' },
         }
       }
     },

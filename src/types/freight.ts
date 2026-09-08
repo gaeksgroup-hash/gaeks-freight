@@ -1,3 +1,4 @@
+export type Language = 'id' | 'en' | 'zh';
 export type ShippingMode = 'ocean' | 'air';
 
 export interface PortEntry {
@@ -44,6 +45,7 @@ export interface ArticleItem {
   imageUrl: string;
   author: string;
   publishedDate: string;
+  readTime?: string;
 }
 
 export interface NewsletterSubscriber {

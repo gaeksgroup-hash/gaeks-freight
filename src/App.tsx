@@ -1,3 +1,4 @@
+// filepath: /src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -9,8 +10,12 @@ import { AdminCMS } from './components/AdminCMS';
 import { ContactPage } from './components/ContactPage';
 import { StatsNetwork } from './components/StatsNetwork';
 import { Footer } from './components/Footer';
+import { Language } from './types/freight';
 
 export const App: React.FC = () => {
+  const [currentLang, setCurrentLang] = useState<Language>('id');
+  const [activeArticleId, setActiveArticleId] = useState<string>('');
+
   const getInitialPage = () => {
     const hash = window.location.hash.replace('#', '').toLowerCase();
     if (['home', 'services', 'calculator', 'network', 'news', 'contact', 'admin'].includes(hash)) {
@@ -24,9 +29,15 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     const handleHashChange = () => {
-      const page = window.location.hash.replace('#', '').toLowerCase();
-      if (['home', 'services', 'calculator', 'network', 'news', 'contact', 'admin'].includes(page)) {
-        setCurrentPage(page);
+      const fullHash = window.location.hash.replace('#', '').toLowerCase();
+      if (fullHash.startsWith('news?id=')) {
+        const idParts = fullHash.split('id=');
+        const id = idParts.length > 1 ? idParts : '';
+        setActiveArticleId(id);
+        setCurrentPage('news');
+      } else if (['home', 'services', 'calculator', 'network', 'news', 'contact', 'admin'].includes(fullHash)) {
+        setActiveArticleId('');
+        setCurrentPage(fullHash);
       } else {
         setCurrentPage('home');
       }
@@ -39,6 +50,7 @@ export const App: React.FC = () => {
 
   const navigateTo = (page: string) => {
     window.location.hash = page;
+    setActiveArticleId('');
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -48,9 +60,20 @@ export const App: React.FC = () => {
     navigateTo('calculator');
   };
 
+  const handleOpenArticleDetail = (articleId: string) => {
+    setActiveArticleId(articleId);
+    window.location.hash = 'news?id=' + articleId;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans">
-      <Navbar currentTab={currentPage} onNavigate={navigateTo} />
+    <div className="min-h-screen flex flex-col bg-brand-obsidian text-slate-100 font-sans">
+      <Navbar 
+        currentTab={currentPage} 
+        onNavigate={navigateTo} 
+        currentLang={currentLang} 
+        onSelectLang={setCurrentLang} 
+      />
 
       <main className="flex-grow">
         {currentPage === 'services' && (
@@ -72,7 +95,11 @@ export const App: React.FC = () => {
         )}
 
         {currentPage === 'news' && (
-          <NewsPage />
+          <NewsPage 
+            activeDetailId={activeArticleId} 
+            onBackToList={() => navigateTo('news')}
+            onSelectArticle={handleOpenArticleDetail}
+          />
         )}
 
         {currentPage === 'contact' && (
@@ -85,7 +112,7 @@ export const App: React.FC = () => {
 
         {currentPage === 'home' && (
           <>
-            <Hero onNavigate={navigateTo} />
+            <Hero onNavigate={navigateTo} currentLang={currentLang} />
             <ServicesCarousel onSelectService={handleSelectService} />
             <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
