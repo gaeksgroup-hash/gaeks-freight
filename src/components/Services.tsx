@@ -1,6 +1,6 @@
 // filepath: /src/components/Services.tsx
 import React from 'react';
-import { Ship, Plane, FileCheck2, Truck, Check, ChevronRight } from 'lucide-react';
+import { Check, ChevronRight } from 'lucide-react';
 import { ServiceDetail } from '../types/freight';
 
 const services: ServiceDetail[] = [
@@ -38,7 +38,6 @@ export const Services: React.FC = () => {
   return (
     <section id="services" className="py-24 bg-white border-y border-brand-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div className="max-w-3xl mb-16">
           <span className="text-xs font-black uppercase tracking-widest text-brand-orange block mb-2">
             Portofolio Layanan Terpadu
@@ -86,7 +85,6 @@ export const Services: React.FC = () => {
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );

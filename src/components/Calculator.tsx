@@ -1,6 +1,6 @@
 // filepath: /src/components/Calculator.tsx
 import React, { useState } from 'react';
-import { Calculator as CalcIcon, Send, HelpCircle, Box } from 'lucide-react';
+import { Calculator as CalcIcon, Send, Box } from 'lucide-react';
 import { CargoCalcState } from '../types/freight';
 
 export const Calculator: React.FC = () => {
@@ -16,10 +16,7 @@ export const Calculator: React.FC = () => {
   const [origin, setOrigin] = useState('Jakarta (IDJKT)');
   const [destination, setDestination] = useState('Singapore (SGSIN)');
 
-  // Formula CBM = (P x L x T / 1.000.000) * Koli
   const totalCbm = ((calc.lengthCm * calc.widthCm * calc.heightCm) / 1000000) * calc.pieces;
-  
-  // Volumetric weight: Air = CBM * 167 (or / 6000 cm3), Ocean LCL 1 CBM = 1000 kg threshold
   const volumetricWeightAir = ((calc.lengthCm * calc.widthCm * calc.heightCm) / 6000) * calc.pieces;
   const chargeableWeightAir = Math.max(calc.actualWeightKg * calc.pieces, volumetricWeightAir);
 
@@ -38,7 +35,6 @@ ${calc.mode === 'air' ? `- Chargeable Weight (Air): ${chargeableWeightAir.toFixe
   return (
     <section id="calculator" className="py-20 bg-brand-surface relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div className="max-w-3xl mx-auto text-center mb-12">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-orange/10 text-brand-orange text-xs font-bold uppercase mb-3">
             <CalcIcon className="w-3.5 h-3.5" />
@@ -54,8 +50,6 @@ ${calc.mode === 'air' ? `- Chargeable Weight (Air): ${chargeableWeightAir.toFixe
 
         <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl border border-brand-border p-6 sm:p-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            
-            {/* Input Form */}
             <div className="space-y-5">
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
@@ -108,7 +102,6 @@ ${calc.mode === 'air' ? `- Chargeable Weight (Air): ${chargeableWeightAir.toFixe
                 </div>
               </div>
 
-              {/* Dimensions */}
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                   Dimensi per Koli (Centimeter)
@@ -167,7 +160,6 @@ ${calc.mode === 'air' ? `- Chargeable Weight (Air): ${chargeableWeightAir.toFixe
               </div>
             </div>
 
-            {/* Results Display */}
             <div className="bg-brand-navy rounded-2xl p-6 sm:p-8 text-white flex flex-col justify-between">
               <div>
                 <div className="flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider mb-4">
@@ -196,7 +188,7 @@ ${calc.mode === 'air' ? `- Chargeable Weight (Air): ${chargeableWeightAir.toFixe
                       <div className="text-2xl font-black text-brand-orange mt-1">
                         {chargeableWeightAir.toFixed(1)} KG
                       </div>
-                      <span className="text-[10px] text-slate-400 italic">Dihitung berdasarkan nilai tertinggi antara berat fisik vs volumetrik.</span>
+                      <span className="text-[10px] text-slate-400 italic">Dihitung dari nilai tertinggi antara berat fisik vs volumetrik.</span>
                     </div>
                   )}
                 </div>
@@ -212,15 +204,10 @@ ${calc.mode === 'air' ? `- Chargeable Weight (Air): ${chargeableWeightAir.toFixe
                   <Send className="w-4 h-4" />
                   <span>Kirim Data ke WhatsApp GAEKS</span>
                 </a>
-                <p className="text-[11px] text-slate-400 text-center mt-2.5">
-                  Respon estimasi tarif 1x24 jam langsung dari Freight Specialist kami.
-                </p>
               </div>
             </div>
-
           </div>
         </div>
-
       </div>
     </section>
   );

@@ -1,26 +1,29 @@
 // filepath: /src/components/StatsNetwork.tsx
 import React from 'react';
-import { Anchor, ShieldAlert, Award, Compass } from 'lucide-react';
+import { Anchor, Compass, Award, ShieldAlert } from 'lucide-react';
 
 export const StatsNetwork: React.FC = () => {
   return (
     <section id="coverage" className="py-20 bg-brand-navy text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center border-b border-brand-darkBlue pb-16">
-          <div>
+          <div className="flex flex-col items-center">
+            <Anchor className="w-6 h-6 text-brand-orange mb-2" />
             <div className="text-4xl sm:text-5xl font-black text-brand-orange">150+</div>
             <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Koneksi Pelabuhan Dunia</div>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
+            <Compass className="w-6 h-6 text-brand-orange mb-2" />
             <div className="text-4xl sm:text-5xl font-black text-brand-orange">99.2%</div>
             <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Tingkat Ketepatan Jadwal</div>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
+            <Award className="w-6 h-6 text-brand-orange mb-2" />
             <div className="text-4xl sm:text-5xl font-black text-brand-orange">24/7</div>
             <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Dukungan Tracking & Support</div>
           </div>
-          <div>
+          <div className="flex flex-col items-center">
+            <ShieldAlert className="w-6 h-6 text-brand-orange mb-2" />
             <div className="text-4xl sm:text-5xl font-black text-brand-orange">100%</div>
             <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Kepatuhan Regulasi Bea Cukai</div>
           </div>
@@ -40,7 +43,6 @@ export const StatsNetwork: React.FC = () => {
             Hubungi Spesialis Kargo Kami
           </a>
         </div>
-
       </div>
     </section>
   );

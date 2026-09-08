@@ -1,11 +1,10 @@
 // filepath: /src/components/Hero.tsx
 import React from 'react';
-import { ShieldCheck, Globe2, Clock, CheckCircle } from 'lucide-react';
+import { ShieldCheck, Globe2, Clock } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
     <section className="relative pt-36 pb-20 md:pt-44 md:pb-28 bg-brand-navy overflow-hidden">
-      {/* Abstract Background Elements */}
       <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#FF5722_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
       <div className="absolute top-1/4 right-0 w-96 h-96 bg-brand-orange/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -41,7 +40,6 @@ export const Hero: React.FC = () => {
             </a>
           </div>
 
-          {/* Value Badges */}
           <div className="mt-12 pt-8 border-t border-brand-darkBlue grid grid-cols-3 gap-4 text-slate-300">
             <div className="flex items-center space-x-2.5">
               <ShieldCheck className="w-5 h-5 text-brand-orange flex-shrink-0" />
