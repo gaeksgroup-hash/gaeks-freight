@@ -5,6 +5,7 @@ import { Hero } from './components/Hero';
 import { ServicesCarousel } from './components/ServicesCarousel';
 import { SmartCalculator } from './components/SmartCalculator';
 import { InteractiveMap } from './components/InteractiveMap';
+import { GeographicRouteSimulator } from './components/GeographicRouteSimulator';
 import { NewsPage } from './components/NewsPage';
 import { AdminCMS } from './components/AdminCMS';
 import { ContactPage } from './components/ContactPage';
@@ -66,7 +67,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-brand-obsidian text-slate-100 font-sans">
+    <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-slate-950">
       <Navbar 
         currentTab={currentPage} 
         onNavigate={navigateTo} 
@@ -115,12 +116,14 @@ export const App: React.FC = () => {
             <ServicesCarousel onSelectService={handleSelectService} />
             <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
+            {/* Simulasi Geografi Rute Maritim Sebelum Footer */}
+            <GeographicRouteSimulator currentLang={currentLang} />
             <StatsNetwork />
           </>
         )}
       </main>
 
-      <Footer onNavigate={navigateTo} />
+      <Footer onNavigate={navigateTo} currentLang={currentLang} />
     </div>
   );
 };

@@ -1,3 +1,4 @@
+// filepath: /src/types/freight.ts
 export type Language = 'id' | 'en' | 'zh';
 export type ShippingMode = 'ocean' | 'air';
 
@@ -33,6 +34,15 @@ export interface RouteData {
   airTransitDays: string;
   departureFreq: string;
   commodities: string;
+}
+
+export interface DomesticPortRoute {
+  id: string;
+  portName: string;
+  city: string;
+  code: string;
+  coordinates: { x: number; y: number };
+  activeRoutes: { destination: string; transit: string; freq: string; liner: string }[];
 }
 
 export interface ArticleItem {
