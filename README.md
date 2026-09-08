@@ -1,2 +1,0 @@
-# gaeks-freight
-PROJEK GAEKS
