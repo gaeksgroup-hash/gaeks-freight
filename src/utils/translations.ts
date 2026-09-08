@@ -22,11 +22,11 @@ export const UI_TEXT = {
     badge: { 
       id: 'International Freight Forwarder & Customs Brokerage', 
       en: 'International Freight Forwarder & Customs Brokerage', 
-      zh: '国际货运与专业清关代理' 
+      zh: '国际货运与专业报关代理' 
     },
     radarLive: { 
       id: 'Radar Maritim Aktif (360° Sweep)', 
-      en: 'Vessel Telemetry Active (360° Sweep)', 
+      en: 'Maritime Radar Live (360° Sweep)', 
       zh: '船舶雷达实时监测 (360°扫描)' 
     },
     titlePrefix: { 

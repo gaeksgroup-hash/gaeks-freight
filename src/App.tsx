@@ -117,7 +117,7 @@ export const App: React.FC = () => {
             <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
             <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
-            {/* Simulasi Geografi Peta Maritim Sebelum Footer */}
+            {/* Simulasi Geografi Rute Maritim Sebelum Footer */}
             <GeographicRouteSimulator currentLang={currentLang} />
             <StatsNetwork />
           </>

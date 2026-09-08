@@ -58,7 +58,7 @@ export interface ArticleItem {
   title: string;
   title_en?: string;
   title_zh?: string;
-  slug: string;
+  slug?: string;
   category: string;
   category_en?: string;
   category_zh?: string;
@@ -69,7 +69,7 @@ export interface ArticleItem {
   content_en?: string;
   content_zh?: string;
   imageUrl: string;
-  author: string;
+  author?: string;
   publishedDate: string;
   readTime?: string;
   sources?: string[];

@@ -13,13 +13,22 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
   const [subscribeStatus, setSubscribeStatus] = useState<string>('');
   const [copySuccess, setCopySuccess] = useState(false);
 
-  const detailArticle = activeDetailId ? articles.find(a => a.id === activeDetailId) : null;
+  const rawDetailArticle = activeDetailId ? articles.find(a => a.id === activeDetailId) : null;
+  const detailArticle = rawDetailArticle ? {
+    ...rawDetailArticle,
+    title: currentLang === 'en' ? rawDetailArticle.title_en || rawDetailArticle.title : currentLang === 'zh' ? rawDetailArticle.title_zh || rawDetailArticle.title : rawDetailArticle.title,
+    category: currentLang === 'en' ? rawDetailArticle.category_en || rawDetailArticle.category : currentLang === 'zh' ? rawDetailArticle.category_zh || rawDetailArticle.category : rawDetailArticle.category,
+    content: currentLang === 'en' ? rawDetailArticle.content_en || rawDetailArticle.content : currentLang === 'zh' ? rawDetailArticle.content_zh || rawDetailArticle.content : rawDetailArticle.content,
+  } : null;
+
   const categories = ['Semua', 'Regulasi Kepabeanan', 'Operational Freight', 'Rute Maritim', 'Kargo Khusus', 'Project Cargo & Alat Berat'];
 
   const filtered = articles.filter(a => {
-    const matchSearch = a.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    const titleText = currentLang === 'en' ? a.title_en || a.title : currentLang === 'zh' ? a.title_zh || a.title : a.title;
+    const excerptText = currentLang === 'en' ? a.excerpt_en || a.excerpt : currentLang === 'zh' ? a.excerpt_zh || a.excerpt : a.excerpt;
+    const matchSearch = titleText.toLowerCase().includes(searchQuery.toLowerCase()) ||
                         a.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        a.excerpt.toLowerCase().includes(searchQuery.toLowerCase());
+                        excerptText.toLowerCase().includes(searchQuery.toLowerCase());
     const matchCat = selectedCategory === 'Semua' || a.category === selectedCategory;
     return matchSearch && matchCat;
   });
@@ -38,7 +47,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
 
   const handleShare = (platform: 'wa' | 'tw' | 'li' | 'copy', article: ArticleItem) => {
     const url = window.location.origin + '/#news?id=' + article.id;
-    const text = `${article.title} - Baca artikel regulasi & logistik terpercaya:`;
+    const text = `${article.title} - Baca analisis logistik dan regulasi terpercaya:`;
 
     if (platform === 'wa') {
       window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
@@ -61,15 +70,15 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           
           <button
             onClick={() => onBackToList && onBackToList()}
-            className="inline-flex items-center space-x-2 text-xs font-bold text-blue-600 hover:text-blue-800 mb-8 bg-white border border-slate-200 px-4 py-2 rounded-xl shadow-sm"
+            className="inline-flex items-center space-x-2 text-xs font-bold text-blue-600 hover:text-blue-800 mb-8 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm hover:scale-105 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Kembali ke Daftar Berita</span>
+            <span>Kembali ke Daftar News & Updates</span>
           </button>
 
           <article className="space-y-8 bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-xl">
             <div className="space-y-4">
-              <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-extrabold uppercase tracking-wider border border-blue-200">
+              <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider border border-blue-200">
                 {detailArticle.category}
               </span>
               <h1 className="text-3xl sm:text-4xl font-black tracking-tight leading-tight text-slate-900">
@@ -97,28 +106,28 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => handleShare('wa', detailArticle)}
-                  className="p-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white"
+                  className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
                   title="Bagikan via WhatsApp"
                 >
                   <MessageCircle className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('li', detailArticle)}
-                  className="p-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white"
+                  className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
                   title="Bagikan via LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('tw', detailArticle)}
-                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white"
+                  className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white shadow-sm"
                   title="Bagikan via Twitter/X"
                 >
                   <Twitter className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('copy', detailArticle)}
-                  className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold"
+                  className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold shadow-sm"
                 >
                   <Copy className="w-3.5 h-3.5" />
                   <span>{copySuccess ? 'Tautan Disalin!' : 'Salin Tautan'}</span>
@@ -126,18 +135,19 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               </div>
             </div>
 
-            {/* Article In-Depth Content */}
-            <div className="text-base text-slate-700 leading-relaxed whitespace-pre-line space-y-6 pt-2">
+            {/* In-Depth Content (>2000 Characters) */}
+            <div className="text-base text-slate-700 leading-relaxed whitespace-pre-line space-y-6 pt-2 font-normal">
               {detailArticle.content}
             </div>
 
-            {/* Sources & Citations Box */}
+            {/* Sumber & Referensi Resmi Khusus Bagian Akhir Berita */}
             {detailArticle.sources && detailArticle.sources.length > 0 && (
-              <div className="mt-8 p-5 bg-slate-50 border border-slate-200 rounded-2xl">
-                <span className="text-xs font-bold text-slate-900 uppercase tracking-wider block mb-2">
-                  Sumber Referensi Resmi:
-                </span>
-                <ul className="list-disc list-inside space-y-1 text-xs text-slate-600 font-medium">
+              <div className="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+                <div className="flex items-center space-x-2 text-xs font-black text-slate-900 uppercase tracking-wider">
+                  <BookOpen className="w-4 h-4 text-blue-600" />
+                  <span>Sumber Referensi Resmi & Otoritas Industri:</span>
+                </div>
+                <ul className="list-disc list-inside space-y-1.5 text-xs text-slate-600 font-medium pt-1">
                   {detailArticle.sources.map((src, i) => (
                     <li key={i}>{src}</li>
                   ))}
@@ -156,7 +166,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     <div className="pt-32 pb-24 bg-slate-50 text-slate-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header with Objective Neutral Intro */}
+        {/* Header Bersih & Deskripsi Resmi */}
         <div className="max-w-3xl mb-12">
           <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
             {getTranslation(currentLang, UI_TEXT.news.badge)}
@@ -169,7 +179,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           </p>
         </div>
 
-        {/* Newsletter Subscription Card (Clean Light Blue Theme) */}
+        {/* Newsletter Subscription Card (Clean Corporate Blue) */}
         <div className="mb-14 bg-gradient-to-r from-blue-900 to-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-800 text-white shadow-xl relative overflow-hidden">
           <div className="max-w-2xl relative z-10 space-y-3">
             <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
@@ -242,47 +252,53 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           </div>
         </div>
 
-        {/* 20 Articles Grid */}
+        {/* 20 Real In-Depth Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filtered.map((item) => (
-            <div 
-              key={item.id}
-              className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
-            >
-              <div>
-                <div className="relative h-48 overflow-hidden bg-slate-100">
-                  <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <span className="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-extrabold uppercase">
-                    {item.category}
-                  </span>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center space-x-2 text-[11px] text-slate-500 font-semibold mb-2">
-                    <Calendar className="w-3.5 h-3.5 text-blue-600" />
-                    <span>{item.publishedDate}</span>
-                    <span>•</span>
-                    <span>{item.readTime}</span>
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-900 leading-snug mb-3 group-hover:text-blue-600 transition-colors">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
-                    {item.excerpt}
-                  </p>
-                </div>
-              </div>
+          {filtered.map((item) => {
+            const displayTitle = currentLang === 'en' ? item.title_en || item.title : currentLang === 'zh' ? item.title_zh || item.title : item.title;
+            const displayCategory = currentLang === 'en' ? item.category_en || item.category : currentLang === 'zh' ? item.category_zh || item.category : item.category;
+            const displayExcerpt = currentLang === 'en' ? item.excerpt_en || item.excerpt : currentLang === 'zh' ? item.excerpt_zh || item.excerpt : item.excerpt;
 
-              <div className="p-6 pt-0 border-t border-slate-100 flex items-center justify-between">
-                <button
-                  onClick={() => onSelectArticle && onSelectArticle(item.id)}
-                  className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center space-x-1.5 transition-colors"
-                >
-                  <span>Baca Analisis Lengkap</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+            return (
+              <div 
+                key={item.id}
+                className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+              >
+                <div>
+                  <div className="relative h-48 overflow-hidden bg-slate-100">
+                    <img src={item.imageUrl} alt={displayTitle} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <span className="absolute top-3 left-3 bg-slate-900/85 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-extrabold uppercase">
+                      {displayCategory}
+                    </span>
+                  </div>
+                  <div className="p-6">
+                    <div className="flex items-center space-x-2 text-[11px] text-slate-500 font-semibold mb-2">
+                      <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                      <span>{item.publishedDate}</span>
+                      <span>•</span>
+                      <span>{item.readTime}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 leading-snug mb-3 group-hover:text-blue-600 transition-colors">
+                      {displayTitle}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3">
+                      {displayExcerpt}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="p-6 pt-0 border-t border-slate-100 flex items-center justify-between">
+                  <button
+                    onClick={() => onSelectArticle && onSelectArticle(item.id)}
+                    className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center space-x-1.5 transition-colors"
+                  >
+                    <span>Baca Analisis Lengkap</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>
