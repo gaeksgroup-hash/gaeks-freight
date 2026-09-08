@@ -1,19 +1,34 @@
 // filepath: /src/types/freight.ts
-export type ShippingMode = 'ocean_fcl' | 'ocean_lcl' | 'air_freight' | 'trucking';
+export type ShippingMode = 'ocean' | 'air';
+
+export interface PortEntry {
+  name: string;
+  port: string;
+  code: string;
+  country: string;
+  region: string;
+  gateway: string;
+  note: string;
+  keywords: string[];
+}
 
 export interface ServiceDetail {
   id: string;
   title: string;
-  badge: string;
+  category: string;
+  tagline: string;
   description: string;
-  highlights: string[];
+  features: string[];
+  equipment: string;
 }
 
-export interface CargoCalcState {
-  lengthCm: number;
-  widthCm: number;
-  heightCm: number;
-  pieces: number;
-  actualWeightKg: number;
-  mode: 'air' | 'ocean';
+export interface RouteData {
+  id: string;
+  originName: string;
+  originCountry: string;
+  destinationPort: 'Jakarta (Tanjung Priok)' | 'Semarang (Tanjung Emas)' | 'Surabaya (Tanjung Perak)';
+  seaTransitDays: string;
+  airTransitDays: string;
+  departureFreq: string;
+  commodities: string;
 }
