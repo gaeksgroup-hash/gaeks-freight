@@ -75,7 +75,7 @@ Mohon informasi jadwal sailing/flight terdekat, estimasi biaya kargo, dan penang
 
   const handleSendWhatsApp = () => {
     const text = buildSummaryText();
-    const url = `[https://wa.me/6285608561745?text=$](https://wa.me/6285608561745?text=$){encodeURIComponent(text)}`;
+    const url = `https://wa.me/6285608561745?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
   };
 

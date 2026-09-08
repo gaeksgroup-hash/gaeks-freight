@@ -1,6 +1,6 @@
 // filepath: /src/components/ContactPage.tsx
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Send, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
+import { Phone, Mail, MapPin, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
 
 export const ContactPage: React.FC = () => {
   const [name, setName] = useState('');
@@ -12,11 +12,11 @@ export const ContactPage: React.FC = () => {
 
   const handleSendWhatsApp = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Halo GAEKS FREIGHT (gaeks.com), saya ingin menghubungi tim operasional:
+    const text = `Halo GAEKS FREIGHT (gaeks.com), saya ingin konsultasi kargo:
 - Nama: ${name}
 - Perusahaan: ${company || '-'}
 - Kontak: ${phone} | ${email}
-- Kebutuhan Layanan: ${service}
+- Layanan: ${service}
 - Pesan: ${message}`;
 
     window.open(`https://wa.me/6285608561745?text=${encodeURIComponent(text)}`, '_blank');
@@ -46,9 +46,7 @@ export const ContactPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
           
-          {/* Contact Details Column */}
           <div className="lg:col-span-5 space-y-6">
-            
             <div className="bg-brand-navy text-white rounded-3xl p-8 space-y-6 shadow-xl">
               <h3 className="text-xl font-black border-b border-brand-darkBlue pb-4">
                 Kontak Resmi Operasional
@@ -58,7 +56,7 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <Phone className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs text-slate-400 block font-semibold">WhatsApp & Telepon Langsung</span>
+                    <span className="text-xs text-slate-400 block font-semibold">WhatsApp Langsung</span>
                     <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="text-base font-bold text-white hover:text-brand-orange transition-colors">
                       +62 856-0856-1745
                     </a>
@@ -68,7 +66,7 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <Mail className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs text-slate-400 block font-semibold">Departemen Sales & Inquiry</span>
+                    <span className="text-xs text-slate-400 block font-semibold">Email Sales & Inquiry</span>
                     <a href="mailto:Sales01@gaeks.com" className="font-bold text-white hover:text-brand-orange block transition-colors">
                       Sales01@gaeks.com
                     </a>
@@ -82,9 +80,9 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs text-slate-400 block font-semibold">Area Operasional Pelabuhan Utama</span>
+                    <span className="text-xs text-slate-400 block font-semibold">Wilayah Pelabuhan Utama</span>
                     <span className="text-xs sm:text-sm text-slate-200 leading-relaxed block">
-                      Tanjung Priok (Jakarta), Tanjung Emas (Semarang), Tanjung Perak (Surabaya), serta seluruh bandara kargo internasional Indonesia.
+                      Tanjung Priok (Jakarta), Tanjung Emas (Semarang), Tanjung Perak (Surabaya).
                     </span>
                   </div>
                 </div>
@@ -92,10 +90,9 @@ export const ContactPage: React.FC = () => {
                 <div className="flex items-start space-x-3.5">
                   <Clock className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
                   <div>
-                    <span className="text-xs text-slate-400 block font-semibold">Waktu Operasional Pelayanan</span>
+                    <span className="text-xs text-slate-400 block font-semibold">Jam Operasional</span>
                     <span className="text-xs text-slate-200 block">
-                      Senin - Sabtu: 08.00 - 18.00 WIB<br />
-                      Monitoring Kargo & Clearance: Siaga 24/7
+                      Senin - Sabtu: 08.00 - 18.00 WIB (Monitoring 24/7)
                     </span>
                   </div>
                 </div>
@@ -105,17 +102,15 @@ export const ContactPage: React.FC = () => {
             <div className="bg-white rounded-2xl border border-brand-border p-6 shadow-sm flex items-center space-x-3 text-slate-700">
               <ShieldCheck className="w-6 h-6 text-brand-orange flex-shrink-0" />
               <p className="text-xs leading-relaxed">
-                Setiap data pengiriman kargo dan perizinan dokumen perusahaan Anda dilindungi oleh standar kerahasiaan kepabeanan resmi.
+                Kerahasiaan dokumen invoice, packing list, dan perizinan kepabeanan Anda dilindungi oleh kode etik PPJK resmi.
               </p>
             </div>
-
           </div>
 
-          {/* Form Column */}
           <div className="lg:col-span-7 bg-white rounded-3xl border border-brand-border p-8 sm:p-10 shadow-xl">
             <h3 className="text-2xl font-black text-brand-navy mb-2">Formulir Pertanyaan & Permintaan Tarif</h3>
             <p className="text-xs sm:text-sm text-slate-500 mb-6">
-              Kirimkan spesifikasi kebutuhan Anda, tim kami akan merespons dalam 1x24 jam kerja.
+              Kirimkan detail kebutuhan kargo Anda, tim kami akan merespons dalam 1x24 jam kerja.
             </p>
 
             <form onSubmit={handleSendWhatsApp} className="space-y-4">
@@ -145,7 +140,7 @@ export const ContactPage: React.FC = () => {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp / Telepon *</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Nomor WhatsApp *</label>
                   <input
                     type="tel"
                     required
@@ -186,7 +181,7 @@ export const ContactPage: React.FC = () => {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">Rincian Kargo / Pertanyaan</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Rincian Kargo / Komoditas</label>
                 <textarea
                   rows={4}
                   value={message}
@@ -202,7 +197,7 @@ export const ContactPage: React.FC = () => {
                   className="flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 px-4 rounded-xl font-bold text-sm shadow-md transition-all"
                 >
                   <MessageSquare className="w-4 h-4" />
-                  <span>Kirim via WhatsApp</span>
+                  <span>Kirim via WhatsApp (0856-0856-1745)</span>
                 </button>
 
                 <button

@@ -20,6 +20,8 @@ export interface ServiceDetail {
   description: string;
   features: string[];
   equipment: string;
+  imageUrl: string;
+  commodities: string;
 }
 
 export interface RouteData {
@@ -31,4 +33,21 @@ export interface RouteData {
   airTransitDays: string;
   departureFreq: string;
   commodities: string;
+}
+
+export interface ArticleItem {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  excerpt: string;
+  content: string;
+  imageUrl: string;
+  author: string;
+  publishedDate: string;
+}
+
+export interface NewsletterSubscriber {
+  email: string;
+  subscribedAt: string;
 }

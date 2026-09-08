@@ -35,7 +35,7 @@ export const StatsNetwork: React.FC = () => {
             Mulai dari kargo umum (general cargo), semen, bahan baku industri, tekstil, mesin berat, hingga produk bersuhu terkontrol (reefer container).
           </p>
           <a
-            href="https://wa.me/6281234567890?text=Halo%20GAEKS%20Freight,%20saya%20ingin%20berdiskusi%20tentang%20proyek%20pengiriman%20kargo%20saya."
+            href="https://wa.me/6285608561745?text=Halo%20GAEKS%20Freight,%20saya%20ingin%20berdiskusi%20tentang%20proyek%20pengiriman%20kargo%20saya."
             target="_blank"
             rel="noopener noreferrer"
             className="inline-block bg-white hover:bg-slate-100 text-brand-navy px-8 py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg"

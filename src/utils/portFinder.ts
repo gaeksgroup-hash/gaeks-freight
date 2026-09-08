@@ -8,13 +8,11 @@ export function findSmartNearestPort(inputAddress: string): PortEntry | null {
   if (!inputAddress || inputAddress.trim().length < 2) return null;
   const query = inputAddress.toLowerCase().trim();
 
-  // 1. Cek kecocokan kata kunci (keywords)
   const matchedByKeyword = COMPREHENSIVE_PORTS.find(p => 
     p.keywords.some(k => query.includes(k) || k.includes(query))
   );
   if (matchedByKeyword) return matchedByKeyword;
 
-  // 2. Cek kecocokan nama kota / pelabuhan / kode
   const matchedByNameOrCode = COMPREHENSIVE_PORTS.find(p => 
     p.name.toLowerCase().includes(query) ||
     p.port.toLowerCase().includes(query) ||

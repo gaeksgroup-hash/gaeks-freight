@@ -1,14 +1,13 @@
 // filepath: /src/components/Footer.tsx
 import React from 'react';
-import { Ship, Mail, Phone, MapPin, ExternalLink } from 'lucide-react';
+import { Ship, Mail, Phone, MapPin, ExternalLink, Lock } from 'lucide-react';
 
-export const Footer: React.FC<{ onNavigate: (tab: 'home' | 'services' | 'calculator' | 'network' | 'contact') => void }> = ({ onNavigate }) => {
+export const Footer: React.FC<{ onNavigate: (tab: string) => void }> = ({ onNavigate }) => {
   return (
     <footer className="bg-brand-navy border-t border-brand-darkBlue text-slate-400 text-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           
-          {/* Col 1: Brand Info */}
           <div className="space-y-4 md:col-span-1">
             <div className="flex items-center space-x-3">
               <div className="bg-brand-orange p-2 rounded-lg text-white">
@@ -24,7 +23,6 @@ export const Footer: React.FC<{ onNavigate: (tab: 'home' | 'services' | 'calcula
             </div>
           </div>
 
-          {/* Col 2: Services List */}
           <div className="space-y-3">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">7 Layanan Kargo</h4>
             <ul className="space-y-1.5 text-xs">
@@ -37,13 +35,13 @@ export const Footer: React.FC<{ onNavigate: (tab: 'home' | 'services' | 'calcula
             </ul>
           </div>
 
-          {/* Col 3: Quick Navigation */}
           <div className="space-y-3">
-            <h4 className="text-white font-bold text-xs uppercase tracking-wider">Navigasi Utama</h4>
+            <h4 className="text-white font-bold text-xs uppercase tracking-wider">Navigasi Halaman</h4>
             <ul className="space-y-2 text-xs">
               <li><button onClick={() => onNavigate('home')} className="hover:text-white">Home Portal</button></li>
               <li><button onClick={() => onNavigate('calculator')} className="hover:text-white">Kalkulator CBM & Port</button></li>
               <li><button onClick={() => onNavigate('network')} className="hover:text-white">Peta Rute Maritim Global</button></li>
+              <li><button onClick={() => onNavigate('news')} className="hover:text-white">Berita & Regulasi Kargo</button></li>
               <li><button onClick={() => onNavigate('contact')} className="hover:text-white">Formulir Contact Us</button></li>
               <li>
                 <a 
@@ -56,10 +54,18 @@ export const Footer: React.FC<{ onNavigate: (tab: 'home' | 'services' | 'calcula
                   <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
+              <li className="pt-2">
+                <button 
+                  onClick={() => onNavigate('admin')} 
+                  className="flex items-center space-x-1 text-[11px] text-slate-500 hover:text-brand-orange transition-colors"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>Portal CMS (@gaeks.com)</span>
+                </button>
+              </li>
             </ul>
           </div>
 
-          {/* Col 4: Official Contacts */}
           <div className="space-y-3">
             <h4 className="text-white font-bold text-xs uppercase tracking-wider">Kontak Resmi Operasional</h4>
             <ul className="space-y-2.5 text-xs">
