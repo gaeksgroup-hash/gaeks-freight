@@ -66,6 +66,15 @@ const GLOBAL_ROUTES: RouteData[] = [
   }
 ];
 
+function getPortSubname(dest: string): string {
+  const openParen = dest.indexOf('(');
+  const closeParen = dest.indexOf(')');
+  if (openParen !== -1 && closeParen !== -1) {
+    return dest.substring(openParen + 1, closeParen);
+  }
+  return 'Indonesia';
+}
+
 export const InteractiveMap: React.FC = () => {
   const [activeRouteId, setActiveRouteId] = useState<string>('china-shanghai');
   const selectedRoute = GLOBAL_ROUTES.find(r => r.id === activeRouteId) || GLOBAL_ROUTES[0];
@@ -139,7 +148,7 @@ export const InteractiveMap: React.FC = () => {
                     <span className="text-[10px] text-emerald-400 uppercase font-bold tracking-wider block">Pelabuhan Tujuan Bongkar</span>
                     <h4 className="text-lg font-black text-white">{selectedRoute.destinationPort.split(' ')[0]}</h4>
                     <span className="text-xs text-slate-400">
-                      {selectedRoute.destinationPort.match(/\((.*?)\)/)?. || 'Indonesia'}
+                      {getPortSubname(selectedRoute.destinationPort)}
                     </span>
                   </div>
 
