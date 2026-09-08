@@ -1,12 +1,12 @@
 // filepath: /src/components/NewsPage.tsx
 import React, { useState } from 'react';
-import { Send, Search, CheckCircle2, ArrowRight, Calendar, Share2, Copy, MessageCircle, Twitter, Linkedin, ArrowLeft, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Send, Search, CheckCircle2, ArrowRight, Calendar, Share2, Copy, MessageCircle, Twitter, Linkedin, ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Clock, UserCheck, BookmarkCheck } from 'lucide-react';
 import { getStoredArticles, addSubscriber } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 
 export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => void; onSelectArticle?: (id: string) => void; currentLang?: Language }> = ({ activeDetailId, onBackToList, onSelectArticle, currentLang = 'id' }) => {
-  // Ambil artikel dan urutkan dari yang terbaru (Newest First)
+  // Ambil artikel dan urutkan secara kronologis terbalik (Newest First)
   const rawArticles = getStoredArticles();
   const sortedArticles = [...rawArticles].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
 
@@ -17,7 +17,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
   const [subscribeStatus, setSubscribeStatus] = useState<string>('');
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // State Paginasi: 6 artikel per halaman
+  // Paginasi: 6 artikel per halaman
   const [currentPageNum, setCurrentPageNum] = useState(1);
   const articlesPerPage = 6;
 
@@ -41,7 +41,6 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     return matchSearch && matchCat;
   });
 
-  // Kalkulasi Item untuk Halaman Aktif
   const totalPages = Math.ceil(filtered.length / articlesPerPage) || 1;
   const currentArticles = filtered.slice((currentPageNum - 1) * articlesPerPage, currentPageNum * articlesPerPage);
 
@@ -59,7 +58,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
 
   const handleShare = (platform: 'wa' | 'tw' | 'li' | 'copy', article: ArticleItem) => {
     const url = window.location.origin + '/#news?id=' + article.id;
-    const text = `${article.title} - Baca artikel regulasi kepabeanan & logistik terpercaya:`;
+    const text = `${article.title} - Baca analisis regulasi & logistik maritim terpercaya:`;
 
     if (platform === 'wa') {
       window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
@@ -74,7 +73,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     }
   };
 
-  // --- VIEW: SINGLE PAGE READER DETAIL ---
+  // --- VIEW: SINGLE PAGE READER DETAIL EDITORIAL YANG ELEGAN & RAPI ---
   if (detailArticle) {
     return (
       <div className="pt-32 pb-24 bg-slate-50 text-slate-900 min-h-screen">
@@ -89,22 +88,42 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           </button>
 
           <article className="space-y-8 bg-white p-8 sm:p-14 rounded-3xl border border-slate-200 shadow-xl">
-            <div className="space-y-4">
-              <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider border border-blue-200">
-                {detailArticle.category}
-              </span>
-              <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900">
+            
+            {/* Editorial Header */}
+            <div className="space-y-4 border-b border-slate-100 pb-8">
+              <div className="flex items-center space-x-2">
+                <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider border border-blue-200">
+                  {detailArticle.category}
+                </span>
+                <span className="inline-flex items-center space-x-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                  <BookmarkCheck className="w-3 h-3" />
+                  <span>Riset Terverifikasi</span>
+                </span>
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight text-slate-900 font-sans">
                 {detailArticle.title}
               </h1>
-              <div className="flex items-center space-x-3 text-xs text-slate-500 font-semibold border-b border-slate-100 pb-6">
-                <span>Rilis: {detailArticle.publishedDate}</span>
+
+              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-medium pt-2">
+                <span className="flex items-center space-x-1.5">
+                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <span>{detailArticle.publishedDate}</span>
+                </span>
                 <span>•</span>
-                <span>Penulis: {detailArticle.author}</span>
+                <span className="flex items-center space-x-1.5">
+                  <UserCheck className="w-4 h-4 text-slate-400" />
+                  <span>{detailArticle.author}</span>
+                </span>
                 <span>•</span>
-                <span className="text-blue-600">{detailArticle.readTime}</span>
+                <span className="flex items-center space-x-1.5 text-blue-600 font-bold">
+                  <Clock className="w-4 h-4" />
+                  <span>{detailArticle.readTime}</span>
+                </span>
               </div>
             </div>
 
+            {/* Featured Visual Image Container */}
             <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-slate-200 shadow-md">
               <img src={detailArticle.imageUrl} alt={detailArticle.title} className="w-full h-full object-cover" />
             </div>
@@ -118,43 +137,43 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => handleShare('wa', detailArticle)}
-                  className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm"
+                  className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition-transform hover:scale-105"
                   title="Bagikan via WhatsApp"
                 >
                   <MessageCircle className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('li', detailArticle)}
-                  className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+                  className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-transform hover:scale-105"
                   title="Bagikan via LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('tw', detailArticle)}
-                  className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white shadow-sm"
+                  className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white shadow-sm transition-transform hover:scale-105"
                   title="Bagikan via Twitter/X"
                 >
                   <Twitter className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('copy', detailArticle)}
-                  className="flex items-center space-x-1.5 px-3 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold shadow-sm"
+                  className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold shadow-sm transition-all"
                 >
-                  <Copy className="w-3.5 h-3.5" />
+                  <Copy className="w-3.5 h-3.5 text-blue-600" />
                   <span>{copySuccess ? getTranslation(currentLang, UI_TEXT.news.copySuccess) : getTranslation(currentLang, UI_TEXT.news.copyBtn)}</span>
                 </button>
               </div>
             </div>
 
-            {/* In-Depth Well-Formatted Editorial Content */}
-            <div className="text-base sm:text-lg text-slate-700 leading-relaxed whitespace-pre-line space-y-6 pt-2 font-normal">
+            {/* In-Depth Well-Formatted Editorial Content (> 3000 Karakter) */}
+            <div className="prose max-w-none text-base sm:text-lg text-slate-700 leading-relaxed whitespace-pre-line space-y-6 pt-2 font-normal">
               {detailArticle.content}
             </div>
 
-            {/* Sumber & Referensi Resmi Khusus Bagian Akhir Berita */}
+            {/* Dedicated Sumber & Referensi Resmi Khusus Bagian Akhir Berita */}
             {detailArticle.sources && detailArticle.sources.length > 0 && (
-              <div className="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2">
+              <div className="mt-10 p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5">
                 <div className="flex items-center space-x-2 text-xs font-black text-slate-900 uppercase tracking-wider">
                   <BookOpen className="w-4 h-4 text-blue-600" />
                   <span>{getTranslation(currentLang, UI_TEXT.news.sourcesTitle)}</span>
@@ -167,7 +186,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               </div>
             )}
 
-            {/* Bottom Consultation Card */}
+            {/* Bottom Strategic Consultation Card */}
             <div className="mt-10 p-8 bg-blue-50 border border-blue-200 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div>
                 <h4 className="text-lg font-bold text-slate-900">{getTranslation(currentLang, UI_TEXT.news.consultTitle)}</h4>
@@ -191,7 +210,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     );
   }
 
-  // --- VIEW: LIST ARTIKEL DENGAN SISTEM PAGINASI & NEWEST FIRST ---
+  // --- VIEW: DAFTAR ARTIKEL BERITA DENGAN PAGINASI & NEWEST FIRST ---
   return (
     <div className="pt-32 pb-24 bg-slate-50 text-slate-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -209,7 +228,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           </p>
         </div>
 
-        {/* Newsletter Subscription Card (Clean Corporate Blue) */}
+        {/* Newsletter Subscription Card */}
         <div className="mb-14 bg-gradient-to-r from-blue-900 to-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-800 text-white shadow-xl relative overflow-hidden">
           <div className="max-w-2xl relative z-10 space-y-3">
             <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
@@ -249,7 +268,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           </div>
         </div>
 
-        {/* Category Pills & Search Bar */}
+        {/* Filter Pills & Search */}
         <div className="space-y-4 mb-10">
           <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar">
             {categories.map((cat) => (
@@ -282,7 +301,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           </div>
         </div>
 
-        {/* Articles Grid (Paginasi 6 Item per Halaman) */}
+        {/* 20 Articles Grid dengan Gambar Unik Berbeda-beda */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
           {currentArticles.map((item) => {
             const displayTitle = currentLang === 'en' ? item.title_en || item.title : currentLang === 'zh' ? item.title_zh || item.title : item.title;
@@ -331,14 +350,14 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           })}
         </div>
 
-        {/* Bar Paginasi Halaman */}
+        {/* Paginasi Bar */}
         {totalPages > 1 && (
           <div className="flex justify-center items-center space-x-2 pt-6 border-t border-slate-200">
             <button
               onClick={() => setCurrentPageNum(prev => Math.max(prev - 1, 1))}
               disabled={currentPageNum === 1}
               className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
-              title="Halaman Sebelumnya"
+              aria-label="Previous Page"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -361,7 +380,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               onClick={() => setCurrentPageNum(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPageNum === totalPages}
               className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
-              title="Halaman Selanjutnya"
+              aria-label="Next Page"
             >
               <ChevronRight className="w-4 h-4" />
             </button>

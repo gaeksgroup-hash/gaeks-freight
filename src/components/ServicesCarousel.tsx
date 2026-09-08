@@ -1,6 +1,6 @@
 // filepath: /src/components/ServicesCarousel.tsx
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 
@@ -21,7 +21,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '直连印尼海关 Ceisa 4.0 及 INSW 系统，确保商品代码精准归类与免罚高效通关。',
     features: ['Penetapan Klasifikasi HS Code Akurat', 'Penanganan Jalur Hijau, Kuning, & Merah', 'Pengurusan Persetujuan Impor (PI) & Lartas'],
     equipment: 'Sistem Terintegrasi Ceisa 4.0 Bea Cukai',
-    imageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Komoditas industri, bahan baku, tekstil, mesin, barang umum (dapat dikonsultasikan)'
   },
   {
@@ -145,12 +145,11 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Auto-scroll loop: otomatis geser tiap 2.5 detik kecuali jika di-pause atau di-hover
   useEffect(() => {
     if (!isPlaying || isHovered) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % DETAILED_SERVICES.length);
-    }, 2500);
+    }, 2800);
     return () => clearInterval(interval);
   }, [isPlaying, isHovered]);
 
@@ -173,7 +172,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   return (
     <section 
       id="services" 
-      className="py-24 bg-slate-50 border-y border-slate-200 text-slate-900 overflow-hidden"
+      className="py-24 bg-slate-50 border-y border-slate-200 text-slate-900 overflow-hidden select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -193,54 +192,48 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             </p>
           </div>
 
-          {/* Controls: Play/Stop Button + Prev/Next */}
+          {/* Minimalist Controls: Hanya Icon Play/Pause & Chevrons (Tanpa Kata-kata Clutter) */}
           <div className="flex items-center space-x-3 mt-6 md:mt-0">
-            {/* Play / Stop Button */}
             <button 
               onClick={() => setIsPlaying(!isPlaying)}
-              title={isPlaying ? "Hentikan Otomatis (Pause)" : "Jalankan Otomatis (Play)"}
-              className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl border text-xs font-bold transition-all shadow-sm ${
+              aria-label="Toggle Auto-Slide"
+              className={`p-3 rounded-xl border text-xs font-bold transition-all shadow-sm ${
                 isPlaying 
-                  ? 'bg-emerald-50 border-emerald-300 text-emerald-700' 
+                  ? 'bg-white border-slate-200 text-slate-700 hover:border-blue-500' 
                   : 'bg-amber-50 border-amber-300 text-amber-700'
               }`}
             >
-              {isPlaying ? <Pause className="w-4 h-4 fill-emerald-600" /> : <Play className="w-4 h-4 fill-amber-600" />}
-              <span>{isPlaying ? getTranslation(currentLang, UI_TEXT.services.autoPlay) : getTranslation(currentLang, UI_TEXT.services.autoStopped)}</span>
+              {isPlaying ? <Pause className="w-4 h-4 fill-slate-700" /> : <Play className="w-4 h-4 fill-amber-700" />}
             </button>
 
             <button 
               onClick={() => setCurrentIndex(prevIndex)} 
+              aria-label="Previous Service"
               className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-blue-600 hover:text-white transition-colors shadow-sm"
-              title="Layanan Sebelumnya"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
 
-            <span className="text-xs font-bold text-slate-500">
-              {currentIndex + 1} / {total}
-            </span>
-
             <button 
               onClick={() => setCurrentIndex(nextIndex)} 
+              aria-label="Next Service"
               className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-blue-600 hover:text-white transition-colors shadow-sm"
-              title="Layanan Berikutnya"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* --- 3D ETALASE SHOWCASE: 3 KARTU BERDAMPINGAN (TENGAH TAJAM & HIGHLIGHT, KIRI & KANAN BLUR) --- */}
+        {/* --- 3D ETALASE SHOWCASE: KARTU TENGAH TAJAM & HIGHLIGHT, KIRI & KANAN BLUR --- */}
         <div className="relative py-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
-            {/* KARTU KIRI (BURAM / BLURRED ETALASE WING) */}
+            {/* KARTU KIRI (BURAM / BLURRED WING) */}
             <div 
               onClick={() => setCurrentIndex(prevIndex)}
-              className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-80 transition-all duration-700 filter blur-[1.5px] hover:blur-none select-none"
+              className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-85 transition-all duration-700 filter blur-[1.5px] hover:blur-none"
             >
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md h-[450px] flex flex-col justify-between overflow-hidden">
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md h-[460px] flex flex-col justify-between overflow-hidden">
                 <div className="relative h-44 rounded-2xl overflow-hidden mb-4 bg-slate-100">
                   <img src={leftItem.imageUrl} alt={leftItem.title} className="w-full h-full object-cover" />
                   <span className="absolute top-3 left-3 bg-slate-900/80 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
@@ -251,8 +244,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   <h4 className="text-base font-bold text-slate-800 line-clamp-2">{leftItem.title}</h4>
                   <p className="text-xs text-slate-500 mt-2 line-clamp-3">"{leftItem.tagline}"</p>
                 </div>
-                <div className="text-[11px] text-blue-600 font-bold mt-4 flex items-center space-x-1">
-                  <span>&larr; Klik untuk Tampilkan</span>
+                <div className="text-xs text-blue-600 font-bold mt-4">
+                  {currentIndex === 0 ? total : currentIndex} / {total}
                 </div>
               </div>
             </div>
@@ -318,12 +311,12 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            {/* KARTU KANAN (BURAM / BLURRED ETALASE WING) */}
+            {/* KARTU KANAN (BURAM / BLURRED WING) */}
             <div 
               onClick={() => setCurrentIndex(nextIndex)}
-              className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-80 transition-all duration-700 filter blur-[1.5px] hover:blur-none select-none"
+              className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-85 transition-all duration-700 filter blur-[1.5px] hover:blur-none"
             >
-              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md h-[450px] flex flex-col justify-between overflow-hidden">
+              <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md h-[460px] flex flex-col justify-between overflow-hidden">
                 <div className="relative h-44 rounded-2xl overflow-hidden mb-4 bg-slate-100">
                   <img src={rightItem.imageUrl} alt={rightItem.title} className="w-full h-full object-cover" />
                   <span className="absolute top-3 left-3 bg-slate-900/80 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
@@ -334,8 +327,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   <h4 className="text-base font-bold text-slate-800 line-clamp-2">{rightItem.title}</h4>
                   <p className="text-xs text-slate-500 mt-2 line-clamp-3">"{rightItem.tagline}"</p>
                 </div>
-                <div className="text-[11px] text-blue-600 font-bold mt-4 flex items-center justify-end space-x-1">
-                  <span>Klik untuk Tampilkan &rarr;</span>
+                <div className="text-xs text-blue-600 font-bold mt-4 flex items-center justify-end">
+                  {nextIndex + 1} / {total}
                 </div>
               </div>
             </div>
@@ -343,13 +336,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* Hover Notice */}
-        <p className="text-center text-xs text-slate-400 mt-4 italic">
-          * {getTranslation(currentLang, UI_TEXT.services.hoverTip)}
-        </p>
-
-        {/* Quick Dots / Pills Navigator */}
-        <div className="mt-6 flex justify-center items-center space-x-2">
+        {/* Minimal Indicators */}
+        <div className="mt-8 flex justify-center items-center space-x-2">
           {DETAILED_SERVICES.map((_, idx) => (
             <button
               key={idx}
@@ -357,7 +345,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               className={`h-2 rounded-full transition-all ${
                 idx === currentIndex ? 'w-8 bg-blue-600' : 'w-2 bg-slate-300 hover:bg-slate-400'
               }`}
-              title={`Layanan ${idx + 1}`}
+              aria-label={`Slide ${idx + 1}`}
             />
           ))}
         </div>
