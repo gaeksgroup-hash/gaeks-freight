@@ -104,7 +104,7 @@ export const App: React.FC = () => {
         )}
 
         {currentPage === 'contact' && (
-          <ContactPage />
+          <ContactPage currentLang={currentLang} />
         )}
 
         {currentPage === 'admin' && (

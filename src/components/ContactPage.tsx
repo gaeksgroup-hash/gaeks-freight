@@ -1,215 +1,189 @@
+// filepath: /src/components/ContactPage.tsx
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageCircle, Clock, ShieldCheck } from 'lucide-react';
+import { Language } from '../types/freight';
+import { UI_TEXT, getTranslation } from '../utils/translations';
 
-export const ContactPage: React.FC = () => {
-  const [name, setName] = useState('');
-  const [company, setCompanyName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [service, setService] = useState('PPJK');
-  const [message, setMessage] = useState('');
+export const ContactPage: React.FC<{ currentLang?: Language }> = ({ currentLang = 'id' }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    email: '',
+    phone: '',
+    commodity: '',
+    message: ''
+  });
 
-  const handleSendWhatsApp = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Halo GAEKS GROUP (gaeks.com), saya ingin konsultasi kargo:
-- Nama: ${name}
-- Perusahaan: ${company || '-'}
-- Kontak: ${phone} | ${email}
-- Layanan: ${service}
-- Pesan: ${message}`;
-
+    const text = `Halo Gaek Freight, saya ${formData.name} (${formData.company || 'Pribadi'}). Ingin konsultasi komoditas ${formData.commodity}: ${formData.message}`;
     window.open(`https://wa.me/6285608561745?text=${encodeURIComponent(text)}`, '_blank');
   };
 
-  const handleSendMail = () => {
-    const subject = encodeURIComponent(`[INQUIRY KONTAK] ${company || name} - Layanan ${service}`);
-    const body = encodeURIComponent(`Nama: ${name}\nPerusahaan: ${company}\nTelepon: ${phone}\nEmail: ${email}\nLayanan: ${service}\n\nPesan:\n${message}`);
-    window.location.href = `mailto:Sales01@gaeks.com,info@gaeks.com?subject=${subject}&body=${body}`;
-  };
-
   return (
-    <section className="pt-32 pb-24 bg-slate-950 text-white min-h-screen">
+    <div className="pt-32 pb-24 bg-slate-50 text-slate-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         <div className="max-w-3xl mb-12">
-          <span className="text-xs font-black uppercase tracking-widest text-brand-orange block mb-2">
-            Hubungi GAEKS GROUP
+          <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
+            {getTranslation(currentLang, UI_TEXT.contact.tag)}
           </span>
-          <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight">
-            Konsultasi Rute, Kepabeanan, & Tarif Kargo
+          <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
+            {getTranslation(currentLang, UI_TEXT.contact.title)}
           </h1>
-          <p className="mt-4 text-slate-400 text-sm sm:text-base leading-relaxed">
-            Tim freight specialist kami siap merespons kebutuhan ekspor, impor, custom clearance PPJK, pergudangan PBM, hingga distribusi inland trucking Anda.
+          <p className="mt-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+            {getTranslation(currentLang, UI_TEXT.contact.desc)}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-brand-darkBlue text-white rounded-3xl p-8 space-y-6 border border-slate-800 shadow-xl">
-              <h3 className="text-xl font-black border-b border-slate-800 pb-4">
-                Kontak Resmi Operasional
-              </h3>
-
-              <div className="space-y-5 text-sm">
-                <div className="flex items-start space-x-3.5">
-                  <Phone className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-slate-400 block font-semibold">WhatsApp Langsung</span>
-                    <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="text-base font-bold text-white hover:text-brand-orange transition-colors">
-                      +62 856-0856-1745
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3.5">
-                  <Mail className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-slate-400 block font-semibold">Email Sales & Inquiry</span>
-                    <a href="mailto:Sales01@gaeks.com" className="font-bold text-white hover:text-brand-orange block transition-colors">
-                      Sales01@gaeks.com
-                    </a>
-                    <span className="text-xs text-slate-400 block font-semibold mt-2">Email Informasi Umum</span>
-                    <a href="mailto:info@gaeks.com" className="font-bold text-white hover:text-brand-orange block transition-colors">
-                      info@gaeks.com
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3.5">
-                  <MapPin className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-slate-400 block font-semibold">Wilayah Pelabuhan Utama</span>
-                    <span className="text-xs sm:text-sm text-slate-300 leading-relaxed block">
-                      Tanjung Priok (Jakarta), Tanjung Emas (Semarang), Tanjung Perak (Surabaya).
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-start space-x-3.5">
-                  <Clock className="w-5 h-5 text-brand-orange flex-shrink-0 mt-0.5" />
-                  <div>
-                    <span className="text-xs text-slate-400 block font-semibold">Jam Operasional</span>
-                    <span className="text-xs text-slate-300 block">
-                      Senin - Sabtu: 08.00 - 18.00 WIB (Monitoring 24/7)
-                    </span>
-                  </div>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          
+          {/* Info Card */}
+          <div className="lg:col-span-5 bg-white p-8 sm:p-10 rounded-3xl border border-slate-200 shadow-xl space-y-8">
+            <div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">Kantor Operasional & Perwakilan</h3>
+              <p className="text-xs text-slate-500 leading-relaxed">
+                Melayani kepabeanan pelabuhan laut utama dan perwakilan bandara kargo internasional di Indonesia.
+              </p>
             </div>
 
-            <div className="bg-brand-darkBlue rounded-2xl border border-slate-800 p-6 shadow-sm flex items-center space-x-3 text-slate-300">
-              <ShieldCheck className="w-6 h-6 text-brand-orange flex-shrink-0" />
-              <p className="text-xs leading-relaxed">
-                Kerahasiaan dokumen invoice, packing list, dan perizinan kepabeanan Anda dilindungi oleh standar operasional PPJK resmi.
-              </p>
+            <div className="space-y-6 text-sm">
+              <div className="flex items-start space-x-3.5">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl flex-shrink-0">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <strong className="text-slate-900 block">Hub Pelabuhan Utama</strong>
+                  <span className="text-xs text-slate-600">
+                    Tanjung Priok (Jakarta), Tanjung Emas (Semarang), Tanjung Perak (Surabaya).
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3.5">
+                <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl flex-shrink-0">
+                  <MessageCircle className="w-5 h-5" />
+                </div>
+                <div>
+                  <strong className="text-slate-900 block">WhatsApp Resmi Dispatcher</strong>
+                  <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="text-xs text-blue-600 font-bold hover:underline">
+                    0856-0856-1745 (Konsultasi Cepat)
+                  </a>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-3.5">
+                <div className="p-3 bg-blue-50 text-blue-600 rounded-xl flex-shrink-0">
+                  <Mail className="w-5 h-5" />
+                </div>
+                <div>
+                  <strong className="text-slate-900 block">Email Penawaran & Dokumen</strong>
+                  <a href="mailto:Sales01@gaeks.com" className="text-xs text-blue-600 font-bold block hover:underline">
+                    Sales01@gaeks.com
+                  </a>
+                  <a href="mailto:info@gaeks.com" className="text-xs text-slate-500 block hover:underline">
+                    info@gaeks.com
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="lg:col-span-7 bg-brand-darkBlue rounded-3xl border border-slate-800 p-8 sm:p-10 shadow-xl">
-            <h3 className="text-2xl font-black text-white mb-2">Formulir Permintaan Penawaran Tarif</h3>
-            <p className="text-xs sm:text-sm text-slate-400 mb-6">
-              Kirimkan detail spesifikasi kargo Anda, tim kami akan merespons dalam 1x24 jam kerja.
-            </p>
-
-            <form onSubmit={handleSendWhatsApp} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Form Card */}
+          <div className="lg:col-span-7 bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-xl">
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Nama Lengkap *</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    {getTranslation(currentLang, UI_TEXT.contact.nameLabel)} *
+                  </label>
                   <input
                     type="text"
                     required
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
-                    placeholder="Nama Anda"
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Nama Perusahaan</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    Nama Perusahaan / PT
+                  </label>
                   <input
                     type="text"
-                    value={company}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
-                    placeholder="PT / CV..."
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Nomor WhatsApp *</label>
-                  <input
-                    type="tel"
-                    required
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
-                    placeholder="0812xxxxxxx"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Alamat Email *</label>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    {getTranslation(currentLang, UI_TEXT.contact.emailLabel)} *
+                  </label>
                   <input
                     type="email"
                     required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
-                    placeholder="email@perusahaan.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                    {getTranslation(currentLang, UI_TEXT.contact.phoneLabel)} *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Layanan yang Dibutuhkan</label>
-                <select
-                  value={service}
-                  onChange={(e) => setService(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm font-semibold text-white focus:outline-none"
-                >
-                  <option value="PPJK (Customs Clearance)">PPJK (Customs Clearance)</option>
-                  <option value="Gudang / PBM (Bongkar Muat)">Gudang / PBM (Bongkar Muat)</option>
-                  <option value="Domestic Trucking">Domestic Trucking</option>
-                  <option value="Project Cargo & Heavy Lift">Project Cargo & Heavy Lift</option>
-                  <option value="Ocean Freight LCL">Ocean Freight LCL</option>
-                  <option value="Ocean Freight FCL">Ocean Freight FCL</option>
-                  <option value="Air Shipment Priority">Air Shipment Priority</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">Rincian Kargo / Komoditas</label>
-                <textarea
-                  rows={4}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Sebutkan rute pengiriman, jenis komoditas, perkiraan tonase/CBM, dan target waktu pengiriman..."
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
+                <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                  {getTranslation(currentLang, UI_TEXT.contact.commodityLabel)}
+                </label>
+                <input
+                  type="text"
+                  placeholder="Misal: Mesin Industri, Tekstil, Bahan Kimia, Semen..."
+                  value={formData.commodity}
+                  onChange={(e) => setFormData({ ...formData, commodity: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <button
-                  type="submit"
-                  className="flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 px-4 rounded-xl font-bold text-sm shadow-md transition-all"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Kirim via WhatsApp (0856-0856-1745)</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleSendMail}
-                  className="flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 text-white py-3.5 px-4 rounded-xl font-bold text-sm shadow-md transition-all border border-slate-700"
-                >
-                  <Mail className="w-4 h-4 text-brand-orange" />
-                  <span>Kirim via Email Resmi</span>
-                </button>
+              <div>
+                <label className="text-xs font-bold text-slate-700 block mb-1.5">
+                  {getTranslation(currentLang, UI_TEXT.contact.messageLabel)} *
+                </label>
+                <textarea
+                  rows={4}
+                  required
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                />
               </div>
+
+              <button
+                type="submit"
+                className="w-full flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-xl font-bold text-sm transition-all shadow-md shadow-blue-500/20 hover:scale-[1.01]"
+              >
+                <Send className="w-4 h-4" />
+                <span>{getTranslation(currentLang, UI_TEXT.contact.submitBtn)}</span>
+              </button>
             </form>
           </div>
+
         </div>
+
       </div>
-    </section>
+    </div>
   );
 };
