@@ -78,7 +78,7 @@ export const App: React.FC = () => {
       <main className="flex-grow">
         {currentPage === 'services' && (
           <div className="pt-24">
-            <ServicesCarousel onSelectService={handleSelectService} />
+            <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
           </div>
         )}
 
@@ -114,10 +114,10 @@ export const App: React.FC = () => {
         {currentPage === 'home' && (
           <>
             <Hero onNavigate={navigateTo} currentLang={currentLang} />
-            <ServicesCarousel onSelectService={handleSelectService} />
+            <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
             <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
-            {/* Simulasi Geografi Rute Maritim Sebelum Footer */}
+            {/* Simulasi Geografi Peta Maritim Sebelum Footer */}
             <GeographicRouteSimulator currentLang={currentLang} />
             <StatsNetwork />
           </>

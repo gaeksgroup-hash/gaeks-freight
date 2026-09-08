@@ -1,6 +1,6 @@
 // filepath: /src/components/Hero.tsx
 import React from 'react';
-import { ShieldCheck, Globe2, Clock, MessageCircleQuestion, Activity, Radio, ArrowRight } from 'lucide-react';
+import { ShieldCheck, Globe2, Clock, MessageCircleQuestion, Activity, Radio, ArrowRight, Navigation, Anchor } from 'lucide-react';
 import { Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 
@@ -26,17 +26,19 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
         </div>
       </div>
 
-      {/* Living Animated Video Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-35">
-        <video 
-          autoPlay 
-          loop 
-          muted 
-          playsInline
-          className="w-full h-full object-cover scale-105 filter brightness-90"
-        >
-          <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
-        </video>
+      {/* Living Dynamic Background with Live Animated Radar Sweep Simulation */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+        <div className="absolute top-10 right-10 w-[500px] h-[500px] rounded-full border border-sky-500/30 flex items-center justify-center">
+          <div className="w-[350px] h-[350px] rounded-full border border-sky-500/20 flex items-center justify-center">
+            <div className="w-[200px] h-[200px] rounded-full border border-sky-500/20" />
+          </div>
+          {/* Continuous Rotating Radar Beam */}
+          <div className="absolute inset-0 rounded-full border-t-2 border-emerald-400 animate-spin duration-[5000ms] pointer-events-none opacity-70" />
+          {/* Pulsing Ship Target Blips */}
+          <span className="absolute top-20 right-32 w-3 h-3 bg-cyan-400 rounded-full animate-ping" />
+          <span className="absolute bottom-28 left-20 w-3 h-3 bg-amber-400 rounded-full animate-ping" />
+          <span className="absolute top-44 left-36 w-3 h-3 bg-emerald-400 rounded-full animate-ping" />
+        </div>
       </div>
       <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-slate-900/70 pointer-events-none" />
 
@@ -44,7 +46,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
           <div className="lg:col-span-8 space-y-6">
-            <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-blue-900/60 border border-blue-400/30 text-sky-300 text-xs font-bold uppercase tracking-wider shadow-sm">
+            <div className="inline-flex items-center space-x-2.5 px-4 py-1.5 rounded-full bg-blue-950/80 border border-sky-400/40 text-sky-300 text-xs font-bold uppercase tracking-wider shadow-sm">
               <Activity className="w-3.5 h-3.5 text-amber-400 animate-spin" />
               <span>{getTranslation(currentLang, UI_TEXT.hero.badge)}</span>
             </div>
@@ -62,7 +64,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
             </p>
 
             {/* Living Commodity Consultation Banner */}
-            <div className="p-5 bg-slate-800/80 backdrop-blur-md border border-slate-700 rounded-2xl flex items-start space-x-4 shadow-xl">
+            <div className="p-5 bg-slate-800/90 backdrop-blur-md border border-slate-700 rounded-2xl flex items-start space-x-4 shadow-xl">
               <div className="p-2 bg-blue-500/20 rounded-xl text-sky-400 flex-shrink-0">
                 <MessageCircleQuestion className="w-6 h-6" />
               </div>
@@ -108,12 +110,12 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
             </div>
           </div>
 
-          {/* Right Floating Status Card */}
+          {/* Right Floating Live Telemetry Card */}
           <div className="lg:col-span-4 space-y-4 hidden lg:block">
             <div className="bg-slate-800/90 backdrop-blur-xl p-6 rounded-3xl border border-slate-700 shadow-2xl space-y-4">
               <div className="flex items-center justify-between text-xs text-slate-300 font-bold uppercase tracking-wider border-b border-slate-700 pb-3">
-                <span>Top Maritime Corridors</span>
-                <span className="text-emerald-400 font-extrabold">Direct Call</span>
+                <span className="flex items-center space-x-1.5"><Anchor className="w-3.5 h-3.5 text-sky-400" /><span>Maritime Radar Live</span></span>
+                <span className="text-emerald-400 font-extrabold">Active</span>
               </div>
               <div className="space-y-3">
                 <div className="p-3.5 bg-slate-900 rounded-xl border border-slate-700 flex items-center justify-between text-xs">

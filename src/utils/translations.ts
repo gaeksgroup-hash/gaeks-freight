@@ -22,12 +22,12 @@ export const UI_TEXT = {
     badge: { 
       id: 'International Freight Forwarder & Customs Brokerage', 
       en: 'International Freight Forwarder & Customs Brokerage', 
-      zh: '国际货运与专业报关代理' 
+      zh: '国际货运与专业清关代理' 
     },
     radarLive: { 
-      id: 'Radar Maritim Aktif', 
-      en: 'Vessel Telemetry Active', 
-      zh: '船舶雷达实时监测' 
+      id: 'Radar Maritim Aktif (360° Sweep)', 
+      en: 'Vessel Telemetry Active (360° Sweep)', 
+      zh: '船舶雷达实时监测 (360°扫描)' 
     },
     titlePrefix: { 
       id: 'Arsitektur Logistik Global untuk', 
@@ -45,7 +45,7 @@ export const UI_TEXT = {
       zh: '卓越通关' 
     },
     subtitle: {
-      id: 'Solusi terintegrasi kargo laut (FCL/LCL), kargo udara prioritas, dan legalitas kepabeanan PPJK langsung ke Jakarta (Tanjung Priok), Semarang (Tanjung Emas), dan Surabaya (Tanjung Perak).',
+      id: 'Solusi terpadu kargo laut (FCL/LCL), kargo udara prioritas, dan legalitas kepabeanan PPJK langsung ke Jakarta (Tanjung Priok), Semarang (Tanjung Emas), dan Surabaya (Tanjung Perak).',
       en: 'Integrated ocean freight (FCL/LCL), priority air cargo, and PPJK customs brokerage directly into Jakarta (Tanjung Priok), Semarang (Tanjung Emas), and Surabaya (Tanjung Perak).',
       zh: '整合海运集装箱（整箱/拼箱）、优先空运及专业PPJK报关代理，直通雅加达、三宝垄及泗水主要海港。'
     },
