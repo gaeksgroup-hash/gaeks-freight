@@ -40,7 +40,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '完备的货船装卸驳运及一线保税监管仓库配套。',
     features: ['Fasilitas Penyimpanan Kargo Kering & Tertutup', 'Armada Forklift 3T - 45T & Reach Stacker', 'Cross-docking, Sorting, & Palletizing'],
     equipment: 'Gudang Kawasan Pabean & Non-Pabean',
-    imageUrl: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Curah kering, kargo palet, semen kemasan, bahan pangan industri'
   },
   {
@@ -78,7 +78,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '电站发电机组、治炼冶金重载及大型构件综合运输方案。',
     features: ['Survei Rute Jalan & Analisis Kekuatan Jembatan', 'Armada Lowbed, Multi-Axle, & Flat Rack', 'Pengawalan Khusus & Asuransi All-Risk'],
     equipment: 'Multi-Axle Modular Hydraulic Trailer',
-    imageUrl: 'https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f8?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Mesin pabrik, turbin pembangkit, tangki industri, baja struktural'
   },
   {
@@ -97,7 +97,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '每周固定船期，散货拼箱直达印尼海关监管仓库快速拆箱。',
     features: ['Perhitungan Tarif Berbasis Kubikasi Murni (CBM)', 'Jadwal Konsolidasi Mingguan Tetap', 'Unstuffing Cepat di CFS Gudang Pelabuhan'],
     equipment: 'Weekly Dedicated Consolidation Box',
-    imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1586528116493-a029325540fa?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Barang retail, spare parts, sampel bahan, perlengkapan bisnis'
   },
   {
@@ -135,7 +135,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '客机腹舱与全货机直航，加急单据清关及机场快速提货。',
     features: ['Next-Flight-Out Prioritas Tertinggi', 'Door-to-Airport & Door-to-Door Handling', 'Pengurusan Dokumen Air Waybill (AWB) Kilat'],
     equipment: 'Direct Space Contract Airline Partner',
-    imageUrl: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi'
   }
 ];
@@ -192,7 +192,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             </p>
           </div>
 
-          {/* Minimalist Controls: Hanya Icon Play/Pause & Chevrons (Tanpa Kata Clutter) */}
+          {/* Minimalist Controls */}
           <div className="flex items-center space-x-3 mt-6 md:mt-0">
             <button 
               onClick={() => setIsPlaying(!isPlaying)}
@@ -228,7 +228,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
         <div className="relative py-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
-            {/* KARTU KIRI (BURAM / BLURRED WING) */}
+            {/* KARTU KIRI (BURAM) */}
             <div 
               onClick={() => setCurrentIndex(prevIndex)}
               className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-85 transition-all duration-700 filter blur-[1.5px] hover:blur-none"
@@ -250,7 +250,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            {/* KARTU TENGAH (UTAMA / HIGHLIGHTED & KRISP TAJAM) */}
+            {/* KARTU TENGAH (UTAMA & TAJAM) */}
             <div className="lg:col-span-6 z-20 transform scale-100 transition-all duration-700">
               <div className="bg-white rounded-3xl border-2 border-blue-600 ring-4 ring-blue-500/10 shadow-2xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden relative">
                 
@@ -298,7 +298,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                 <div className="pt-6 mt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                   <button
                     onClick={() => onSelectService(centerItem.title)}
-                    className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all hover:scale-105"
+                    className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all hover:scale-105 active:scale-95"
                   >
                     <span>{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}</span>
                     <ArrowUpRight className="w-4 h-4 stroke-[2.2]" />
@@ -311,7 +311,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            {/* KARTU KANAN (BURAM / BLURRED WING) */}
+            {/* KARTU KANAN (BURAM) */}
             <div 
               onClick={() => setCurrentIndex(nextIndex)}
               className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-85 transition-all duration-700 filter blur-[1.5px] hover:blur-none"
@@ -336,7 +336,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* Minimal Dots */}
+        {/* Minimal Indicators */}
         <div className="mt-8 flex justify-center items-center space-x-2">
           {DETAILED_SERVICES.map((_, idx) => (
             <button
