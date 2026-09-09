@@ -78,8 +78,8 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '电站发电机组、治炼冶金重载及大型构件综合运输方案。',
     features: ['Survei Rute Jalan & Analisis Kekuatan Jembatan', 'Armada Lowbed, Multi-Axle, & Flat Rack', 'Pengawalan Khusus & Asuransi All-Risk'],
     equipment: 'Multi-Axle Modular Hydraulic Trailer',
-    imageUrl: 'https://images.unsplash.com/photo-1541888946425-d0fbb186c5f8?auto=format&fit=crop&w=1000&q=80',
-    commodities: 'Mesin pabrik, turbin pembangkit, tangki industri, baja struktural'
+    imageUrl: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80',
+    commodities: 'Dump truck tambang, mesin pabrik, turbin pembangkit, tangki industri, baja'
   },
   {
     id: 'lcl',
@@ -116,7 +116,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '提供 20GP/40GP/40HQ 及特种箱，直航印尼三大核心海港。',
     features: ['Alokasi Ruang Kapal Dijamin Saat Peak Season', 'Free Time Demurrage & Detention Lebih Panjang', 'Pilihan Door-to-Door atau Port-to-Port Transparan'],
     equipment: 'Kontainer 20ft, 40ft GP, 40ft HC, Reefer',
-    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Manufaktur massal, bahan baku kimia, resin, komoditas ekspor'
   },
   {
@@ -135,7 +135,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '客机腹舱与全货机直航，加急单据清关及机场快速提货。',
     features: ['Next-Flight-Out Prioritas Tertinggi', 'Door-to-Airport & Door-to-Door Handling', 'Pengurusan Dokumen Air Waybill (AWB) Kilat'],
     equipment: 'Direct Space Contract Airline Partner',
-    imageUrl: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi'
   }
 ];
