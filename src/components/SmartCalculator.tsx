@@ -1,7 +1,7 @@
 // filepath: /src/components/SmartCalculator.tsx
 import React, { useState, useMemo } from 'react';
 import { Ship, Plane, ArrowRight, MessageCircle, Mail, Package, Box, Layers, CheckCircle2 } from 'lucide-react';
-import { findNearestPort } from '../utils/portFinder';
+import { findSmartNearestPort } from '../utils/portFinder';
 import { ShippingMode, Language } from '../types/freight';
 
 interface SmartCalculatorProps {
@@ -31,7 +31,7 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
 
   // Rekomendasi Port Terdekat Otomatis
   const nearestPortRecommendation = useMemo(() => {
-    return findNearestPort(originInput);
+    return findSmartNearestPort(originInput);
   }, [originInput]);
 
   // Perhitungan Otomatis Real-time

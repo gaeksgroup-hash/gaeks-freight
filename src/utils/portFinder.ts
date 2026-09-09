@@ -1,3 +1,4 @@
+// filepath: /src/utils/portFinder.ts
 import { PortEntry } from '../types/freight';
 import portsData from './ports.json';
 
@@ -21,3 +22,6 @@ export function findSmartNearestPort(inputAddress: string): PortEntry | null {
   
   return matchedByNameOrCode || null;
 }
+
+// Alias ekspor untuk mencegah mismatch import di komponen lain
+export const findNearestPort = findSmartNearestPort;
