@@ -1,5 +1,6 @@
 // filepath: /src/components/NewsPage.tsx
 import React, { useState } from 'react';
+import { toast } from 'sonner';
 import { Send, Search, CheckCircle2, ArrowRight, Calendar, Share2, Copy, MessageCircle, Twitter, Linkedin, ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Clock, UserCheck, BookmarkCheck } from 'lucide-react';
 import { getStoredArticles, addSubscriber } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
@@ -13,8 +14,6 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
   const [emailInput, setEmailInput] = useState('');
-  const [subscribeStatus, setSubscribeStatus] = useState<string>('');
-  const [copySuccess, setCopySuccess] = useState(false);
 
   // Paginasi: 6 artikel per halaman
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -48,10 +47,14 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     if (!emailInput || !emailInput.includes('@')) return;
     const ok = addSubscriber(emailInput);
     if (ok) {
-      setSubscribeStatus('Terima kasih! Anda telah terdaftar di buletin intelijen Gaek Freight.');
+      toast.success('Pendaftaran Berhasil!', {
+        description: 'Terima kasih, email Anda telah terdaftar di buletin intelijen Gaek Freight.'
+      });
       setEmailInput('');
     } else {
-      setSubscribeStatus('Email Anda sudah terdaftar sebelumnya.');
+      toast.info('Email Sudah Terdaftar', {
+        description: 'Alamat email ini sudah terdaftar dalam sistem buletin kami.'
+      });
     }
   };
 
@@ -61,23 +64,23 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
 
     if (platform === 'wa') {
       window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+      toast.success('Membuka WhatsApp untuk berbagi');
     } else if (platform === 'tw') {
       window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
     } else if (platform === 'li') {
       window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
     } else if (platform === 'copy') {
       navigator.clipboard.writeText(url);
-      setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 3000);
+      toast.success('Tautan Berhasil Disalin!', {
+        description: 'Tautan artikel telah disalin ke papan klip Anda.'
+      });
     }
   };
 
-  // Parser Konten Editorial Menjadi Paragraf, Subheading, dan Ordered List Cantik
   const renderStructuredContent = (rawText: string) => {
     const paragraphs = rawText.split('\n\n').filter(p => p.trim().length > 0);
 
     return paragraphs.map((p, idx) => {
-      // Cek apakah paragraf adalah daftar bernomor (1., 2., 3., 4.)
       if (/^\d+\./m.test(p)) {
         const lines = p.split('\n').filter(l => l.trim().length > 0);
         return (
@@ -86,8 +89,8 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               const match = line.match(/^(\d+)\.\s*(.*)/);
               if (match) {
                 return (
-                  <div key={lIdx} className="flex items-start space-x-3.5 p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-blue-300 transition-colors">
-                    <span className="flex-shrink-0 w-7 h-7 rounded-xl bg-blue-600 text-white font-black text-xs flex items-center justify-center shadow-md shadow-blue-500/20">
+                  <div key={lIdx} className="flex items-start space-x-3.5 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200">
+                    <span className="flex-shrink-0 w-7 h-7 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-blue-500/20">
                       {match[1]}
                     </span>
                     <div className="text-sm sm:text-base text-slate-800 leading-relaxed font-normal">
@@ -102,19 +105,17 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
         );
       }
 
-      // Cek apakah paragraf bertindak sebagai Subheading (diakhiri titik dua :)
       if (p.endsWith(':') || (p.length < 90 && p.includes(':'))) {
         return (
           <div key={idx} className="mt-8 mb-3">
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center space-x-2.5 pb-2 border-b border-slate-200">
-              <span className="w-2.5 h-6 bg-blue-600 rounded-sm inline-block flex-shrink-0" />
+              <span className="w-2.5 h-6 bg-blue-600 rounded-full inline-block flex-shrink-0" />
               <span>{p}</span>
             </h3>
           </div>
         );
       }
 
-      // Paragraf pertama dijadikan Executive Callout Summary Box
       if (idx === 0) {
         return (
           <div key={idx} className="bg-blue-50/70 border-l-4 border-blue-600 p-6 sm:p-8 rounded-2xl text-slate-800 text-base sm:text-lg leading-relaxed font-medium mb-8 shadow-sm">
@@ -123,7 +124,6 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
         );
       }
 
-      // Paragraf Biasa yang Rapi
       return (
         <p key={idx} className="text-base sm:text-lg text-slate-700 leading-relaxed font-normal mb-6">
           {p}
@@ -132,7 +132,6 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     });
   };
 
-  // --- VIEW: SINGLE PAGE READER DETAIL EDITORIAL RAPI ---
   if (detailArticle) {
     return (
       <div className="pt-32 pb-24 bg-slate-50 text-slate-900 min-h-screen">
@@ -140,15 +139,13 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           
           <button
             onClick={() => onBackToList && onBackToList()}
-            className="inline-flex items-center space-x-2 text-xs font-bold text-blue-600 hover:text-blue-800 mb-8 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm hover:scale-105 transition-all"
+            className="inline-flex items-center space-x-2 text-xs font-bold text-blue-600 hover:text-blue-800 mb-8 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm hover:scale-105 active:scale-95 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>{getTranslation(currentLang, UI_TEXT.news.backBtn)}</span>
           </button>
 
-          <article className="space-y-8 bg-white p-8 sm:p-14 rounded-3xl border border-slate-200 shadow-xl">
-            
-            {/* Editorial Header */}
+          <article className="space-y-8 bg-white p-8 sm:p-14 rounded-3xl border border-slate-200/80 shadow-2xl">
             <div className="space-y-4 border-b border-slate-100 pb-8">
               <div className="flex items-center space-x-2">
                 <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider border border-blue-200">
@@ -182,7 +179,6 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               </div>
             </div>
 
-            {/* Featured Visual Image */}
             <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden border border-slate-200 shadow-md">
               <img src={detailArticle.imageUrl} alt={detailArticle.title} className="w-full h-full object-cover" />
             </div>
@@ -196,43 +192,41 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               <div className="flex items-center space-x-2">
                 <button
                   onClick={() => handleShare('wa', detailArticle)}
-                  className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm transition-transform hover:scale-105"
+                  className="p-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white shadow-sm active:scale-95 transition-transform"
                   title="Bagikan via WhatsApp"
                 >
                   <MessageCircle className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('li', detailArticle)}
-                  className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm transition-transform hover:scale-105"
+                  className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95 transition-transform"
                   title="Bagikan via LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('tw', detailArticle)}
-                  className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white shadow-sm transition-transform hover:scale-105"
+                  className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-900 text-white shadow-sm active:scale-95 transition-transform"
                   title="Bagikan via Twitter/X"
                 >
                   <Twitter className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleShare('copy', detailArticle)}
-                  className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold shadow-sm transition-all"
+                  className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold shadow-sm active:scale-95 transition-all"
                 >
                   <Copy className="w-3.5 h-3.5 text-blue-600" />
-                  <span>{copySuccess ? getTranslation(currentLang, UI_TEXT.news.copySuccess) : getTranslation(currentLang, UI_TEXT.news.copyBtn)}</span>
+                  <span>{getTranslation(currentLang, UI_TEXT.news.copyBtn)}</span>
                 </button>
               </div>
             </div>
 
-            {/* In-Depth Parsed Structured Content (> 3000 Karakter) */}
             <div className="pt-2">
               {renderStructuredContent(detailArticle.content)}
             </div>
 
             <hr className="my-8 border-slate-200" />
 
-            {/* Kotak Sumber Referensi Resmi & Otoritas Industri */}
             {detailArticle.sources && detailArticle.sources.length > 0 && (
               <div className="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5">
                 <div className="flex items-center space-x-2 text-xs font-black text-slate-900 uppercase tracking-wider">
@@ -247,7 +241,6 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               </div>
             )}
 
-            {/* Bottom Strategic Consultation Card */}
             <div className="mt-10 p-8 bg-blue-50 border border-blue-200 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div>
                 <h4 className="text-lg font-bold text-slate-900">{getTranslation(currentLang, UI_TEXT.news.consultTitle)}</h4>
@@ -259,7 +252,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 href="https://wa.me/6285608561745"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-xs transition-all shadow-md"
+                className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-xs active:scale-95 transition-all shadow-md"
               >
                 {getTranslation(currentLang, UI_TEXT.news.consultBtn)}
               </a>
@@ -271,12 +264,10 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     );
   }
 
-  // --- VIEW: DAFTAR ARTIKEL DENGAN PAGINASI ---
   return (
     <div className="pt-32 pb-24 bg-slate-50 text-slate-900 min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Header Bersih */}
         <div className="max-w-3xl mb-12">
           <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
             {getTranslation(currentLang, UI_TEXT.news.badge)}
@@ -313,19 +304,12 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               />
               <button
                 type="submit"
-                className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm transition-all shadow-md"
+                className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm active:scale-95 transition-all shadow-md"
               >
                 <Send className="w-4 h-4" />
                 <span>Langganan</span>
               </button>
             </form>
-
-            {subscribeStatus && (
-              <div className="pt-2 flex items-center space-x-2 text-xs text-emerald-400 font-semibold">
-                <CheckCircle2 className="w-4 h-4" />
-                <span>{subscribeStatus}</span>
-              </div>
-            )}
           </div>
         </div>
 
@@ -335,8 +319,8 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => { setSelectedCategory(cat); setCurrentPageNum(1); }}
-                className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                onClick={() => { setCurrentPageNum(1); setSelectedCategory(cat); }}
+                className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold active:scale-95 transition-all ${
                   selectedCategory === cat ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-400'
                 }`}
               >
@@ -372,7 +356,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             return (
               <div 
                 key={item.id}
-                className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between group"
+                className="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl hover:scale-[1.01] transition-all duration-300 flex flex-col justify-between group"
               >
                 <div>
                   <div className="relative h-48 overflow-hidden bg-slate-100">
@@ -400,7 +384,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 <div className="p-6 pt-0 border-t border-slate-100 flex items-center justify-between">
                   <button
                     onClick={() => onSelectArticle && onSelectArticle(item.id)}
-                    className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center space-x-1.5 transition-colors"
+                    className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center space-x-1.5 active:scale-95 transition-all"
                   >
                     <span>{getTranslation(currentLang, UI_TEXT.news.readMoreBtn)}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -417,7 +401,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             <button
               onClick={() => setCurrentPageNum(prev => Math.max(prev - 1, 1))}
               disabled={currentPageNum === 1}
-              className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+              className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm active:scale-95 transition-all"
               aria-label="Previous Page"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -427,7 +411,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               <button
                 key={num}
                 onClick={() => setCurrentPageNum(num)}
-                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all ${
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold active:scale-95 transition-all ${
                   currentPageNum === num
                     ? 'bg-blue-600 text-white shadow-md'
                     : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-400'
@@ -440,7 +424,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             <button
               onClick={() => setCurrentPageNum(prev => Math.min(prev + 1, totalPages))}
               disabled={currentPageNum === totalPages}
-              className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm"
+              className="p-2.5 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed shadow-sm active:scale-95 transition-all"
               aria-label="Next Page"
             >
               <ChevronRight className="w-4 h-4" />

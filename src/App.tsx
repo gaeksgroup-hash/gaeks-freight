@@ -1,5 +1,6 @@
 // filepath: /src/App.tsx
 import React, { useState, useEffect } from 'react';
+import { Toaster, toast } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ServicesCarousel } from './components/ServicesCarousel';
@@ -58,6 +59,9 @@ export const App: React.FC = () => {
   const handleSelectService = (serviceName: string) => {
     setSelectedServiceForQuote(serviceName);
     navigateTo('calculator');
+    toast.info(`Layanan ${serviceName} dipilih`, {
+      description: 'Silakan lanjutkan kalkulasi kargo atau langsung kirim inquiry.'
+    });
   };
 
   const handleOpenArticleDetail = (articleId: string) => {
@@ -67,7 +71,24 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
+      {/* Root Apple-Styled Sonner Toaster */}
+      <Toaster 
+        position="bottom-right" 
+        richColors 
+        closeButton 
+        theme="light"
+        toastOptions={{
+          style: {
+            borderRadius: '16px',
+            backdropFilter: 'blur(20px)',
+            background: 'rgba(255, 255, 255, 0.92)',
+            border: '1px solid rgba(226, 232, 240, 0.8)',
+            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.08)'
+          }
+        }}
+      />
+
       <Navbar 
         currentTab={currentPage} 
         onNavigate={navigateTo} 
@@ -84,7 +105,7 @@ export const App: React.FC = () => {
 
         {currentPage === 'calculator' && (
           <div className="pt-24">
-            <SmartCalculator prefillService={selectedServiceForQuote} />
+            <SmartCalculator prefillService={selectedServiceForQuote} currentLang={currentLang} />
           </div>
         )}
 
@@ -115,9 +136,8 @@ export const App: React.FC = () => {
           <>
             <Hero onNavigate={navigateTo} currentLang={currentLang} />
             <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
-            <SmartCalculator prefillService={selectedServiceForQuote} />
+            <SmartCalculator prefillService={selectedServiceForQuote} currentLang={currentLang} />
             <InteractiveMap />
-            {/* Simulasi Geografi Rute Maritim Sebelum Footer */}
             <GeographicRouteSimulator currentLang={currentLang} />
             <StatsNetwork />
           </>
