@@ -1,7 +1,7 @@
 // filepath: /src/utils/newsStorage.ts
 import { ArticleItem, NewsletterSubscriber } from '../types/freight';
 
-const STORAGE_KEY_ARTICLES = 'gaeks_articles_v10_full';
+const STORAGE_KEY_ARTICLES = 'gaeks_articles_v11_full';
 const STORAGE_KEY_SUBSCRIBERS = 'gaeks_subscribers';
 
 export const DEFAULT_ARTICLES: ArticleItem[] = [
@@ -45,7 +45,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Ortax Legal Database",
       "Warta Bea Cukai Edisi 2026"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -68,7 +68,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Portal INSW",
       "DDTC News"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1574680096145-d05b474e2155?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -91,7 +91,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Port of Tanjung Pelepas Official Record",
       "Drewry Maritime Financial Research"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -114,7 +114,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "S&P Global Platts Maritime Insights",
       "Reuters Supply Chain Index"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -137,7 +137,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "ASEAN Secretariat Trade Repository",
       "General Administration of Customs China (GACC)"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -160,7 +160,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Peraturan Menteri Keuangan Tata Laksana Impor",
       "Warta Pabean"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1524522173746-f628baad3644?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -183,7 +183,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Pelindo Regional 2 Tanjung Priok",
       "Containerization International"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1524522173746-f628baad3644?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -229,7 +229,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "ICAO Technical Instructions",
       "US DOT Hazardous Materials Bureau"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -275,7 +275,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Carrier Transicold Technical Manual",
       "Badan Karantina Indonesia"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -298,7 +298,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Pelindo Regional 3 Surabaya",
       "ICHCA International"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -321,7 +321,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Korlantas Polri Rekayasa Lalu Lintas",
       "Specialized Carriers and Rigging Association (SC&RA)"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1504917599217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -367,7 +367,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "The Institute of London Underwriters (ILU)",
       "Chartered Insurance Institute"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -390,7 +390,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Uniform Customs and Practice for Documentary Credits (UCP 600)",
       "FIATA Legal Commission"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -413,7 +413,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Kementerian Keuangan Republik Indonesia",
       "World Bank Logistics Performance Index"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -436,7 +436,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Drewry Maritime Financial Research",
       "Journal of Commerce (JOC)"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
@@ -459,7 +459,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Badan Karantina Indonesia (Barantin)",
       "European and Mediterranean Plant Protection Organization (EPPO)"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",
     "excerpt": "Analisis komprehensif mengenai parameter teknis, kepatuhan pabean, dan efisiensi rantai pasok maritim komoditas ekspor-impor Indonesia.",
     "excerpt_en": "Comprehensive executive analysis on technical parameters, customs compliance, and maritime supply chain efficiency across Indonesian trade corridors.",
     "excerpt_zh": "深度解析印尼国际贸易通道中的技术参数、海关合规要点及海运供应链整体运营效率。",
