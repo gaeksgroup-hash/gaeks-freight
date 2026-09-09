@@ -110,46 +110,46 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
               </button>
             </div>
 
-            {/* --- SINGLE RINGKAS & BERSIH TRUST BAR DENGAN LOGO ASLI WCA & JCTRANS --- */}
+            {/* --- SINGLE BERSIH & RAPI TRUST BAR DENGAN LOGO ASLI LOKAL WCA & JCTRANS --- */}
             <div className="pt-8 border-t border-slate-800/80">
               <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-slate-300 text-xs font-semibold items-center">
                 
                 {/* 1. PPJK Ceisa 4.0 */}
-                <div className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-white/5 border border-slate-800">
+                <div className="flex items-center space-x-2 px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
                   <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
                   <span>PPJK Ceisa 4.0</span>
                 </div>
 
                 {/* 2. Global Liners */}
-                <div className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-white/5 border border-slate-800">
+                <div className="flex items-center space-x-2 px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
                   <Globe2 className="w-4 h-4 text-sky-400 flex-shrink-0" />
                   <span>Global Liners</span>
                 </div>
 
                 {/* 3. 24/7 SLA Support */}
-                <div className="flex items-center space-x-2 px-3 py-2 rounded-xl bg-white/5 border border-slate-800">
+                <div className="flex items-center space-x-2 px-3 py-2.5 rounded-xl bg-slate-900/80 border border-slate-800">
                   <Clock className="w-4 h-4 text-sky-400 flex-shrink-0" />
                   <span>24/7 SLA Support</span>
                 </div>
 
-                {/* 4. Logo Asli WCA World */}
-                <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white/5 border border-slate-800 hover:border-amber-400/60 transition-colors">
+                {/* 4. Logo Asli WCA World (SVG Lokal Permanen) */}
+                <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-amber-400/60 transition-colors shadow-sm">
                   <img 
-                    src="https://conferences.wcaworld.com/WCAworld2026/img/info/logo.png" 
+                    src="/logos/wca.svg" 
                     alt="WCA World Member" 
-                    className="h-5 sm:h-6 object-contain"
+                    className="h-6 sm:h-7 w-auto object-contain"
+                    loading="eager"
                   />
-                  <span className="text-[11px] text-amber-300 font-bold">WCA Member</span>
                 </div>
 
-                {/* 5. Logo Asli JCtrans Network */}
-                <div className="flex items-center space-x-2 px-3 py-1.5 rounded-xl bg-white/5 border border-slate-800 hover:border-sky-400/60 transition-colors">
+                {/* 5. Logo Asli JCtrans Network (SVG Lokal Permanen) */}
+                <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-sky-400/60 transition-colors shadow-sm">
                   <img 
-                    src="https://resources.jctrans.com/res/era-h5/h5/img/logo.png" 
-                    alt="JCtrans Logistics Network" 
-                    className="h-5 sm:h-6 object-contain"
+                    src="/logos/jctrans.svg" 
+                    alt="JCtrans Logistics Network GCP Member" 
+                    className="h-6 sm:h-7 w-auto object-contain"
+                    loading="eager"
                   />
-                  <span className="text-[11px] text-sky-300 font-bold">JCtrans GCP</span>
                 </div>
 
               </div>

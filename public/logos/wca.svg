@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80">
+  <defs>
+    <linearGradient id="wcaGold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <linearGradient id="wcaBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#0284C7" />
+    </linearGradient>
+  </defs>
+  <!-- Emblem Globe Cincin Maritim WCA -->
+  <g transform="translate(10, 14)">
+    <circle cx="26" cy="26" r="24" fill="none" stroke="url(#wcaGold)" stroke-width="3" />
+    <ellipse cx="26" cy="26" rx="14" ry="24" fill="none" stroke="url(#wcaBlue)" stroke-width="2.5" />
+    <line x1="2" y1="26" x2="50" y2="26" stroke="url(#wcaGold)" stroke-width="2.5" />
+    <path d="M 8 14 Q 26 22 44 14" fill="none" stroke="url(#wcaBlue)" stroke-width="2" />
+    <path d="M 8 38 Q 26 30 44 38" fill="none" stroke="url(#wcaBlue)" stroke-width="2" />
+  </g>
+  <!-- Wordmark WCA WORLD -->
+  <text x="72" y="44" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="900" fill="#FFFFFF" letter-spacing="0.5">
+    WCA
+  </text>
+  <text x="160" y="44" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="url(#wcaGold)" letter-spacing="2">
+    WORLD
+  </text>
+  <text x="74" y="63" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="9" font-weight="800" fill="#CBD5E1" letter-spacing="1">
+    WORLD CARGO ALLIANCE · MEMBER
+  </text>
+</svg>
