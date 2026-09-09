@@ -1,6 +1,6 @@
 // filepath: /src/components/Hero.tsx
 import React, { useEffect, useRef } from 'react';
-import { ShieldCheck, Globe2, Clock, MessageCircleQuestion, Activity, Radio, ArrowRight, Anchor } from 'lucide-react';
+import { ShieldCheck, Globe2, Clock, MessageCircleQuestion, Activity, Radio, ArrowRight, Anchor, Award, CheckCircle2 } from 'lucide-react';
 import { Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 
@@ -34,7 +34,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
         </div>
       </div>
 
-      {/* --- REAL CARGO MARITIME BACKGROUND VIDEO (HIGH VISIBILITY) --- */}
+      {/* --- REAL CARGO MARITIME BACKGROUND VIDEO --- */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <video 
           ref={videoRef}
@@ -45,15 +45,12 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
           poster="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1920&q=80"
           className="w-full h-full object-cover scale-105 filter brightness-75 contrast-125 opacity-70"
         >
-          {/* Direct Streaming Maritime Container Ship Video */}
           <source src="https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-a-cargo-ship-in-the-ocean-43896-large.mp4" type="video/mp4" />
         </video>
-        
-        {/* Kontras Overlay Halus agar Teks Tetap 100% Terbaca Jelas */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 via-slate-950/75 to-slate-900/60" />
       </div>
 
-      {/* Animasi Radar Lingkaran Berputar Halus */}
+      {/* Rotating Radar Overlay */}
       <div className="absolute top-1/4 right-10 w-96 h-96 rounded-full border border-sky-500/20 pointer-events-none opacity-40 flex items-center justify-center">
         <div className="w-64 h-64 rounded-full border border-sky-500/20" />
         <div className="absolute inset-0 rounded-full border-t-2 border-emerald-400 animate-spin duration-[6000ms]" />
@@ -70,7 +67,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
               <span>{getTranslation(currentLang, UI_TEXT.hero.badge)}</span>
             </div>
 
-            {/* Headline Tepat di Depan Video Latar Belakang */}
+            {/* Headline */}
             <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.1] drop-shadow-lg">
               {getTranslation(currentLang, UI_TEXT.hero.titlePrefix)}{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-300 via-blue-200 to-amber-300">
@@ -100,34 +97,66 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
             <div className="flex flex-wrap gap-4 pt-2">
               <button
                 onClick={() => onNavigate('calculator')}
-                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white px-8 py-4 rounded-xl font-bold text-sm shadow-xl shadow-blue-600/40 transition-all hover:scale-105"
+                className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white px-8 py-4 rounded-xl font-bold text-sm shadow-xl shadow-blue-600/40 active:scale-[0.98] transition-all"
               >
                 <span>{getTranslation(currentLang, UI_TEXT.hero.calcBtn)}</span>
                 <ArrowRight className="w-4 h-4 stroke-[2.5]" />
               </button>
               <button
                 onClick={() => onNavigate('services')}
-                className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-sm transition-all"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-sm active:scale-[0.98] transition-all"
               >
                 {getTranslation(currentLang, UI_TEXT.hero.servicesBtn)}
               </button>
             </div>
 
-            {/* Trust Badges */}
-            <div className="pt-6 grid grid-cols-3 gap-4 border-t border-slate-800/80 text-slate-300 text-xs font-semibold">
-              <div className="flex items-center space-x-2">
-                <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>{getTranslation(currentLang, UI_TEXT.hero.trustPPJK)}</span>
+            {/* --- TRUST BADGES DENGAN SIMBOL WCA WORLD & JCTRANS NETWORK --- */}
+            <div className="pt-6 border-t border-slate-800/80 space-y-4">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-slate-300 text-xs font-semibold">
+                <div className="flex items-center space-x-2">
+                  <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                  <span>PPJK Ceisa 4.0</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Globe2 className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                  <span>Global Liners</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Clock className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                  <span>SLA Support 24/7</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Award className="w-4 h-4 text-amber-400 flex-shrink-0" />
+                  <span className="text-amber-300 font-bold">WCA World Member</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <CheckCircle2 className="w-4 h-4 text-sky-400 flex-shrink-0" />
+                  <span className="text-sky-300 font-bold">JCtrans GCP Member</span>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Globe2 className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>{getTranslation(currentLang, UI_TEXT.hero.trustLiners)}</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Clock className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>{getTranslation(currentLang, UI_TEXT.hero.trustSLA)}</span>
+
+              {/* Bilah Simbol Jaringan Logistik Global (Prestigious Affiliations Bar) */}
+              <div className="pt-2 flex flex-wrap items-center gap-3">
+                <span className="text-[11px] text-slate-400 font-extrabold uppercase tracking-wider">
+                  Global Freight Affiliations:
+                </span>
+                
+                {/* WCA World Emblem */}
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-amber-500/50 shadow-md backdrop-blur-md">
+                  <span className="w-2 h-2 rounded-full bg-amber-400 animate-ping" />
+                  <span className="text-xs font-black text-amber-300 tracking-wider">WCA WORLD</span>
+                  <span className="text-[10px] text-slate-300 border-l border-slate-700 pl-2 font-medium">World Cargo Alliance Verified</span>
+                </div>
+
+                {/* JCtrans Network Emblem */}
+                <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-xl bg-slate-900/90 border border-sky-500/50 shadow-md backdrop-blur-md">
+                  <span className="w-2 h-2 rounded-full bg-sky-400 animate-ping" />
+                  <span className="text-xs font-black text-sky-300 tracking-wider">JCTRANS NETWORK</span>
+                  <span className="text-[10px] text-slate-300 border-l border-slate-700 pl-2 font-medium">GCP Verified Forwarder</span>
+                </div>
               </div>
             </div>
+
           </div>
 
           {/* Right Floating Live Telemetry Card */}
