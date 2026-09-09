@@ -1,340 +1,371 @@
-import React, { useState, useEffect } from 'react';
-import { Calculator as CalcIcon, Send, Mail, MapPin, Ship, Plane, Scale, Anchor } from 'lucide-react';
-import { ShippingMode, PortEntry } from '../types/freight';
-import { findSmartNearestPort } from '../utils/portFinder';
+// filepath: /src/components/SmartCalculator.tsx
+import React, { useState, useMemo } from 'react';
+import { Ship, Plane, ArrowRight, MessageCircle, Mail, Package, Box, Layers, CheckCircle2 } from 'lucide-react';
+import { findNearestPort } from '../utils/portFinder';
+import { ShippingMode, Language } from '../types/freight';
 
-export const SmartCalculator: React.FC<{ prefillService?: string }> = ({ prefillService }) => {
-  const [mode, setMode] = useState<ShippingMode>('ocean');
-  const [originAddress, setOriginAddress] = useState('Cikarang, Bekasi');
-  const [destinationCity, setDestinationCity] = useState('Semarang (Tanjung Emas)');
-  const [suggestedPort, setSuggestedPort] = useState<PortEntry | null>(null);
+interface SmartCalculatorProps {
+  prefillService?: string;
+  currentLang?: Language;
+}
 
-  const [lengthCm, setLengthCm] = useState<number>(120);
-  const [widthCm, setWidthCm] = useState<number>(80);
-  const [heightCm, setHeightCm] = useState<number>(100);
-  const [pieces, setPieces] = useState<number>(2);
-  const [actualWeightKgPerPiece, setActualWeightKgPerPiece] = useState<number>(150);
+const PRESET_PACKAGES = [
+  { name: 'Karton Standar', p: 50, l: 40, t: 40, w: 15, pcs: 5 },
+  { name: 'Palet Kayu Industri', p: 120, l: 100, t: 160, w: 450, pcs: 2 },
+  { name: 'Drum Baja Cairan', p: 60, l: 60, t: 90, w: 200, pcs: 4 }
+];
 
-  const [companyName, setCompanyName] = useState('');
-  const [contactName, setContactName] = useState('');
+const QUICK_CITIES = ['Jakarta', 'Cikarang', 'Karawang', 'Semarang', 'Surabaya', 'Bandung', 'Batam'];
 
-  useEffect(() => {
-    const found = findSmartNearestPort(originAddress);
-    setSuggestedPort(found);
-  }, [originAddress]);
+export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService, currentLang = 'id' }) => {
+  const [shippingMode, setShippingMode] = useState<ShippingMode>('ocean');
+  const [originInput, setOriginInput] = useState('Cikarang, Bekasi');
+  const [destinationPort, setDestinationPort] = useState('Jakarta (Tanjung Priok / IDJKT)');
+  
+  // Parameter Dimensi & Kargo
+  const [lengthCm, setLengthCm] = useState(120);
+  const [widthCm, setWidthCm] = useState(100);
+  const [heightCm, setHeightCm] = useState(150);
+  const [weightKg, setWeightKg] = useState(400);
+  const [quantity, setQuantity] = useState(2);
 
-  const totalActualWeightKg = actualWeightKgPerPiece * pieces;
-  const totalVolumeCbm = ((lengthCm * widthCm * heightCm) / 1000000) * pieces;
-  const oceanWeightInTon = totalActualWeightKg / 1000;
-  const oceanChargeableCbm = Math.max(totalVolumeCbm, oceanWeightInTon);
-  const isOceanWeightDominant = oceanWeightInTon > totalVolumeCbm;
+  // Rekomendasi Port Terdekat Otomatis
+  const nearestPortRecommendation = useMemo(() => {
+    return findNearestPort(originInput);
+  }, [originInput]);
 
-  const airVolumetricWeightKg = ((lengthCm * widthCm * heightCm) / 6000) * pieces;
-  const airChargeableWeightKg = Math.max(totalActualWeightKg, airVolumetricWeightKg);
-  const isAirVolumetricDominant = airVolumetricWeightKg > totalActualWeightKg;
+  // Perhitungan Otomatis Real-time
+  const totalVolumeCbm = useMemo(() => {
+    if (!lengthCm || !widthCm || !heightCm || !quantity) return 0;
+    const singleCbm = (lengthCm * widthCm * heightCm) / 1000000;
+    return Number((singleCbm * quantity).toFixed(3));
+  }, [lengthCm, widthCm, heightCm, quantity]);
 
-  const buildSummaryText = () => {
-    const portText = suggestedPort 
-      ? `Pelabuhan Terdekat yang Disarankan: ${suggestedPort.port} (${suggestedPort.code}) - Gateway: ${suggestedPort.gateway}`
-      : 'Pelabuhan Terdekat: Mengikuti koordinat penjemputan';
+  const totalVolumetricAirKg = useMemo(() => {
+    if (!lengthCm || !widthCm || !heightCm || !quantity) return 0;
+    const singleAir = (lengthCm * widthCm * heightCm) / 6000;
+    return Number((singleAir * quantity).toFixed(1));
+  }, [lengthCm, widthCm, heightCm, quantity]);
 
-    return `*INQUIRY PENGIRIMAN KARGO - GAEKS GROUP*
-Layanan: ${prefillService || (mode === 'ocean' ? 'Ocean Freight (FCL/LCL)' : 'Air Freight Cargo')}
-Perusahaan: ${companyName || '-'} (Kontak: ${contactName || '-'})
+  const totalActualWeightKg = useMemo(() => {
+    return Number(((weightKg || 0) * (quantity || 1)).toFixed(1));
+  }, [weightKg, quantity]);
 
-*DETAIL RUTE & PELABUHAN:*
-- Alamat Muat / Pick-up: ${originAddress}
-- ${portText}
-- Pelabuhan / Kota Tujuan: ${destinationCity}
+  // Evaluasi Dasar Tagihan (Chargeable Weight)
+  const oceanChargeableTon = totalActualWeightKg / 1000;
+  const oceanChargeableBasis = Math.max(totalVolumeCbm, oceanChargeableTon);
+  const isOceanWeightDominant = oceanChargeableTon > totalVolumeCbm;
 
-*SPESIFIKASI KARGO:*
-- Dimensi per Koli: ${lengthCm} x ${widthCm} x ${heightCm} cm
-- Jumlah Koli: ${pieces} Koli
-- Total Berat Fisik: ${totalActualWeightKg.toLocaleString()} KG
-${mode === 'ocean' 
-  ? `- Total Volume Kubikasi: ${totalVolumeCbm.toFixed(3)} CBM
-- Dasar Chargeable Laut (/1.000.000): ${oceanChargeableCbm.toFixed(3)} CBM (${isOceanWeightDominant ? 'Dasar Bobot Tonase' : 'Dasar Kubikasi CBM'})`
-  : `- Berat Volumetrik Udara (/6.000): ${airVolumetricWeightKg.toFixed(1)} KG
-- Dasar Chargeable Udara: ${airChargeableWeightKg.toFixed(1)} KG (${isAirVolumetricDominant ? 'Dasar Volumetrik' : 'Dasar Berat Aktual'})`}
+  const isAirVolumetricDominant = totalVolumetricAirKg > totalActualWeightKg;
+  const airChargeableBasis = Math.max(totalVolumetricAirKg, totalActualWeightKg);
 
-Mohon informasi jadwal sailing/flight terdekat, estimasi biaya kargo, dan penanganan PPJK. Terima kasih.`;
+  const applyPreset = (preset: typeof PRESET_PACKAGES[0]) => {
+    setLengthCm(preset.p);
+    setWidthCm(preset.l);
+    setHeightCm(preset.t);
+    setWeightKg(preset.w);
+    setQuantity(preset.pcs);
   };
 
   const handleSendWhatsApp = () => {
-    const text = buildSummaryText();
+    const basisText = shippingMode === 'ocean'
+      ? `Total CBM: ${totalVolumeCbm} CBM (Dasar Tagihan: ${oceanChargeableBasis.toFixed(3)} CBM)`
+      : `Total Volumetrik: ${totalVolumetricAirKg} KG (Dasar Tagihan: ${airChargeableBasis} KG)`;
+
+    const text = `Halo Gaek Freight, saya ingin konsultasi tarif kargo:
+- Moda: ${shippingMode === 'ocean' ? 'Kargo Laut (Ocean Freight)' : 'Kargo Udara (Air Cargo)'}
+- Lokasi Asal: ${originInput} (${nearestPortRecommendation ? 'Saran Hub: ' + nearestPortRecommendation.port : ''})
+- Pelabuhan Tujuan: ${destinationPort}
+- Dimensi: ${lengthCm} x ${widthCm} x ${heightCm} cm
+- Berat: ${weightKg} kg/koli | Qty: ${quantity} koli
+- ${basisText}
+Mohon informasi penawaran tarif dan jadwal kapal terdekat. Terima kasih.`;
+
     window.open(`https://wa.me/6285608561745?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const handleSendEmail = () => {
-    const subject = encodeURIComponent(`[INQUIRY KARGO] ${companyName || 'Klien Baru'} - Rute ${originAddress} ke ${destinationCity}`);
-    const body = encodeURIComponent(buildSummaryText());
-    window.location.href = `mailto:Sales01@gaeks.com,info@gaeks.com?subject=${subject}&body=${body}`;
+    const subject = `Permohonan Penawaran Tarif Kargo - ${originInput} ke ${destinationPort}`;
+    const body = `Halo Tim Komersial Gaek Freight,
+
+Mohon informasi tarif dan jadwal pengiriman untuk data kargo berikut:
+- Moda Pengiriman: ${shippingMode === 'ocean' ? 'Laut (FCL/LCL)' : 'Udara (Air Cargo)'}
+- Kota Asal: ${originInput}
+- Pelabuhan Tujuan: ${destinationPort}
+- Ukuran: ${lengthCm} x ${widthCm} x ${heightCm} cm
+- Berat per Unit: ${weightKg} kg
+- Total Jumlah: ${quantity} koli
+- Total Kubikasi (CBM): ${totalVolumeCbm} CBM
+- Berat Volumetrik Udara: ${totalVolumetricAirKg} KG
+
+Terima kasih.`;
+
+    window.location.href = `mailto:Sales01@gaeks.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   return (
-    <section id="calculator" className="py-20 bg-slate-900 border-y border-slate-800 text-white relative">
+    <section id="calculator" className="py-20 bg-slate-50 border-y border-slate-200 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-brand-orange/20 text-brand-orange text-xs font-bold uppercase mb-3">
-            <CalcIcon className="w-4 h-4" />
-            <span>Smart Port-Finder & Freight Calculator</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-            Pencari Port Terdekat & Kalkulator Kargo
+        
+        {/* Header Bersih & Ringkas */}
+        <div className="max-w-3xl mb-10">
+          <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
+            Smart Dispatch & Volumetric Engine
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            Cargo Check!
           </h2>
-          <p className="mt-3 text-slate-400 text-sm sm:text-base">
-            Ketikkan alamat asal barang untuk rekomendasi pelabuhan terdekat, serta hitung otomatis kubikasi laut (/1.000.000) dan berat volumetrik udara (/6.000).
+          <p className="mt-2 text-slate-600 text-sm sm:text-base">
+            Hitung kubikasi laut (CBM), berat volumetrik udara, dan deteksi otomatis pelabuhan terdekat dalam hitungan detik.
           </p>
         </div>
 
-        <div className="max-w-5xl mx-auto bg-brand-darkBlue rounded-3xl shadow-2xl border border-slate-800 p-6 sm:p-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-            <div className="lg:col-span-7 space-y-6">
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                  1. Pilih Moda Pengiriman
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setMode('ocean')}
-                    className={`py-3 px-4 rounded-xl font-bold text-xs sm:text-sm border flex items-center justify-center space-x-2 transition-all ${
-                      mode === 'ocean' ? 'bg-brand-orange text-white border-brand-orange shadow-lg' : 'bg-slate-900 text-slate-300 border-slate-800'
-                    }`}
-                  >
-                    <Ship className="w-4 h-4" />
-                    <span>Laut (CBM / 1.000.000)</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setMode('air')}
-                    className={`py-3 px-4 rounded-xl font-bold text-xs sm:text-sm border flex items-center justify-center space-x-2 transition-all ${
-                      mode === 'air' ? 'bg-brand-orange text-white border-brand-orange shadow-lg' : 'bg-slate-900 text-slate-300 border-slate-800'
-                    }`}
-                  >
-                    <Plane className="w-4 h-4" />
-                    <span>Udara (Volumetrik / 6.000)</span>
-                  </button>
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          
+          {/* Kolom Kiri: Formulir Interaktif Cepat */}
+          <div className="lg:col-span-7 bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-xl space-y-6">
+            
+            {/* Step 1: Mode Switcher */}
+            <div>
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2">
+                1. Pilih Moda Kargo:
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setShippingMode('ocean')}
+                  className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all ${
+                    shippingMode === 'ocean'
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  <Ship className="w-4 h-4" />
+                  <span>Kargo Laut (CBM / 1.000.000)</span>
+                </button>
+                <button
+                  onClick={() => setShippingMode('air')}
+                  className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all ${
+                    shippingMode === 'air'
+                      ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                      : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  <Plane className="w-4 h-4" />
+                  <span>Kargo Udara (/ 6.000)</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Step 2: Lokasi & Rekomendasi Port */}
+            <div className="space-y-3 pt-2">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                2. Lokasi Asal & Pelabuhan Tujuan:
+              </label>
+              
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  value={originInput}
+                  onChange={(e) => setOriginInput(e.target.value)}
+                  placeholder="Ketik alamat pabrik, kota, atau kawasan industri..."
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                />
+
+                {/* Quick City Chips */}
+                <div className="flex flex-wrap gap-1.5 items-center">
+                  <span className="text-[11px] text-slate-500 font-medium mr-1">Kota Populer:</span>
+                  {QUICK_CITIES.map((city) => (
+                    <button
+                      key={city}
+                      onClick={() => setOriginInput(city)}
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-xs font-bold border border-slate-200 transition-colors"
+                    >
+                      {city}
+                    </button>
+                  ))}
                 </div>
               </div>
 
+              {/* Rekomendasi Port Terdekat Badge Otomatis */}
+              {nearestPortRecommendation && (
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-800 font-medium">
+                  <div className="flex items-center space-x-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
+                    <span>Rekomendasi Port: <strong>{nearestPortRecommendation.port}</strong> ({nearestPortRecommendation.code})</span>
+                  </div>
+                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Rute Terdekat</span>
+                </div>
+              )}
+
+              {/* Pelabuhan Tujuan */}
               <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                  2. Lokasi Asal Barang (Sistem Smart Port)
+                <select
+                  value={destinationPort}
+                  onChange={(e) => setDestinationPort(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none font-medium"
+                >
+                  <option value="Jakarta (Tanjung Priok / IDJKT)">Jakarta — Pelabuhan Tanjung Priok (IDJKT)</option>
+                  <option value="Semarang (Tanjung Emas / IDSRG)">Semarang — Pelabuhan Tanjung Emas (IDSRG)</option>
+                  <option value="Surabaya (Tanjung Perak / IDSUB)">Surabaya — Pelabuhan Tanjung Perak (IDSUB)</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Step 3: Dimensi & Pilihan Preset Cepat */}
+            <div className="space-y-3 pt-2">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
+                  3. Ukuran Paket (P x L x T cm & Berat kg):
                 </label>
-                <div className="space-y-3">
-                  <div className="relative">
-                    <MapPin className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
-                    <input
-                      type="text"
-                      value={originAddress}
-                      onChange={(e) => setOriginAddress(e.target.value)}
-                      placeholder="Ketik kota/alamat, contoh: Cikarang, Solo, Surabaya, Shanghai, Ningbo, Rotterdam..."
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
-                    />
-                  </div>
-
-                  {suggestedPort && (
-                    <div className="p-4 bg-slate-950 rounded-2xl border border-brand-orange/40 space-y-1.5 shadow-md">
-                      <div className="flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider">
-                        <Anchor className="w-4 h-4" />
-                        <span>Saran Pelabuhan Terdekat:</span>
-                      </div>
-                      <div className="text-base font-black text-white">
-                        {suggestedPort.port} ({suggestedPort.code})
-                      </div>
-                      <div className="text-xs text-slate-300 flex flex-wrap gap-x-4">
-                        <span>Negara: <strong className="text-white">{suggestedPort.country} ({suggestedPort.region})</strong></span>
-                        <span>Gateway: <strong className="text-brand-orange">{suggestedPort.gateway}</strong></span>
-                      </div>
-                      <p className="text-[11px] text-slate-400 italic pt-1">
-                        Catatan: {suggestedPort.note}
-                      </p>
-                    </div>
-                  )}
-
-                  <div>
-                    <label className="block text-xs text-slate-400 mb-1">Pelabuhan / Kota Tujuan</label>
-                    <input
-                      type="text"
-                      value={destinationCity}
-                      onChange={(e) => setDestinationCity(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
-                    />
-                  </div>
+                <div className="flex items-center space-x-1">
+                  {PRESET_PACKAGES.map((preset) => (
+                    <button
+                      key={preset.name}
+                      onClick={() => applyPreset(preset)}
+                      className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-bold border border-slate-200"
+                      title="Klik untuk isi ukuran otomatis"
+                    >
+                      {preset.name.split(' ')[0]}
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
-                  3. Dimensi Kargo per Koli (Centimeter)
-                </label>
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <span className="text-[11px] text-slate-400 font-semibold">Panjang (P) cm</span>
-                    <input
-                      type="number"
-                      min="1"
-                      value={lengthCm}
-                      onChange={(e) => setLengthCm(Math.max(1, Number(e.target.value)))}
-                      className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-sm text-white font-bold focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-400 font-semibold">Lebar (L) cm</span>
-                    <input
-                      type="number"
-                      min="1"
-                      value={widthCm}
-                      onChange={(e) => setWidthCm(Math.max(1, Number(e.target.value)))}
-                      className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-sm text-white font-bold focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <span className="text-[11px] text-slate-400 font-semibold">Tinggi (T) cm</span>
-                    <input
-                      type="number"
-                      min="1"
-                      value={heightCm}
-                      onChange={(e) => setHeightCm(Math.max(1, Number(e.target.value)))}
-                      className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-sm text-white font-bold focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Jumlah Koli (Pcs)</label>
+                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Panjang (cm)</span>
                   <input
                     type="number"
                     min="1"
-                    value={pieces}
-                    onChange={(e) => setPieces(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white font-bold focus:outline-none"
+                    value={lengthCm}
+                    onChange={(e) => setLengthCm(Math.max(1, Number(e.target.value)))}
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-slate-300 mb-1">Berat Fisik Aktual (KG/Pcs)</label>
+                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Lebar (cm)</span>
                   <input
                     type="number"
                     min="1"
-                    value={actualWeightKgPerPiece}
-                    onChange={(e) => setActualWeightKgPerPiece(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white font-bold focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4 pt-2 border-t border-slate-800">
-                <div>
-                  <label className="block text-xs text-slate-400 mb-1">Nama Perusahaan (Opsional)</label>
-                  <input
-                    type="text"
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    placeholder="PT / CV..."
-                    className="w-full px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs text-white focus:outline-none"
+                    value={widthCm}
+                    onChange={(e) => setWidthCm(Math.max(1, Number(e.target.value)))}
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs text-slate-400 mb-1">Nama PIC Kontak</label>
+                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Tinggi (cm)</span>
                   <input
-                    type="text"
-                    value={contactName}
-                    onChange={(e) => setContactName(e.target.value)}
-                    placeholder="Nama Anda..."
-                    className="w-full px-3 py-2 rounded-lg border border-slate-700 bg-slate-900 text-xs text-white focus:outline-none"
+                    type="number"
+                    min="1"
+                    value={heightCm}
+                    onChange={(e) => setHeightCm(Math.max(1, Number(e.target.value)))}
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Berat (kg/koli)</span>
+                  <input
+                    type="number"
+                    min="1"
+                    value={weightKg}
+                    onChange={(e) => setWeightKg(Math.max(1, Number(e.target.value)))}
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  />
+                </div>
+                <div>
+                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Jumlah (pcs)</span>
+                  <input
+                    type="number"
+                    min="1"
+                    value={quantity}
+                    onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="lg:col-span-5 bg-slate-950 rounded-2xl p-6 sm:p-8 text-white flex flex-col justify-between shadow-lg border border-slate-800">
-              <div>
-                <div className="flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider mb-6">
-                  <Scale className="w-4 h-4" />
-                  <span>Kalkulasi Chargeable Basis</span>
-                </div>
-
-                <div className="space-y-4">
-                  <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                    <span className="text-xs text-slate-400 font-semibold block">Total Berat Fisik Aktual</span>
-                    <div className="text-2xl font-black text-white mt-1">
-                      {totalActualWeightKg.toLocaleString()} <span className="text-sm font-bold text-slate-400">KG</span>
-                    </div>
-                  </div>
-
-                  {mode === 'ocean' ? (
-                    <>
-                      <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                        <span className="text-xs text-slate-400 font-semibold block">Volume Kubikasi (P x L x T / 1.000.000)</span>
-                        <div className="text-2xl font-black text-white mt-1">
-                          {totalVolumeCbm.toFixed(3)} <span className="text-sm font-bold text-brand-orange">CBM</span>
-                        </div>
-                      </div>
-
-                      <div className="bg-brand-orange/15 p-4 rounded-xl border border-brand-orange/50">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-brand-orange uppercase">Dasar Tagihan Laut</span>
-                          <span className="text-[10px] bg-brand-orange text-white px-2 py-0.5 rounded font-bold">Tertinggi</span>
-                        </div>
-                        <div className="text-3xl font-black text-white mt-1">
-                          {oceanChargeableCbm.toFixed(3)} <span className="text-lg text-brand-orange">CBM</span>
-                        </div>
-                        <p className="text-[11px] text-slate-300 mt-2">
-                          {isOceanWeightDominant ? 'Dihitung berdasarkan berat tonase (1 Ton = 1 CBM).' : 'Dihitung berdasarkan total kubikasi murni kargo laut.'}
-                        </p>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="bg-slate-900 p-4 rounded-xl border border-slate-800">
-                        <span className="text-xs text-slate-400 font-semibold block">Berat Volumetrik Udara (P x L x T / 6.000)</span>
-                        <div className="text-2xl font-black text-white mt-1">
-                          {airVolumetricWeightKg.toFixed(1)} <span className="text-sm font-bold text-brand-orange">KG</span>
-                        </div>
-                      </div>
-
-                      <div className="bg-brand-orange/15 p-4 rounded-xl border border-brand-orange/50">
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-brand-orange uppercase">Chargeable Weight Udara</span>
-                          <span className="text-[10px] bg-brand-orange text-white px-2 py-0.5 rounded font-bold">Tertinggi</span>
-                        </div>
-                        <div className="text-3xl font-black text-white mt-1">
-                          {airChargeableWeightKg.toFixed(1)} <span className="text-lg text-brand-orange">KG</span>
-                        </div>
-                        <p className="text-[11px] text-slate-300 mt-2">
-                          {isAirVolumetricDominant ? 'Dihitung dari berat volumetrik udara karena kargo berukuran besar.' : 'Dihitung dari berat fisik aktual kargo.'}
-                        </p>
-                      </div>
-                    </>
-                  )}
-                </div>
-              </div>
-
-              <div className="mt-8 space-y-3">
-                <button
-                  type="button"
-                  onClick={handleSendWhatsApp}
-                  className="w-full flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-500 text-white py-3 px-4 rounded-xl font-bold text-sm transition-all shadow-md shadow-emerald-900/40"
-                >
-                  <Send className="w-4 h-4" />
-                  <span>Kirim via WhatsApp (0856-0856-1745)</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={handleSendEmail}
-                  className="w-full flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white py-3 px-4 rounded-xl font-bold text-sm transition-all"
-                >
-                  <Mail className="w-4 h-4 text-brand-orange" />
-                  <span>Kirim via Email (Sales01@gaeks.com)</span>
-                </button>
-              </div>
-            </div>
           </div>
+
+          {/* Kolom Kanan: Dashboard Hasil Real-Time Interaktif */}
+          <div className="lg:col-span-5 bg-white p-6 sm:p-10 rounded-3xl border-2 border-blue-600 shadow-2xl space-y-6">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <span className="text-xs font-black uppercase tracking-wider text-blue-700">
+                Live Calculation Output
+              </span>
+              <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                Real-Time
+              </span>
+            </div>
+
+            {/* Metric Stat Cards */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                <span className="text-xs text-slate-500 block mb-1">Kubikasi Laut (CBM)</span>
+                <span className="text-2xl font-black text-slate-900">{totalVolumeCbm}</span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">Rumus: PxLxT / 1.000.000</span>
+              </div>
+              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
+                <span className="text-xs text-slate-500 block mb-1">Volumetrik Udara</span>
+                <span className="text-2xl font-black text-slate-900">{totalVolumetricAirKg} <small className="text-xs font-normal">kg</small></span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">Rumus: PxLxT / 6.000</span>
+              </div>
+            </div>
+
+            {/* Evaluasi Dasar Tagihan (Chargeable Rule) */}
+            <div className="p-4 bg-blue-50/70 border border-blue-200 rounded-2xl space-y-2">
+              <span className="text-xs font-bold text-blue-900 block">
+                Dasar Tagihan Resmi (Chargeable Weight):
+              </span>
+              
+              {shippingMode === 'ocean' ? (
+                <div>
+                  <div className="text-xl font-black text-blue-700">
+                    {oceanChargeableBasis.toFixed(3)} CBM
+                  </div>
+                  <p className="text-xs text-blue-800 mt-1">
+                    {isOceanWeightDominant 
+                      ? 'Beban tonase fisik (' + (totalActualWeightKg/1000).toFixed(2) + ' Ton) lebih tinggi dari volume, tagihan dihitung berdasarkan tonase.' 
+                      : 'Volume kubikasi (' + totalVolumeCbm + ' CBM) lebih tinggi dari berat fisik, tagihan dihitung murni kubikasi.'}
+                  </p>
+                </div>
+              ) : (
+                <div>
+                  <div className="text-xl font-black text-blue-700">
+                    {airChargeableBasis} KG
+                  </div>
+                  <p className="text-xs text-blue-800 mt-1">
+                    {isAirVolumetricDominant 
+                      ? 'Berat volumetrik (' + totalVolumetricAirKg + ' kg) lebih tinggi dari berat aktual (' + totalActualWeightKg + ' kg).' 
+                      : 'Berat aktual fisik (' + totalActualWeightKg + ' kg) lebih tinggi dari berat volumetrik.'}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Action Buttons: WhatsApp & Email Instan */}
+            <div className="space-y-3 pt-2">
+              <button
+                onClick={handleSendWhatsApp}
+                className="w-full flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white py-4 px-6 rounded-xl font-bold text-sm transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.01]"
+              >
+                <MessageCircle className="w-4 h-4" />
+                <span>Kirim Rincian ke WhatsApp (0856-0856-1745)</span>
+              </button>
+
+              <button
+                onClick={handleSendEmail}
+                className="w-full flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white py-3 px-6 rounded-xl font-bold text-xs transition-all shadow-sm"
+              >
+                <Mail className="w-4 h-4" />
+                <span>Kirim via Email Resmi (Sales01@gaeks.com)</span>
+              </button>
+            </div>
+
+          </div>
+
         </div>
+
       </div>
     </section>
   );

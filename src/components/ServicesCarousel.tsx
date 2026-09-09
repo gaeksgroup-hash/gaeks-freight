@@ -192,7 +192,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             </p>
           </div>
 
-          {/* Minimalist Controls: Hanya Icon Play/Pause & Chevrons (Tanpa Kata-kata Clutter) */}
+          {/* Minimalist Controls: Hanya Icon Play/Pause & Chevrons (Tanpa Kata Clutter) */}
           <div className="flex items-center space-x-3 mt-6 md:mt-0">
             <button 
               onClick={() => setIsPlaying(!isPlaying)}
@@ -336,7 +336,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* Minimal Indicators */}
+        {/* Minimal Dots */}
         <div className="mt-8 flex justify-center items-center space-x-2">
           {DETAILED_SERVICES.map((_, idx) => (
             <button
