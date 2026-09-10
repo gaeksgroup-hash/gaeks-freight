@@ -4,12 +4,21 @@ import { Menu, X, PhoneCall, Globe } from 'lucide-react';
 import { Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 
-interface NavbarProps {
+export interface NavbarProps {
+  currentTab?: string;
+  onNavigate?: (page: string) => void;
   currentLang: Language;
-  onLanguageChange: (lang: Language) => void;
+  onSelectLang?: (lang: Language) => void;
+  onLanguageChange?: (lang: Language) => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ currentLang, onLanguageChange }) => {
+export const Navbar: React.FC<NavbarProps> = ({ 
+  currentTab = 'home',
+  onNavigate,
+  currentLang = 'id',
+  onSelectLang,
+  onLanguageChange 
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -21,6 +30,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentLang, onLanguageChange })
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleLang = (lang: Language) => {
+    if (onSelectLang) onSelectLang(lang);
+    if (onLanguageChange) onLanguageChange(lang);
+  };
+
+  const handleNav = (page: string, e: React.MouseEvent) => {
+    if (onNavigate) {
+      e.preventDefault();
+      onNavigate(page);
+    }
+    setMobileMenuOpen(false);
+  };
+
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
@@ -29,8 +51,13 @@ export const Navbar: React.FC<NavbarProps> = ({ currentLang, onLanguageChange })
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         
-        {/* Brand Logo Symbol Saja (Sesuai Permintaan) */}
-        <a href="#home" className="flex items-center space-x-2 group" aria-label="Gaek Freight Home">
+        {/* Brand Logo Symbol Saja (Tanpa teks duplikasi) */}
+        <a 
+          href="#home" 
+          onClick={(e) => handleNav('home', e)}
+          className="flex items-center space-x-2 group cursor-pointer" 
+          aria-label="Gaek Freight Home"
+        >
           <img 
             src="/logos/gaek-symbol.svg" 
             onError={(e) => {
@@ -43,12 +70,48 @@ export const Navbar: React.FC<NavbarProps> = ({ currentLang, onLanguageChange })
 
         {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-8 text-xs font-bold text-slate-700">
-          <a href="#home" className="hover:text-cyan-600 transition-colors">{getTranslation(currentLang, UI_TEXT.nav.home)}</a>
-          <a href="#services" className="hover:text-cyan-600 transition-colors">{getTranslation(currentLang, UI_TEXT.nav.services)}</a>
-          <a href="#calculator" className="hover:text-cyan-600 transition-colors">{getTranslation(currentLang, UI_TEXT.nav.calculator)}</a>
-          <a href="#network" className="hover:text-cyan-600 transition-colors">{getTranslation(currentLang, UI_TEXT.nav.network)}</a>
-          <a href="#news" className="hover:text-cyan-600 transition-colors">{getTranslation(currentLang, UI_TEXT.nav.news)}</a>
-          <a href="#contact" className="hover:text-cyan-600 transition-colors">{getTranslation(currentLang, UI_TEXT.nav.contact)}</a>
+          <a 
+            href="#home" 
+            onClick={(e) => handleNav('home', e)}
+            className={`transition-colors ${currentTab === 'home' ? 'text-[#012E34] font-black' : 'hover:text-cyan-600'}`}
+          >
+            {getTranslation(currentLang, UI_TEXT.nav.home)}
+          </a>
+          <a 
+            href="#services" 
+            onClick={(e) => handleNav('services', e)}
+            className={`transition-colors ${currentTab === 'services' ? 'text-[#012E34] font-black' : 'hover:text-cyan-600'}`}
+          >
+            {getTranslation(currentLang, UI_TEXT.nav.services)}
+          </a>
+          <a 
+            href="#calculator" 
+            onClick={(e) => handleNav('calculator', e)}
+            className={`transition-colors ${currentTab === 'calculator' ? 'text-[#012E34] font-black' : 'hover:text-cyan-600'}`}
+          >
+            {getTranslation(currentLang, UI_TEXT.nav.calculator)}
+          </a>
+          <a 
+            href="#network" 
+            onClick={(e) => handleNav('network', e)}
+            className={`transition-colors ${currentTab === 'network' ? 'text-[#012E34] font-black' : 'hover:text-cyan-600'}`}
+          >
+            {getTranslation(currentLang, UI_TEXT.nav.network)}
+          </a>
+          <a 
+            href="#news" 
+            onClick={(e) => handleNav('news', e)}
+            className={`transition-colors ${currentTab === 'news' ? 'text-[#012E34] font-black' : 'hover:text-cyan-600'}`}
+          >
+            {getTranslation(currentLang, UI_TEXT.nav.news)}
+          </a>
+          <a 
+            href="#contact" 
+            onClick={(e) => handleNav('contact', e)}
+            className={`transition-colors ${currentTab === 'contact' ? 'text-[#012E34] font-black' : 'hover:text-cyan-600'}`}
+          >
+            {getTranslation(currentLang, UI_TEXT.nav.contact)}
+          </a>
         </nav>
 
         {/* Selector Bahasa & Tombol Kontak */}
@@ -56,19 +119,19 @@ export const Navbar: React.FC<NavbarProps> = ({ currentLang, onLanguageChange })
           <div className="flex items-center space-x-1.5 p-1 rounded-xl bg-slate-100 border border-slate-200 text-[11px] font-bold">
             <Globe className="w-3.5 h-3.5 text-cyan-600 ml-1.5" />
             <button 
-              onClick={() => onLanguageChange('id')} 
+              onClick={() => handleLang('id')} 
               className={`px-2 py-1 rounded-lg transition-all ${currentLang === 'id' ? 'bg-[#012E34] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               ID
             </button>
             <button 
-              onClick={() => onLanguageChange('en')} 
+              onClick={() => handleLang('en')} 
               className={`px-2 py-1 rounded-lg transition-all ${currentLang === 'en' ? 'bg-[#012E34] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               EN
             </button>
             <button 
-              onClick={() => onLanguageChange('zh')} 
+              onClick={() => handleLang('zh')} 
               className={`px-2 py-1 rounded-lg transition-all ${currentLang === 'zh' ? 'bg-[#012E34] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               中文
@@ -102,18 +165,18 @@ export const Navbar: React.FC<NavbarProps> = ({ currentLang, onLanguageChange })
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div className="sm:hidden bg-white/95 backdrop-blur-2xl border-b border-slate-200 px-4 pt-2 pb-6 space-y-3">
-          <a onClick={() => setMobileMenuOpen(false)} href="#home" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.home)}</a>
-          <a onClick={() => setMobileMenuOpen(false)} href="#services" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.services)}</a>
-          <a onClick={() => setMobileMenuOpen(false)} href="#calculator" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.calculator)}</a>
-          <a onClick={() => setMobileMenuOpen(false)} href="#network" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.network)}</a>
-          <a onClick={() => setMobileMenuOpen(false)} href="#news" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.news)}</a>
-          <a onClick={() => setMobileMenuOpen(false)} href="#contact" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.contact)}</a>
+          <a onClick={(e) => handleNav('home', e)} href="#home" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.home)}</a>
+          <a onClick={(e) => handleNav('services', e)} href="#services" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.services)}</a>
+          <a onClick={(e) => handleNav('calculator', e)} href="#calculator" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.calculator)}</a>
+          <a onClick={(e) => handleNav('network', e)} href="#network" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.network)}</a>
+          <a onClick={(e) => handleNav('news', e)} href="#news" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.news)}</a>
+          <a onClick={(e) => handleNav('contact', e)} href="#contact" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.contact)}</a>
           <div className="pt-2 flex items-center justify-between border-t border-slate-100">
             <span className="text-xs font-bold text-slate-500">Bahasa:</span>
             <div className="flex space-x-2 text-xs font-bold">
-              <button onClick={() => onLanguageChange('id')} className={`px-2 py-1 rounded ${currentLang === 'id' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>ID</button>
-              <button onClick={() => onLanguageChange('en')} className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>EN</button>
-              <button onClick={() => onLanguageChange('zh')} className={`px-2 py-1 rounded ${currentLang === 'zh' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>中文</button>
+              <button onClick={() => handleLang('id')} className={`px-2 py-1 rounded ${currentLang === 'id' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>ID</button>
+              <button onClick={() => handleLang('en')} className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>EN</button>
+              <button onClick={() => handleLang('zh')} className={`px-2 py-1 rounded ${currentLang === 'zh' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>中文</button>
             </div>
           </div>
         </div>
