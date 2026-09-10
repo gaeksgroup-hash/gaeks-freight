@@ -39,31 +39,15 @@ jobs:
               try:
                   ftp = ftplib.FTP(server, timeout=30)
                   ftp.login(user, pwd)
-                  stuck_files = ['.in.favicon.png.', 'favicon.png']
-                  for f in stuck_files:
+                  for f in ['.in.favicon.png.', 'favicon.png']:
                       try:
                           ftp.delete(f)
-                          print(f'[CLEANED] Berhasil menghapus file tersangkut: {f}')
+                          print(f'[CLEANED] Dihapus: {f}')
                       except Exception:
                           pass
-                  try:
-                      lines = []
-                      ftp.retrlines('LIST -a', lines.append)
-                      for line in lines:
-                          parts = line.split()
-                          if len(parts) > 8:
-                              fname = parts[-1]
-                              if fname.startswith('.in.'):
-                                  try:
-                                      ftp.delete(fname)
-                                      print(f'[CLEANED] Berhasil menghapus file temp orphan: {fname}')
-                                  except Exception:
-                                      pass
-                  except Exception:
-                      pass
                   ftp.quit()
               except Exception as err:
-                  print(f'[FTP Clean Info]: {err}')
+                  print(f'[FTP Clean Note]: {err}')
           "
 
       - name: Sync dist to Hostinger
