@@ -25,11 +25,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }
           <div className="lg:col-span-4 space-y-4">
             <div className="inline-flex items-center">
               <img 
-                src="/logos/gaek-symbol.svg" 
+                src="/logos/gaek-symbol.png?v=7" 
                 onError={(e) => {
                   const target = e.currentTarget as HTMLImageElement;
                   target.onerror = null;
-                  target.src = '/gaek-symbol.svg';
+                  target.src = '/gaek-symbol.png?v=7';
                 }}
                 alt="GAEKS" 
                 className="h-10 sm:h-11 w-auto object-contain" 

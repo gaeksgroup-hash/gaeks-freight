@@ -131,7 +131,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
                 {/* 4. Logo Asli WCA World (SVG Lokal Permanen) */}
                 <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-[#011C20]/90 border border-cyan-900/40 hover:border-amber-400/60 transition-colors shadow-sm">
                   <img 
-                    src="/logos/gaek-symbol.svg" 
+                    src="/logos/gaek-symbol.png?v=7" 
                     alt="WCA World Member" 
                     className="h-6 sm:h-7 w-auto object-contain"
                     loading="eager"
@@ -141,7 +141,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
                 {/* 5. Logo Asli JCtrans Network (SVG Lokal Permanen) */}
                 <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-[#011C20]/90 border border-cyan-900/40 hover:border-sky-400/60 transition-colors shadow-sm">
                   <img 
-                    src="/logos/gaek-symbol.svg" 
+                    src="/logos/gaek-symbol.png?v=7" 
                     alt="JCtrans Logistics Network GCP Member" 
                     className="h-6 sm:h-7 w-auto object-contain"
                     loading="eager"

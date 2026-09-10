@@ -74,11 +74,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="Gaek Freight Home"
         >
           <img 
-            src="/logos/gaek-symbol.svg" 
+            src="/logos/gaek-symbol.png?v=7" 
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
               target.onerror = null;
-              target.src = '/gaek-symbol.svg';
+              target.src = '/gaek-symbol.png?v=7';
             }}
             alt="GAEKS" 
             className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
