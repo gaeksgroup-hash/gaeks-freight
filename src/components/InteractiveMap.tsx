@@ -555,17 +555,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
               </div>
             </div>
 
-            {/* Kotak Kebijakan Operasional Manajer Logistik Resmi Sesuai Dokumen */}
-            <div className="p-5 bg-amber-950/30 border border-amber-500/40 rounded-2xl flex items-start space-x-3.5 text-xs text-amber-200">
-              <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-              <div className="leading-relaxed">
-                <strong className="text-amber-300 font-extrabold block text-sm mb-1">
-                  Kebijakan Standar Operasi Manajemen Logistik:
-                </strong>
-                Jika ditemukan permintaan penggunaan service dalam daftar pelabuhan di atas dan di luar rekomendasi preferred carrier, 
-                diwajibkan mengajukan persetujuan tertulis (approval) ke <strong>Logistic Manager</strong> guna menjamin kepastian SLA dan mitigasi risiko dwelling time.
-              </div>
-            </div>
+            
           </div>
         )}
 

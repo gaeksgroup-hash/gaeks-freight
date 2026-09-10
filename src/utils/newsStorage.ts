@@ -1,7 +1,7 @@
 // filepath: /src/utils/newsStorage.ts
 import { ArticleItem, NewsletterSubscriber } from '../types/freight';
 
-const STORAGE_KEY_ARTICLES = 'gaeks_articles_v13_full';
+const STORAGE_KEY_ARTICLES = 'gaeks_articles_v14_full';
 const STORAGE_KEY_SUBSCRIBERS = 'gaeks_subscribers';
 
 export const DEFAULT_ARTICLES: ArticleItem[] = [

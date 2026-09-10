@@ -70,16 +70,16 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     category: 'Specialized Industrial Logistics',
     category_en: 'Heavy Machinery Transport',
     category_zh: '超重超宽大件运输',
-    tagline: 'Rekayasa logistik untuk muatan over-dimension & over-weight (ODOW).',
-    tagline_en: 'Engineering logistics for over-dimension and heavy industrial cargo.',
-    tagline_zh: '重型设备、变压器及钢构专案工程物流。',
-    description: 'Solusi angkutan muatan berbobot ekstrem dan berdimensi raksasa untuk proyek energi, konstruksi pabrik, mesin peleburan, genset pembangkit, dan transformator.',
-    description_en: 'Heavy-lift logistics for power generation, smelters, manufacturing plants, and heavy industrial machinery.',
-    description_zh: '电站发电机组、治炼冶金重载及大型构件综合运输方案。',
-    features: ['Survei Rute Jalan & Analisis Kekuatan Jembatan', 'Armada Lowbed, Multi-Axle, & Flat Rack', 'Pengawalan Khusus & Asuransi All-Risk'],
+    tagline: 'Breakbulk & RoRo untuk alat berat tambang, dump truck, dan modul industri raksasa.',
+    tagline_en: 'Breakbulk & RoRo solutions for heavy mining dump trucks and massive industrial modules.',
+    tagline_zh: '重大件散杂货 (Breakbulk) 与滚装 (Ro-Ro) 运输矿山自卸车及重型工业装备。',
+    description: 'Solusi angkutan muatan berbobot ekstrem dan berdimensi raksasa untuk proyek energi, konstruksi pabrik, armada dump truck pertambangan, genset pembangkit, dan transformator.',
+    description_en: 'Heavy-lift logistics for power generation, smelters, mining dump trucks, manufacturing plants, and heavy industrial machinery.',
+    description_zh: '矿山重型自卸车、电站发电机组、大型冶金设备综合专案运输方案。',
+    features: ['Survei Rute Jalan & Analisis Kekuatan Jembatan', 'Armada Multi-Axle Modular Hydraulic Trailer', 'Pengapalan Kapal Breakbulk & Kapal Ro-Ro'],
     equipment: 'Multi-Axle Modular Hydraulic Trailer',
     imageUrl: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80',
-    commodities: 'Dump truck tambang, mesin pabrik, turbin pembangkit, tangki industri, baja'
+    commodities: 'Dump truck tambang, excavator, mesin pabrik, turbin pembangkit, tangki industri, baja'
   },
   {
     id: 'lcl',
@@ -98,7 +98,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     features: ['Perhitungan Tarif Berbasis Kubikasi Murni (CBM)', 'Jadwal Konsolidasi Mingguan Tetap', 'Unstuffing Cepat di CFS Gudang Pelabuhan'],
     equipment: 'Weekly Dedicated Consolidation Box',
     imageUrl: 'https://images.unsplash.com/photo-1586528116493-a029325540fa?auto=format&fit=crop&w=1000&q=80',
-    commodities: 'Barang retail, spare parts, sampel bahan, perlengkapan bisnis'
+    commodities: 'Barang retail, palet kemasan kayu, spare parts, sampel bahan, perlengkapan bisnis'
   },
   {
     id: 'fcl',
@@ -108,15 +108,15 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     category: 'Kontainer Eksklusif Internasional',
     category_en: 'Container Liner Slot',
     category_zh: '集装箱整箱国际订舱',
-    tagline: 'Kontrak slot langsung dengan pelayaran kontainer dunia.',
-    tagline_en: 'Direct ocean carrier booking with guaranteed space allocation.',
-    tagline_zh: '国际船东直接订舱，旺季舱位无忧。',
+    tagline: 'Pelayaran kontainer samudra penuh langsung ke pelabuhan utama Indonesia.',
+    tagline_en: 'Direct ocean carrier booking with dedicated full container slots.',
+    tagline_zh: '整箱国际海运直航订舱，专属集装箱安全出运。',
     description: 'Penyediaan kontainer 20ft, 40ft General Purpose, 40ft High Cube, Reefer berpendingin, serta Open Top untuk rute utama langsung ke Jakarta, Semarang, dan Surabaya.',
     description_en: 'Dedicated 20ft, 40ft GP, 40ft HC, Reefer, and Open Top equipment with direct calls to Tanjung Priok, Tanjung Emas, and Tanjung Perak.',
     description_zh: '提供 20GP/40GP/40HQ 及特种箱，直航印尼三大核心海港。',
     features: ['Alokasi Ruang Kapal Dijamin Saat Peak Season', 'Free Time Demurrage & Detention Lebih Panjang', 'Pilihan Door-to-Door atau Port-to-Port Transparan'],
     equipment: 'Kontainer 20ft, 40ft GP, 40ft HC, Reefer',
-    imageUrl: 'https://images.unsplash.com/photo-1512418490979-92798cec1380?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1000&q=80',
     commodities: 'Manufaktur massal, bahan baku kimia, resin, komoditas ekspor'
   },
   {
@@ -127,12 +127,12 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     category: 'Kargo Udara Ekspres',
     category_en: 'Express Airfreight',
     category_zh: '时效级航空快运',
-    tagline: 'Waktu transit singkat untuk kargo berprioritas kritis.',
-    tagline_en: 'Fastest flight transit for time-critical commercial shipments.',
-    tagline_zh: '紧急备件及高价值样品极速直达。',
-    description: 'Layanan kargo udara reguler dan charter untuk suku cadang mesin mendesak, sampel komersial, kargo bernilai tinggi, dan komoditas time-sensitive.',
-    description_en: 'Priority airfreight and charter solutions for urgent machine spare parts, commercial samples, and high-value commodities.',
-    description_zh: '客机腹舱与全货机直航，加急单据清关及机场快速提货。',
+    tagline: 'Penanganan kargo udara di apron bandara untuk kargo berprioritas kritis.',
+    tagline_en: 'Airport tarmac cargo handling for critical time-sensitive shipments.',
+    tagline_zh: '机场停机坪及货运站快速装运，紧急备件极速出运。',
+    description: 'Layanan kargo udara reguler dan charter untuk suku cadang mesin mendesak, sampel komersial, kargo bernilai tinggi, dan komoditas time-sensitive dengan pemrosesan AWB kilat di bandara.',
+    description_en: 'Priority airfreight and charter solutions for urgent machine spare parts, commercial samples, and high-value commodities with rapid airport terminal processing.',
+    description_zh: '客机腹舱与全货机直航，机场货站优先配舱与快速分拨。',
     features: ['Next-Flight-Out Prioritas Tertinggi', 'Door-to-Airport & Door-to-Door Handling', 'Pengurusan Dokumen Air Waybill (AWB) Kilat'],
     equipment: 'Direct Space Contract Airline Partner',
     imageUrl: 'https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=1000&q=80',
@@ -224,7 +224,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* --- 3D ETALASE SHOWCASE: KARTU TENGAH TAJAM & HIGHLIGHT, KIRI & KANAN BLUR --- */}
+        {/* --- 3D ETALASE SHOWCASE --- */}
         <div className="relative py-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
