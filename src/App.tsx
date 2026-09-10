@@ -71,7 +71,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-600 selection:text-white">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-[#012E34] selection:text-cyan-300">
       {/* Root Apple-Styled Sonner Toaster */}
       <Toaster 
         position="bottom-right" 

@@ -89,8 +89,8 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               const match = line.match(/^(\d+)\.\s*(.*)/);
               if (match) {
                 return (
-                  <div key={lIdx} className="flex items-start space-x-3.5 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-blue-400 hover:shadow-md transition-all duration-200">
-                    <span className="flex-shrink-0 w-7 h-7 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-blue-500/20">
+                  <div key={lIdx} className="flex items-start space-x-3.5 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-cyan-400 hover:shadow-md transition-all duration-200">
+                    <span className="flex-shrink-0 w-7 h-7 rounded-xl bg-gradient-to-tr from-[#012E34] to-cyan-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-blue-500/20">
                       {match[1]}
                     </span>
                     <div className="text-sm sm:text-base text-slate-800 leading-relaxed font-normal">
@@ -109,7 +109,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
         return (
           <div key={idx} className="mt-8 mb-3">
             <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center space-x-2.5 pb-2 border-b border-slate-200">
-              <span className="w-2.5 h-6 bg-blue-600 rounded-full inline-block flex-shrink-0" />
+              <span className="w-2.5 h-6 bg-[#012E34] rounded-full inline-block flex-shrink-0" />
               <span>{p}</span>
             </h3>
           </div>
@@ -118,7 +118,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
 
       if (idx === 0) {
         return (
-          <div key={idx} className="bg-blue-50/70 border-l-4 border-blue-600 p-6 sm:p-8 rounded-2xl text-slate-800 text-base sm:text-lg leading-relaxed font-medium mb-8 shadow-sm">
+          <div key={idx} className="bg-cyan-50/70 border-l-4 border-[#012E34] p-6 sm:p-8 rounded-2xl text-slate-800 text-base sm:text-lg leading-relaxed font-medium mb-8 shadow-sm">
             {p}
           </div>
         );
@@ -139,7 +139,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           
           <button
             onClick={() => onBackToList && onBackToList()}
-            className="inline-flex items-center space-x-2 text-xs font-bold text-blue-600 hover:text-blue-800 mb-8 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm hover:scale-105 active:scale-95 transition-all"
+            className="inline-flex items-center space-x-2 text-xs font-bold text-cyan-600 hover:text-cyan-800 mb-8 bg-white border border-slate-200 px-4 py-2.5 rounded-xl shadow-sm hover:scale-105 active:scale-95 transition-all"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>{getTranslation(currentLang, UI_TEXT.news.backBtn)}</span>
@@ -148,7 +148,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
           <article className="space-y-8 bg-white p-8 sm:p-14 rounded-3xl border border-slate-200/80 shadow-2xl">
             <div className="space-y-4 border-b border-slate-100 pb-8">
               <div className="flex items-center space-x-2">
-                <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider border border-blue-200">
+                <span className="px-3.5 py-1 rounded-full bg-cyan-50 text-[#012E34] text-xs font-black uppercase tracking-wider border border-blue-200">
                   {detailArticle.category}
                 </span>
                 <span className="inline-flex items-center space-x-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
@@ -163,7 +163,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
 
               <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 font-medium pt-2">
                 <span className="flex items-center space-x-1.5">
-                  <Calendar className="w-4 h-4 text-blue-600" />
+                  <Calendar className="w-4 h-4 text-cyan-600" />
                   <span>{detailArticle.publishedDate}</span>
                 </span>
                 <span>•</span>
@@ -172,7 +172,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                   <span>{detailArticle.author}</span>
                 </span>
                 <span>•</span>
-                <span className="flex items-center space-x-1.5 text-blue-600 font-bold">
+                <span className="flex items-center space-x-1.5 text-cyan-600 font-bold">
                   <Clock className="w-4 h-4" />
                   <span>{detailArticle.readTime}</span>
                 </span>
@@ -186,7 +186,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             {/* Social Share Bar */}
             <div className="bg-slate-50 p-4 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-4">
               <div className="flex items-center space-x-2 text-xs font-bold text-slate-700">
-                <Share2 className="w-4 h-4 text-blue-600" />
+                <Share2 className="w-4 h-4 text-cyan-600" />
                 <span>{getTranslation(currentLang, UI_TEXT.news.shareTitle)}</span>
               </div>
               <div className="flex items-center space-x-2">
@@ -199,7 +199,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 </button>
                 <button
                   onClick={() => handleShare('li', detailArticle)}
-                  className="p-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white shadow-sm active:scale-95 transition-transform"
+                  className="p-2.5 rounded-xl bg-[#012E34] hover:bg-[#011C20] text-white shadow-sm active:scale-95 transition-transform"
                   title="Bagikan via LinkedIn"
                 >
                   <Linkedin className="w-4 h-4" />
@@ -215,7 +215,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                   onClick={() => handleShare('copy', detailArticle)}
                   className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 text-xs font-bold shadow-sm active:scale-95 transition-all"
                 >
-                  <Copy className="w-3.5 h-3.5 text-blue-600" />
+                  <Copy className="w-3.5 h-3.5 text-cyan-600" />
                   <span>{getTranslation(currentLang, UI_TEXT.news.copyBtn)}</span>
                 </button>
               </div>
@@ -230,7 +230,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             {detailArticle.sources && detailArticle.sources.length > 0 && (
               <div className="mt-8 p-6 bg-slate-50 border border-slate-200 rounded-2xl space-y-2.5">
                 <div className="flex items-center space-x-2 text-xs font-black text-slate-900 uppercase tracking-wider">
-                  <BookOpen className="w-4 h-4 text-blue-600" />
+                  <BookOpen className="w-4 h-4 text-cyan-600" />
                   <span>{getTranslation(currentLang, UI_TEXT.news.sourcesTitle)}</span>
                 </div>
                 <ul className="list-disc list-inside space-y-1.5 text-xs text-slate-600 font-medium pt-1">
@@ -241,7 +241,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
               </div>
             )}
 
-            <div className="mt-10 p-8 bg-blue-50 border border-blue-200 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
+            <div className="mt-10 p-8 bg-cyan-50 border border-blue-200 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
               <div>
                 <h4 className="text-lg font-bold text-slate-900">{getTranslation(currentLang, UI_TEXT.news.consultTitle)}</h4>
                 <p className="text-xs text-slate-600 mt-1">
@@ -252,7 +252,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 href="https://wa.me/6285608561745"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-shrink-0 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-xs active:scale-95 transition-all shadow-md"
+                className="flex-shrink-0 bg-[#012E34] hover:bg-[#011C20] text-white px-6 py-3 rounded-xl font-bold text-xs active:scale-95 transition-all shadow-md"
               >
                 {getTranslation(currentLang, UI_TEXT.news.consultBtn)}
               </a>
@@ -269,7 +269,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="max-w-3xl mb-12">
-          <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
+          <span className="text-xs font-black uppercase tracking-widest text-cyan-600 block mb-2">
             {getTranslation(currentLang, UI_TEXT.news.badge)}
           </span>
           <h1 className="text-3xl sm:text-5xl font-black text-slate-900 tracking-tight">
@@ -281,7 +281,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
         </div>
 
         {/* Newsletter Subscription Card */}
-        <div className="mb-14 bg-gradient-to-r from-blue-900 to-slate-900 rounded-3xl p-8 sm:p-12 border border-slate-800 text-white shadow-xl relative overflow-hidden">
+        <div className="mb-14 bg-gradient-to-r from-[#012E34] via-[#011C20] to-slate-950 rounded-3xl p-8 sm:p-12 border border-slate-800 text-white shadow-xl relative overflow-hidden">
           <div className="max-w-2xl relative z-10 space-y-3">
             <span className="text-xs font-bold text-amber-400 uppercase tracking-wider block">
               {getTranslation(currentLang, UI_TEXT.news.newsletterTitle)}
@@ -300,11 +300,11 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 placeholder="Masukkan alamat email Anda..."
-                className="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm flex-grow focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-4 py-3 rounded-xl bg-slate-800 border border-slate-700 text-white text-sm flex-grow focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
               <button
                 type="submit"
-                className="flex items-center justify-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm active:scale-95 transition-all shadow-md"
+                className="flex items-center justify-center space-x-2 bg-[#012E34] hover:bg-[#011C20] text-white px-6 py-3 rounded-xl font-bold text-sm active:scale-95 transition-all shadow-md"
               >
                 <Send className="w-4 h-4" />
                 <span>Langganan</span>
@@ -321,7 +321,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 key={cat}
                 onClick={() => { setCurrentPageNum(1); setSelectedCategory(cat); }}
                 className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold active:scale-95 transition-all ${
-                  selectedCategory === cat ? 'bg-blue-600 text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-400'
+                  selectedCategory === cat ? 'bg-[#012E34] text-white shadow-md' : 'bg-white text-slate-700 border border-slate-200 hover:border-cyan-400'
                 }`}
               >
                 {cat}
@@ -367,12 +367,12 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                   </div>
                   <div className="p-6">
                     <div className="flex items-center space-x-2 text-[11px] text-slate-500 font-semibold mb-2">
-                      <Calendar className="w-3.5 h-3.5 text-blue-600" />
+                      <Calendar className="w-3.5 h-3.5 text-cyan-600" />
                       <span>{item.publishedDate}</span>
                       <span>•</span>
                       <span>{item.readTime}</span>
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900 leading-snug mb-3 group-hover:text-blue-600 transition-colors line-clamp-2">
+                    <h3 className="text-lg font-bold text-slate-900 leading-snug mb-3 group-hover:text-cyan-600 transition-colors line-clamp-2">
                       {displayTitle}
                     </h3>
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-3 font-normal">
@@ -384,7 +384,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 <div className="p-6 pt-0 border-t border-slate-100 flex items-center justify-between">
                   <button
                     onClick={() => onSelectArticle && onSelectArticle(item.id)}
-                    className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center space-x-1.5 active:scale-95 transition-all"
+                    className="text-xs font-bold text-cyan-600 hover:text-cyan-800 flex items-center space-x-1.5 active:scale-95 transition-all"
                   >
                     <span>{getTranslation(currentLang, UI_TEXT.news.readMoreBtn)}</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -413,8 +413,8 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
                 onClick={() => setCurrentPageNum(num)}
                 className={`px-3.5 py-2 rounded-xl text-xs font-bold active:scale-95 transition-all ${
                   currentPageNum === num
-                    ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-white text-slate-700 border border-slate-200 hover:border-blue-400'
+                    ? 'bg-[#012E34] text-white shadow-md'
+                    : 'bg-white text-slate-700 border border-slate-200 hover:border-cyan-400'
                 }`}
               >
                 {num}

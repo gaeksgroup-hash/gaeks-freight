@@ -55,14 +55,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onNavigate, currentL
           onClick={() => handleNavClick('home')} 
           className="flex items-center space-x-3 group text-left active:scale-[0.98] transition-transform duration-200"
         >
-          <div className="bg-gradient-to-tr from-blue-700 to-sky-500 p-2.5 rounded-2xl shadow-md shadow-blue-500/20 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/30">
+          <div className="bg-gradient-to-tr from-[#012E34] to-cyan-500 p-2.5 rounded-2xl shadow-md shadow-cyan-500/25 transition-all duration-300 group-hover:scale-105 group-hover:shadow-blue-500/30">
             <Ship className="w-6 h-6 text-white stroke-[2.2]" />
           </div>
           <div>
             <span className="text-xl font-black tracking-tight block leading-none text-slate-900 font-sans">
               Gaek Freight
             </span>
-            <span className="text-[10px] text-blue-700 tracking-wider uppercase font-bold block mt-0.5">
+            <span className="text-[10px] text-[#012E34] tracking-wider uppercase font-bold block mt-0.5">
               Global Andalan Ekspress
             </span>
           </div>
@@ -74,8 +74,8 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onNavigate, currentL
             <button 
               key={tab}
               onClick={() => handleNavClick(tab)} 
-              className={`transition-all duration-200 hover:text-blue-600 active:scale-95 ${
-                currentTab === tab ? 'text-blue-700 font-black' : ''
+              className={`transition-all duration-200 hover:text-cyan-600 active:scale-95 ${
+                currentTab === tab ? 'text-[#012E34] font-black' : ''
               }`}
             >
               {getTranslation(currentLang, UI_TEXT.nav[tab])}
@@ -88,14 +88,14 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onNavigate, currentL
               onClick={() => setLangMenuOpen(!langMenuOpen)}
               className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-slate-100/90 border border-slate-200/80 text-xs font-bold text-slate-800 hover:border-blue-500 active:scale-95 transition-all shadow-sm"
             >
-              <Globe className="w-3.5 h-3.5 text-blue-600" />
+              <Globe className="w-3.5 h-3.5 text-cyan-600" />
               <span>{currentLang === 'id' ? '🇮🇩 ID' : currentLang === 'en' ? '🇬🇧 EN' : '🇨🇳 中文'}</span>
             </button>
             {langMenuOpen && (
               <div className="absolute right-0 mt-2 w-40 bg-white/95 backdrop-blur-2xl border border-slate-200 rounded-2xl shadow-2xl py-2 z-50 text-xs font-medium animate-in fade-in zoom-in-95 duration-200">
-                <button onClick={() => handleLanguageChange('id')} className="w-full text-left px-4 py-2 hover:bg-blue-50 text-slate-800 flex items-center space-x-2.5 transition-colors"><span>🇮🇩</span><span>Bahasa ID</span></button>
-                <button onClick={() => handleLanguageChange('en')} className="w-full text-left px-4 py-2 hover:bg-blue-50 text-slate-800 flex items-center space-x-2.5 transition-colors"><span>🇬🇧</span><span>English (EN)</span></button>
-                <button onClick={() => handleLanguageChange('zh')} className="w-full text-left px-4 py-2 hover:bg-blue-50 text-slate-800 flex items-center space-x-2.5 transition-colors"><span>🇨🇳</span><span>中文 (简体)</span></button>
+                <button onClick={() => handleLanguageChange('id')} className="w-full text-left px-4 py-2 hover:bg-cyan-50 text-slate-800 flex items-center space-x-2.5 transition-colors"><span>🇮🇩</span><span>Bahasa ID</span></button>
+                <button onClick={() => handleLanguageChange('en')} className="w-full text-left px-4 py-2 hover:bg-cyan-50 text-slate-800 flex items-center space-x-2.5 transition-colors"><span>🇬🇧</span><span>English (EN)</span></button>
+                <button onClick={() => handleLanguageChange('zh')} className="w-full text-left px-4 py-2 hover:bg-cyan-50 text-slate-800 flex items-center space-x-2.5 transition-colors"><span>🇨🇳</span><span>中文 (简体)</span></button>
               </div>
             )}
           </div>
@@ -105,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onNavigate, currentL
             target="_blank"
             rel="noopener noreferrer"
             onClick={triggerHaptic}
-            className="flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-blue-500/20 active:scale-95 transition-all duration-200"
+            className="flex items-center space-x-2 bg-gradient-to-r from-[#012E34] to-cyan-600 hover:from-[#011C20] hover:to-cyan-500 text-white px-4 py-2.5 rounded-xl font-bold text-xs shadow-md shadow-cyan-500/25 active:scale-95 transition-all duration-200"
           >
             <PhoneCall className="w-3.5 h-3.5" />
             <span>0856-0856-1745</span>
@@ -116,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onNavigate, currentL
         <div className="lg:hidden flex items-center space-x-3">
           <button
             onClick={() => handleLanguageChange(currentLang === 'id' ? 'en' : currentLang === 'en' ? 'zh' : 'id')}
-            className="px-2.5 py-1 bg-slate-100 rounded-xl text-[11px] font-bold text-blue-700 border border-slate-200 active:scale-95 transition-all"
+            className="px-2.5 py-1 bg-slate-100 rounded-xl text-[11px] font-bold text-[#012E34] border border-slate-200 active:scale-95 transition-all"
           >
             {currentLang.toUpperCase()}
           </button>
@@ -141,7 +141,7 @@ export const Navbar: React.FC<NavbarProps> = ({ currentTab, onNavigate, currentL
             href="https://wa.me/6285608561745" 
             target="_blank" 
             rel="noopener noreferrer" 
-            className="block text-center py-3 bg-blue-600 text-white font-bold rounded-xl text-xs active:scale-95 transition-all shadow-md shadow-blue-500/20"
+            className="block text-center py-3 bg-blue-600 text-white font-bold rounded-xl text-xs active:scale-95 transition-all shadow-md shadow-cyan-500/25"
           >
             WhatsApp 0856-0856-1745
           </a>

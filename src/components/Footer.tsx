@@ -6,7 +6,7 @@ import { UI_TEXT, getTranslation } from '../utils/translations';
 
 export const Footer: React.FC<{ onNavigate: (tab: string) => void; currentLang?: Language }> = ({ onNavigate, currentLang = 'id' }) => {
   return (
-    <footer className="bg-slate-950 border-t border-slate-800 text-slate-400 text-sm">
+    <footer className="bg-[#011C20] border-t border-cyan-900/40 text-slate-400 text-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           

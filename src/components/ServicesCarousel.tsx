@@ -181,7 +181,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
         {/* Header Bersih */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
           <div>
-            <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
+            <span className="text-xs font-black uppercase tracking-widest text-cyan-600 block mb-2">
               {getTranslation(currentLang, UI_TEXT.services.tag)}
             </span>
             <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -209,7 +209,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             <button 
               onClick={() => setCurrentIndex(prevIndex)} 
               aria-label="Previous Service"
-              className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-blue-600 hover:text-white transition-colors shadow-sm"
+              className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-[#012E34] hover:text-white transition-colors shadow-sm"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -217,7 +217,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             <button 
               onClick={() => setCurrentIndex(nextIndex)} 
               aria-label="Next Service"
-              className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-blue-600 hover:text-white transition-colors shadow-sm"
+              className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-[#012E34] hover:text-white transition-colors shadow-sm"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -244,7 +244,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   <h4 className="text-base font-bold text-slate-800 line-clamp-2">{leftItem.title}</h4>
                   <p className="text-xs text-slate-500 mt-2 line-clamp-3">"{leftItem.tagline}"</p>
                 </div>
-                <div className="text-xs text-blue-600 font-bold mt-4">
+                <div className="text-xs text-cyan-600 font-bold mt-4">
                   {currentIndex === 0 ? total : currentIndex} / {total}
                 </div>
               </div>
@@ -252,10 +252,10 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
 
             {/* KARTU TENGAH (UTAMA & TAJAM) */}
             <div className="lg:col-span-6 z-20 transform scale-100 transition-all duration-700">
-              <div className="bg-white rounded-3xl border-2 border-blue-600 ring-4 ring-blue-500/10 shadow-2xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden relative">
+              <div className="bg-white rounded-3xl border-2 border-[#012E34] ring-4 ring-cyan-500/15 shadow-2xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden relative">
                 
                 <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-                  <span className="px-3.5 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-black uppercase tracking-wider">
+                  <span className="px-3.5 py-1 rounded-full bg-cyan-50 text-[#012E34] text-xs font-black uppercase tracking-wider">
                     {centerItem.category}
                   </span>
                   <div className="flex items-center space-x-1.5 text-emerald-600 text-xs font-bold">
@@ -270,11 +270,11 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
 
                 <div className="space-y-3">
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900">{centerItem.title}</h3>
-                  <p className="text-sm sm:text-base font-semibold text-blue-700">"{centerItem.tagline}"</p>
+                  <p className="text-sm sm:text-base font-semibold text-[#012E34]">"{centerItem.tagline}"</p>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{centerItem.description}</p>
 
                   <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">
-                    <strong className="text-blue-700 font-bold block mb-1">
+                    <strong className="text-[#012E34] font-bold block mb-1">
                       {getTranslation(currentLang, UI_TEXT.services.commoditiesLabel)}
                     </strong>
                     {centerItem.commodities}
@@ -298,7 +298,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                 <div className="pt-6 mt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                   <button
                     onClick={() => onSelectService(centerItem.title)}
-                    className="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-blue-600/20 transition-all hover:scale-105 active:scale-95"
+                    className="inline-flex items-center space-x-2 bg-[#012E34] hover:bg-[#011C20] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-cyan-900/25 transition-all hover:scale-105 active:scale-95"
                   >
                     <span>{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}</span>
                     <ArrowUpRight className="w-4 h-4 stroke-[2.2]" />
@@ -327,7 +327,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   <h4 className="text-base font-bold text-slate-800 line-clamp-2">{rightItem.title}</h4>
                   <p className="text-xs text-slate-500 mt-2 line-clamp-3">"{rightItem.tagline}"</p>
                 </div>
-                <div className="text-xs text-blue-600 font-bold mt-4 flex items-center justify-end">
+                <div className="text-xs text-cyan-600 font-bold mt-4 flex items-center justify-end">
                   {nextIndex + 1} / {total}
                 </div>
               </div>
@@ -343,7 +343,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               key={idx}
               onClick={() => setCurrentIndex(idx)}
               className={`h-2 rounded-full transition-all ${
-                idx === currentIndex ? 'w-8 bg-blue-600' : 'w-2 bg-slate-300 hover:bg-slate-400'
+                idx === currentIndex ? 'w-8 bg-[#012E34]' : 'w-2 bg-slate-300 hover:bg-slate-400'
               }`}
               aria-label={`Slide ${idx + 1}`}
             />

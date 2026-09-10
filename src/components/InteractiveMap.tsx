@@ -416,13 +416,13 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
   };
 
   return (
-    <section id="network" className="py-24 bg-slate-950 text-white relative overflow-hidden">
+    <section id="network" className="py-24 bg-[#011C20] text-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Bersih & Modern */}
         <div className="max-w-3xl mb-10">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-900/60 text-sky-300 text-xs font-bold uppercase tracking-wider mb-3 border border-sky-500/30">
-            <Compass className="w-3.5 h-3.5 text-sky-400" />
+          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#012E34]/80 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-3 border border-sky-500/30">
+            <Compass className="w-3.5 h-3.5 text-cyan-400" />
             <span>Global Route & Schedule Directory</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
@@ -434,13 +434,13 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
         </div>
 
         {/* Tab Switcher: Laut vs Udara */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-8 border-b border-slate-800 mb-8">
-          <div className="grid grid-cols-2 p-1.5 rounded-2xl bg-slate-900 border border-slate-800 max-w-md w-full">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-8 border-b border-cyan-900/40 mb-8">
+          <div className="grid grid-cols-2 p-1.5 rounded-2xl bg-slate-900 border border-cyan-900/40 max-w-md w-full">
             <button
               onClick={() => { setActiveTransportMode('sea'); setSelectedRegion('Semua'); }}
               className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-black transition-all ${
                 activeTransportMode === 'sea'
-                  ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/30'
+                  ? 'bg-[#012E34] text-white shadow-lg shadow-cyan-900/30'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -451,7 +451,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
               onClick={() => { setActiveTransportMode('air'); setSelectedRegion('Semua'); }}
               className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-black transition-all ${
                 activeTransportMode === 'air'
-                  ? 'bg-sky-600 text-white shadow-lg shadow-sky-500/30'
+                  ? 'bg-cyan-700 text-white shadow-lg shadow-cyan-600/30'
                   : 'text-slate-400 hover:text-white'
               }`}
             >
@@ -468,7 +468,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder={activeTransportMode === 'sea' ? 'Cari pelabuhan, negara, atau carrier...' : 'Cari bandara asal atau maskapai kargo...'}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-cyan-900/40 bg-slate-900 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
             />
           </div>
         </div>
@@ -482,7 +482,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
               className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
                 selectedRegion === reg
                   ? 'bg-white text-slate-950 font-black shadow-md'
-                  : 'bg-slate-900 text-slate-400 border border-slate-800 hover:border-slate-700'
+                  : 'bg-slate-900 text-slate-400 border border-cyan-900/40 hover:border-cyan-900/40'
               }`}
             >
               {reg === 'Semua' ? 'Seluruh Region Global' : reg}
@@ -493,11 +493,11 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
         {/* --- TABEL 1: JALUR LAUT (OCEAN FREIGHT CARRIER MATRIX) --- */}
         {activeTransportMode === 'sea' && (
           <div className="space-y-6">
-            <div className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="bg-[#011C20]/90 border border-cyan-900/40 rounded-3xl overflow-hidden shadow-2xl">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase tracking-wider font-extrabold text-[11px]">
+                    <tr className="bg-[#011C20]/80 border-b border-cyan-900/40 text-slate-400 uppercase tracking-wider font-extrabold text-[11px]">
                       <th className="py-4 px-6">Region</th>
                       <th className="py-4 px-6">Pelabuhan Asal</th>
                       <th className="py-4 px-6 text-emerald-400">Preferred Carrier (FCL)</th>
@@ -510,7 +510,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
                     {filteredOceanRoutes.map((route, idx) => (
                       <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
                         <td className="py-4 px-6 font-bold text-slate-400">
-                          <span className="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-[10px]">
+                          <span className="px-2.5 py-1 rounded bg-[#011C20] border border-cyan-900/40 text-[10px]">
                             {route.region}
                           </span>
                         </td>
@@ -524,8 +524,8 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
                           </div>
                         </td>
                         <td className="py-4 px-6 text-center">
-                          <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-950/80 border border-blue-500/30 text-sky-300 font-black text-xs">
-                            <Clock className="w-3.5 h-3.5 text-sky-400" />
+                          <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#012E34] border border-cyan-500/30 text-cyan-300 font-black text-xs">
+                            <Clock className="w-3.5 h-3.5 text-cyan-400" />
                             <span>{route.leadTime}</span>
                           </span>
                         </td>
@@ -541,7 +541,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
                             </p>
                             <button
                               onClick={() => handleInquiryRoute(route.origin, route.preferredCarrier, 'Laut (FCL)', route.leadTime)}
-                              className="inline-flex items-center space-x-1.5 text-xs font-bold text-sky-400 hover:text-sky-300 transition-colors"
+                              className="inline-flex items-center space-x-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                             >
                               <span>Konsultasi Slot Kapal</span>
                               <ArrowRight className="w-3.5 h-3.5" />
@@ -562,14 +562,14 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
         {/* --- TABEL 2: JALUR UDARA (AIR FREIGHT CARRIER & AIRLINES MATRIX) --- */}
         {activeTransportMode === 'air' && (
           <div className="space-y-6">
-            <div className="bg-slate-900/90 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl">
+            <div className="bg-[#011C20]/90 border border-cyan-900/40 rounded-3xl overflow-hidden shadow-2xl">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs border-collapse">
                   <thead>
-                    <tr className="bg-slate-950/80 border-b border-slate-800 text-slate-400 uppercase tracking-wider font-extrabold text-[11px]">
+                    <tr className="bg-[#011C20]/80 border-b border-cyan-900/40 text-slate-400 uppercase tracking-wider font-extrabold text-[11px]">
                       <th className="py-4 px-6">Region</th>
                       <th className="py-4 px-6">Bandara Asal</th>
-                      <th className="py-4 px-6 text-sky-400">Rekomendasi Maskapai Utama</th>
+                      <th className="py-4 px-6 text-cyan-400">Rekomendasi Maskapai Utama</th>
                       <th className="py-4 px-6 text-center">Lead Time (Air Cargo)</th>
                       <th className="py-4 px-6 text-slate-300">Available Airlines Cadangan</th>
                       <th className="py-4 px-6">Tipe Penerbangan & Justifikasi</th>
@@ -579,13 +579,13 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
                     {filteredAirRoutes.map((route, idx) => (
                       <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
                         <td className="py-4 px-6 font-bold text-slate-400">
-                          <span className="px-2.5 py-1 rounded bg-slate-950 border border-slate-800 text-[10px]">
+                          <span className="px-2.5 py-1 rounded bg-[#011C20] border border-cyan-900/40 text-[10px]">
                             {route.region}
                           </span>
                         </td>
                         <td className="py-4 px-6">
                           <strong className="text-white text-sm block">{route.origin}</strong>
-                          <span className="text-[11px] text-sky-400 font-mono font-bold">({route.airportCode})</span>
+                          <span className="text-[11px] text-cyan-400 font-mono font-bold">({route.airportCode})</span>
                         </td>
                         <td className="py-4 px-6">
                           <div className="p-2.5 rounded-xl bg-sky-950/40 border border-sky-500/30 text-sky-200 font-extrabold text-xs">
@@ -599,7 +599,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
                           </span>
                         </td>
                         <td className="py-4 px-6">
-                          <div className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 text-slate-300 font-medium text-xs">
+                          <div className="p-2.5 rounded-xl bg-[#011C20] border border-cyan-900/40 text-slate-300 font-medium text-xs">
                             {route.availableAirlines}
                           </div>
                         </td>
@@ -613,7 +613,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
                             </p>
                             <button
                               onClick={() => handleInquiryRoute(route.origin + ` (${route.airportCode})`, route.recommendedAirline, 'Udara (Air Cargo)', route.leadTime)}
-                              className="inline-flex items-center space-x-1.5 text-xs font-bold text-sky-400 hover:text-sky-300 transition-colors"
+                              className="inline-flex items-center space-x-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
                             >
                               <span>Booking Air Space / AWB</span>
                               <ArrowRight className="w-3.5 h-3.5" />
@@ -628,10 +628,10 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
             </div>
 
             {/* Kotak Informasi Layanan Kargo Udara Prioritas */}
-            <div className="p-5 bg-sky-950/30 border border-sky-500/40 rounded-2xl flex items-start space-x-3.5 text-xs text-sky-200">
-              <Info className="w-5 h-5 text-sky-400 flex-shrink-0 mt-0.5" />
+            <div className="p-5 bg-[#012E34]/40 border border-cyan-500/40 rounded-2xl flex items-start space-x-3.5 text-xs text-sky-200">
+              <Info className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
               <div className="leading-relaxed">
-                <strong className="text-sky-300 font-extrabold block text-sm mb-1">
+                <strong className="text-cyan-300 font-extrabold block text-sm mb-1">
                   Konektivitas Kargo Udara Ekspres Gaek Freight:
                 </strong>
                 Seluruh maskapai yang tercantum memiliki perjanjian kontrak ruang langsung (direct space contract) dan terhubung dengan sistem clearance cepat bandara internasional Soekarno-Hatta (CGK), Juanda (SUB), dan Ahmad Yani (SRG) untuk kargo berprioritas kritis (*time-sensitive cargo*).

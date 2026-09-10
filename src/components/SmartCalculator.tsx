@@ -160,7 +160,7 @@ Terima kasih.`;
         
         {/* Header Bersih & Ringkas */}
         <div className="max-w-3xl mb-10">
-          <span className="text-xs font-black uppercase tracking-widest text-blue-600 block mb-2">
+          <span className="text-xs font-black uppercase tracking-widest text-cyan-600 block mb-2">
             Smart Dispatch & Volumetric Engine
           </span>
           <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
@@ -187,7 +187,7 @@ Terima kasih.`;
                     onClick={() => setShippingMode('ocean')}
                     className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all ${
                       shippingMode === 'ocean'
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                        ? 'bg-[#012E34] text-white border-[#012E34] shadow-md shadow-cyan-900/25'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                     }`}
                   >
@@ -198,7 +198,7 @@ Terima kasih.`;
                     onClick={() => setShippingMode('air')}
                     className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all ${
                       shippingMode === 'air'
-                        ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/20'
+                        ? 'bg-[#012E34] text-white border-[#012E34] shadow-md shadow-cyan-900/25'
                         : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
                     }`}
                   >
@@ -227,7 +227,7 @@ Terima kasih.`;
                     </button>
                   ))}
                 </div>
-                <span className="text-[10px] text-blue-700 font-medium block mt-1">
+                <span className="text-[10px] text-cyan-700 font-medium block mt-1">
                   * Terpilih: {selectedIncoterm} — {INCOTERMS_LIST.find(i => i.code === selectedIncoterm)?.desc}
                 </span>
               </div>
@@ -245,7 +245,7 @@ Terima kasih.`;
                   value={originInput}
                   onChange={(e) => setOriginInput(e.target.value)}
                   placeholder="Ketik alamat pabrik, kota, atau kawasan industri..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                 />
 
                 {/* Quick City Chips */}
@@ -255,7 +255,7 @@ Terima kasih.`;
                     <button
                       key={city}
                       onClick={() => setOriginInput(city)}
-                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 text-xs font-bold border border-slate-200 transition-colors"
+                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 text-slate-700 hover:text-cyan-700 text-xs font-bold border border-slate-200 transition-colors"
                     >
                       {city}
                     </button>
@@ -279,7 +279,7 @@ Terima kasih.`;
                 <select
                   value={destinationPort}
                   onChange={(e) => setDestinationPort(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none font-medium"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-500 focus:outline-none font-medium"
                 >
                   <option value="Jakarta (Tanjung Priok / IDJKT)">Jakarta — Pelabuhan Tanjung Priok (IDJKT)</option>
                   <option value="Semarang (Tanjung Emas / IDSRG)">Semarang — Pelabuhan Tanjung Emas (IDSRG)</option>
@@ -316,7 +316,7 @@ Terima kasih.`;
                     min="1"
                     value={lengthCm}
                     onChange={(e) => setLengthCm(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -326,7 +326,7 @@ Terima kasih.`;
                     min="1"
                     value={widthCm}
                     onChange={(e) => setWidthCm(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -336,7 +336,7 @@ Terima kasih.`;
                     min="1"
                     value={heightCm}
                     onChange={(e) => setHeightCm(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -346,7 +346,7 @@ Terima kasih.`;
                     min="1"
                     value={weightKg}
                     onChange={(e) => setWeightKg(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   />
                 </div>
                 <div>
@@ -356,7 +356,7 @@ Terima kasih.`;
                     min="1"
                     value={quantity}
                     onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-blue-600 focus:outline-none"
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
                   />
                 </div>
               </div>
@@ -365,9 +365,9 @@ Terima kasih.`;
           </div>
 
           {/* Kolom Kanan: Dashboard Hasil Real-Time & Rekomendasi Cerdas */}
-          <div className="lg:col-span-5 bg-white p-6 sm:p-10 rounded-3xl border-2 border-blue-600 shadow-2xl space-y-6">
+          <div className="lg:col-span-5 bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#012E34] shadow-2xl space-y-6">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <span className="text-xs font-black uppercase tracking-wider text-blue-700">
+              <span className="text-xs font-black uppercase tracking-wider text-cyan-700">
                 Live Calculation Output
               </span>
               <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
@@ -393,7 +393,7 @@ Terima kasih.`;
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
               <div className="flex items-center justify-between text-xs font-bold text-slate-700">
                 <span>Kapasitas Kontainer 20ft:</span>
-                <span className="text-blue-600 font-extrabold">{containerUsagePercent}% Terpakai</span>
+                <span className="text-cyan-600 font-extrabold">{containerUsagePercent}% Terpakai</span>
               </div>
               <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                 <div 
@@ -413,14 +413,14 @@ Terima kasih.`;
               </span>
 
               {/* Rekomendasi Utama */}
-              <div className="p-3.5 bg-blue-50/80 border border-blue-200 rounded-2xl">
+              <div className="p-3.5 bg-cyan-50/80 border border-cyan-200 rounded-2xl">
                 <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-black text-blue-950">{recommendations.primary.title}</span>
-                  <span className="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                  <span className="text-sm font-black text-[#012E34]">{recommendations.primary.title}</span>
+                  <span className="text-[10px] font-bold text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded">
                     {recommendations.primary.badge}
                   </span>
                 </div>
-                <p className="text-xs text-blue-800 leading-relaxed">
+                <p className="text-xs text-cyan-800 leading-relaxed">
                   {recommendations.primary.desc}
                 </p>
               </div>
@@ -442,7 +442,7 @@ Terima kasih.`;
             {/* Evaluasi Dasar Tagihan (Chargeable Rule) */}
             <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs space-y-1">
               <strong className="text-slate-900 block">Dasar Tagihan Resmi (Chargeable Weight):</strong>
-              <div className="text-blue-700 font-extrabold text-sm">
+              <div className="text-cyan-700 font-extrabold text-sm">
                 {shippingMode === 'ocean' ? `${oceanChargeableBasis.toFixed(3)} CBM` : `${airChargeableBasis} KG`}
               </div>
               <span className="text-[11px] text-slate-500 block">
@@ -456,7 +456,7 @@ Terima kasih.`;
             <div className="space-y-3 pt-2">
               <button
                 onClick={handleSendWhatsApp}
-                className="w-full flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white py-4 px-6 rounded-xl font-bold text-sm transition-all shadow-md shadow-emerald-500/20 hover:scale-[1.01]"
+                className="w-full flex items-center justify-center space-x-2 bg-[#012E34] hover:bg-[#011C20] text-white py-4 px-6 rounded-xl font-bold text-sm transition-all shadow-md shadow-cyan-900/25 hover:scale-[1.01]"
               >
                 <MessageCircle className="w-4 h-4" />
                 <span>Kirim Rincian & Incoterms ke WhatsApp</span>
