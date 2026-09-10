@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 180" width="780" height="180" fill="none">
+  <!-- GAEKS Wordmark -->
+  <g fill="#012E34">
+    <!-- G -->
+    <path d="M 140,40 C 140,25 125,12 105,12 L 45,12 C 25,12 10,25 10,40 L 10,95 C 10,110 25,122 45,122 L 105,122 C 125,122 140,110 140,95 L 140,68 L 75,68 L 75,86 L 118,86 L 118,95 C 118,100 110,104 102,104 L 48,104 C 40,104 32,100 32,95 L 32,40 C 32,34 40,30 48,30 L 102,30 C 110,30 118,34 118,40 Z" />
+
+    <!-- A -->
+    <path d="M 235,122 L 260,122 L 210,12 L 185,12 L 135,122 L 160,122 L 175,88 L 220,88 Z M 184,68 L 198,34 L 211,68 Z" />
+
+    <!-- K -->
+    <path d="M 490,12 L 468,12 L 468,122 L 490,122 L 490,78 L 545,122 L 575,122 L 512,70 L 570,12 L 540,12 L 490,62 Z" />
+
+    <!-- S -->
+    <path d="M 730,40 C 730,24 715,12 695,12 L 635,12 C 615,12 600,24 600,40 L 600,55 C 600,70 615,80 635,84 L 690,92 C 700,94 706,97 706,102 L 706,105 C 706,110 698,114 690,114 L 635,114 C 625,114 618,110 618,105 L 596,105 C 596,120 610,122 635,122 L 695,122 C 715,122 730,110 730,95 L 730,80 C 730,65 715,55 695,51 L 640,43 C 630,41 624,38 624,33 L 624,30 C 624,25 632,21 640,21 L 690,21 C 700,21 708,25 708,30 Z" />
+  </g>
+
+  <!-- Simbol E Tengah -->
+  <g transform="translate(290, 8)">
+    <polygon points="15,4 165,4 135,34 45,34" fill="#012E34" />
+    <g fill="#00A3E0">
+      <rect x="15,44" width="100" height="20" rx="1.5" />
+      <path d="M 110,32 L 142,54 L 110,76 L 120,54 Z" />
+      <path d="M 138,50 C 150,50 168,52 168,54 C 168,56 150,58 138,58 Z" />
+    </g>
+    <polygon points="15,104 165,104 135,74 45,74" fill="#012E34" />
+  </g>
+
+  <!-- Garis Sayap Cyan Bawah dengan Lingkaran Tengah -->
+  <path d="M 10,140 L 350,136 L 350,144 Z" fill="#00A3E0" />
+  <circle cx="390" cy="140" r="10" fill="#00A3E0" />
+  <path d="M 430,136 L 770,140 L 430,144 Z" fill="#00A3E0" />
+
+  <!-- Subtitle GLOBAL ANDALAN EKSPRESS -->
+  <text x="390" y="170" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="#012E34" letter-spacing="9" text-anchor="middle">
+    GLOBAL ANDALAN EKSPRESS
+  </text>
+</svg>

@@ -1,9 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 160" width="240" height="160" fill="none">
+  <!-- Baris Atas Jajaran Genjang Teal Gelap #012E34 -->
   <polygon points="25,20 225,20 185,58 65,58" fill="#012E34" />
+  
+  <!-- Panah Pesawat Cyan Dinamis #00A3E0 / #06B6D4 -->
   <g fill="#00A3E0">
     <rect x="25" y="68" width="135" height="24" rx="2" />
     <path d="M 155,56 L 195,80 L 155,104 L 168,80 Z" />
     <path d="M 190,75 C 205,75 228,78 228,80 C 228,82 205,85 190,85 Z" />
   </g>
+  
+  <!-- Baris Bawah Jajaran Genjang Teal Gelap #012E34 -->
   <polygon points="25,140 225,140 185,102 65,102" fill="#012E34" />
 </svg>
