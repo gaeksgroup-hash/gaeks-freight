@@ -135,7 +135,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
                 {/* 4. Logo Asli WCA World (SVG Lokal Permanen) */}
                 <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-[#011C20]/90 border border-cyan-900/40 hover:border-amber-400/60 transition-colors shadow-sm">
                   <img 
-                    src="/logos/gaek-full.png" 
+                    src="/logos/gaek-full.png?v=3" 
                     alt="WCA World Member" 
                     className="h-6 sm:h-7 w-auto object-contain"
                     loading="eager"
