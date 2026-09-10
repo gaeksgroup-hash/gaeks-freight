@@ -8,7 +8,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Oceanic Teal / Dark Petrol Teal Resmi
+        // Oceanic Teal / Dark Petrol Teal Resmi (#012E34)
         oceanic: {
           DEFAULT: '#012E34',
           50: '#F0FDFA',
@@ -23,7 +23,6 @@ export default {
           900: '#011C20',
           950: '#011417',
         },
-        // Pemetaan Otomatis Kelas Blue ke Skala Oceanic Teal & Cyan
         blue: {
           50: '#F0FDFA',
           100: '#CCFBF1',
@@ -37,8 +36,7 @@ export default {
           900: '#011C20',
           950: '#011417',
         },
-        // Pemetaan Kelas Sky ke Cyan Murni
-        sky: {
+        cyan: {
           50: '#ECFEFF',
           100: '#CFFAFE',
           200: '#A5F3FC',

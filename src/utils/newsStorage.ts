@@ -1,10 +1,58 @@
 // filepath: /src/utils/newsStorage.ts
 import { ArticleItem, NewsletterSubscriber } from '../types/freight';
 
-const STORAGE_KEY_ARTICLES = 'gaeks_articles_v14_full';
+const STORAGE_KEY_ARTICLES = 'gaeks_articles_v15_full';
 const STORAGE_KEY_SUBSCRIBERS = 'gaeks_subscribers';
 
 export const DEFAULT_ARTICLES: ArticleItem[] = [
+  {
+  "id": "art-dolphin-2026",
+  "title": "Disrupsi Logistik Maritim Global Akibat Topan Dolphin di Pesisir Timur Tiongkok: 2,4 Juta TEU Tertahan, Lonjakan Blank Sailing, dan Dampaknya ke Industri Manufaktur Indonesia",
+  "title_en": "Global Maritime Supply Chain Disruptions from Typhoon Dolphin Across Eastern China: 2.4 Million TEUs Stranded, Blank Sailing Spikes, and Impacts on Indonesian Manufacturing",
+  "title_zh": "超强台风“海豚”重创华东港口供应链：240万TEU集装箱积压滞港、空班潮加剧及对印尼制造业冲击全解析",
+  "slug": "disrupsi-logistik-maritim-topan-dolphin-china-pelabuhan-tertunda",
+  "category": "Rute Maritim",
+  "category_en": "Maritime Routes",
+  "category_zh": "海运航线动态",
+  "publishedDate": "2026-09-08",
+  "readTime": "12 min read",
+  "author": "Maritime Research Bureau & Trade Analyst",
+  "sources": [
+    "Shanghai Shipping Exchange (SCFI)",
+    "Ningbo-Zhoushan Port Authority Operational Advisory",
+    "Kuehne+Nagel Seaexplorer Disruption Index",
+    "The Loadstar & Lloyd's List Intelligence"
+  ],
+  "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+  "excerpt": "Hantaman Topan Dolphin di pelabuhan raksasa Shanghai, Ningbo-Zhoushan, dan sekitarnya melumpuhkan operasional terminal laut dalam, menyebabkan penumpukan lebih dari 2,4 juta TEU kargo ekspor-impor, lonjakan waktu tunggu sandar hingga 6 hari, dan ancaman kelangkaan bahan baku industri di Indonesia akibat gelombang blank sailing pelayaran global.",
+  "excerpt_en": "Typhoon Dolphin's landfall across Shanghai and Ningbo-Zhoushan crippled deep-sea berths, stranding over 2.4 million TEUs of containerized cargo, extending vessel waiting times up to 6 days, and triggering raw material shortages across Indonesian industrial belts due to emergency blank sailings.",
+  "excerpt_zh": "超强台风“海豚”袭击上海及宁波舟山港区导致深水码头作业大面积中断，超240万TEU货柜严重积压，船舶靠泊延误超6天，并引发直航印尼航线密集跳港与空班。",
+  "content": "Pusat pusaran badai tropis Topan Dolphin yang menerjang pesisir timur Tiongkok pada akhir Agustus hingga awal September 2026 memicu disrupsi rantai pasok maritim terbesar di kawasan Pasifik Barat sepanjang kuartal ketiga tahun ini. Dengan kecepatan angin konstan melampaui 145 km/jam dan gelombang pasang setinggi 8 meter, otoritas maritim setempat mengaktifkan protokol darurat maritim Level 1 yang mewajibkan penutupan total dermaga peti kemas di kompleks pelabuhan raksasa Shanghai (termasuk terminal laut dalam Yangshan), Ningbo-Zhoushan, dan pelabuhan sekitarnya selama lebih dari 72 jam berturut-turut.\n\nDampak Masif Terhadap Arus Kontainer dan Jadwal Kapal:\nData analitik maritim global mencatat lebih dari 2,4 juta TEU (Twenty-foot Equivalent Units) kargo ekspor dan impor tertahan di lapangan penumpukan serta kapal-kapal yang terpaksa berlabuh jangkar di perairan lepas muara Sungai Yangtze dan Teluk Hangzhou. Waktu tunggu sandar kapal (waiting time at berth) yang dalam kondisi normal berkisar antara 16 hingga 24 jam melonjak tajam menjadi 5,6 hingga 7 hari kerja pasca-pembukaan bertahap dermaga. \n\nKondisi penumpukan armada kapal induk (vessel bunching) ini memaksa konsorsium pelayaran dunia menerapkan kebijakan darurat berupa pemotongan rotasi pelayaran (blank sailings) dan pelewatan pelabuhan terjadwal (port omissions). Rute pelayaran langsung (direct call) maupun rute pengumpan (feeder) menuju kawasan Asia Tenggara mengalami penundaan jadwal keberangkatan rata-rata 10 hingga 18 hari dari pelabuhan asal.\n\nImplikasi Langsung Bagi Sektor Industri dan Manufaktur Indonesia:\nBagi pelaku industri manufaktur di Indonesia yang mengandalkan kontinuitas pasokan bahan baku dari kawasan industri Shanghai, Jiangsu, dan Zhejiang, keterlambatan masif ini menimbulkan tekanan ganda:\n1. Penipisan Persediaan Penyangga (Safety Buffer Stock): Pabrik-pabrik tekstil di Jawa Barat, perakitan elektronik di Cikarang dan Karawang, serta industri plastik di Surabaya menghadapi risiko perlambatan lini produksi akibat keterlambatan pasokan resin polimer, kain lembaran, dan komponen mekanik presisi.\n2. Akumulasi Biaya Tambahan (Congestion Surcharge): Sejumlah agen pelayaran internasional mulai memberlakukan penyesuaian biaya operasional berupa Port Congestion Surcharge (PCS) sebesar USD 150 hingga USD 300 per kontainer untuk muatan yang terjebak dalam antrean dermaga Tiongkok Timur.\n3. Kenaikan Tarif Angkutan Spot Pasca-Badai: Terbatasnya kapasitas ruang kapal yang aktif memicu perebutan slot kontainer secara agresif di pasar spot Asia-Indonesia, mendorong kenaikan indeks tarif SCFI rute Tiongkok-Jakarta hingga 18% dalam dua pekan terakhir.\n\nRekomendasi Solusi dan Mitigasi Taktis Gaek Freight:\n1. Rerouting Muatan ke Koridor Pelabuhan Tiongkok Selatan: Pelaku usaha disarankan segera mengalihkan titik muat barang ke pelabuhan Shenzhen (Yantian dan Shekou) atau Nansha di Guangzhou yang beroperasi normal di luar lintasan utama badai.\n2. Pemantauan Posisi Kapal Melalui Sistem AIS Real-Time: Memanfaatkan sistem telemetri pelacakan posisi kapal induk secara langsung untuk mengalkulasi estimasi waktu tiba (ETA) yang realistis di Pelabuhan Tanjung Priok, Tanjung Emas, dan Tanjung Perak.\n3. Percepatan Dokumen Pre-Clearance Pabean: Menyiapkan kelengkapan draft PIB, Laporan Surveyor (LS), dan e-Form E secara tervalidasi sebelum kapal tiba guna memastikan penerbitan SPPB instan di portal CEISA 4.0 Bea Cukai.\n4. Opsi Cargo Splitting ke Moda Udara Prioritas: Memindahkan komponen suku cadang vital bernilai kritis ke penerbangan kargo udara terjadwal guna mencegah terhentinya operasional perakitan pabrik nasional."
+},
+  {
+  "id": "art-krakatau-2026",
+  "title": "Erupsi Gunung Anak Krakatau Picu Penutupan Sementara Bandara Soekarno-Hatta dan Sejumlah Bandara Utama: Mitigasi Kargo Udara Melalui Hub Kertajati dan Koridor Trucking Berikat",
+  "title_en": "Eruption of Mount Anak Krakatau Triggers Temporary Closures at Soekarno-Hatta and Regional Airports: Air Cargo Mitigation via Kertajati Hub and Bonded Trucking Corridors",
+  "title_zh": "印尼喀拉喀托之子火山喷发致雅加达及周边机场紧急关闭：航空货运改降西爪哇客达扎蒂机场与保税卡车应急调度指南",
+  "slug": "erupsi-gunung-anak-krakatau-penutupan-bandara-mitigasi-kargo-udara",
+  "category": "Kargo Khusus",
+  "category_en": "Specialized Cargo",
+  "category_zh": "特种物流服务",
+  "publishedDate": "2026-09-09",
+  "readTime": "11 min read",
+  "author": "Aviation Logistics & Safety Bureau",
+  "sources": [
+    "Badan Meteorologi, Klimatologi, dan Geofisika (BMKG)",
+    "Stasiun Meteorologi Kelas I Soekarno-Hatta (Gedung 725 AMOS)",
+    "AirNav Indonesia NOTAM Operations Center",
+    "Direktorat Jenderal Perhubungan Udara Kementerian Perhubungan RI"
+  ],
+  "imageUrl": "https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=1200&q=80",
+  "excerpt": "Sebaran abu vulkanik pekat dari erupsi intensif Gunung Anak Krakatau di Selat Sunda memicu penutupan operasional sementara di Bandara Soekarno-Hatta (CGK), Halim Perdanakusuma (HLP), dan Radin Inten II (TKG) berdasarkan NOTAM AirNav Indonesia, menuntut pengalihan cepat armada kargo udara ke Bandara Kertajati (KJT) dan aktivasi koridor trucking berikat darat.",
+  "excerpt_en": "Dense volcanic ash plumes from Mount Anak Krakatau in the Sunda Strait prompted temporary NOTAM closures across Soekarno-Hatta (CGK), Halim Perdanakusuma (HLP), and Radin Inten II (TKG), requiring urgent airfreight diversions to Kertajati International Airport (KJT) and emergency bonded trucking corridors.",
+  "excerpt_zh": "巽他海峡喀拉喀托之子火山剧烈喷发导致火山灰扩散，印尼航行通告紧急关闭雅加达苏哈机场等主要枢纽，迫使航空急件货运紧急分流至客达扎蒂机场并通过保税监管卡车陆运中转。",
+  "content": "Aktivitas vulkanik Gunung Anak Krakatau di Selat Sunda yang mengalami peningkatan erupsi eksplosif memuntahkan kolom abu vulkanik setinggi ribuan meter ke atmosfer. Berdasarkan hasil analisis citra satelit cuaca BMKG dan uji petik fisik (paper test) yang dilakukan secara berkala oleh Stasiun Meteorologi Kelas I Soekarno-Hatta di Gedung 725 AMOS, partikel abu vulkanik yang mengandung silika tajam terkonfirmasi menyebar ke arah timur dan timur laut melintasi koridor ruang udara Banten, DKI Jakarta, hingga sebagian pesisir barat Jawa Barat.\n\nPenerbitan NOTAM dan Penghentian Sementara Operasional Penerbangan:\nDemi menjamin keselamatan penerbangan sipil dari bahaya abrasi kaca kokpit dan risiko mati mesin turbin akibat lelehan abu silika, Lembaga Penyelenggara Pelayanan Navigasi Penerbangan Indonesia (AirNav Indonesia) menerbitkan serangkaian Notice to Airmen (NOTAM) darurat. Kebijakan ini menghentikan sementara seluruh operasional lepas landas dan pendaratan di sedikitnya 8 bandara utama, termasuk Bandara Internasional Soekarno-Hatta (CGK), Bandara Halim Perdanakusuma (HLP), dan Bandara Radin Inten II Lampung (TKG).\n\nPenutupan operasional yang berlangsung selama 24 hingga 36 jam ini berdampak langsung pada lebih dari 200 penerbangan komersial dan menyebabkan tertahannya ratusan ton muatan kargo udara berprioritas tinggi di terminal lini 1 bandara.\n\nTantangan Kritis Rantai Pasok Kargo Udara:\n1. Komoditas Berisiko Rusak (Perishable Goods): Pengiriman hasil laut segar (fresh tuna, kepiting hidup, udang) dan komoditas pertanian ekspor menghadapi risiko penurunan mutu biologis yang drastis apabila tidak segera mendapatkan penanganan pendinginan berkelanjutan di area kargo berpendingin.\n2. Pasokan Farmasi dan Vaksin: Kargo vaksin dan reagen laboratorium berstandar Good Distribution Practice (GDP) yang membutuhkan kestabilan temperatur antara 2°C hingga 8°C harus segera diamankan dengan genset cadangan atau dipindahkan ke fasilitas cold chain transit berpendingin terdekat.\n3. Suku Cadang Mesin Industri Mendesak (AOG & Plant Shutdown Spares): Komponen mesin pabrik perakitan yang dikirim via layanan kargo udara kilat (Next-Flight-Out) terhenti, mengancam operasional sejumlah fasilitas industri di Jabodetabek dan Banten.\n\nSkema Mitigasi Multimodal Gaek Freight:\n1. Pengalihan Rute Pendaratan Pesawat Kargo (Air Cargo Diversion): Bekerja sama dengan operator maskapai kargo sewaan (freighter charters), muatan kargo udara internasional yang sedang dalam penerbangan dialihkan mendarat di Bandara Internasional Jawa Barat Kertajati (KJT) di Majalengka atau Bandara Internasional Yogyakarta (YIA) yang dinyatakan bebas dari zona sebaran abu vulkanik.\n2. Penanganan Pabean Lintas Gerbang (Bonded Transshipment): Mengaktifkan mekanisme transit pabean antar-kantor Bea Cukai menggunakan dokumen BC 1.2 untuk memindahkan peti kargo udara dari Bandara Kertajati langsung ke Tempat Penimbunan Berikat (TPB) atau gudang pabrik penerima.\n3. Koridor Trucking Berikat Khusus (Dedicated Bonded Road Transport): Mengerahkan armada truk berpendingin (Reefer Truck) dan truk boks bersegel pabean dengan pengawalan GPS satelit nonstop menyusuri ruas Tol Cileunyi-Sumedang-Dawuan (Cisumdawu) dan Tol Trans-Jawa menuju Jakarta dan Surabaya dengan estimasi tempuh kurang dari 3,5 jam.\n\nKesiapsiagaan protokol darurat multimodal ini membuktikan pentingnya diversifikasi pintu gerbang logistik udara dan integrasi armada darat yang tangguh dalam menghadapi anomali geologis di kepulauan Indonesia."
+},
   {
     "id": "art-1",
     "title": "Badai Topan di Pelabuhan Shanghai & Ningbo: Analisis Kongesti Kapal, Blank Sailing, dan Rantai Pasok Impor Indonesia",
