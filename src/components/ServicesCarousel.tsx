@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
+import { getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export const DETAILED_SERVICES: ServiceDetail[] = [
   {
@@ -141,33 +142,70 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
 ];
 
 export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string) => void; currentLang?: Language }> = ({ onSelectService, currentLang = 'id' }) => {
+  // STATE REAKTIF TERHUBUNG KE ADMIN STORAGE
+  const [servicesList, setServicesList] = useState<ServiceDetail[]>(getStoredServices());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
+  // AUTO-UPDATE REAL-TIME LISTENER
+  useEffect(() => {
+    const reloadServices = () => {
+      setServicesList(getStoredServices());
+    };
+
+    // Muat data awal dan sinkronkan dengan server
+    reloadServices();
+
+    // 1. Tangkap event lokal saat simpan di tab yang sama
+    window.addEventListener(GAEKS_UPDATE_EVENT, reloadServices);
+    // 2. Tangkap event browser storage
+    window.addEventListener('storage', reloadServices);
+
+    // 3. Tangkap event lintas-tab via BroadcastChannel
+    let channel: BroadcastChannel | null = null;
+    try {
+      channel = new BroadcastChannel('gaeks_sync_channel');
+      channel.onmessage = () => reloadServices();
+    } catch (e) {}
+
+    return () => {
+      window.removeEventListener(GAEKS_UPDATE_EVENT, reloadServices);
+      window.removeEventListener('storage', reloadServices);
+      if (channel) channel.close();
+    };
+  }, []);
+
   useEffect(() => {
     if (!isPlaying || isHovered) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % DETAILED_SERVICES.length);
+      setCurrentIndex((prev) => (prev + 1) % (servicesList.length || 1));
     }, 2800);
     return () => clearInterval(interval);
-  }, [isPlaying, isHovered]);
+  }, [isPlaying, isHovered, servicesList.length]);
 
-  const total = DETAILED_SERVICES.length;
+  const total = servicesList.length || 1;
   const prevIndex = (currentIndex - 1 + total) % total;
   const nextIndex = (currentIndex + 1) % total;
 
-  const getLocalized = (svc: ServiceDetail) => ({
-    ...svc,
-    title: currentLang === 'en' ? svc.title_en || svc.title : currentLang === 'zh' ? svc.title_zh || svc.title : svc.title,
-    category: currentLang === 'en' ? svc.category_en || svc.category : currentLang === 'zh' ? svc.category_zh || svc.category : svc.category,
-    tagline: currentLang === 'en' ? svc.tagline_en || svc.tagline : currentLang === 'zh' ? svc.tagline_zh || svc.tagline : svc.tagline,
-    description: currentLang === 'en' ? svc.description_en || svc.description : currentLang === 'zh' ? svc.description_zh || svc.description : svc.description,
-  });
+  const getLocalized = (svc: ServiceDetail) => {
+    if (!svc) return DETAILED_SERVICES[0];
+    return {
+      ...svc,
+      title: currentLang === 'en' ? svc.title_en || svc.title : currentLang === 'zh' ? svc.title_zh || svc.title : svc.title,
+      category: currentLang === 'en' ? svc.category_en || svc.category : currentLang === 'zh' ? svc.category_zh || svc.category : svc.category,
+      tagline: currentLang === 'en' ? svc.tagline_en || svc.tagline : currentLang === 'zh' ? svc.tagline_zh || svc.tagline : svc.tagline,
+      description: currentLang === 'en' ? svc.description_en || svc.description : currentLang === 'zh' ? svc.description_zh || svc.description : svc.description,
+    };
+  };
 
-  const centerItem = getLocalized(DETAILED_SERVICES[currentIndex]);
-  const leftItem = getLocalized(DETAILED_SERVICES[prevIndex]);
-  const rightItem = getLocalized(DETAILED_SERVICES[nextIndex]);
+  const currentItem = servicesList[currentIndex] || servicesList[0] || DETAILED_SERVICES[0];
+  const prevItem = servicesList[prevIndex] || servicesList[0] || DETAILED_SERVICES[0];
+  const nextItem = servicesList[nextIndex] || servicesList[0] || DETAILED_SERVICES[0];
+
+  const centerItem = getLocalized(currentItem);
+  const leftItem = getLocalized(prevItem);
+  const rightItem = getLocalized(nextItem);
 
   return (
     <section 
@@ -224,7 +262,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* --- 3D ETALASE SHOWCASE --- */}
+        {/* --- 3D ETALASE SHOWCASE: REAKTIF FOTO LANGSUNG TERGANTI --- */}
         <div className="relative py-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
@@ -250,7 +288,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            {/* KARTU TENGAH (UTAMA & TAJAM) */}
+            {/* KARTU TENGAH (UTAMA & TAJAM: MEMUAT FOTO BARU SEKETIKA) */}
             <div className="lg:col-span-6 z-20 transform scale-100 transition-all duration-700">
               <div className="bg-white rounded-3xl border-2 border-[#012E34] ring-4 ring-cyan-500/15 shadow-2xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden relative">
                 
@@ -265,7 +303,12 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                 </div>
 
                 <div className="relative h-56 sm:h-64 rounded-2xl overflow-hidden mb-6 bg-slate-100 shadow-md">
-                  <img src={centerItem.imageUrl} alt={centerItem.title} className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
+                  <img 
+                    key={centerItem.imageUrl} 
+                    src={centerItem.imageUrl} 
+                    alt={centerItem.title} 
+                    className="w-full h-full object-cover transition-transform duration-700 hover:scale-105" 
+                  />
                 </div>
 
                 <div className="space-y-3">
@@ -338,7 +381,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
 
         {/* Minimal Indicators */}
         <div className="mt-8 flex justify-center items-center space-x-2">
-          {DETAILED_SERVICES.map((_, idx) => (
+          {servicesList.map((_, idx) => (
             <button
               key={idx}
               onClick={() => setCurrentIndex(idx)}

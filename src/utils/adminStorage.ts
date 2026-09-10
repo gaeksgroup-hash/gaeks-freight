@@ -17,6 +17,7 @@ export interface BrandingSettings {
 const STORAGE_KEY_BRANDING = 'gaeks_branding_v2';
 const STORAGE_KEY_SERVICES = 'gaeks_services_v2';
 const STORAGE_KEY_AUTH = 'gaeks_operator_auth_session';
+export const GAEKS_UPDATE_EVENT = 'gaeks_auto_update_event';
 
 export const DEFAULT_BRANDING: BrandingSettings = {
   faviconUrl: '/favicon.png?v=8',
@@ -28,6 +29,33 @@ export const DEFAULT_BRANDING: BrandingSettings = {
   infoEmail: 'info@gaeks.com',
   companyAddress: 'Tanjung Priok, Jakarta & Banten, Indonesia'
 };
+
+// Pemancar Sinyal Pembaruan Otomatis Real-Time (Antar-Komponen & Antar-Tab)
+export function notifyDataUpdate(): void {
+  try {
+    // 1. Sinyal lokal dalam tab yang sama
+    window.dispatchEvent(new CustomEvent(GAEKS_UPDATE_EVENT, { detail: { timestamp: Date.now() } }));
+    // 2. Sinyal global antar-tab browser via BroadcastChannel
+    const channel = new BroadcastChannel('gaeks_sync_channel');
+    channel.postMessage({ type: 'AUTO_UPDATE', timestamp: Date.now() });
+    channel.close();
+  } catch (e) {}
+
+  // 3. Sinkronisasi ke Server Hostinger di latar belakang
+  try {
+    const payload = {
+      branding: getStoredBranding(),
+      services: getStoredServices(),
+      articles: getStoredArticles(),
+      timestamp: Date.now()
+    };
+    fetch('/api/sync.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).catch(() => {});
+  } catch (e) {}
+}
 
 export function getStoredBranding(): BrandingSettings {
   try {
@@ -41,6 +69,7 @@ export function getStoredBranding(): BrandingSettings {
 
 export function saveStoredBranding(data: BrandingSettings): void {
   localStorage.setItem(STORAGE_KEY_BRANDING, JSON.stringify(data));
+  notifyDataUpdate();
 }
 
 export function getStoredServices(): ServiceDetail[] {
@@ -60,6 +89,7 @@ export function getStoredServices(): ServiceDetail[] {
 
 export function saveStoredServices(services: ServiceDetail[]): void {
   localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(services));
+  notifyDataUpdate();
 }
 
 export function isOperatorLoggedIn(): boolean {
