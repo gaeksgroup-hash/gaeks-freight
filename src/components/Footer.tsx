@@ -86,16 +86,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }
                 <span>info@gaeks.com</span>
               </a>
             </div>
-            <div className="pt-2">
-              <a 
-                href="#admin" 
-                onClick={(e) => handleNav('admin', e)}
-                className="inline-flex items-center space-x-1.5 text-[11px] font-bold text-slate-400 hover:text-cyan-400 bg-[#012E34] px-3 py-1.5 rounded-lg border border-cyan-800/40 transition-colors"
-              >
-                <Lock className="w-3 h-3 text-cyan-400" />
-                <span>Portal CMS Admin</span>
-              </a>
-            </div>
+            
           </div>
 
         </div>

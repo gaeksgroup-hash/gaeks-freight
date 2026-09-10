@@ -1,14 +1,13 @@
 // filepath: /src/App.tsx
 import React, { useState, useEffect } from 'react';
-import { Toaster, toast } from 'sonner';
+import { Toaster } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ServicesCarousel } from './components/ServicesCarousel';
 import { SmartCalculator } from './components/SmartCalculator';
 import { InteractiveMap } from './components/InteractiveMap';
-import { GeographicRouteSimulator } from './components/GeographicRouteSimulator';
 import { NewsPage } from './components/NewsPage';
-import { AdminCMS } from './components/AdminCMS';
+import { OperatorAdmin } from './components/OperatorAdmin';
 import { ContactPage } from './components/ContactPage';
 import { StatsNetwork } from './components/StatsNetwork';
 import { Footer } from './components/Footer';
@@ -19,8 +18,12 @@ export const App: React.FC = () => {
   const [activeArticleId, setActiveArticleId] = useState<string>('');
 
   const getInitialPage = () => {
+    const path = window.location.pathname.replace('/', '').toLowerCase();
     const hash = window.location.hash.replace('#', '').toLowerCase();
-    if (['home', 'services', 'calculator', 'network', 'news', 'contact', 'admin'].includes(hash)) {
+    if (path === 'operator' || hash === 'operator' || hash === 'admin') {
+      return 'operator';
+    }
+    if (['home', 'services', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
       return hash;
     }
     return 'home';
@@ -32,11 +35,15 @@ export const App: React.FC = () => {
   useEffect(() => {
     const handleHashChange = () => {
       const fullHash = window.location.hash.replace('#', '').toLowerCase();
-      if (fullHash.startsWith('news?id=')) {
+      const path = window.location.pathname.replace('/', '').toLowerCase();
+      
+      if (path === 'operator' || fullHash === 'operator' || fullHash === 'admin') {
+        setCurrentPage('operator');
+      } else if (fullHash.startsWith('news?id=')) {
         const articleId = fullHash.includes('id=') ? fullHash.substring(fullHash.indexOf('id=') + 3) : '';
         setActiveArticleId(articleId);
         setCurrentPage('news');
-      } else if (['home', 'services', 'calculator', 'network', 'news', 'contact', 'admin'].includes(fullHash)) {
+      } else if (['home', 'services', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
         setCurrentPage(fullHash);
       } else {
@@ -59,9 +66,6 @@ export const App: React.FC = () => {
   const handleSelectService = (serviceName: string) => {
     setSelectedServiceForQuote(serviceName);
     navigateTo('calculator');
-    toast.info(`Layanan ${serviceName} dipilih`, {
-      description: 'Silakan lanjutkan kalkulasi kargo atau langsung kirim inquiry.'
-    });
   };
 
   const handleOpenArticleDetail = (articleId: string) => {
@@ -70,33 +74,27 @@ export const App: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 font-sans antialiased selection:bg-[#012E34] selection:text-cyan-300">
-      {/* Root Apple-Styled Sonner Toaster */}
-      <Toaster 
-        position="bottom-right" 
-        richColors 
-        closeButton 
-        theme="light"
-        toastOptions={{
-          style: {
-            borderRadius: '16px',
-            backdropFilter: 'blur(20px)',
-            background: 'rgba(255, 255, 255, 0.92)',
-            border: '1px solid rgba(226, 232, 240, 0.8)',
-            boxShadow: '0 12px 36px rgba(15, 23, 42, 0.08)'
-          }
-        }}
-      />
+  const isOperatorPage = currentPage === 'operator';
 
-      <Navbar 
-        currentTab={currentPage} 
-        onNavigate={navigateTo} 
-        currentLang={currentLang} 
-        onSelectLang={setCurrentLang} 
-      />
+  return (
+    <div className="min-h-screen flex flex-col bg-[#011417] text-slate-100 font-sans">
+      <Toaster position="bottom-right" richColors closeButton />
+
+      {/* Sembunyikan Navbar & Footer publik saat berada di halaman Operator Admin */}
+      {!isOperatorPage && (
+        <Navbar 
+          currentTab={currentPage} 
+          onNavigate={navigateTo} 
+          currentLang={currentLang} 
+          onSelectLang={setCurrentLang} 
+        />
+      )}
 
       <main className="flex-grow">
+        {currentPage === 'operator' && (
+          <OperatorAdmin onNavigate={navigateTo} />
+        )}
+
         {currentPage === 'services' && (
           <div className="pt-24">
             <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
@@ -105,7 +103,7 @@ export const App: React.FC = () => {
 
         {currentPage === 'calculator' && (
           <div className="pt-24">
-            <SmartCalculator prefillService={selectedServiceForQuote} currentLang={currentLang} />
+            <SmartCalculator prefillService={selectedServiceForQuote} />
           </div>
         )}
 
@@ -120,31 +118,27 @@ export const App: React.FC = () => {
             activeDetailId={activeArticleId} 
             onBackToList={() => navigateTo('news')}
             onSelectArticle={handleOpenArticleDetail}
-            currentLang={currentLang}
           />
         )}
 
         {currentPage === 'contact' && (
-          <ContactPage currentLang={currentLang} />
-        )}
-
-        {currentPage === 'admin' && (
-          <AdminCMS />
+          <ContactPage />
         )}
 
         {currentPage === 'home' && (
           <>
             <Hero onNavigate={navigateTo} currentLang={currentLang} />
             <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
-            <SmartCalculator prefillService={selectedServiceForQuote} currentLang={currentLang} />
+            <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
-            <GeographicRouteSimulator currentLang={currentLang} />
             <StatsNetwork />
           </>
         )}
       </main>
 
-      <Footer onNavigate={navigateTo} currentLang={currentLang} />
+      {!isOperatorPage && (
+        <Footer onNavigate={navigateTo} currentLang={currentLang} />
+      )}
     </div>
   );
 };
