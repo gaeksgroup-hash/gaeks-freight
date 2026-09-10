@@ -68,13 +68,9 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-6xl font-black text-white tracking-tight leading-[1.1] drop-shadow-lg">
-              {getTranslation(currentLang, UI_TEXT.hero.titlePrefix)}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-100 to-white">
-                {getTranslation(currentLang, UI_TEXT.hero.titleHighlight)}
-              </span>{' '}
-              {getTranslation(currentLang, UI_TEXT.hero.titleSuffix)}
-            </h1>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
+            GAEKS: <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-100 to-white">Jasa Import & PPJK</span>, Solusi LCL Murah & Project Cargo
+          </h1>
 
             <p className="text-base sm:text-lg text-slate-200 leading-relaxed max-w-2xl font-normal drop-shadow">
               {getTranslation(currentLang, UI_TEXT.hero.subtitle)}
@@ -135,7 +131,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
                 {/* 4. Logo Asli WCA World (SVG Lokal Permanen) */}
                 <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-[#011C20]/90 border border-cyan-900/40 hover:border-amber-400/60 transition-colors shadow-sm">
                   <img 
-                    src="/logos/gaek-full.png?v=3" 
+                    src="/logos/gaek-symbol.svg" 
                     alt="WCA World Member" 
                     className="h-6 sm:h-7 w-auto object-contain"
                     loading="eager"
@@ -145,7 +141,7 @@ export const Hero: React.FC<{ onNavigate: (page: string) => void; currentLang: L
                 {/* 5. Logo Asli JCtrans Network (SVG Lokal Permanen) */}
                 <div className="flex items-center justify-center px-3 py-1.5 rounded-xl bg-[#011C20]/90 border border-cyan-900/40 hover:border-sky-400/60 transition-colors shadow-sm">
                   <img 
-                    src="/logos/jctrans.svg" 
+                    src="/logos/gaek-symbol.svg" 
                     alt="JCtrans Logistics Network GCP Member" 
                     className="h-6 sm:h-7 w-auto object-contain"
                     loading="eager"
