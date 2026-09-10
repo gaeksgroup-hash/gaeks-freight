@@ -1,12 +1,14 @@
 // filepath: /src/components/Footer.tsx
 import React from 'react';
 import { PhoneCall, Mail, MapPin, ShieldCheck, Lock } from 'lucide-react';
+import { Language } from '../types/freight';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
+  currentLang?: Language;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }) => {
   const handleNav = (page: string, e: React.MouseEvent) => {
     if (onNavigate) {
       e.preventDefault();
