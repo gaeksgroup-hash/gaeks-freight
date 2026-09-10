@@ -21,16 +21,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
           
-          {/* Kolom 1: Logo Full GAEKS Resmi */}
+          {/* Kolom 1: Simbol Resmi GAEKS (Sama persis dengan navbar, tanpa box putih) */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="inline-flex p-3 sm:p-3.5 rounded-2xl bg-white/95 backdrop-blur-xl border border-white/50 shadow-md">
+            <div className="inline-flex items-center">
               <img 
-                src="/logos/gaek-full.png?v=4" 
+                src="/logos/gaek-symbol.svg" 
                 onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = '/logos/gaek-full.svg?v=4';
+                  const target = e.currentTarget as HTMLImageElement;
+                  target.onerror = null;
+                  target.src = '/favicon.svg';
                 }}
-                alt="GAEKS - Global Andalan Ekspress" 
-                className="h-10 sm:h-12 w-auto object-contain" 
+                alt="GAEKS" 
+                className="h-10 sm:h-11 w-auto object-contain" 
               />
             </div>
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
