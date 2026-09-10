@@ -21,7 +21,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '直连印尼海关 Ceisa 4.0 及 INSW 系统，确保商品代码精准归类与免罚高效通关。',
     features: ['Penetapan Klasifikasi HS Code Akurat', 'Penanganan Jalur Hijau, Kuning, & Merah', 'Pengurusan Persetujuan Impor (PI) & Lartas'],
     equipment: 'Sistem Terintegrasi Ceisa 4.0 Bea Cukai',
-    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Komoditas industri, bahan baku, tekstil, mesin, barang umum (dapat dikonsultasikan)'
   },
   {
@@ -40,7 +40,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '完备的货船装卸驳运及一线保税监管仓库配套。',
     features: ['Fasilitas Penyimpanan Kargo Kering & Tertutup', 'Armada Forklift 3T - 45T & Reach Stacker', 'Cross-docking, Sorting, & Palletizing'],
     equipment: 'Gudang Kawasan Pabean & Non-Pabean',
-    imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Curah kering, kargo palet, semen kemasan, bahan pangan industri'
   },
   {
@@ -59,7 +59,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '覆盖爪哇、苏门答腊及巴厘岛的全程卫星定位卡车运输。',
     features: ['Trailer Petikemas 20ft & 40ft (Standar & HC)', 'Truk CDD Box, Fuso Berat, hingga Wingbox 32T', 'Monitoring GPS Terintegrasi Real-time'],
     equipment: '100+ Unit Armada Siap Jalan',
-    imageUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Kargo industri, consumer goods, semen, bahan bangunan, suku cadang'
   },
   {
@@ -78,7 +78,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '矿山重型自卸车、电站发电机组、大型冶金设备综合专案运输方案。',
     features: ['Survei Rute Jalan & Analisis Kekuatan Jembatan', 'Armada Multi-Axle Modular Hydraulic Trailer', 'Pengapalan Kapal Breakbulk & Kapal Ro-Ro'],
     equipment: 'Multi-Axle Modular Hydraulic Trailer',
-    imageUrl: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Dump truck tambang, excavator, mesin pabrik, turbin pembangkit, tangki industri, baja'
   },
   {
@@ -97,7 +97,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '每周固定船期，散货拼箱直达印尼海关监管仓库快速拆箱。',
     features: ['Perhitungan Tarif Berbasis Kubikasi Murni (CBM)', 'Jadwal Konsolidasi Mingguan Tetap', 'Unstuffing Cepat di CFS Gudang Pelabuhan'],
     equipment: 'Weekly Dedicated Consolidation Box',
-    imageUrl: 'https://images.unsplash.com/photo-1586528116493-a029325540fa?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1586528116493-a029325540fa?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Barang retail, palet kemasan kayu, spare parts, sampel bahan, perlengkapan bisnis'
   },
   {
@@ -116,7 +116,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '提供 20GP/40GP/40HQ 及特种箱，直航印尼三大核心海港。',
     features: ['Alokasi Ruang Kapal Dijamin Saat Peak Season', 'Free Time Demurrage & Detention Lebih Panjang', 'Pilihan Door-to-Door atau Port-to-Port Transparan'],
     equipment: 'Kontainer 20ft, 40ft GP, 40ft HC, Reefer',
-    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Manufaktur massal, bahan baku kimia, resin, komoditas ekspor'
   },
   {
@@ -135,7 +135,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '客机腹舱与全货机直航，机场货站优先配舱与快速分拨。',
     features: ['Next-Flight-Out Prioritas Tertinggi', 'Door-to-Airport & Door-to-Door Handling', 'Pengurusan Dokumen Air Waybill (AWB) Kilat'],
     equipment: 'Direct Space Contract Airline Partner',
-    imageUrl: 'https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=1000&q=80',
+    imageUrl: 'https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi'
   }
 ];
@@ -199,11 +199,11 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               aria-label="Toggle Auto-Slide"
               className={`p-3 rounded-xl border text-xs font-bold transition-all shadow-sm ${
                 isPlaying 
-                  ? 'bg-white border-slate-200 text-slate-700 hover:border-blue-500' 
-                  : 'bg-amber-50 border-amber-300 text-amber-700'
+                  ? 'bg-white border-slate-200 text-slate-700 hover:border-cyan-500' 
+                  : 'bg-cyan-50 border-cyan-300 text-[#012E34]'
               }`}
             >
-              {isPlaying ? <Pause className="w-4 h-4 fill-slate-700" /> : <Play className="w-4 h-4 fill-amber-700" />}
+              {isPlaying ? <Pause className="w-4 h-4 fill-slate-700" /> : <Play className="w-4 h-4 fill-[#012E34]" />}
             </button>
 
             <button 
@@ -236,7 +236,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md h-[460px] flex flex-col justify-between overflow-hidden">
                 <div className="relative h-44 rounded-2xl overflow-hidden mb-4 bg-slate-100">
                   <img src={leftItem.imageUrl} alt={leftItem.title} className="w-full h-full object-cover" />
-                  <span className="absolute top-3 left-3 bg-slate-900/80 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
+                  <span className="absolute top-3 left-3 bg-[#012E34]/90 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
                     {leftItem.category}
                   </span>
                 </div>
@@ -255,10 +255,10 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               <div className="bg-white rounded-3xl border-2 border-[#012E34] ring-4 ring-cyan-500/15 shadow-2xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden relative">
                 
                 <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
-                  <span className="px-3.5 py-1 rounded-full bg-cyan-50 text-[#012E34] text-xs font-black uppercase tracking-wider">
+                  <span className="px-3.5 py-1 rounded-full bg-cyan-50 text-[#012E34] border border-cyan-200 text-xs font-black uppercase tracking-wider">
                     {centerItem.category}
                   </span>
-                  <div className="flex items-center space-x-1.5 text-emerald-600 text-xs font-bold">
+                  <div className="flex items-center space-x-1.5 text-cyan-600 text-xs font-bold">
                     <ShieldCheck className="w-4 h-4" />
                     <span>Layanan Resmi Gaek</span>
                   </div>
@@ -270,7 +270,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
 
                 <div className="space-y-3">
                   <h3 className="text-2xl sm:text-3xl font-black text-slate-900">{centerItem.title}</h3>
-                  <p className="text-sm sm:text-base font-semibold text-[#012E34]">"{centerItem.tagline}"</p>
+                  <p className="text-sm sm:text-base font-semibold text-cyan-700">"{centerItem.tagline}"</p>
                   <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">{centerItem.description}</p>
 
                   <div className="p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">
@@ -287,7 +287,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                       {centerItem.features.map((feat, idx) => (
                         <div key={idx} className="flex items-start space-x-2 text-xs text-slate-700">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 flex-shrink-0 mt-0.5" />
+                          <CheckCircle2 className="w-3.5 h-3.5 text-cyan-600 flex-shrink-0 mt-0.5" />
                           <span>{feat}</span>
                         </div>
                       ))}
@@ -298,7 +298,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                 <div className="pt-6 mt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
                   <button
                     onClick={() => onSelectService(centerItem.title)}
-                    className="inline-flex items-center space-x-2 bg-[#012E34] hover:bg-[#011C20] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-cyan-900/25 transition-all hover:scale-105 active:scale-95"
+                    className="inline-flex items-center space-x-2 bg-[#012E34] hover:bg-[#011C20] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md shadow-cyan-950/20 transition-all hover:scale-105 active:scale-95"
                   >
                     <span>{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}</span>
                     <ArrowUpRight className="w-4 h-4 stroke-[2.2]" />
@@ -319,7 +319,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               <div className="bg-white rounded-3xl border border-slate-200 p-6 shadow-md h-[460px] flex flex-col justify-between overflow-hidden">
                 <div className="relative h-44 rounded-2xl overflow-hidden mb-4 bg-slate-100">
                   <img src={rightItem.imageUrl} alt={rightItem.title} className="w-full h-full object-cover" />
-                  <span className="absolute top-3 left-3 bg-slate-900/80 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
+                  <span className="absolute top-3 left-3 bg-[#012E34]/90 text-white text-[10px] font-black px-2.5 py-1 rounded-full">
                     {rightItem.category}
                   </span>
                 </div>
