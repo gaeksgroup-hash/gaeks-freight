@@ -1,39 +1,76 @@
-# filepath: /.github/workflows/deploy.yml
-name: Deploy Gaek Freight to Hostinger
+name: Deploy to Hostinger
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   web-deploy:
-    name: 🎉 Build & Deploy
+    name: Build and Sync to Hostinger
     runs-on: ubuntu-latest
     steps:
-      - name: 🚚 Ambil Kode Terbaru
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: ⚙️ Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 22
 
-      - name: 🔨 Install Dependensi & Build Produksi
+      - name: Install Dependencies
+        run: npm ci || npm install
+
+      - name: Build Production Assets
+        run: npm run build
+
+      - name: Clean Stuck FTP Temp Files
+        env:
+          FTP_SERVER: ${{ secrets.FTP_SERVER }}
+          FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
+          FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         run: |
-          npm ci || npm install
-          npm run build
+          python3 -c "
+          import ftplib, os
+          server = os.environ.get('FTP_SERVER', '')
+          user = os.environ.get('FTP_USERNAME', '')
+          pwd = os.environ.get('FTP_PASSWORD', '')
+          if server and user and pwd:
+              try:
+                  ftp = ftplib.FTP(server, timeout=30)
+                  ftp.login(user, pwd)
+                  stuck_files = ['.in.favicon.png.', 'favicon.png']
+                  for f in stuck_files:
+                      try:
+                          ftp.delete(f)
+                          print(f'[CLEANED] Berhasil menghapus file tersangkut: {f}')
+                      except Exception:
+                          pass
+                  try:
+                      lines = []
+                      ftp.retrlines('LIST -a', lines.append)
+                      for line in lines:
+                          parts = line.split()
+                          if len(parts) > 8:
+                              fname = parts[-1]
+                              if fname.startswith('.in.'):
+                                  try:
+                                      ftp.delete(fname)
+                                      print(f'[CLEANED] Berhasil menghapus file temp orphan: {fname}')
+                                  except Exception:
+                                      pass
+                  except Exception:
+                      pass
+                  ftp.quit()
+              except Exception as err:
+                  print(f'[FTP Clean Info]: {err}')
+          "
 
-      - name: 📁 Sinkronisasi Folder dist ke Hostinger
+      - name: Sync dist to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./dist/
-          server-dir: ./
-          protocol: ftp
-          port: 21
+          local-dir: dist/
           timeout: 120000
-          dangerous-clean-slate: false
