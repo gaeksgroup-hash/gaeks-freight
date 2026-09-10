@@ -29,7 +29,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }
                 onError={(e) => {
                   const target = e.currentTarget as HTMLImageElement;
                   target.onerror = null;
-                  target.src = '/favicon.svg';
+                  target.src = '/gaek-symbol.svg';
                 }}
                 alt="GAEKS" 
                 className="h-10 sm:h-11 w-auto object-contain" 

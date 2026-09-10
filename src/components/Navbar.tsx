@@ -78,7 +78,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
               target.onerror = null;
-              target.src = '/favicon.svg';
+              target.src = '/gaek-symbol.svg';
             }}
             alt="GAEKS" 
             className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
