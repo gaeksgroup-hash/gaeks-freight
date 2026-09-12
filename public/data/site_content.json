@@ -1,0 +1,25 @@
+{
+  "branding": {
+    "faviconUrl": "/favicon.png?v=8",
+    "symbolLogoUrl": "/logos/gaek-symbol.png?v=7",
+    "fullLogoUrl": "/logos/gaek-full.png?v=7",
+    "whatsappNumber": "085608561745",
+    "whatsappDisplay": "+62 0856-0856-1745",
+    "salesEmail": "Sales01@gaeks.com",
+    "infoEmail": "info@gaeks.com",
+    "companyAddress": "Tanjung Priok, Jakarta & Banten, Indonesia"
+  },
+  "hero": {
+    "bgType": "video",
+    "videoUrl": "https://cdn.pixabay.com/video/2020/05/25/40149-425134707_large.mp4",
+    "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80",
+    "titlePrefix": "GAEKS: ",
+    "titleHighlight": "Jasa Import & PPJK",
+    "titleSuffix": ", Solusi LCL Murah & Project Cargo",
+    "caption": "Mitra resmi Global Andalan Ekspress (GAEKS) untuk kepabeanan Indonesian Customs Clearance (PPJK Ceisa 4.0), konsolidasi Import LCL Murah, kontainer FCL, serta penanganan Project Cargo alat berat ke seluruh pelabuhan utama Indonesia.",
+    "badgeText": "Global Logistics & Maritime Network",
+    "commodityTitle": "Konsultasi Regulasi & Komoditas Khusus",
+    "commodityCaption": "Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli pabean kami."
+  },
+  "updatedAt": 1726000000000
+}

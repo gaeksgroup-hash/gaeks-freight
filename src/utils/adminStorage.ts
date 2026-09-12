@@ -14,8 +14,22 @@ export interface BrandingSettings {
   companyAddress: string;
 }
 
-const STORAGE_KEY_BRANDING = 'gaeks_branding_v2';
-const STORAGE_KEY_SERVICES = 'gaeks_services_v2';
+export interface HeroSettings {
+  bgType: 'video' | 'image';
+  videoUrl: string;
+  imageUrl: string;
+  titlePrefix: string;
+  titleHighlight: string;
+  titleSuffix: string;
+  caption: string;
+  badgeText: string;
+  commodityTitle: string;
+  commodityCaption: string;
+}
+
+const STORAGE_KEY_BRANDING = 'gaeks_branding_v3';
+const STORAGE_KEY_HERO = 'gaeks_hero_v3';
+const STORAGE_KEY_SERVICES = 'gaeks_services_v3';
 const STORAGE_KEY_AUTH = 'gaeks_operator_auth_session';
 export const GAEKS_UPDATE_EVENT = 'gaeks_auto_update_event';
 
@@ -30,31 +44,79 @@ export const DEFAULT_BRANDING: BrandingSettings = {
   companyAddress: 'Tanjung Priok, Jakarta & Banten, Indonesia'
 };
 
-// Pemancar Sinyal Pembaruan Otomatis Real-Time (Antar-Komponen & Antar-Tab)
-export function notifyDataUpdate(): void {
+export const DEFAULT_HERO: HeroSettings = {
+  bgType: 'video',
+  videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425134707_large.mp4',
+  imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80',
+  titlePrefix: 'GAEKS: ',
+  titleHighlight: 'Jasa Import & PPJK',
+  titleSuffix: ', Solusi LCL Murah & Project Cargo',
+  caption: 'Mitra resmi Global Andalan Ekspress (GAEKS) untuk kepabeanan Indonesian Customs Clearance (PPJK Ceisa 4.0), konsolidasi Import LCL Murah, kontainer FCL, serta penanganan Project Cargo alat berat ke seluruh pelabuhan utama Indonesia.',
+  badgeText: 'Global Logistics & Maritime Network',
+  commodityTitle: 'Konsultasi Regulasi & Komoditas Khusus',
+  commodityCaption: 'Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli pabean kami.'
+};
+
+export function notifyLocalUpdate(): void {
   try {
-    // 1. Sinyal lokal dalam tab yang sama
     window.dispatchEvent(new CustomEvent(GAEKS_UPDATE_EVENT, { detail: { timestamp: Date.now() } }));
-    // 2. Sinyal global antar-tab browser via BroadcastChannel
     const channel = new BroadcastChannel('gaeks_sync_channel');
     channel.postMessage({ type: 'AUTO_UPDATE', timestamp: Date.now() });
     channel.close();
   } catch (e) {}
+}
 
-  // 3. Sinkronisasi ke Server Hostinger di latar belakang
+// Tarik data server Hostinger secara global saat website dimuat di browser manapun
+export async function syncFromServer(): Promise<boolean> {
+  try {
+    const res = await fetch('/api/sync.php?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return false;
+    const data = await res.json();
+    if (data && data.status !== 'empty') {
+      if (data.branding) localStorage.setItem(STORAGE_KEY_BRANDING, JSON.stringify(data.branding));
+      if (data.hero) localStorage.setItem(STORAGE_KEY_HERO, JSON.stringify(data.hero));
+      if (data.services && Array.isArray(data.services) && data.services.length > 0) {
+        localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(data.services));
+      }
+      notifyLocalUpdate();
+      return true;
+    }
+    return false;
+  } catch (err) {
+    return false;
+  }
+}
+
+// Simpan data ke server Hostinger secara global
+export async function saveToServerGlobally(): Promise<{ success: boolean; message: string }> {
   try {
     const payload = {
       branding: getStoredBranding(),
+      hero: getStoredHero(),
       services: getStoredServices(),
       articles: getStoredArticles(),
-      timestamp: Date.now()
+      subscribers: getSubscribers(),
+      updatedAt: Date.now()
     };
-    fetch('/api/sync.php', {
+
+    const res = await fetch('/api/sync.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    }).catch(() => {});
-  } catch (e) {}
+      body: JSON.stringify({
+        authPassword: 'Adagagap499!',
+        payload: payload
+      })
+    });
+
+    const result = await res.json();
+    if (res.ok && result.status === 'success') {
+      notifyLocalUpdate();
+      return { success: true, message: 'Berhasil disimpan ke server Hostinger secara global!' };
+    }
+    return { success: false, message: result.message || 'Gagal menyimpan ke server' };
+  } catch (err: any) {
+    return { success: false, message: err.message || 'Koneksi ke server gagal' };
+  }
 }
 
 export function getStoredBranding(): BrandingSettings {
@@ -69,7 +131,24 @@ export function getStoredBranding(): BrandingSettings {
 
 export function saveStoredBranding(data: BrandingSettings): void {
   localStorage.setItem(STORAGE_KEY_BRANDING, JSON.stringify(data));
-  notifyDataUpdate();
+  notifyLocalUpdate();
+  saveToServerGlobally();
+}
+
+export function getStoredHero(): HeroSettings {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_HERO);
+    if (!raw) return DEFAULT_HERO;
+    return { ...DEFAULT_HERO, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULT_HERO;
+  }
+}
+
+export function saveStoredHero(data: HeroSettings): void {
+  localStorage.setItem(STORAGE_KEY_HERO, JSON.stringify(data));
+  notifyLocalUpdate();
+  saveToServerGlobally();
 }
 
 export function getStoredServices(): ServiceDetail[] {
@@ -89,7 +168,8 @@ export function getStoredServices(): ServiceDetail[] {
 
 export function saveStoredServices(services: ServiceDetail[]): void {
   localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(services));
-  notifyDataUpdate();
+  notifyLocalUpdate();
+  saveToServerGlobally();
 }
 
 export function isOperatorLoggedIn(): boolean {
