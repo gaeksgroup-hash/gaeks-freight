@@ -169,6 +169,29 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   };
 
   // Auto-Translate News Helper
+  
+  // Fungsi Hapus Artikel Berita
+  const handleDeleteArticle = async (id: string) => {
+    if (confirm('Hapus artikel ini secara permanen dari server Hostinger?')) {
+      const updated = articles.filter(a => a.id !== id);
+      setArticles(updated);
+      saveStoredArticles(updated);
+      await commitToServer();
+      toast.info('Artikel Berhasil Dihapus dari Server');
+    }
+  };
+
+  // Fungsi Hapus Layanan
+  const handleDeleteService = async (id: string) => {
+    if (confirm('Hapus layanan ini dari website?')) {
+      const updated = services.filter(s => s.id !== id);
+      setServices(updated);
+      saveStoredServices(updated);
+      await commitToServer();
+      toast.info('Layanan Berhasil Dihapus dari Server');
+    }
+  };
+
   const handleAutoTranslateArticle = async () => {
     if (!editingArticle) return;
     setIsTranslating(true);
