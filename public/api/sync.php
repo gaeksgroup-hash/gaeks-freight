@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 $dataFile = __DIR__ . '/site_content.json';
 
-// GET: Seluruh pengunjung global mengambil data terbaru
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (file_exists($dataFile) && filesize($dataFile) > 10) {
         echo file_get_contents($dataFile);
@@ -24,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
-// POST: Operator menyimpan pembaruan langsung ke file server
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawInput = file_get_contents('php://input');
     $decoded = json_decode($rawInput, true);

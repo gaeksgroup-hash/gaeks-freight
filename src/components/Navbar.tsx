@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, PhoneCall, Globe } from 'lucide-react';
 import { Language } from '../types/freight';
-import { UI_TEXT, getTranslation } from '../utils/translations';
+import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export interface NavbarProps {
   currentTab?: string;
@@ -21,19 +21,22 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [brandData, setBrandData] = useState(getStoredBranding());
 
-  // Anti-chatter scroll detection: ambang batas ganda mencegah navbar berkedip/flicker
+  useEffect(() => {
+    const reload = () => setBrandData(getStoredBranding());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
+  }, []);
+
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const y = window.scrollY;
-          if (y > 35) {
-            setScrolled(true);
-          } else if (y < 10) {
-            setScrolled(false);
-          }
+          if (y > 35) setScrolled(true);
+          else if (y < 10) setScrolled(false);
           ticking = false;
         });
         ticking = true;
@@ -43,9 +46,22 @@ export const Navbar: React.FC<NavbarProps> = ({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const handleLang = (lang: Language) => {
+  // Memicu penerjemahan instan 100% seluruh teks di website
+  const handleTriggerLanguage = (lang: Language) => {
     if (onSelectLang) onSelectLang(lang);
     if (onLanguageChange) onLanguageChange(lang);
+
+    const targetCode = lang === 'en' ? 'en' : lang === 'zh' ? 'zh-CN' : 'id';
+    document.cookie = `googtrans=/id/${targetCode}; path=/;`;
+    document.cookie = `googtrans=/id/${targetCode}; path=/; domain=${window.location.hostname};`;
+
+    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
+    if (select) {
+      select.value = targetCode;
+      select.dispatchEvent(new Event('change'));
+    } else {
+      window.location.reload();
+    }
   };
 
   const handleNav = (page: string, e: React.MouseEvent) => {
@@ -65,8 +81,6 @@ export const Navbar: React.FC<NavbarProps> = ({
       }`}
     >
       <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-        
-        {/* Brand Logo Symbol (Bebas error loop rekursif) */}
         <a 
           href="#home" 
           onClick={(e) => handleNav('home', e)}
@@ -74,81 +88,43 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="Gaek Freight Home"
         >
           <img 
-            src="/logos/gaek-symbol.png?v=7" 
+            src={brandData.symbolLogoUrl || "/logos/gaek-symbol.png"} 
             onError={(e) => {
               const target = e.currentTarget as HTMLImageElement;
               target.onerror = null;
-              target.src = '/gaek-symbol.png?v=7';
+              target.src = '/logos/gaek-symbol.svg';
             }}
             alt="GAEKS" 
             className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
           />
         </a>
 
-        {/* Navigation Links */}
         <nav className="hidden md:flex items-center space-x-7 text-xs font-bold text-slate-700">
-          <a 
-            href="#home" 
-            onClick={(e) => handleNav('home', e)}
-            className={`transition-colors py-1 ${currentTab === 'home' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}
-          >
-            {getTranslation(currentLang, UI_TEXT.nav.home)}
-          </a>
-          <a 
-            href="#services" 
-            onClick={(e) => handleNav('services', e)}
-            className={`transition-colors py-1 ${currentTab === 'services' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}
-          >
-            {getTranslation(currentLang, UI_TEXT.nav.services)}
-          </a>
-          <a 
-            href="#calculator" 
-            onClick={(e) => handleNav('calculator', e)}
-            className={`transition-colors py-1 ${currentTab === 'calculator' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}
-          >
-            {getTranslation(currentLang, UI_TEXT.nav.calculator)}
-          </a>
-          <a 
-            href="#network" 
-            onClick={(e) => handleNav('network', e)}
-            className={`transition-colors py-1 ${currentTab === 'network' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}
-          >
-            {getTranslation(currentLang, UI_TEXT.nav.network)}
-          </a>
-          <a 
-            href="#news" 
-            onClick={(e) => handleNav('news', e)}
-            className={`transition-colors py-1 ${currentTab === 'news' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}
-          >
-            {getTranslation(currentLang, UI_TEXT.nav.news)}
-          </a>
-          <a 
-            href="#contact" 
-            onClick={(e) => handleNav('contact', e)}
-            className={`transition-colors py-1 ${currentTab === 'contact' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}
-          >
-            {getTranslation(currentLang, UI_TEXT.nav.contact)}
-          </a>
+          <a href="#home" onClick={(e) => handleNav('home', e)} className={`transition-colors py-1 ${currentTab === 'home' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}>Beranda</a>
+          <a href="#services" onClick={(e) => handleNav('services', e)} className={`transition-colors py-1 ${currentTab === 'services' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}>Layanan</a>
+          <a href="#calculator" onClick={(e) => handleNav('calculator', e)} className={`transition-colors py-1 ${currentTab === 'calculator' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}>Kalkulator Kargo</a>
+          <a href="#network" onClick={(e) => handleNav('network', e)} className={`transition-colors py-1 ${currentTab === 'network' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}>Rute & Jadwal</a>
+          <a href="#news" onClick={(e) => handleNav('news', e)} className={`transition-colors py-1 ${currentTab === 'news' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}>News & Updates</a>
+          <a href="#contact" onClick={(e) => handleNav('contact', e)} className={`transition-colors py-1 ${currentTab === 'contact' ? 'text-[#012E34] font-black border-b-2 border-[#012E34]' : 'hover:text-cyan-600'}`}>Hubungi Kami</a>
         </nav>
 
-        {/* Action Controls & Selector Bahasa */}
         <div className="hidden sm:flex items-center space-x-4">
           <div className="flex items-center space-x-1 p-1 rounded-xl bg-slate-100 border border-slate-200 text-[11px] font-bold">
             <Globe className="w-3.5 h-3.5 text-cyan-600 ml-1" />
             <button 
-              onClick={() => handleLang('id')} 
+              onClick={() => handleTriggerLanguage('id')} 
               className={`px-2 py-0.5 rounded-lg transition-all ${currentLang === 'id' ? 'bg-[#012E34] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               ID
             </button>
             <button 
-              onClick={() => handleLang('en')} 
+              onClick={() => handleTriggerLanguage('en')} 
               className={`px-2 py-0.5 rounded-lg transition-all ${currentLang === 'en' ? 'bg-[#012E34] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               EN
             </button>
             <button 
-              onClick={() => handleLang('zh')} 
+              onClick={() => handleTriggerLanguage('zh')} 
               className={`px-2 py-0.5 rounded-lg transition-all ${currentLang === 'zh' ? 'bg-[#012E34] text-white shadow-xs' : 'text-slate-600 hover:text-slate-900'}`}
             >
               中文
@@ -156,17 +132,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           <a
-            href="https://wa.me/6285608561745"
+            href={`https://wa.me/${brandData.whatsappNumber || '6285608561745'}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#012E34] to-cyan-600 hover:from-[#011C20] hover:to-cyan-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-md shadow-cyan-950/20 active:scale-95"
+            className="inline-flex items-center space-x-2 bg-gradient-to-r from-[#012E34] to-cyan-600 hover:from-[#011C20] hover:to-cyan-500 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-md active:scale-95"
           >
             <PhoneCall className="w-3.5 h-3.5" />
-            <span>0856-0856-1745</span>
+            <span>{brandData.whatsappDisplay || '0856-0856-1745'}</span>
           </a>
         </div>
 
-        {/* Mobile Toggle */}
         <div className="flex sm:hidden items-center space-x-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -176,28 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
         </div>
-
       </div>
-
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <div className="sm:hidden bg-white/95 backdrop-blur-2xl border-b border-slate-200 px-4 pt-2 pb-6 space-y-3 shadow-xl">
-          <a onClick={(e) => handleNav('home', e)} href="#home" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.home)}</a>
-          <a onClick={(e) => handleNav('services', e)} href="#services" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.services)}</a>
-          <a onClick={(e) => handleNav('calculator', e)} href="#calculator" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.calculator)}</a>
-          <a onClick={(e) => handleNav('network', e)} href="#network" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.network)}</a>
-          <a onClick={(e) => handleNav('news', e)} href="#news" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.news)}</a>
-          <a onClick={(e) => handleNav('contact', e)} href="#contact" className="block py-2 text-sm font-bold text-slate-800">{getTranslation(currentLang, UI_TEXT.nav.contact)}</a>
-          <div className="pt-2 flex items-center justify-between border-t border-slate-100">
-            <span className="text-xs font-bold text-slate-500">Bahasa:</span>
-            <div className="flex space-x-2 text-xs font-bold">
-              <button onClick={() => handleLang('id')} className={`px-2 py-1 rounded ${currentLang === 'id' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>ID</button>
-              <button onClick={() => handleLang('en')} className={`px-2 py-1 rounded ${currentLang === 'en' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>EN</button>
-              <button onClick={() => handleLang('zh')} className={`px-2 py-1 rounded ${currentLang === 'zh' ? 'bg-[#012E34] text-white' : 'text-slate-600'}`}>中文</button>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

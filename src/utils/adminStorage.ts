@@ -19,28 +19,16 @@ export interface HeroSettings {
   videoUrl: string;
   imageUrl: string;
   titlePrefix: string;
-  titlePrefix_en?: string;
-  titlePrefix_zh?: string;
   titleHighlight: string;
-  titleHighlight_en?: string;
-  titleHighlight_zh?: string;
   titleSuffix: string;
-  titleSuffix_en?: string;
-  titleSuffix_zh?: string;
   caption: string;
-  caption_en?: string;
-  caption_zh?: string;
   commodityTitle: string;
-  commodityTitle_en?: string;
-  commodityTitle_zh?: string;
   commodityCaption: string;
-  commodityCaption_en?: string;
-  commodityCaption_zh?: string;
 }
 
-const STORAGE_KEY_BRANDING = 'gaeks_branding_v5';
-const STORAGE_KEY_HERO = 'gaeks_hero_v5';
-const STORAGE_KEY_SERVICES = 'gaeks_services_v5';
+const STORAGE_KEY_BRANDING = 'gaeks_branding_v7';
+const STORAGE_KEY_HERO = 'gaeks_hero_v7';
+const STORAGE_KEY_SERVICES = 'gaeks_services_v7';
 const STORAGE_KEY_AUTH = 'gaeks_operator_auth_session';
 export const GAEKS_UPDATE_EVENT = 'gaeks_auto_update_event';
 
@@ -60,23 +48,11 @@ export const DEFAULT_HERO: HeroSettings = {
   videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425134707_large.mp4',
   imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80',
   titlePrefix: 'GAEKS: ',
-  titlePrefix_en: 'GAEKS: ',
-  titlePrefix_zh: 'GAEKS: ',
   titleHighlight: 'Jasa Import & PPJK',
-  titleHighlight_en: 'Import & Customs Clearance',
-  titleHighlight_zh: '专业清关与国际进出口',
   titleSuffix: ', Solusi LCL Murah & Project Cargo',
-  titleSuffix_en: ', LCL Ocean & Project Cargo Solutions',
-  titleSuffix_zh: '，经济型拼箱与特种工程物流',
   caption: 'Mitra resmi Global Andalan Ekspress (GAEKS) untuk kepabeanan Indonesian Customs Clearance (PPJK Ceisa 4.0), konsolidasi Import LCL Murah, kontainer FCL, serta penanganan Project Cargo alat berat ke seluruh pelabuhan utama Indonesia.',
-  caption_en: 'Official partner Global Andalan Ekspress (GAEKS) for Indonesian Customs Clearance (PPJK Ceisa 4.0), economical LCL consolidation, FCL containers, and heavy-lift project cargo across all major Indonesian ports.',
-  caption_zh: 'GAEKS 官方直连印尼海关 Ceisa 4.0 报关系统，为您提供海运整箱（FCL）、散货拼箱（LCL）、特种重大件运输及内陆全境卡车派送服务。',
   commodityTitle: 'Konsultasi Regulasi & Komoditas Khusus',
-  commodityTitle_en: 'Specialized Cargo & Trade Compliance',
-  commodityTitle_zh: '海关监管商品准入合规咨询',
-  commodityCaption: 'Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli pabean kami.',
-  commodityCaption_en: 'Consult import licensing, SNI standards, and pre-shipment surveyor reports with our licensed brokerage specialists.',
-  commodityCaption_zh: '专业团队协助处理印尼进出口限制类商品配额审批、SNI 认证及装运前商检（LS）合规。'
+  commodityCaption: 'Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli kepabeanan kami.'
 };
 
 export function notifyLocalUpdate(): void {
@@ -88,13 +64,10 @@ export function notifyLocalUpdate(): void {
   } catch (e) {}
 }
 
-// Mengambil data global dari Hostinger server saat website dimuat oleh perangkat manapun
 export async function syncFromServer(): Promise<boolean> {
   try {
-    // 1. Coba baca dari file statis cepat /api/site_content.json
     let res = await fetch('/api/site_content.json?t=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) {
-      // Fallback ke sync.php
       res = await fetch('/api/sync.php?t=' + Date.now(), { cache: 'no-store' });
     }
 
@@ -119,7 +92,6 @@ export async function syncFromServer(): Promise<boolean> {
   }
 }
 
-// Menyimpan data langsung ke server Hostinger secara global
 export async function saveToServerGlobally(): Promise<{ success: boolean; message: string }> {
   try {
     const payload = {

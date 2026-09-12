@@ -1,14 +1,23 @@
 // filepath: /src/components/Footer.tsx
 import React from 'react';
-import { PhoneCall, Mail, MapPin, ShieldCheck, Lock } from 'lucide-react';
+import { PhoneCall, Mail, MapPin, ShieldCheck } from 'lucide-react';
 import { Language } from '../types/freight';
+import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
   currentLang?: Language;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const [brandData, setBrandData] = React.useState(getStoredBranding());
+
+  React.useEffect(() => {
+    const reload = () => setBrandData(getStoredBranding());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
+  }, []);
+
   const handleNav = (page: string, e: React.MouseEvent) => {
     if (onNavigate) {
       e.preventDefault();
@@ -21,15 +30,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
           
-          {/* Kolom 1: Simbol Resmi GAEKS (Sama persis dengan navbar, tanpa box putih) */}
+          {/* Kolom 1: Simbol Resmi GAEKS */}
           <div className="lg:col-span-4 space-y-4">
             <div className="inline-flex items-center">
               <img 
-                src="/logos/gaek-symbol.png?v=7" 
+                src={brandData.symbolLogoUrl || "/logos/gaek-symbol.png"} 
                 onError={(e) => {
                   const target = e.currentTarget as HTMLImageElement;
                   target.onerror = null;
-                  target.src = '/gaek-symbol.png?v=7';
+                  target.src = '/logos/gaek-symbol.svg';
                 }}
                 alt="GAEKS" 
                 className="h-10 sm:h-11 w-auto object-contain" 
@@ -69,24 +78,23 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, currentLang = 'id' }
             </ul>
           </div>
 
-          {/* Kolom 4: Kontak Resmi & Admin CMS */}
+          {/* Kolom 4: Kontak Resmi */}
           <div className="lg:col-span-3 space-y-3">
             <h4 className="text-sm font-black text-white uppercase tracking-wider">Kontak & Operasional</h4>
             <div className="space-y-2 text-xs text-slate-400">
-              <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
+              <a href={`https://wa.me/${brandData.whatsappNumber || '6285608561745'}`} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
                 <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
-                <span>+62 0856-0856-1745</span>
+                <span>{brandData.whatsappDisplay || '+62 0856-0856-1745'}</span>
               </a>
-              <a href="mailto:Sales01@gaeks.com" className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
+              <a href={`mailto:${brandData.salesEmail || 'Sales01@gaeks.com'}`} className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
                 <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                <span>Sales01@gaeks.com</span>
+                <span>{brandData.salesEmail || 'Sales01@gaeks.com'}</span>
               </a>
-              <a href="mailto:info@gaeks.com" className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
+              <a href={`mailto:${brandData.infoEmail || 'info@gaeks.com'}`} className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
                 <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                <span>info@gaeks.com</span>
+                <span>{brandData.infoEmail || 'info@gaeks.com'}</span>
               </a>
             </div>
-            
           </div>
 
         </div>
