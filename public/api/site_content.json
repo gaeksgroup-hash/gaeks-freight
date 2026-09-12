@@ -1,0 +1,36 @@
+{
+  "branding": {
+    "faviconUrl": "/favicon.png?v=8",
+    "symbolLogoUrl": "/logos/gaek-symbol.png?v=7",
+    "fullLogoUrl": "/logos/gaek-full.png?v=7",
+    "whatsappNumber": "085608561745",
+    "whatsappDisplay": "+62 0856-0856-1745",
+    "salesEmail": "Sales01@gaeks.com",
+    "infoEmail": "info@gaeks.com",
+    "companyAddress": "Tanjung Priok, Jakarta & Banten, Indonesia"
+  },
+  "hero": {
+    "bgType": "video",
+    "videoUrl": "https://cdn.pixabay.com/video/2020/05/25/40149-425134707_large.mp4",
+    "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80",
+    "titlePrefix": "GAEKS: ",
+    "titlePrefix_en": "GAEKS: ",
+    "titlePrefix_zh": "GAEKS: ",
+    "titleHighlight": "Jasa Import & PPJK",
+    "titleHighlight_en": "Import & Customs Clearance",
+    "titleHighlight_zh": "专业清关与国际进出口",
+    "titleSuffix": ", Solusi LCL Murah & Project Cargo",
+    "titleSuffix_en": ", LCL Ocean & Project Cargo Solutions",
+    "titleSuffix_zh": "，经济型拼箱与特种工程物流",
+    "caption": "Mitra resmi Global Andalan Ekspress (GAEKS) untuk kepabeanan Indonesian Customs Clearance (PPJK Ceisa 4.0), konsolidasi Import LCL Murah, kontainer FCL, serta penanganan Project Cargo alat berat ke seluruh pelabuhan utama Indonesia.",
+    "caption_en": "Official partner Global Andalan Ekspress (GAEKS) for Indonesian Customs Clearance (PPJK Ceisa 4.0), economical LCL consolidation, FCL containers, and heavy-lift project cargo across all major Indonesian ports.",
+    "caption_zh": "GAEKS 官方直连印尼海关 Ceisa 4.0 报关系统，为您提供海运整箱（FCL）、散货拼箱（LCL）、特种重大件运输及内陆全境卡车派送服务。",
+    "commodityTitle": "Konsultasi Regulasi & Komoditas Khusus",
+    "commodityTitle_en": "Specialized Cargo & Trade Compliance",
+    "commodityTitle_zh": "海关监管商品准入合规咨询",
+    "commodityCaption": "Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli kepabeanan kami.",
+    "commodityCaption_en": "Consult import licensing, SNI standards, and pre-shipment surveyor reports with our licensed brokerage specialists.",
+    "commodityCaption_zh": "专业团队协助处理印尼进出口限制类商品配额审批、SNI 认证及装运前商检（LS）合规。"
+  },
+  "updatedAt": 1726140000000
+}

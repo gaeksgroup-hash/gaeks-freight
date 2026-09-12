@@ -1,11 +1,10 @@
 <?php
-// Set CORS & Cache headers
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
-header("Cache-Control: no-cache, no-store, must-revalidate");
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Pragma: no-cache");
-header("Expires: 0");
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Content-Type: application/json; charset=UTF-8");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -13,14 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$dataFile = __DIR__ . '/../data/site_content.json';
-$dataDir  = __DIR__ . '/../data';
+$dataFile = __DIR__ . '/site_content.json';
 
-if (!is_dir($dataDir)) {
-    @mkdir($dataDir, 0777, true);
-}
-
-// GET: Mengambil data global untuk seluruh pengunjung website
+// GET: Seluruh pengunjung global mengambil data terbaru
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (file_exists($dataFile) && filesize($dataFile) > 10) {
         echo file_get_contents($dataFile);
@@ -30,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
-// POST: Menyimpan pembaruan dari Operator Admin
+// POST: Operator menyimpan pembaruan langsung ke file server
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawInput = file_get_contents('php://input');
     $decoded = json_decode($rawInput, true);
@@ -44,20 +38,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!empty($decoded['payload'])) {
         $saveData = json_encode($decoded['payload'], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $result = @file_put_contents($dataFile, $saveData);
+        $result = @file_put_contents($dataFile, $saveData, LOCK_EX);
+        @chmod($dataFile, 0666);
+
         if ($result !== false) {
             echo json_encode([
                 "status" => "success",
-                "message" => "Data saved globally to Hostinger server",
-                "timestamp" => time()
+                "message" => "Data tersimpan permanen di server Hostinger",
+                "timestamp" => time(),
+                "bytes" => $result
             ]);
         } else {
             http_response_code(500);
-            echo json_encode(["status" => "error", "message" => "Write permission failed on server"]);
+            echo json_encode(["status" => "error", "message" => "Gagal menulis file di server Hostinger"]);
         }
     } else {
         http_response_code(400);
-        echo json_encode(["status" => "error", "message" => "Invalid payload"]);
+        echo json_encode(["status" => "error", "message" => "Payload kosong"]);
     }
     exit;
 }

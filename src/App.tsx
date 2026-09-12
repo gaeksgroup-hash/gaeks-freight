@@ -12,10 +12,28 @@ import { ContactPage } from './components/ContactPage';
 import { StatsNetwork } from './components/StatsNetwork';
 import { Footer } from './components/Footer';
 import { Language } from './types/freight';
+import { syncFromServer } from './utils/adminStorage';
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('id');
   const [activeArticleId, setActiveArticleId] = useState<string>('');
+
+  // Sinkronisasi server Hostinger otomatis pada saat dibuka, polling berkala, dan saat tab aktif
+  useEffect(() => {
+    syncFromServer();
+
+    // Polling setiap 15 detik untuk memeriksa pembaruan server otomatis
+    const interval = setInterval(() => {
+      syncFromServer();
+    }, 15000);
+
+    const onFocus = () => syncFromServer();
+    window.addEventListener('focus', onFocus);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('focus', onFocus);
+    };
+  }, []);
 
   const getInitialPage = () => {
     const path = window.location.pathname.replace('/', '').toLowerCase();
@@ -80,7 +98,6 @@ export const App: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-[#011417] text-slate-100 font-sans">
       <Toaster position="bottom-right" richColors closeButton />
 
-      {/* Sembunyikan Navbar & Footer publik saat berada di halaman Operator Admin */}
       {!isOperatorPage && (
         <Navbar 
           currentTab={currentPage} 

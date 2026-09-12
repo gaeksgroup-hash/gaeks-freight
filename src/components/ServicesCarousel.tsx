@@ -142,27 +142,19 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
 ];
 
 export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string) => void; currentLang?: Language }> = ({ onSelectService, currentLang = 'id' }) => {
-  // STATE REAKTIF TERHUBUNG KE ADMIN STORAGE
   const [servicesList, setServicesList] = useState<ServiceDetail[]>(getStoredServices());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
 
-  // AUTO-UPDATE REAL-TIME LISTENER
   useEffect(() => {
     const reloadServices = () => {
       setServicesList(getStoredServices());
     };
-
-    // Muat data awal dan sinkronkan dengan server
     reloadServices();
-
-    // 1. Tangkap event lokal saat simpan di tab yang sama
     window.addEventListener(GAEKS_UPDATE_EVENT, reloadServices);
-    // 2. Tangkap event browser storage
     window.addEventListener('storage', reloadServices);
 
-    // 3. Tangkap event lintas-tab via BroadcastChannel
     let channel: BroadcastChannel | null = null;
     try {
       channel = new BroadcastChannel('gaeks_sync_channel');
@@ -192,10 +184,10 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
     if (!svc) return DETAILED_SERVICES[0];
     return {
       ...svc,
-      title: currentLang === 'en' ? svc.title_en || svc.title : currentLang === 'zh' ? svc.title_zh || svc.title : svc.title,
-      category: currentLang === 'en' ? svc.category_en || svc.category : currentLang === 'zh' ? svc.category_zh || svc.category : svc.category,
-      tagline: currentLang === 'en' ? svc.tagline_en || svc.tagline : currentLang === 'zh' ? svc.tagline_zh || svc.tagline : svc.tagline,
-      description: currentLang === 'en' ? svc.description_en || svc.description : currentLang === 'zh' ? svc.description_zh || svc.description : svc.description,
+      title: currentLang === 'en' ? (svc.title_en || svc.title) : currentLang === 'zh' ? (svc.title_zh || svc.title) : svc.title,
+      category: currentLang === 'en' ? (svc.category_en || svc.category) : currentLang === 'zh' ? (svc.category_zh || svc.category) : svc.category,
+      tagline: currentLang === 'en' ? (svc.tagline_en || svc.tagline) : currentLang === 'zh' ? (svc.tagline_zh || svc.tagline) : svc.tagline,
+      description: currentLang === 'en' ? (svc.description_en || svc.description) : currentLang === 'zh' ? (svc.description_zh || svc.description) : svc.description,
     };
   };
 
@@ -262,11 +254,11 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        {/* --- 3D ETALASE SHOWCASE: REAKTIF FOTO LANGSUNG TERGANTI --- */}
+        {/* --- 3D ETALASE SHOWCASE: TERHUBUNG REAL-TIME MULTILINGUAL --- */}
         <div className="relative py-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
             
-            {/* KARTU KIRI (BURAM) */}
+            {/* KARTU KIRI */}
             <div 
               onClick={() => setCurrentIndex(prevIndex)}
               className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-85 transition-all duration-700 filter blur-[1.5px] hover:blur-none"
@@ -288,7 +280,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            {/* KARTU TENGAH (UTAMA & TAJAM: MEMUAT FOTO BARU SEKETIKA) */}
+            {/* KARTU TENGAH (UTAMA) */}
             <div className="lg:col-span-6 z-20 transform scale-100 transition-all duration-700">
               <div className="bg-white rounded-3xl border-2 border-[#012E34] ring-4 ring-cyan-500/15 shadow-2xl p-8 sm:p-10 flex flex-col justify-between overflow-hidden relative">
                 
@@ -354,7 +346,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            {/* KARTU KANAN (BURAM) */}
+            {/* KARTU KANAN */}
             <div 
               onClick={() => setCurrentIndex(nextIndex)}
               className="hidden lg:block lg:col-span-3 cursor-pointer transform scale-95 opacity-55 hover:opacity-85 transition-all duration-700 filter blur-[1.5px] hover:blur-none"

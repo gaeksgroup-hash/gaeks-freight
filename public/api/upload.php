@@ -14,32 +14,32 @@ if (!is_dir($uploadDir)) {
     @mkdir($uploadDir, 0777, true);
 }
 
-// Upload file multipart
 if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
+    $fileName = $_FILES['file']['name'];
     $fileTmpPath = $_FILES['file']['tmp_name'];
-    $fileName    = $_FILES['file']['name'];
     $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-    $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'mp4', 'webm', 'ico'];
+    $allowedExts = ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp', 'mp4', 'ico'];
     if (!in_array($fileExtension, $allowedExts)) {
         http_response_code(400);
-        echo json_encode(["status" => "error", "message" => "Extension not allowed"]);
+        echo json_encode(["status" => "error", "message" => "Format file tidak didukung"]);
         exit;
     }
 
-    $newFileName = time() . '_' . preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $fileName);
-    $destPath = $uploadDir . '/' . $newFileName;
+    $safeFileName = time() . '_' . preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $fileName);
+    $destPath = $uploadDir . '/' . $safeFileName;
 
     if (move_uploaded_file($fileTmpPath, $destPath)) {
+        @chmod($destPath, 0666);
         echo json_encode([
             "status" => "success",
-            "url" => "/uploads/" . $newFileName,
-            "filename" => $newFileName
+            "url" => "/uploads/" . $safeFileName,
+            "filename" => $safeFileName
         ]);
         exit;
     }
 }
 
 http_response_code(400);
-echo json_encode(["status" => "error", "message" => "Upload failed or empty file"]);
+echo json_encode(["status" => "error", "message" => "Upload gagal"]);
 exit;

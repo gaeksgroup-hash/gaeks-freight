@@ -1,6 +1,6 @@
 // filepath: /src/components/Hero.tsx
 import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, Compass, ShieldCheck, FileCheck2, Globe2, Clock4, Radio, AlertCircle } from 'lucide-react';
+import { ArrowUpRight, Compass, FileCheck2, Globe2, Clock4, AlertCircle } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredHero, getStoredBranding, GAEKS_UPDATE_EVENT, HeroSettings, DEFAULT_HERO } from '../utils/adminStorage';
 
@@ -32,10 +32,18 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
     if (onNavigate) onNavigate(page);
   };
 
+  // Logika Pemilihan Bahasa Dinamis
+  const titlePrefix = currentLang === 'en' ? (heroData.titlePrefix_en || heroData.titlePrefix) : currentLang === 'zh' ? (heroData.titlePrefix_zh || heroData.titlePrefix) : heroData.titlePrefix;
+  const titleHighlight = currentLang === 'en' ? (heroData.titleHighlight_en || heroData.titleHighlight) : currentLang === 'zh' ? (heroData.titleHighlight_zh || heroData.titleHighlight) : heroData.titleHighlight;
+  const titleSuffix = currentLang === 'en' ? (heroData.titleSuffix_en || heroData.titleSuffix) : currentLang === 'zh' ? (heroData.titleSuffix_zh || heroData.titleSuffix) : heroData.titleSuffix;
+  const caption = currentLang === 'en' ? (heroData.caption_en || heroData.caption) : currentLang === 'zh' ? (heroData.caption_zh || heroData.caption) : heroData.caption;
+  const commodityTitle = currentLang === 'en' ? (heroData.commodityTitle_en || heroData.commodityTitle) : currentLang === 'zh' ? (heroData.commodityTitle_zh || heroData.commodityTitle) : heroData.commodityTitle;
+  const commodityCaption = currentLang === 'en' ? (heroData.commodityCaption_en || heroData.commodityCaption) : currentLang === 'zh' ? (heroData.commodityCaption_zh || heroData.commodityCaption) : heroData.commodityCaption;
+
   return (
     <section id="home" className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 overflow-hidden bg-[#011417] text-white">
       
-      {/* 1. Dynamic Background: Video atau Image Sesuai Pengaturan Operator */}
+      {/* 1. Dynamic Background: Video atau Foto Sesuai Pengaturan Operator */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {heroData.bgType === 'video' ? (
           <video 
@@ -56,7 +64,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
             className="w-full h-full object-cover scale-105 filter brightness-75"
           />
         )}
-        {/* Lapisan Gradien Warna Oceanic Teal Khas GAEKS */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#012E34]/95 via-[#012E34]/85 to-[#011C20]/90 mix-blend-multiply" />
       </div>
 
@@ -79,10 +86,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           
-          {/* Kolom Kiri: Headline, Caption, & Call to Action */}
+          {/* Kolom Kiri: Konten Teks & Aksi */}
           <div className="lg:col-span-8 space-y-6 text-center lg:text-left">
             
-            {/* Logo Simbol Resmi GAEKS */}
+            {/* Logo Simbol GAEKS */}
             <div className="inline-flex items-center">
               <img 
                 src={brandingData.symbolLogoUrl || "/logos/gaek-symbol.png"} 
@@ -96,32 +103,32 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
               />
             </div>
 
-            {/* Headline H1 Dinamis (SEO Ready) */}
+            {/* Headline H1 Multilingual */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15]">
-              {heroData.titlePrefix}
+              {titlePrefix}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-100 to-white">
-                {heroData.titleHighlight}
+                {titleHighlight}
               </span>
-              {heroData.titleSuffix}
+              {titleSuffix}
             </h1>
 
-            {/* Caption Subtitle Dinamis */}
+            {/* Paragraf Caption Multilingual */}
             <p className="text-sm sm:text-base text-slate-200 max-w-2xl leading-relaxed font-normal mx-auto lg:mx-0">
-              {heroData.caption}
+              {caption}
             </p>
 
-            {/* Banner Konsultasi Komoditas Khusus Dinamis */}
+            {/* Banner Komoditas Khusus Multilingual */}
             <div className="p-4 rounded-2xl bg-[#011C20]/80 border border-cyan-800/40 text-left flex items-start space-x-3.5 shadow-lg max-w-xl mx-auto lg:mx-0">
               <div className="p-2 rounded-xl bg-cyan-950 text-cyan-400 mt-0.5">
                 <AlertCircle className="w-5 h-5" />
               </div>
               <div className="text-xs">
-                <strong className="text-cyan-300 block font-bold text-sm mb-0.5">{heroData.commodityTitle}</strong>
-                <p className="text-slate-300 leading-relaxed">{heroData.commodityCaption}</p>
+                <strong className="text-cyan-300 block font-bold text-sm mb-0.5">{commodityTitle}</strong>
+                <p className="text-slate-300 leading-relaxed">{commodityCaption}</p>
               </div>
             </div>
 
-            {/* Tombol Interaksi Cepat */}
+            {/* Tombol Aksi Cepat */}
             <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
               <a
                 href="#calculator"
@@ -142,7 +149,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
               </a>
             </div>
 
-            {/* Trust Badges Bar */}
+            {/* Trust Badges */}
             <div className="pt-6 border-t border-cyan-950/80 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-xs text-slate-300">
               <div className="flex items-center space-x-2 px-3 py-1.5 rounded-lg bg-[#011C20]/80 border border-cyan-900/40">
                 <FileCheck2 className="w-4 h-4 text-cyan-400" />
@@ -168,7 +175,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
 
           </div>
 
-          {/* Kolom Kanan: Radar Pemindai 360 Derajat & Telemetri Visual */}
+          {/* Kolom Kanan: Radar 360 Derajat */}
           <div className="lg:col-span-4 hidden lg:flex flex-col items-center justify-center relative">
             <div className="w-72 h-72 rounded-full border-2 border-cyan-500/30 relative flex items-center justify-center bg-[#011C20]/60 backdrop-blur-xl shadow-2xl">
               <div className="w-56 h-56 rounded-full border border-cyan-500/20" />
@@ -176,9 +183,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) =>
               <div className="w-16 h-16 rounded-full border border-cyan-500/30 bg-cyan-950/40 flex items-center justify-center">
                 <Compass className="w-6 h-6 text-cyan-400 animate-pulse" />
               </div>
-              {/* Radar Sweep Line */}
               <div className="absolute inset-0 rounded-full border-t-2 border-cyan-400 animate-spin" style={{ animationDuration: '4s' }} />
-              {/* Radar Targets */}
               <div className="absolute top-12 right-16 w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
               <div className="absolute bottom-16 left-14 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
             </div>
