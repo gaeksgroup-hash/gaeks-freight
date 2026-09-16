@@ -153,8 +153,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const [carouselWidth, setCarouselWidth] = useState(900);
   const trackXMotion = useMotionValue(0);
   const trackVelocity = useVelocity(trackXMotion);
-  const velocityScale = useTransform(trackVelocity, [-1800, 0, 1800], [0.94, 1, 0.94]);
-  const velocitySkew = useTransform(trackVelocity, [-1800, 0, 1800], [-5, 0, 5]);
+  const velocityScale = useTransform(trackVelocity, [-1800, 0, 1800], [0.985, 1, 0.985]);
+  const velocitySkew = useTransform(trackVelocity, [-1800, 0, 1800], [-1.5, 0, 1.5]);
 
   useEffect(() => {
     const reloadServices = () => {
@@ -204,9 +204,9 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   useEffect(() => {
     const controls = animateMotion(trackXMotion, targetTrackX, {
       type: 'spring',
-      stiffness: 260,
-      damping: 28,
-      mass: 0.7
+      stiffness: 190,
+      damping: 30,
+      mass: 0.8
     });
     return () => controls.stop();
   }, [carouselWidth, currentIndex, targetTrackX, trackXMotion]);
@@ -301,7 +301,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               className="flex items-stretch gap-5 overflow-visible cursor-grab active:cursor-grabbing"
               drag={shouldReduceMotion ? false : 'x'}
               dragMomentum={!shouldReduceMotion}
-              dragElastic={0.22}
+              dragElastic={0.14}
               dragDirectionLock
               dragConstraints={{ left: -Math.max(0, (total - 1) * (carouselWidth + slideGap)), right: 0 }}
               style={{ x: trackXMotion, skewX: velocitySkew, scaleY: velocityScale, width: `${total * carouselWidth + (total - 1) * slideGap}px`, touchAction: 'pan-y' }}
@@ -311,33 +311,30 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               {servicesList.map((service, index) => {
                 const item = getLocalized(service);
                 return (
-              <motion.article data-carousel-slide key={service.id} variants={itemReveal} style={{ width: carouselWidth, flex: '0 0 auto', scale: index === currentIndex ? velocityScale : 0.965, skewX: index === currentIndex ? velocitySkew : 0 }} animate={{ opacity: index === currentIndex ? 1 : 0.62 }} transition={{ opacity: { duration: 0.35 } }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-transparent text-white overflow-visible select-none">
+              <motion.article data-carousel-slide key={service.id} variants={itemReveal} style={{ width: carouselWidth, flex: '0 0 auto', scale: index === currentIndex ? velocityScale : 0.985, skewX: index === currentIndex ? velocitySkew : 0 }} animate={{ opacity: index === currentIndex ? 1 : 0.72 }} transition={{ opacity: { duration: 0.45, ease: 'easeOut' } }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[500px] bg-[#012E34] text-white overflow-hidden rounded-[1.75rem] select-none">
                 <div className="relative min-h-[260px] xl:min-h-full overflow-visible">
-                  <motion.img initial={shouldReduceMotion ? false : { scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} src={item.imageUrl} alt={item.title} draggable={false} className="absolute inset-[-3%] w-[106%] h-[106%] object-cover rounded-[2rem]" />
-                  <div className="absolute inset-[-3%] bg-gradient-to-t from-[#011417]/85 via-[#012E34]/15 to-transparent rounded-[2rem]" />
+                  <motion.img initial={shouldReduceMotion ? false : { scale: 1.04 }} animate={{ scale: 1 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} src={item.imageUrl} alt={item.title} draggable={false} className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#011417]/90 via-[#012E34]/15 to-transparent" />
                   <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
                     <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{item.category}</span>
                     <ShieldCheck className="w-5 h-5 text-cyan-300" aria-label="Layanan terverifikasi" />
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10 bg-[#012E34]/95 xl:bg-transparent">
+                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10 bg-[#012E34]">
                   <div>
-                    <div className="flex items-center justify-between gap-4 mb-8 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400"><span>Featured capability</span><span className="font-mono text-cyan-300">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
-                    <h3 className="font-display text-3xl sm:text-4xl font-extrabold leading-tight">{item.title}</h3>
+                    <div className="flex items-center justify-between gap-4 mb-6"><span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{item.category}</span><span className="font-mono text-[10px] text-slate-400">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
+                    <h3 className="font-display text-2xl sm:text-4xl font-extrabold leading-tight text-white">{item.title}</h3>
                     <p className="text-sm sm:text-base font-semibold text-cyan-300 mt-4">{item.tagline}</p>
-                    <p className="text-sm text-slate-300 leading-relaxed mt-5">{item.description}</p>
+                    <p className="text-sm text-slate-300 leading-relaxed mt-4 line-clamp-3">{item.description}</p>
 
-                    <div className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mt-8 pt-6 border-t border-white/15">
-                      {item.features.map((feature, featureIndex) => <div key={featureIndex} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
+                    <div className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mt-7 pt-6 border-t border-white/15">
+                      {item.features.slice(0, 2).map((feature, featureIndex) => <div key={featureIndex} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
                     </div>
                   </div>
 
-                  <div className="pt-8 mt-8 border-t border-white/15">
-                    <div className="flex flex-wrap items-end justify-between gap-5">
-                      <div className="max-w-xs"><span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 mb-2">{getTranslation(currentLang, UI_TEXT.services.standardLabel)}</span><span className="text-xs text-slate-200">{item.equipment}</span></div>
-                      <button type="button" onClick={() => onSelectService(item.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
-                    </div>
+                  <div className="pt-7 mt-7 border-t border-white/15 flex justify-end">
+                    <button type="button" onClick={() => onSelectService(item.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
                   </div>
                 </div>
               </motion.article>
@@ -360,8 +357,6 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             />
           ))}
         </div>
-
-        <div className="mt-4 text-center text-[11px] font-semibold text-slate-400">Drag untuk menjelajah layanan <span className="text-cyan-700">•</span> gunakan panah untuk snap</div>
 
         <div className="mt-20 border-t border-slate-200 pt-12">
           <div className="max-w-2xl mb-8">
