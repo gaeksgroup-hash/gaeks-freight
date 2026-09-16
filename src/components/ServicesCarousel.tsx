@@ -143,7 +143,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
   }
 ];
 
-export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string) => void; currentLang?: Language }> = ({ onSelectService, currentLang = 'id' }) => {
+export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string) => void; onOpenService?: (serviceId: string) => void; currentLang?: Language }> = ({ onSelectService, onOpenService, currentLang = 'id' }) => {
   const [servicesList, setServicesList] = useState<ServiceDetail[]>(getStoredServices());
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -334,7 +334,10 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   </div>
 
                   <div className="pt-7 mt-7 border-t border-white/15 flex justify-end">
-                    <button type="button" onClick={() => onSelectService(item.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
+                    <div className="flex flex-wrap justify-end gap-3">
+                      {onOpenService && <button type="button" onClick={() => onOpenService(service.id)} className="inline-flex items-center gap-2 border border-white/20 hover:border-cyan-300 text-white px-4 py-3 font-bold text-sm transition-colors">Lihat detail</button>}
+                      <button type="button" onClick={() => onSelectService(item.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
+                    </div>
                   </div>
                 </div>
               </motion.article>
@@ -377,8 +380,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                     <span className="text-[10px] font-black uppercase tracking-wider text-cyan-700">{localizedService.category}</span>
                     <h4 className="font-display text-lg font-extrabold text-slate-900 mt-2 leading-tight">{localizedService.title}</h4>
                     <p className="text-xs text-slate-600 leading-relaxed mt-3 line-clamp-3">{localizedService.description}</p>
-                    <button type="button" onClick={() => onSelectService(localizedService.title)} className="inline-flex items-center gap-2 mt-auto pt-5 text-xs font-extrabold text-[#012E34] hover:text-cyan-700">
-                      Konsultasikan layanan <ArrowUpRight className="w-3.5 h-3.5" />
+                    <button type="button" onClick={() => onOpenService ? onOpenService(service.id) : onSelectService(localizedService.title)} className="inline-flex items-center gap-2 mt-auto pt-5 text-xs font-extrabold text-[#012E34] hover:text-cyan-700">
+                      Lihat detail layanan <ArrowUpRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </article>

@@ -12,12 +12,20 @@ import { ContactPage } from './components/ContactPage';
 import { StatsNetwork } from './components/StatsNetwork';
 import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
+import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { Language } from './types/freight';
 import { syncFromServer } from './utils/adminStorage';
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('id');
   const [activeArticleId, setActiveArticleId] = useState<string>('');
+  const getServiceSlug = () => {
+    const path = window.location.pathname.toLowerCase();
+    const hash = window.location.hash.toLowerCase();
+    if (path.startsWith('/layanan/')) return path.substring('/layanan/'.length);
+    if (hash.startsWith('#service=')) return hash.substring('#service='.length);
+    return '';
+  };
 
   // Sinkronisasi server Hostinger otomatis pada saat dibuka, polling berkala, dan saat tab aktif
   useEffect(() => {
@@ -42,6 +50,7 @@ export const App: React.FC = () => {
     if (path === 'operator' || hash === 'operator' || hash === 'admin') {
       return 'operator';
     }
+    if (getServiceSlug()) return 'service';
     if (['home', 'services', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
       return hash;
     }
@@ -50,6 +59,7 @@ export const App: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useState<string>(getInitialPage());
   const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string>('');
+  const [activeServiceSlug, setActiveServiceSlug] = useState<string>(getServiceSlug());
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -58,12 +68,16 @@ export const App: React.FC = () => {
       
       if (path === 'operator' || fullHash === 'operator' || fullHash === 'admin') {
         setCurrentPage('operator');
+      } else if (fullHash.startsWith('service=') || path.startsWith('/layanan/')) {
+        setActiveServiceSlug(getServiceSlug());
+        setCurrentPage('service');
       } else if (fullHash.startsWith('news?id=')) {
         const articleId = fullHash.includes('id=') ? fullHash.substring(fullHash.indexOf('id=') + 3) : '';
         setActiveArticleId(articleId);
         setCurrentPage('news');
       } else if (['home', 'services', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
+        setActiveServiceSlug('');
         setCurrentPage(fullHash);
       } else {
         setCurrentPage('home');
@@ -76,6 +90,9 @@ export const App: React.FC = () => {
   }, []);
 
   const navigateTo = (page: string) => {
+    if (window.location.pathname.startsWith('/layanan/')) {
+      window.history.pushState({}, '', '/');
+    }
     window.location.hash = page;
     setActiveArticleId('');
     setCurrentPage(page);
@@ -85,6 +102,13 @@ export const App: React.FC = () => {
   const handleSelectService = (serviceName: string) => {
     setSelectedServiceForQuote(serviceName);
     navigateTo('calculator');
+  };
+
+  const handleOpenService = (serviceId: string) => {
+    setActiveServiceSlug(serviceId);
+    window.location.hash = 'service=' + serviceId;
+    setCurrentPage('service');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenArticleDetail = (articleId: string) => {
@@ -115,8 +139,12 @@ export const App: React.FC = () => {
 
         {currentPage === 'services' && (
           <div className="pt-24">
-            <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
+            <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
           </div>
+        )}
+
+        {currentPage === 'service' && (
+          <ServiceDetailPage slug={activeServiceSlug} currentLang={currentLang} onBack={() => navigateTo('services')} onQuote={handleSelectService} />
         )}
 
         {currentPage === 'calculator' && (
@@ -146,7 +174,7 @@ export const App: React.FC = () => {
         {currentPage === 'home' && (
           <>
             <Hero onNavigate={navigateTo} currentLang={currentLang} />
-            <ServicesCarousel onSelectService={handleSelectService} currentLang={currentLang} />
+            <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
             <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
             <StatsNetwork />
