@@ -106,7 +106,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </span>
         </a>
 
-        <nav className={`hidden md:flex items-center space-x-7 text-xs font-bold ${navigationText}`}>
+        <nav className={`hidden xl:flex items-center gap-5 text-[11px] font-bold whitespace-nowrap ${navigationText}`}>
           <a href="#home" onClick={(e) => handleNav('home', e)} className={`transition-colors py-1 border-b-2 border-transparent ${currentTab === 'home' ? `${activeNavigation} font-black` : 'hover:text-cyan-300'}`}>Beranda</a>
           <a href="#services" onClick={(e) => handleNav('services', e)} className={`transition-colors py-1 border-b-2 border-transparent ${currentTab === 'services' ? `${activeNavigation} font-black` : 'hover:text-cyan-300'}`}>Layanan</a>
           <a href="#calculator" onClick={(e) => handleNav('calculator', e)} className={`transition-colors py-1 border-b-2 border-transparent ${currentTab === 'calculator' ? `${activeNavigation} font-black` : 'hover:text-cyan-300'}`}>Kalkulator Kargo</a>
@@ -115,7 +115,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <a href="#contact" onClick={(e) => handleNav('contact', e)} className={`transition-colors py-1 border-b-2 border-transparent ${currentTab === 'contact' ? `${activeNavigation} font-black` : 'hover:text-cyan-300'}`}>Hubungi Kami</a>
         </nav>
 
-        <div className="hidden sm:flex items-center space-x-4">
+        <div className="hidden xl:flex items-center gap-3">
           <div className={`flex items-center space-x-1 p-1 rounded-xl border text-[11px] font-bold ${scrolled ? 'bg-slate-100 border-slate-200' : 'bg-white/10 border-white/15'}`}>
             <Globe className={`w-3.5 h-3.5 ml-1 ${scrolled ? 'text-cyan-600' : 'text-cyan-300'}`} />
             <button 
@@ -145,11 +145,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             className="inline-flex items-center space-x-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-3.5 py-2 rounded-xl text-xs font-bold transition-all shadow-md active:scale-95"
           >
             <PhoneCall className="w-3.5 h-3.5" />
-            <span>{brandData.whatsappDisplay || '0856-0856-1745'}</span>
+            <span>Contact Now</span>
           </a>
         </div>
 
-        <div className="flex sm:hidden items-center space-x-2">
+        <div className="flex xl:hidden items-center space-x-2">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={`p-2 rounded-xl ${scrolled ? 'text-[#012E34] hover:bg-slate-100' : 'text-white hover:bg-white/10'}`}
@@ -159,6 +159,38 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </div>
       </div>
+
+      {mobileMenuOpen && (
+        <div className={`xl:hidden border-t px-4 py-4 shadow-xl ${scrolled ? 'bg-white border-slate-200' : 'bg-[#011417] border-white/10'}`}>
+          <nav className={`max-w-7xl mx-auto grid gap-1 text-sm font-bold ${scrolled ? 'text-slate-700' : 'text-slate-200'}`}>
+            {[
+              ['home', 'Beranda'],
+              ['services', 'Layanan'],
+              ['calculator', 'Kalkulator Kargo'],
+              ['network', 'Rute & Jadwal'],
+              ['news', 'News & Updates'],
+              ['contact', 'Hubungi Kami']
+            ].map(([page, label]) => (
+              <a key={page} href={`#${page}`} onClick={(event) => handleNav(page, event)} className="flex items-center justify-between border-b border-current/10 py-3 hover:text-cyan-400">
+                <span>{label}</span>
+                <span aria-hidden="true">→</span>
+              </a>
+            ))}
+            <div className="flex items-center gap-2 py-4 text-xs">
+              <Globe className={scrolled ? 'text-cyan-700' : 'text-cyan-300'} />
+              {(['id', 'en', 'zh'] as Language[]).map((language) => (
+                <button key={language} type="button" onClick={() => handleTriggerLanguage(language)} className={`px-3 py-1.5 rounded-lg ${currentLang === language ? 'bg-cyan-400 text-[#011417]' : scrolled ? 'bg-slate-100 text-slate-600' : 'bg-white/10 text-slate-200'}`}>
+                  {language === 'zh' ? '中文' : language.toUpperCase()}
+                </button>
+              ))}
+            </div>
+            <a href={`https://wa.me/${brandData.whatsappNumber || '6285608561745'}`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center justify-center gap-2 bg-cyan-400 px-4 py-3 text-sm font-bold text-[#011417]">
+              <PhoneCall className="w-4 h-4" />
+              <span>Contact Now</span>
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
