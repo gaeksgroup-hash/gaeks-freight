@@ -1,9 +1,12 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Anchor, Compass, Award, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 export const StatsNetwork: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   return (
-    <section id="coverage" aria-labelledby="coverage-title" className="py-24 bg-white border-y border-slate-200 text-slate-900">
+    <motion.section id="coverage" data-motion-section aria-labelledby="coverage-title" variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="py-24 bg-white border-y border-slate-200 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-[.9fr_1.1fr] gap-12 lg:gap-20 items-end mb-12">
           <div>
@@ -46,6 +49,6 @@ export const StatsNetwork: React.FC = () => {
           </a>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };

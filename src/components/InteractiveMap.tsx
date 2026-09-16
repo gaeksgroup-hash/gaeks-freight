@@ -1,7 +1,9 @@
 // filepath: /src/components/InteractiveMap.tsx
 import React, { useState, useMemo } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Ship, Plane, Clock, Compass, Search, CheckCircle2, AlertTriangle, ArrowRight, ShieldCheck, Info } from 'lucide-react';
 import { toast } from 'sonner';
+import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 interface OceanRouteSchedule {
   region: 'EAST ASIA' | 'SEA & INDIA' | 'EUROPE' | 'USA';
@@ -374,6 +376,7 @@ const AIR_ROUTES: AirRouteSchedule[] = [
 ];
 
 export const InteractiveMap: React.FC = () => {
+  const shouldReduceMotion = useReducedMotion();
   const [activeTransportMode, setActiveTransportMode] = useState<'sea' | 'air'>('sea');
   const [selectedRegion, setSelectedRegion] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState('');
@@ -416,7 +419,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
   };
 
   return (
-    <section id="network" className="py-24 bg-[#011C20] text-white relative overflow-hidden">
+    <motion.section id="network" data-motion-section variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="py-24 bg-[#011C20] text-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Header Bersih & Modern */}
@@ -641,6 +644,6 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
         )}
 
       </div>
-    </section>
+    </motion.section>
   );
 };

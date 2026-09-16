@@ -1,9 +1,11 @@
 // filepath: /src/components/ServicesCarousel.tsx
 import React, { useState, useEffect } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 import { getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { sectionReveal, staggerReveal, itemReveal, viewportOnce } from '../utils/motionVariants';
 
 export const DETAILED_SERVICES: ServiceDetail[] = [
   {
@@ -146,6 +148,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const reloadServices = () => {
@@ -198,9 +201,16 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const centerItem = getLocalized(currentItem);
 
   return (
-    <section 
+    <motion.section
       id="services" 
+      data-motion-section
       aria-labelledby="services-title"
+      variants={sectionReveal}
+      initial={shouldReduceMotion ? 'visible' : 'hidden'}
+      animate={shouldReduceMotion ? 'visible' : undefined}
+      whileInView={shouldReduceMotion ? undefined : 'visible'}
+      transition={shouldReduceMotion ? { duration: 0 } : undefined}
+      viewport={viewportOnce}
       className="py-24 bg-slate-50 border-y border-slate-200 text-slate-900 overflow-hidden select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -253,7 +263,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
           </div>
         </div>
 
-        <div className="relative py-4">
+        <motion.div variants={staggerReveal} className="relative py-4">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(220px,.72fr)_minmax(0,1.28fr)] gap-5 lg:gap-8 items-stretch">
             <div className="border-y border-slate-200 bg-white/60">
               <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
@@ -265,16 +275,16 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   const item = getLocalized(service);
                   const isActive = index === currentIndex;
                   return (
-                    <button key={service.id} type="button" onClick={() => setCurrentIndex(index)} className={`group flex items-start gap-3 text-left px-4 py-4 border-b border-slate-200 transition-colors ${isActive ? 'bg-[#012E34] text-white' : 'text-slate-600 hover:bg-cyan-50'}`} aria-current={isActive ? 'true' : undefined}>
+                    <motion.button variants={itemReveal} key={service.id} type="button" onClick={() => setCurrentIndex(index)} className={`group flex items-start gap-3 text-left px-4 py-4 border-b border-slate-200 transition-colors ${isActive ? 'bg-[#012E34] text-white' : 'text-slate-600 hover:bg-cyan-50'}`} aria-current={isActive ? 'true' : undefined}>
                       <span className={`font-mono text-[10px] pt-0.5 ${isActive ? 'text-cyan-300' : 'text-slate-400'}`}>{String(index + 1).padStart(2, '0')}</span>
                       <span className="min-w-0"><strong className="block text-xs font-extrabold leading-tight">{item.title}</strong><span className={`block text-[10px] mt-1 line-clamp-1 ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>{item.category}</span></span>
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
             </div>
 
-            <article className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden">
+            <motion.article variants={itemReveal} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden">
               <div className="relative min-h-[260px] xl:min-h-full overflow-hidden">
                 <img key={centerItem.imageUrl} src={centerItem.imageUrl} alt={centerItem.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#011417] via-[#012E34]/20 to-transparent" />
@@ -303,9 +313,9 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                   </div>
                 </div>
               </div>
-            </article>
+            </motion.article>
           </div>
-        </div>
+        </motion.div>
 
         {/* Minimal Indicators */}
         <div className="mt-8 flex justify-center items-center space-x-2">
@@ -351,6 +361,6 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
         </div>
 
       </div>
-    </section>
+    </motion.section>
   );
 };

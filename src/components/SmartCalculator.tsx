@@ -1,9 +1,11 @@
 // filepath: /src/components/SmartCalculator.tsx
 import React, { useState, useMemo } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Ship, Plane, ArrowRight, MessageCircle, Mail, Package, Box, Layers, CheckCircle2, ShieldAlert, Sparkles, Scale } from 'lucide-react';
 import { findSmartNearestPort } from '../utils/portFinder';
 import { ShippingMode, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
+import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 interface SmartCalculatorProps {
   prefillService?: string;
@@ -28,6 +30,7 @@ const INCOTERMS_LIST = [
 const QUICK_CITIES = ['Jakarta', 'Cikarang', 'Karawang', 'Semarang', 'Surabaya', 'Bandung', 'Batam'];
 
 export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService, currentLang = 'id' }) => {
+  const shouldReduceMotion = useReducedMotion();
   const [shippingMode, setShippingMode] = useState<ShippingMode>('ocean');
   const [selectedIncoterm, setSelectedIncoterm] = useState('FOB');
   const [originInput, setOriginInput] = useState('Cikarang, Bekasi');
@@ -155,7 +158,7 @@ Terima kasih.`;
   };
 
   return (
-    <section id="calculator" className="py-20 bg-slate-50 border-y border-slate-200 text-slate-900">
+    <motion.section id="calculator" data-motion-section variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="py-20 bg-slate-50 border-y border-slate-200 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Header Bersih & Ringkas */}
@@ -476,6 +479,6 @@ Terima kasih.`;
         </div>
 
       </div>
-    </section>
+    </motion.section>
   );
 };

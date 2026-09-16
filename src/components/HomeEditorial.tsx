@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, BookOpen, CheckCircle2, Mail, Send, ShieldCheck, Truck } from 'lucide-react';
 import { toast } from 'sonner';
 import { addSubscriber, getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
+import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 interface HomeEditorialProps {
   currentLang?: Language;
@@ -87,6 +89,7 @@ const getLocalizedArticle = (article: ArticleItem, language: Language) => ({
 
 export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id', onNavigate, onSelectArticle }) => {
   const copy = COPY[currentLang];
+  const shouldReduceMotion = useReducedMotion();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const articles = getStoredArticles()
@@ -108,7 +111,7 @@ export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id'
   };
 
   return (
-    <section aria-labelledby="editorial-title" className="bg-slate-50 text-slate-900 border-y border-slate-200">
+    <motion.section data-motion-section aria-labelledby="editorial-title" variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="bg-slate-50 text-slate-900 border-y border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 sm:py-24">
         <div className="grid lg:grid-cols-[.85fr_1.15fr] gap-10 lg:gap-20 items-end">
           <div>
@@ -180,6 +183,6 @@ export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id'
           <button type="button" onClick={() => onNavigate('contact')} className="inline-flex items-center gap-2 text-sm font-bold text-[#012E34] hover:text-cyan-700">{copy.consult}<Truck className="w-4 h-4" /></button>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };

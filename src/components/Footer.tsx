@@ -1,8 +1,10 @@
 // filepath: /src/components/Footer.tsx
 import React from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { PhoneCall, Mail, MapPin, ShieldCheck } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -10,6 +12,7 @@ export interface FooterProps {
 }
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+  const shouldReduceMotion = useReducedMotion();
   const [brandData, setBrandData] = React.useState(getStoredBranding());
 
   React.useEffect(() => {
@@ -26,7 +29,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-[#011C20] text-slate-300 border-t border-cyan-900/40 relative overflow-hidden">
+    <motion.footer data-motion-section variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="bg-[#011C20] text-slate-300 border-t border-cyan-900/40 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
           
@@ -98,6 +101,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 };
