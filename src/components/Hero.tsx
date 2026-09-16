@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowUpRight, FileCheck2, Globe2, Clock4, AlertCircle, ArrowDownRight, ShieldCheck } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredHero, getStoredBranding, GAEKS_UPDATE_EVENT, HeroSettings } from '../utils/adminStorage';
+import { getStoredHero, GAEKS_UPDATE_EVENT, HeroSettings } from '../utils/adminStorage';
 
 export interface HeroProps {
   onNavigate?: (page: string) => void;
@@ -11,12 +11,10 @@ export interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [heroData, setHeroData] = useState<HeroSettings>(getStoredHero());
-  const [brandingData, setBrandingData] = useState(getStoredBranding());
 
   useEffect(() => {
     const reload = () => {
       setHeroData(getStoredHero());
-      setBrandingData(getStoredBranding());
     };
     reload();
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
@@ -77,20 +75,6 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,.9fr)] gap-10 lg:gap-20 items-center">
           <div className="space-y-7 text-center lg:text-left">
-            <div className="inline-flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em] text-cyan-300">
-              <img 
-                src={brandingData.symbolLogoUrl || "/logos/gaek-symbol.png"} 
-                onError={(e) => {
-                  const target = e.currentTarget as HTMLImageElement;
-                  target.onerror = null;
-                  target.src = '/logos/gaek-symbol.svg';
-                }}
-                alt="GAEKS Logo" 
-                className="h-11 sm:h-14 w-auto object-contain drop-shadow-md"
-              />
-              <span>Global Andalan Ekspress</span>
-            </div>
-
             <h1 id="hero-title" className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.02] max-w-4xl">
               {heroData.titlePrefix}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-100 to-white">
@@ -189,8 +173,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         {/* Trust marks remain visible without competing with the primary CTA. */}
         <div className="relative z-10 mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-[11px] text-slate-400">
           <span>Didukung partner jaringan:</span>
-          <img src="/logos/wca.svg" alt="WCA World Member" className="h-4 w-auto opacity-80" />
-          <img src="/logos/jctrans.svg" alt="JCtrans GCP Member" className="h-4 w-auto opacity-80" />
+          <span className="font-bold text-slate-300">WCA World</span>
+          <span className="text-slate-600">/</span>
+          <span className="font-bold text-slate-300">JCtrans GCP</span>
         </div>
       </div>
     </section>
