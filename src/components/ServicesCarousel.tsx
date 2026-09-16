@@ -1,6 +1,6 @@
 // filepath: /src/components/ServicesCarousel.tsx
 import React, { useState, useEffect } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
@@ -284,36 +284,38 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               </div>
             </div>
 
-            <motion.article variants={itemReveal} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden">
-              <div className="relative min-h-[260px] xl:min-h-full overflow-hidden">
-                <img key={centerItem.imageUrl} src={centerItem.imageUrl} alt={centerItem.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#011417] via-[#012E34]/20 to-transparent" />
-                <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
-                  <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{centerItem.category}</span>
-                  <ShieldCheck className="w-5 h-5 text-cyan-300" aria-label="Layanan terverifikasi" />
-                </div>
-              </div>
-
-              <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
-                <div>
-                  <div className="flex items-center justify-between gap-4 mb-8 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400"><span>Featured capability</span><span className="font-mono text-cyan-300">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
-                  <h3 className="font-display text-3xl sm:text-4xl font-extrabold leading-tight">{centerItem.title}</h3>
-                  <p className="text-sm sm:text-base font-semibold text-cyan-300 mt-4">{centerItem.tagline}</p>
-                  <p className="text-sm text-slate-300 leading-relaxed mt-5">{centerItem.description}</p>
-
-                  <div className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mt-8 pt-6 border-t border-white/15">
-                    {centerItem.features.map((feature, index) => <div key={index} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.article key={centerItem.id} variants={itemReveal} initial={shouldReduceMotion ? false : { opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} exit={shouldReduceMotion ? undefined : { opacity: 0, x: -22 }} transition={{ duration: 0.42, ease: 'easeOut' }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden">
+                <div className="relative min-h-[260px] xl:min-h-full overflow-hidden">
+                  <motion.img key={centerItem.imageUrl} initial={shouldReduceMotion ? false : { scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} src={centerItem.imageUrl} alt={centerItem.title} className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#011417] via-[#012E34]/20 to-transparent" />
+                  <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
+                    <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{centerItem.category}</span>
+                    <ShieldCheck className="w-5 h-5 text-cyan-300" aria-label="Layanan terverifikasi" />
                   </div>
                 </div>
 
-                <div className="pt-8 mt-8 border-t border-white/15">
-                  <div className="flex flex-wrap items-end justify-between gap-5">
-                    <div className="max-w-xs"><span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 mb-2">{getTranslation(currentLang, UI_TEXT.services.standardLabel)}</span><span className="text-xs text-slate-200">{centerItem.equipment}</span></div>
-                    <button type="button" onClick={() => onSelectService(centerItem.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
+                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
+                  <div>
+                    <div className="flex items-center justify-between gap-4 mb-8 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400"><span>Featured capability</span><span className="font-mono text-cyan-300">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
+                    <h3 className="font-display text-3xl sm:text-4xl font-extrabold leading-tight">{centerItem.title}</h3>
+                    <p className="text-sm sm:text-base font-semibold text-cyan-300 mt-4">{centerItem.tagline}</p>
+                    <p className="text-sm text-slate-300 leading-relaxed mt-5">{centerItem.description}</p>
+
+                    <div className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mt-8 pt-6 border-t border-white/15">
+                      {centerItem.features.map((feature, index) => <div key={index} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
+                    </div>
+                  </div>
+
+                  <div className="pt-8 mt-8 border-t border-white/15">
+                    <div className="flex flex-wrap items-end justify-between gap-5">
+                      <div className="max-w-xs"><span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 mb-2">{getTranslation(currentLang, UI_TEXT.services.standardLabel)}</span><span className="text-xs text-slate-200">{centerItem.equipment}</span></div>
+                      <button type="button" onClick={() => onSelectService(centerItem.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.article>
+              </motion.article>
+            </AnimatePresence>
           </div>
         </motion.div>
 

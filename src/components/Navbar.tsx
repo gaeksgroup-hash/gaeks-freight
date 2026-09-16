@@ -12,6 +12,12 @@ export interface NavbarProps {
   onLanguageChange?: (lang: Language) => void;
 }
 
+const languageOptions: Array<{ value: Language; label: string; flag: string }> = [
+  { value: 'id', label: 'Indonesia', flag: '🇮🇩' },
+  { value: 'en', label: 'English', flag: '🇬🇧' },
+  { value: 'zh', label: '中文', flag: '🇨🇳' }
+];
+
 export const Navbar: React.FC<NavbarProps> = ({ 
   currentTab = 'home',
   onNavigate,
@@ -119,16 +125,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="hidden xl:flex items-center gap-3 flex-shrink-0">
           <label htmlFor="desktop-language" className="sr-only">Pilih bahasa</label>
           <div className={`inline-flex items-center gap-1.5 rounded-xl border px-2.5 py-2 text-[11px] font-bold ${scrolled ? 'bg-slate-100 border-slate-200' : 'bg-white/10 border-white/15'}`}>
-            <Globe className={`w-3.5 h-3.5 ${scrolled ? 'text-cyan-600' : 'text-cyan-300'}`} />
+            <span className="text-sm leading-none" aria-hidden="true">{languageOptions.find((option) => option.value === currentLang)?.flag}</span>
             <select
               id="desktop-language"
               value={currentLang}
               onChange={(event) => handleTriggerLanguage(event.target.value as Language)}
               className={`cursor-pointer appearance-none bg-transparent pr-1 outline-none ${scrolled ? 'text-slate-700' : 'text-white'}`}
             >
-              <option value="id">ID</option>
-              <option value="en">EN</option>
-              <option value="zh">中文</option>
+              {languageOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}
             </select>
           </div>
 
@@ -172,9 +176,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             ))}
             <div className="flex items-center gap-2 py-4 text-xs">
               <Globe className={scrolled ? 'text-cyan-700' : 'text-cyan-300'} />
-              {(['id', 'en', 'zh'] as Language[]).map((language) => (
-                <button key={language} type="button" onClick={() => handleTriggerLanguage(language)} className={`px-3 py-1.5 rounded-lg ${currentLang === language ? 'bg-cyan-400 text-[#011417]' : scrolled ? 'bg-slate-100 text-slate-600' : 'bg-white/10 text-slate-200'}`}>
-                  {language === 'zh' ? '中文' : language.toUpperCase()}
+              {languageOptions.map((option) => (
+                <button key={option.value} type="button" onClick={() => handleTriggerLanguage(option.value)} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg ${currentLang === option.value ? 'bg-cyan-400 text-[#011417]' : scrolled ? 'bg-slate-100 text-slate-600' : 'bg-white/10 text-slate-200'}`}>
+                  <span aria-hidden="true">{option.flag}</span>
+                  <span>{option.label}</span>
                 </button>
               ))}
             </div>
