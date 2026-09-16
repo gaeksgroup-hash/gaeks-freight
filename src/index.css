@@ -7,7 +7,46 @@ html {
   scroll-behavior: smooth;
 }
 
+:root {
+  color-scheme: dark;
+  --gaeks-canvas: #011417;
+  --gaeks-surface: #011c20;
+  --gaeks-accent: #22d3ee;
+}
+
 body {
   margin: 0;
   padding: 0;
+  min-width: 320px;
+  background: var(--gaeks-canvas);
+  font-family: 'Inter', sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 3px solid var(--gaeks-accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
