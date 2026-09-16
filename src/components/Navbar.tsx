@@ -94,7 +94,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           <span className="inline-flex items-center rounded-md bg-white px-2 py-1.5 shadow-sm transition-transform group-hover:scale-[1.02]">
             <img
-              src={brandData.symbolLogoUrl || '/logos/gaek-symbol.png'}
+              src="/logos/gaek-symbol.png?v=7"
               onError={(event) => {
                 const target = event.currentTarget;
                 target.onerror = null;
