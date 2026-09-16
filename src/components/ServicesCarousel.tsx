@@ -1,6 +1,6 @@
 // filepath: /src/components/ServicesCarousel.tsx
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
+import { animate as animateMotion, motion, useMotionValue, useReducedMotion, useTransform, useVelocity } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
@@ -151,6 +151,10 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const shouldReduceMotion = useReducedMotion();
   const carouselViewportRef = useRef<HTMLDivElement>(null);
   const [carouselWidth, setCarouselWidth] = useState(900);
+  const trackXMotion = useMotionValue(0);
+  const trackVelocity = useVelocity(trackXMotion);
+  const velocityScale = useTransform(trackVelocity, [-1800, 0, 1800], [0.94, 1, 0.94]);
+  const velocitySkew = useTransform(trackVelocity, [-1800, 0, 1800], [-5, 0, 5]);
 
   useEffect(() => {
     const reloadServices = () => {
@@ -195,7 +199,17 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const prevIndex = (currentIndex - 1 + total) % total;
   const nextIndex = (currentIndex + 1) % total;
   const slideGap = 20;
-  const trackX = -(currentIndex * (carouselWidth + slideGap));
+  const targetTrackX = -(currentIndex * (carouselWidth + slideGap));
+
+  useEffect(() => {
+    const controls = animateMotion(trackXMotion, targetTrackX, {
+      type: 'spring',
+      stiffness: 260,
+      damping: 28,
+      mass: 0.7
+    });
+    return () => controls.stop();
+  }, [carouselWidth, currentIndex, targetTrackX, trackXMotion]);
 
   const selectSlideFromDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number }; velocity: { x: number } }) => {
     if (shouldReduceMotion || total < 2) return;
@@ -290,26 +304,24 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               dragElastic={0.22}
               dragDirectionLock
               dragConstraints={{ left: -Math.max(0, (total - 1) * (carouselWidth + slideGap)), right: 0 }}
-              animate={{ x: trackX }}
-              transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.7 }}
-              style={{ width: `${total * carouselWidth + (total - 1) * slideGap}px`, touchAction: 'pan-y' }}
+              style={{ x: trackXMotion, skewX: velocitySkew, scaleY: velocityScale, width: `${total * carouselWidth + (total - 1) * slideGap}px`, touchAction: 'pan-y' }}
               onDragStart={() => setIsHovered(true)}
               onDragEnd={selectSlideFromDrag}
             >
               {servicesList.map((service, index) => {
                 const item = getLocalized(service);
                 return (
-              <motion.article data-carousel-slide key={service.id} variants={itemReveal} style={{ width: carouselWidth, flex: '0 0 auto' }} animate={{ scale: index === currentIndex ? 1 : 0.965, opacity: index === currentIndex ? 1 : 0.62 }} transition={{ duration: 0.35 }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden shadow-2xl shadow-[#012E34]/20 select-none">
-                <div className="relative min-h-[260px] xl:min-h-full overflow-hidden">
-                  <motion.img initial={shouldReduceMotion ? false : { scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} src={item.imageUrl} alt={item.title} draggable={false} className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#011417] via-[#012E34]/20 to-transparent" />
+              <motion.article data-carousel-slide key={service.id} variants={itemReveal} style={{ width: carouselWidth, flex: '0 0 auto', scale: index === currentIndex ? velocityScale : 0.965, skewX: index === currentIndex ? velocitySkew : 0 }} animate={{ opacity: index === currentIndex ? 1 : 0.62 }} transition={{ opacity: { duration: 0.35 } }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-transparent text-white overflow-visible select-none">
+                <div className="relative min-h-[260px] xl:min-h-full overflow-visible">
+                  <motion.img initial={shouldReduceMotion ? false : { scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} src={item.imageUrl} alt={item.title} draggable={false} className="absolute inset-[-3%] w-[106%] h-[106%] object-cover rounded-[2rem]" />
+                  <div className="absolute inset-[-3%] bg-gradient-to-t from-[#011417]/85 via-[#012E34]/15 to-transparent rounded-[2rem]" />
                   <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
                     <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{item.category}</span>
                     <ShieldCheck className="w-5 h-5 text-cyan-300" aria-label="Layanan terverifikasi" />
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
+                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10 bg-[#012E34]/95 xl:bg-transparent">
                   <div>
                     <div className="flex items-center justify-between gap-4 mb-8 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400"><span>Featured capability</span><span className="font-mono text-cyan-300">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
                     <h3 className="font-display text-3xl sm:text-4xl font-extrabold leading-tight">{item.title}</h3>
