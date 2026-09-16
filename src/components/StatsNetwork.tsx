@@ -1,45 +1,48 @@
 import React from 'react';
-import { Anchor, Compass, Award, ShieldAlert } from 'lucide-react';
+import { Anchor, Compass, Award, ShieldCheck, ArrowUpRight } from 'lucide-react';
 
 export const StatsNetwork: React.FC = () => {
   return (
-    <section id="coverage" className="py-20 bg-slate-950 border-t border-slate-800 text-white">
+    <section id="coverage" aria-labelledby="coverage-title" className="py-24 bg-white border-y border-slate-200 text-slate-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center border-b border-slate-800 pb-16">
-          <div className="flex flex-col items-center">
-            <Anchor className="w-6 h-6 text-brand-orange mb-2" />
-            <div className="text-4xl sm:text-5xl font-black text-brand-orange">150+</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Koneksi Pelabuhan Dunia</div>
+        <div className="grid lg:grid-cols-[.9fr_1.1fr] gap-12 lg:gap-20 items-end mb-12">
+          <div>
+            <span className="text-xs font-black uppercase tracking-[0.18em] text-cyan-700">Coverage &amp; capability</span>
+            <h2 id="coverage-title" className="font-display text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-950 mt-3">Rantai logistik yang bisa dilihat, bukan sekadar dijanjikan.</h2>
           </div>
-          <div className="flex flex-col items-center">
-            <Compass className="w-6 h-6 text-brand-orange mb-2" />
-            <div className="text-4xl sm:text-5xl font-black text-brand-orange">99.2%</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Tingkat Ketepatan Jadwal</div>
+          <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-xl">Kami menghubungkan dokumen, carrier, pelabuhan, dan delivery dalam satu alur kerja yang lebih mudah dipantau oleh tim procurement maupun operasional.</p>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 border-y border-slate-200 divide-x divide-slate-200">
+          <div className="p-5 sm:p-7">
+            <Anchor className="w-5 h-5 text-cyan-700 mb-5" />
+            <div className="font-display text-3xl sm:text-4xl font-extrabold text-[#012E34]">150+</div>
+            <div className="text-xs font-semibold text-slate-500 mt-2">Koneksi pelabuhan dunia</div>
           </div>
-          <div className="flex flex-col items-center">
-            <Award className="w-6 h-6 text-brand-orange mb-2" />
-            <div className="text-4xl sm:text-5xl font-black text-brand-orange">24/7</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Dukungan Tracking & Support</div>
+          <div className="p-5 sm:p-7">
+            <Compass className="w-5 h-5 text-cyan-700 mb-5" />
+            <div className="font-display text-3xl sm:text-4xl font-extrabold text-[#012E34]">99.2%</div>
+            <div className="text-xs font-semibold text-slate-500 mt-2">Ketepatan jadwal target</div>
           </div>
-          <div className="flex flex-col items-center">
-            <ShieldAlert className="w-6 h-6 text-brand-orange mb-2" />
-            <div className="text-4xl sm:text-5xl font-black text-brand-orange">100%</div>
-            <div className="text-xs sm:text-sm font-semibold text-slate-300 mt-2">Kepatuhan Regulasi Bea Cukai</div>
+          <div className="p-5 sm:p-7">
+            <Award className="w-5 h-5 text-cyan-700 mb-5" />
+            <div className="font-display text-3xl sm:text-4xl font-extrabold text-[#012E34]">24/7</div>
+            <div className="text-xs font-semibold text-slate-500 mt-2">Tracking &amp; support desk</div>
+          </div>
+          <div className="p-5 sm:p-7">
+            <ShieldCheck className="w-5 h-5 text-cyan-700 mb-5" />
+            <div className="font-display text-3xl sm:text-4xl font-extrabold text-[#012E34]">100%</div>
+            <div className="text-xs font-semibold text-slate-500 mt-2">Fokus compliance &amp; dokumen</div>
           </div>
         </div>
 
-        <div className="mt-16 max-w-3xl mx-auto text-center">
-          <h3 className="text-2xl font-bold mb-4">Butuh Penanganan Komoditas Tertentu?</h3>
-          <p className="text-slate-300 text-sm leading-relaxed mb-6">
-            Mulai dari kargo umum (general cargo), semen, bahan baku industri, tekstil, mesin berat, hingga produk bersuhu terkontrol (reefer container).
-          </p>
-          <a
-            href="https://wa.me/6285608561745?text=Halo%20GAEKS%20GROUP,%20saya%20ingin%20berdiskusi%20tentang%20proyek%20pengiriman%20kargo."
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-white hover:bg-slate-100 text-slate-900 px-8 py-3.5 rounded-xl font-bold text-sm transition-all shadow-lg"
-          >
-            Hubungi Spesialis Kargo Kami
+        <div className="mt-12 flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-2xl bg-[#012E34] p-6 sm:p-8 text-white">
+          <div>
+            <h3 className="font-display text-xl sm:text-2xl font-extrabold">Punya komoditas atau lane yang spesifik?</h3>
+            <p className="text-sm text-slate-300 mt-2 max-w-2xl">Diskusikan kebutuhan general cargo, reefer, mesin berat, bahan baku industri, atau project cargo dengan tim kami.</p>
+          </div>
+          <a href="https://wa.me/6285608561745?text=Halo%20GAEKS%20GROUP,%20saya%20ingin%20berdiskusi%20tentang%20proyek%20pengiriman%20kargo." target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 shrink-0 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3.5 rounded-xl font-bold text-sm transition-colors">
+            Hubungi spesialis <ArrowUpRight className="w-4 h-4" />
           </a>
         </div>
       </div>

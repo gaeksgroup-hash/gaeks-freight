@@ -30,20 +30,10 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
           
-          {/* Kolom 1: Simbol Resmi GAEKS */}
+          {/* Kolom 1: Positioning and trust */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="inline-flex items-center">
-              <img 
-                src={brandData.symbolLogoUrl || "/logos/gaek-symbol.png"} 
-                onError={(e) => {
-                  const target = e.currentTarget as HTMLImageElement;
-                  target.onerror = null;
-                  target.src = '/logos/gaek-symbol.svg';
-                }}
-                alt="GAEKS" 
-                className="h-10 sm:h-11 w-auto object-contain" 
-              />
-            </div>
+            <div className="font-display text-2xl font-extrabold tracking-[-0.04em] text-white">GAEKS</div>
+            <span className="block text-[10px] uppercase tracking-[0.18em] text-cyan-300">Forwarding &amp; customs desk</span>
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               Penyedia solusi logistik rantai pasok global terintegrasi: Ocean Freight (FCL/LCL), Priority Air Cargo, Customs Brokerage PPJK Ceisa 4.0, Stevedoring PBM, dan Inland Trucking.
             </p>
