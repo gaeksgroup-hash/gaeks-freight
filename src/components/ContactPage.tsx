@@ -11,13 +11,21 @@ export const ContactPage: React.FC<{ currentLang?: Language }> = ({ currentLang 
     email: '',
     phone: '',
     commodity: '',
+    service: 'PPJK / Customs Clearance',
+    origin: '',
+    destination: '',
+    mode: 'Laut (FCL / LCL)',
+    volume: '',
+    consent: false,
     message: ''
   });
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const text = `Halo Gaek Freight, saya ${formData.name} (${formData.company || 'Pribadi'}). Ingin konsultasi komoditas ${formData.commodity}: ${formData.message}`;
+    const text = `Halo GAEKS, saya ${formData.name} (${formData.company || 'Pribadi'}).\nLayanan: ${formData.service}\nModa: ${formData.mode}\nOrigin: ${formData.origin}\nDestination: ${formData.destination}\nVolume: ${formData.volume}\nKomoditas: ${formData.commodity}\nPesan: ${formData.message}`;
     window.open(`https://wa.me/6285608561745?text=${encodeURIComponent(text)}`, '_blank');
+    setSubmitted(true);
   };
 
   return (
@@ -91,6 +99,11 @@ export const ContactPage: React.FC<{ currentLang?: Language }> = ({ currentLang 
 
           {/* Form Card */}
           <div className="lg:col-span-7 bg-white p-8 sm:p-12 rounded-3xl border border-slate-200 shadow-xl">
+            {submitted && (
+              <div role="status" className="mb-6 border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">
+                Permintaan Anda sudah disiapkan di WhatsApp. Tim operasional akan melanjutkan konsultasi dari detail yang dikirim.
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 <div>
@@ -158,6 +171,27 @@ export const ContactPage: React.FC<{ currentLang?: Language }> = ({ currentLang 
                 />
               </div>
 
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label htmlFor="contact-service" className="text-xs font-bold text-slate-700 block mb-1.5">Layanan yang dibutuhkan *</label>
+                  <select id="contact-service" required value={formData.service} onChange={(e) => setFormData({ ...formData, service: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-600 focus:outline-none">
+                    <option>PPJK / Customs Clearance</option><option>Ocean Freight - LCL / FCL</option><option>Air Freight</option><option>Trucking & Warehousing</option><option>Project Cargo & Heavy Lift</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="contact-mode" className="text-xs font-bold text-slate-700 block mb-1.5">Moda pengiriman *</label>
+                  <select id="contact-mode" required value={formData.mode} onChange={(e) => setFormData({ ...formData, mode: e.target.value })} className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-600 focus:outline-none">
+                    <option>Laut (FCL / LCL)</option><option>Udara</option><option>Trucking darat</option><option>Multimoda</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                <div><label htmlFor="contact-origin" className="text-xs font-bold text-slate-700 block mb-1.5">Origin *</label><input id="contact-origin" required value={formData.origin} onChange={(e) => setFormData({ ...formData, origin: e.target.value })} placeholder="Kota / negara asal" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-600 focus:outline-none" /></div>
+                <div><label htmlFor="contact-destination" className="text-xs font-bold text-slate-700 block mb-1.5">Destination *</label><input id="contact-destination" required value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })} placeholder="Pelabuhan / kota tujuan" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-600 focus:outline-none" /></div>
+                <div><label htmlFor="contact-volume" className="text-xs font-bold text-slate-700 block mb-1.5">Estimasi volume</label><input id="contact-volume" value={formData.volume} onChange={(e) => setFormData({ ...formData, volume: e.target.value })} placeholder="CBM / kg / koli" className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-600 focus:outline-none" /></div>
+              </div>
+
               <div>
                 <label className="text-xs font-bold text-slate-700 block mb-1.5">
                   {getTranslation(currentLang, UI_TEXT.contact.messageLabel)} *
@@ -170,6 +204,8 @@ export const ContactPage: React.FC<{ currentLang?: Language }> = ({ currentLang 
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-blue-600 focus:outline-none"
                 />
               </div>
+
+              <label className="flex items-start gap-3 text-xs text-slate-600"><input type="checkbox" required checked={formData.consent} onChange={(e) => setFormData({ ...formData, consent: e.target.checked })} className="mt-0.5 h-4 w-4 accent-cyan-700" /><span>Saya menyetujui GAEKS menggunakan detail ini untuk menindaklanjuti konsultasi pengiriman.</span></label>
 
               <button
                 type="submit"
