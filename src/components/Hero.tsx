@@ -1,8 +1,19 @@
 // filepath: /src/components/Hero.tsx
 import React, { useState, useEffect } from 'react';
+import { motion, useReducedMotion, type Variants } from 'framer-motion';
 import { ArrowUpRight, FileCheck2, Globe2, Clock4, AlertCircle, ArrowDownRight, ShieldCheck } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredHero, GAEKS_UPDATE_EVENT, HeroSettings } from '../utils/adminStorage';
+
+const revealContainer: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } }
+};
+
+const revealItem: Variants = {
+  hidden: { opacity: 0, y: 18 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.58, ease: 'easeOut' } }
+};
 
 export interface HeroProps {
   onNavigate?: (page: string) => void;
@@ -11,6 +22,7 @@ export interface HeroProps {
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
   const [heroData, setHeroData] = useState<HeroSettings>(getStoredHero());
+  const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
     const reload = () => {
@@ -32,7 +44,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
 
   return (
     <section id="home" aria-labelledby="hero-title" className="relative min-h-[92vh] flex items-center pt-24 pb-16 overflow-hidden bg-[#011417] text-white">
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      <motion.div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" animate={shouldReduceMotion ? undefined : { scale: [1, 1.025, 1] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}>
         {heroData.bgType === 'video' ? (
           <video 
             key={heroData.videoUrl}
@@ -55,9 +67,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
         )}
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,20,23,.98)_0%,rgba(1,46,52,.88)_48%,rgba(1,20,23,.72)_100%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_42%,rgba(34,211,238,.18),transparent_28%)]" />
-      </div>
+      </motion.div>
 
-      <div className="absolute top-16 left-0 right-0 z-20 bg-[#011417]/80 backdrop-blur-md border-b border-white/10 py-2 px-4">
+      <motion.div initial={shouldReduceMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="absolute top-16 left-0 right-0 z-20 bg-[#011417]/80 backdrop-blur-md border-b border-white/10 py-2 px-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between text-[11px] font-bold text-slate-300 overflow-x-auto no-scrollbar space-x-6">
           <div className="flex items-center space-x-2 flex-shrink-0">
             <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
@@ -70,24 +82,24 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
             <span>Response desk: <strong className="text-cyan-300 font-bold">24/7</strong></span>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mt-8">
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,.9fr)] gap-10 lg:gap-20 items-center">
-          <div className="space-y-7 text-center lg:text-left">
-            <h1 id="hero-title" className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.02] max-w-4xl">
+          <motion.div variants={revealContainer} initial={shouldReduceMotion ? false : 'hidden'} animate="visible" className="space-y-7 text-center lg:text-left">
+            <motion.h1 variants={revealItem} id="hero-title" className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.02] max-w-4xl">
               {heroData.titlePrefix}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-100 to-white">
                 {heroData.titleHighlight}
               </span>
               {heroData.titleSuffix}
-            </h1>
+            </motion.h1>
 
-            <p className="text-base sm:text-lg text-slate-200/90 max-w-2xl leading-relaxed font-normal mx-auto lg:mx-0">
+            <motion.p variants={revealItem} className="text-base sm:text-lg text-slate-200/90 max-w-2xl leading-relaxed font-normal mx-auto lg:mx-0">
               {heroData.caption}
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
+            <motion.div variants={revealItem} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
               <a
                 href="#calculator"
                 onClick={(e) => handleNav('calculator', e)}
@@ -105,9 +117,9 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 <span>Lihat layanan utama</span>
                 <ArrowDownRight className="w-4 h-4" />
               </button>
-            </div>
+            </motion.div>
 
-            <div className="pt-5 border-t border-white/15 grid grid-cols-3 gap-4 max-w-2xl mx-auto lg:mx-0 text-left">
+            <motion.div variants={revealItem} className="pt-5 border-t border-white/15 grid grid-cols-3 gap-4 max-w-2xl mx-auto lg:mx-0 text-left">
               <div>
                 <strong className="block text-2xl font-display font-extrabold text-white">3</strong>
                 <span className="text-[11px] leading-tight text-slate-300">gateway pelabuhan utama</span>
@@ -120,10 +132,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 <strong className="block text-2xl font-display font-extrabold text-white">1 desk</strong>
                 <span className="text-[11px] leading-tight text-slate-300">dari dokumen ke delivery</span>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
 
-          <div className="relative">
+          <motion.div variants={revealItem} initial={shouldReduceMotion ? false : 'hidden'} animate="visible" whileHover={shouldReduceMotion ? undefined : { y: -6 }} transition={{ duration: 0.5, ease: 'easeOut' }} className="relative">
             <div className="absolute -inset-5 rounded-[2rem] border border-cyan-300/20 rotate-3" />
             <div className="relative rounded-[1.5rem] border border-white/15 bg-[#011c20]/85 backdrop-blur-xl p-5 sm:p-6 shadow-2xl shadow-black/30">
               <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
@@ -160,7 +172,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
                 <button type="button" onClick={() => handleNav('calculator')} className="inline-flex items-center gap-2 text-xs font-bold text-cyan-300 hover:text-white">Buat estimasi <ArrowUpRight className="w-4 h-4" /></button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
 
         <div className="relative z-10 mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-3 text-xs text-slate-300">
