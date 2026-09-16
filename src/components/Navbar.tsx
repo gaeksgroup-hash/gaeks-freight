@@ -77,26 +77,18 @@ export const Navbar: React.FC<NavbarProps> = ({
       className={`fixed top-0 left-0 right-0 z-50 h-16 transition-colors duration-200 will-change-transform transform-gpu ${
         scrolled 
           ? 'bg-white/95 backdrop-blur-md border-b border-slate-200/90 shadow-sm' 
-          : 'bg-white/90 backdrop-blur-md border-b border-slate-200/50'
+          : 'bg-white/95 backdrop-blur-md border-b border-slate-200/70'
       }`}
     >
       <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
         <a 
           href="#home" 
           onClick={(e) => handleNav('home', e)}
-          className="flex items-center space-x-2 group cursor-pointer flex-shrink-0" 
+          className="flex items-baseline gap-2.5 group cursor-pointer flex-shrink-0"
           aria-label="Gaek Freight Home"
         >
-          <img 
-            src={brandData.symbolLogoUrl || "/logos/gaek-symbol.png"} 
-            onError={(e) => {
-              const target = e.currentTarget as HTMLImageElement;
-              target.onerror = null;
-              target.src = '/logos/gaek-symbol.svg';
-            }}
-            alt="GAEKS" 
-            className="h-8 sm:h-9 w-auto object-contain transition-transform duration-200 group-hover:scale-105" 
-          />
+          <span className="font-display text-xl sm:text-2xl font-extrabold tracking-[-0.04em] text-[#012E34] transition-colors group-hover:text-cyan-700">GAEKS</span>
+          <span className="hidden sm:inline text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">Freight &amp; Customs</span>
         </a>
 
         <nav className="hidden md:flex items-center space-x-7 text-xs font-bold text-slate-700">
