@@ -11,6 +11,7 @@ import { OperatorAdmin } from './components/OperatorAdmin';
 import { ContactPage } from './components/ContactPage';
 import { StatsNetwork } from './components/StatsNetwork';
 import { Footer } from './components/Footer';
+import { HomeEditorial } from './components/HomeEditorial';
 import { Language } from './types/freight';
 import { syncFromServer } from './utils/adminStorage';
 
@@ -149,6 +150,11 @@ export const App: React.FC = () => {
             <SmartCalculator prefillService={selectedServiceForQuote} />
             <InteractiveMap />
             <StatsNetwork />
+            <HomeEditorial
+              currentLang={currentLang}
+              onNavigate={navigateTo}
+              onSelectArticle={handleOpenArticleDetail}
+            />
           </>
         )}
       </main>
