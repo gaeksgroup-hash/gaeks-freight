@@ -92,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           className="flex items-center group cursor-pointer flex-shrink-0"
           aria-label="Gaek Freight Home"
         >
-          <span className="inline-flex items-center rounded-md bg-white px-2 py-1.5 shadow-sm transition-transform group-hover:scale-[1.02]">
+          <span className="inline-flex items-center transition-transform group-hover:scale-[1.02]">
             <img
               src="/logos/gaek-symbol.png?v=7"
               onError={(event) => {
