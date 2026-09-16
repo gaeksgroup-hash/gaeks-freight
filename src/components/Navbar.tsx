@@ -102,6 +102,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
               alt="GAEKS"
               className="h-7 sm:h-8 w-auto object-contain"
+              style={{ filter: 'drop-shadow(0 0 2px rgba(255,255,255,.95)) drop-shadow(0 0 8px rgba(34,211,238,.55))' }}
             />
           </span>
         </a>
