@@ -1,16 +1,20 @@
 <?php
-header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Content-Type: application/json; charset=UTF-8");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
+    http_response_code(204);
     exit;
 }
 
 $uploadDir   = __DIR__ . '/../uploads';
 $libraryFile = __DIR__ . '/media_library.json';
+
+// Legacy media mutations remain disabled until server-side auth and object storage exist.
+if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
+    http_response_code(410);
+    echo json_encode(["status" => "error", "message" => "Legacy media mutations are disabled"]);
+    exit;
+}
 
 if (!is_dir($uploadDir)) {
     @mkdir($uploadDir, 0777, true);

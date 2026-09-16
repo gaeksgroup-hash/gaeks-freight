@@ -24,25 +24,7 @@ export const AdminCMS: React.FC = () => {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    const userValid = usernameInput.trim() === 'Admingaekspost';
-    const emailValid = emailInput.trim().toLowerCase().endsWith('@gaeks.com');
-    const passValid = passwordInput === 'gaeksnewsku001';
-
-    if (!userValid) {
-      setLoginError('Username salah. Wajib menggunakan Admingaekspost.');
-      return;
-    }
-    if (!emailValid) {
-      setLoginError('Akses ditolak: Email wajib menggunakan domain resmi @gaeks.com (contoh: admin@gaeks.com).');
-      return;
-    }
-    if (!passValid) {
-      setLoginError('Password otorisasi salah.');
-      return;
-    }
-
-    setIsAuthenticated(true);
-    setLoginError('');
+    setLoginError('Login CMS legacy dinonaktifkan. Gunakan autentikasi server pada versi operator baru.');
   };
 
   const handleCreateArticle = (e: React.FormEvent) => {
@@ -110,7 +92,7 @@ export const AdminCMS: React.FC = () => {
                 required
                 value={usernameInput}
                 onChange={(e) => setUsernameInput(e.target.value)}
-                placeholder="Admingaekspost"
+                placeholder="nama pengguna"
                 className="w-full px-3.5 py-2.5 rounded-xl border border-slate-700 bg-slate-900 text-sm text-white focus:ring-2 focus:ring-brand-orange focus:outline-none"
               />
             </div>

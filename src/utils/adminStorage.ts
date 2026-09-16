@@ -93,34 +93,10 @@ export async function syncFromServer(): Promise<boolean> {
 }
 
 export async function saveToServerGlobally(): Promise<{ success: boolean; message: string }> {
-  try {
-    const payload = {
-      branding: getStoredBranding(),
-      hero: getStoredHero(),
-      services: getStoredServices(),
-      articles: getStoredArticles(),
-      subscribers: getSubscribers(),
-      updatedAt: Date.now()
-    };
-
-    const res = await fetch('/api/sync.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        authPassword: 'Adagagap499!',
-        payload: payload
-      })
-    });
-
-    const result = await res.json();
-    if (res.ok && result.status === 'success') {
-      notifyLocalUpdate();
-      return { success: true, message: 'Berhasil disimpan permanen di server Hostinger!' };
-    }
-    return { success: false, message: result.message || 'Gagal menyimpan ke server' };
-  } catch (err: any) {
-    return { success: false, message: err.message || 'Koneksi ke server gagal' };
-  }
+  return {
+    success: false,
+    message: 'Penyimpanan server legacy dinonaktifkan sampai autentikasi server baru tersedia.'
+  };
 }
 
 export function getStoredBranding(): BrandingSettings {
@@ -179,11 +155,7 @@ export function isOperatorLoggedIn(): boolean {
 }
 
 export function loginOperator(user: string, pass: string): boolean {
-  if (user.trim() === 'Gaekadmin' && pass === 'Adagagap499!') {
-    sessionStorage.setItem(STORAGE_KEY_AUTH, 'true');
-    localStorage.setItem(STORAGE_KEY_AUTH, 'true');
-    return true;
-  }
+  // Legacy client-side authentication is intentionally disabled.
   return false;
 }
 
