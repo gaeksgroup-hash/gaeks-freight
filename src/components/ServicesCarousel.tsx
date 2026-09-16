@@ -1,6 +1,6 @@
 // filepath: /src/components/ServicesCarousel.tsx
-import React, { useState, useEffect } from 'react';
-import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
@@ -149,6 +149,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   const [isPlaying, setIsPlaying] = useState(true);
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const carouselViewportRef = useRef<HTMLDivElement>(null);
+  const [carouselWidth, setCarouselWidth] = useState(900);
 
   useEffect(() => {
     const reloadServices = () => {
@@ -179,9 +181,30 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
     return () => clearInterval(interval);
   }, [isPlaying, isHovered, servicesList.length]);
 
+  useEffect(() => {
+    const viewport = carouselViewportRef.current;
+    if (!viewport) return;
+    const measure = () => setCarouselWidth(Math.min(900, Math.max(280, viewport.clientWidth * (viewport.clientWidth < 768 ? 0.86 : 0.8))));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, []);
+
   const total = servicesList.length || 1;
   const prevIndex = (currentIndex - 1 + total) % total;
   const nextIndex = (currentIndex + 1) % total;
+  const slideGap = 20;
+  const trackX = -(currentIndex * (carouselWidth + slideGap));
+
+  const selectSlideFromDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number }; velocity: { x: number } }) => {
+    if (shouldReduceMotion || total < 2) return;
+    const threshold = Math.max(60, carouselWidth * 0.16);
+    const direction = Math.abs(info.offset.x) > threshold ? info.offset.x : info.velocity.x;
+    if (direction < -20) setCurrentIndex((index) => (index + 1) % total);
+    if (direction > 20) setCurrentIndex((index) => (index - 1 + total) % total);
+    setIsHovered(false);
+  };
 
   const getLocalized = (svc: ServiceDetail) => {
     if (!svc) return DETAILED_SERVICES[0];
@@ -193,12 +216,6 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
       description: currentLang === 'en' ? (svc.description_en || svc.description) : currentLang === 'zh' ? (svc.description_zh || svc.description) : svc.description,
     };
   };
-
-  const currentItem = servicesList[currentIndex] || servicesList[0] || DETAILED_SERVICES[0];
-  const prevItem = servicesList[prevIndex] || servicesList[0] || DETAILED_SERVICES[0];
-  const nextItem = servicesList[nextIndex] || servicesList[0] || DETAILED_SERVICES[0];
-
-  const centerItem = getLocalized(currentItem);
 
   return (
     <motion.section
@@ -264,33 +281,30 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
         </div>
 
         <motion.div variants={staggerReveal} className="relative py-4">
-          <div className="grid grid-cols-1 lg:grid-cols-[minmax(220px,.72fr)_minmax(0,1.28fr)] gap-5 lg:gap-8 items-stretch">
-            <div className="border-y border-slate-200 bg-white/60">
-              <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200">
-                <span className="text-[10px] font-black uppercase tracking-[0.18em] text-slate-500">Service index</span>
-                <span className="font-mono text-[10px] text-cyan-700">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1">
-                {servicesList.map((service, index) => {
-                  const item = getLocalized(service);
-                  const isActive = index === currentIndex;
-                  return (
-                    <motion.button variants={itemReveal} key={service.id} type="button" onClick={() => setCurrentIndex(index)} className={`group flex items-start gap-3 text-left px-4 py-4 border-b border-slate-200 transition-colors ${isActive ? 'bg-[#012E34] text-white' : 'text-slate-600 hover:bg-cyan-50'}`} aria-current={isActive ? 'true' : undefined}>
-                      <span className={`font-mono text-[10px] pt-0.5 ${isActive ? 'text-cyan-300' : 'text-slate-400'}`}>{String(index + 1).padStart(2, '0')}</span>
-                      <span className="min-w-0"><strong className="block text-xs font-extrabold leading-tight">{item.title}</strong><span className={`block text-[10px] mt-1 line-clamp-1 ${isActive ? 'text-slate-300' : 'text-slate-400'}`}>{item.category}</span></span>
-                    </motion.button>
-                  );
-                })}
-              </div>
-            </div>
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.article key={centerItem.id} variants={itemReveal} initial={shouldReduceMotion ? false : { opacity: 0, x: 22 }} animate={{ opacity: 1, x: 0 }} exit={shouldReduceMotion ? undefined : { opacity: 0, x: -22 }} transition={{ duration: 0.42, ease: 'easeOut' }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden">
+          <div ref={carouselViewportRef} data-carousel-viewport className="relative overflow-visible">
+            <motion.div
+              data-carousel-track
+              className="flex items-stretch gap-5 overflow-visible cursor-grab active:cursor-grabbing"
+              drag={shouldReduceMotion ? false : 'x'}
+              dragMomentum={!shouldReduceMotion}
+              dragElastic={0.22}
+              dragDirectionLock
+              dragConstraints={{ left: -Math.max(0, (total - 1) * (carouselWidth + slideGap)), right: 0 }}
+              animate={{ x: trackX }}
+              transition={{ type: 'spring', stiffness: 260, damping: 28, mass: 0.7 }}
+              style={{ width: `${total * carouselWidth + (total - 1) * slideGap}px`, touchAction: 'pan-y' }}
+              onDragStart={() => setIsHovered(true)}
+              onDragEnd={selectSlideFromDrag}
+            >
+              {servicesList.map((service, index) => {
+                const item = getLocalized(service);
+                return (
+              <motion.article data-carousel-slide key={service.id} variants={itemReveal} style={{ width: carouselWidth, flex: '0 0 auto' }} animate={{ scale: index === currentIndex ? 1 : 0.965, opacity: index === currentIndex ? 1 : 0.62 }} transition={{ duration: 0.35 }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[540px] bg-[#012E34] text-white overflow-hidden shadow-2xl shadow-[#012E34]/20 select-none">
                 <div className="relative min-h-[260px] xl:min-h-full overflow-hidden">
-                  <motion.img key={centerItem.imageUrl} initial={shouldReduceMotion ? false : { scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} src={centerItem.imageUrl} alt={centerItem.title} className="absolute inset-0 w-full h-full object-cover" />
+                  <motion.img initial={shouldReduceMotion ? false : { scale: 1.06 }} animate={{ scale: 1 }} transition={{ duration: 0.7, ease: 'easeOut' }} src={item.imageUrl} alt={item.title} draggable={false} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#011417] via-[#012E34]/20 to-transparent" />
                   <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
-                    <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{centerItem.category}</span>
+                    <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{item.category}</span>
                     <ShieldCheck className="w-5 h-5 text-cyan-300" aria-label="Layanan terverifikasi" />
                   </div>
                 </div>
@@ -298,29 +312,31 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
                 <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10">
                   <div>
                     <div className="flex items-center justify-between gap-4 mb-8 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400"><span>Featured capability</span><span className="font-mono text-cyan-300">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
-                    <h3 className="font-display text-3xl sm:text-4xl font-extrabold leading-tight">{centerItem.title}</h3>
-                    <p className="text-sm sm:text-base font-semibold text-cyan-300 mt-4">{centerItem.tagline}</p>
-                    <p className="text-sm text-slate-300 leading-relaxed mt-5">{centerItem.description}</p>
+                    <h3 className="font-display text-3xl sm:text-4xl font-extrabold leading-tight">{item.title}</h3>
+                    <p className="text-sm sm:text-base font-semibold text-cyan-300 mt-4">{item.tagline}</p>
+                    <p className="text-sm text-slate-300 leading-relaxed mt-5">{item.description}</p>
 
                     <div className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mt-8 pt-6 border-t border-white/15">
-                      {centerItem.features.map((feature, index) => <div key={index} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
+                      {item.features.map((feature, featureIndex) => <div key={featureIndex} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
                     </div>
                   </div>
 
                   <div className="pt-8 mt-8 border-t border-white/15">
                     <div className="flex flex-wrap items-end justify-between gap-5">
-                      <div className="max-w-xs"><span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 mb-2">{getTranslation(currentLang, UI_TEXT.services.standardLabel)}</span><span className="text-xs text-slate-200">{centerItem.equipment}</span></div>
-                      <button type="button" onClick={() => onSelectService(centerItem.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
+                      <div className="max-w-xs"><span className="block text-[10px] font-black uppercase tracking-[0.16em] text-slate-400 mb-2">{getTranslation(currentLang, UI_TEXT.services.standardLabel)}</span><span className="text-xs text-slate-200">{item.equipment}</span></div>
+                      <button type="button" onClick={() => onSelectService(item.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
                     </div>
                   </div>
                 </div>
               </motion.article>
-            </AnimatePresence>
+                );
+              })}
+            </motion.div>
           </div>
         </motion.div>
 
         {/* Minimal Indicators */}
-        <div className="mt-8 flex justify-center items-center space-x-2">
+        <div className="mt-8 flex justify-center items-center gap-2">
           {servicesList.map((_, idx) => (
             <button
               key={idx}
@@ -332,6 +348,8 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             />
           ))}
         </div>
+
+        <div className="mt-4 text-center text-[11px] font-semibold text-slate-400">Drag untuk menjelajah layanan <span className="text-cyan-700">•</span> gunakan panah untuk snap</div>
 
         <div className="mt-20 border-t border-slate-200 pt-12">
           <div className="max-w-2xl mb-8">
