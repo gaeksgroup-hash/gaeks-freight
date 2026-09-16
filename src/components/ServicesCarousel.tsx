@@ -202,6 +202,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
   return (
     <section 
       id="services" 
+      aria-labelledby="services-title"
       className="py-24 bg-slate-50 border-y border-slate-200 text-slate-900 overflow-hidden select-none"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -214,7 +215,7 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
             <span className="text-xs font-black uppercase tracking-widest text-cyan-600 block mb-2">
               {getTranslation(currentLang, UI_TEXT.services.tag)}
             </span>
-            <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
+            <h2 id="services-title" className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
               {getTranslation(currentLang, UI_TEXT.services.title)}
             </h2>
             <p className="mt-2 text-slate-600 text-sm sm:text-base max-w-2xl">
@@ -383,6 +384,35 @@ export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string)
               aria-label={`Slide ${idx + 1}`}
             />
           ))}
+        </div>
+
+        <div className="mt-20 border-t border-slate-200 pt-12">
+          <div className="max-w-2xl mb-8">
+            <span className="text-xs font-black uppercase tracking-[0.18em] text-cyan-700">Solusi berdasarkan kebutuhan</span>
+            <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Satu partner untuk alur cargo yang lebih rapi</h3>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed mt-3">Mulai dari klasifikasi dokumen sampai pengantaran ke gudang, pilih layanan yang paling sesuai dengan jenis dan tujuan pengiriman Anda.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            {servicesList.map((service) => {
+              const localizedService = getLocalized(service);
+              return (
+                <article key={service.id} className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg transition-all duration-300">
+                  <div className="h-36 overflow-hidden bg-slate-100">
+                    <img src={localizedService.imageUrl} alt={localizedService.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                  </div>
+                  <div className="flex flex-1 flex-col p-5">
+                    <span className="text-[10px] font-black uppercase tracking-wider text-cyan-700">{localizedService.category}</span>
+                    <h4 className="font-display text-lg font-extrabold text-slate-900 mt-2 leading-tight">{localizedService.title}</h4>
+                    <p className="text-xs text-slate-600 leading-relaxed mt-3 line-clamp-3">{localizedService.description}</p>
+                    <button type="button" onClick={() => onSelectService(localizedService.title)} className="inline-flex items-center gap-2 mt-auto pt-5 text-xs font-extrabold text-[#012E34] hover:text-cyan-700">
+                      Konsultasikan layanan <ArrowUpRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
 
       </div>
