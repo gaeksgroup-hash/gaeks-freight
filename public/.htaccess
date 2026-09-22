@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Serve the React app for routes handled in src/App.tsx.
+  RewriteRule ^operator/?$ index.html [L]
+  RewriteRule ^layanan/[^/]+/?$ index.html [L]
+</IfModule>
