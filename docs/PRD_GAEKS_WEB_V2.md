@@ -50,7 +50,7 @@ The repository currently uses:
 - PHP endpoints under `public/api`.
 - JSON files for shared site state.
 - `localStorage`/`sessionStorage` for important client state.
-- FTP deployment to Hostinger through GitHub Actions.
+- Native Git deployment to Hostinger from the GitHub `main` branch.
 
 Important current features to preserve conceptually:
 
@@ -65,7 +65,7 @@ Important current features to preserve conceptually:
 - Media upload.
 - Editable branding/content.
 - Subscriber list.
-- Existing Hostinger deployment automation.
+- Existing Hostinger Git build automation.
 
 These features should be migrated, not blindly discarded.
 
@@ -1306,7 +1306,7 @@ For Indonesian personal-data compliance:
 
 ## 21.1 Current limitation
 
-The current FTP-to-shared-hosting static deployment is appropriate for static Vite assets but becomes limiting for:
+The current native Git build on Hostinger is appropriate for the Vite application but becomes limiting for the target architecture when it needs:
 
 - server rendering;
 - server sessions;
