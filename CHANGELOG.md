@@ -4,6 +4,15 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Kalkulator rute multimoda
+
+- Mengubah kalkulator menjadi halaman aplikasi dengan pilihan Laut, Udara, dan Inland serta ringkasan rute yang selalu terlihat.
+- Menambahkan registry 500 pelabuhan dari `LIST SEAPORT.pdf` dan 574 bandara dari `AIRPORT LIST.pdf`, memakai kode yang sama dengan ERP.
+- Menambahkan 514 kabupaten/kota Indonesia untuk pencarian rute inland berdasarkan data wilayah Kemendagri 2025.
+- Menambahkan autocomplete sejak satu karakter, pencarian berdasarkan nama, kota, negara, provinsi, atau kode, navigasi keyboard, serta status lokasi tidak ditemukan.
+- Menambahkan fungsi tukar asal dan tujuan serta menyimpan pilihan rute terpisah untuk setiap moda.
+- Menyesuaikan dasar tagihan dan saran awal untuk ocean freight, air cargo, dan domestic trucking.
+
 ### Penerjemahan situs realtime
 
 - Memusatkan pemilihan bahasa Indonesia, Inggris, dan Mandarin agar seluruh konten publik, termasuk konten dari operator, mengikuti bahasa aktif.

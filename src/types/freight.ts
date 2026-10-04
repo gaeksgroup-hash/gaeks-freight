@@ -1,6 +1,6 @@
 // filepath: /src/types/freight.ts
 export type Language = 'id' | 'en' | 'zh';
-export type ShippingMode = 'ocean' | 'air';
+export type ShippingMode = 'ocean' | 'air' | 'inland';
 
 export interface PortEntry {
   name: string;

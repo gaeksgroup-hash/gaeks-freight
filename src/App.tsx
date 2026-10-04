@@ -250,7 +250,7 @@ export const App: React.FC = () => {
 
         {currentPage === 'calculator' && (
           <div className="pt-24">
-            <SmartCalculator prefillService={selectedServiceForQuote} />
+            <SmartCalculator prefillService={selectedServiceForQuote} currentLang={currentLang} />
           </div>
         )}
 
