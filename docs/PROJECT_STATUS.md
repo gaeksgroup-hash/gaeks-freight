@@ -50,6 +50,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 | Commit | Hasil |
 | --- | --- |
+| `4d5e55e` | Carousel layanan operator, Shipment Tracking ERP, footer baru, lazy chunks, dan cache aset live terverifikasi |
 | `8f37b6c` | Penyederhanaan frontend 4 Oktober 2026, live di produksi dan terverifikasi |
 | `cb01153` | Navbar responsif, build Hostinger completed |
 | `d347542` | Konten/media produksi dipulihkan, build completed |
