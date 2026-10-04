@@ -15,7 +15,7 @@ export interface BrandingSettings {
 }
 
 export interface HeroSettings {
-  bgType: 'video' | 'image';
+  bgType: 'video' | 'image' | 'gif' | 'none';
   videoUrl: string;
   imageUrl: string;
   eyebrow: string;
@@ -27,6 +27,15 @@ export interface HeroSettings {
   secondaryLabel: string;
   commodityTitle: string;
   commodityCaption: string;
+  networks: PartnerLogo[];
+  clients: PartnerLogo[];
+}
+
+export interface PartnerLogo {
+  id: string;
+  name: string;
+  imageUrl: string;
+  websiteUrl: string;
 }
 
 export interface NavigationItem { page: string; label: string; mobileLabel: string; visible: boolean; }
@@ -87,6 +96,8 @@ export const DEFAULT_HERO: HeroSettings = {
   primaryLabel: 'Minta estimasi', secondaryLabel: 'Lihat layanan',
   commodityTitle: 'Konsultasi Regulasi & Komoditas Khusus',
   commodityCaption: 'Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli kepabeanan kami.',
+  networks: [],
+  clients: [],
 };
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   footerTagline: 'Koordinasi freight, kepabeanan, dan pengiriman darat untuk kargo bisnis.',

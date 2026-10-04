@@ -3,6 +3,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Language, ServiceDetail } from '../types/freight';
 import { GAEKS_UPDATE_EVENT, getStoredServices } from '../utils/adminStorage';
+import { ServiceTitle } from './ServiceTitle';
 
 const SLIDE_DURATION_SECONDS = 5.2;
 
@@ -72,7 +73,7 @@ export const HeroServiceCarousel: React.FC<HeroServiceCarouselProps> = ({ curren
       <div className="absolute inset-x-0 bottom-0 z-10 p-5 text-white sm:p-7">
         <AnimatePresence mode="wait">
           <motion.div key={activeService.id + '-copy'} initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={reduceMotion ? undefined : { opacity: 0, y: -10 }} transition={{ duration: reduceMotion ? 0 : 0.42, ease: 'easeOut' }}>
-            <h2 className="max-w-lg text-2xl font-bold leading-tight sm:text-3xl">{activeContent.title}</h2>
+            <h2 className="max-w-lg text-2xl font-bold leading-tight sm:text-3xl"><ServiceTitle title={activeContent.title} /></h2>
             <p className="mt-2 max-w-xl text-sm leading-6 text-slate-200">{activeContent.tagline}</p>
           </motion.div>
         </AnimatePresence>

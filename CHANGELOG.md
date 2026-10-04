@@ -4,6 +4,17 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Penyempurnaan seluruh frontend dan beranda dinamis
+
+- Menggunakan media operator sebagai background hero dengan pilihan video, GIF, gambar, atau tanpa media serta lapisan kontras tetap agar judul selalu terbaca.
+- Menambahkan pengelolaan Our Networks dan Our Clients di modul Beranda operator; kedua section membaca data server dan otomatis tidak dirender ketika kosong.
+- Menempatkan Our Networks sebagai deretan badge logo ringkas di atas Layanan dan Our Clients sebagai grid logo di bawah Layanan.
+- Melindungi istilah `(Less than Container Load)` dan `(Full Container Load)` dari penerjemahan otomatis.
+- Menghapus seluruh simbol em dash yang tampil pada kalkulator, tracking, daftar lokasi, dan operator newsletter.
+- Menghapus badge jumlah database yang tidak dibutuhkan dari kepala kalkulator.
+- Mendesain ulang pendaftaran newsletter menjadi panel berwarna dengan hierarki, persetujuan, dan tombol yang lebih jelas.
+- Memeriksa route home, layanan, kalkulator, tracking, rute, berita, dan kontak pada desktop serta ponsel; tidak ditemukan overflow horizontal atau target tombol di bawah 40 piksel.
+
 ### Kalkulator rute multimoda
 
 - Mengubah kalkulator menjadi halaman aplikasi dengan pilihan Laut, Udara, dan Inland serta ringkasan rute yang selalu terlihat.

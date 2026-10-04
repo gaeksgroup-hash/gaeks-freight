@@ -62,6 +62,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
     secondary: heroSettings.secondaryLabel,
   } : baseText;
   const firstService = getStoredServices()[0];
+  const backgroundUrl = heroSettings.bgType === 'video' ? heroSettings.videoUrl : heroSettings.imageUrl;
 
   useEffect(() => {
     const timer = window.setTimeout(() => setEnhanced(true), 500);
@@ -75,26 +76,31 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
   }, []);
 
   return (
-    <section id="home" aria-labelledby="hero-title" className="border-b border-slate-200 bg-[#f4f5f1] pt-16 text-[#12363a]">
-      <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]">
+    <section id="home" aria-labelledby="hero-title" className="border-b border-slate-200 bg-[#062d32] pt-16 text-white">
+      <div className="relative isolate overflow-hidden">
+        {heroSettings.bgType === 'video' && backgroundUrl && <video key={backgroundUrl} className="absolute inset-0 -z-20 h-full w-full object-cover" autoPlay muted loop playsInline preload="metadata" poster={heroSettings.imageUrl || firstService?.imageUrl} aria-hidden="true"><source src={backgroundUrl} /></video>}
+        {(heroSettings.bgType === 'image' || heroSettings.bgType === 'gif') && backgroundUrl && <img src={backgroundUrl} alt="" width="1920" height="1080" decoding="async" fetchPriority="high" className="absolute inset-0 -z-20 h-full w-full object-cover" />}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.96)_0%,rgba(3,29,33,.86)_48%,rgba(3,29,33,.55)_100%)]" />
+        <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]">
         <div className="flex min-h-[520px] flex-col justify-center px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
-          <p className="section-label">{text.eyebrow}</p>
-          <h1 id="hero-title" className="mt-5 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-[#092f34] sm:text-5xl lg:text-6xl">{text.title}</h1>
-          <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">{text.body}</p>
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{text.eyebrow}</p>
+          <h1 id="hero-title" className="mt-5 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">{text.title}</h1>
+          <p className="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">{text.body}</p>
           <div className="mt-8 flex flex-wrap items-center gap-4">
-            <button type="button" onClick={() => onNavigate?.('calculator')} className="button-primary">{text.primary}<ArrowRight className="h-4 w-4" /></button>
-            <button type="button" onClick={() => onNavigate?.('services')} className="button-link">{text.secondary}<ArrowRight className="h-4 w-4" /></button>
+            <button type="button" onClick={() => onNavigate?.('calculator')} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200">{text.primary}<ArrowRight className="h-4 w-4" /></button>
+            <button type="button" onClick={() => onNavigate?.('services')} className="inline-flex min-h-11 items-center gap-2 px-1 text-sm font-bold text-white underline-offset-4 hover:underline">{text.secondary}<ArrowRight className="h-4 w-4" /></button>
           </div>
         </div>
 
-        <div className="relative min-h-[360px] overflow-hidden bg-[#0b3438] lg:min-h-[520px]">
+        <div className="relative min-h-[360px] overflow-hidden border-white/20 bg-[#0b3438] lg:m-8 lg:min-h-[456px] lg:border">
           <Suspense fallback={<HeroFallback imageUrl={firstService?.imageUrl} title={firstService?.title} />}>
             {enhanced ? <HeroServiceCarousel currentLang={currentLang} onOpenService={onOpenService} detailLabel={text.detail} /> : <HeroFallback imageUrl={firstService?.imageUrl} title={firstService?.title} />}
           </Suspense>
         </div>
       </div>
+      </div>
 
-      <div className="mx-auto grid max-w-7xl border-x border-slate-200 bg-white md:grid-cols-3">
+      <div className="mx-auto grid max-w-7xl bg-white md:grid-cols-3">
         {text.utilities.map(([title, description, page], index) => {
           const Icon = icons[index];
           return (

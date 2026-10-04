@@ -3,6 +3,7 @@ import { ArrowLeft, ArrowRight, Check, ChevronDown } from 'lucide-react';
 import { Language, ServiceDetail } from '../types/freight';
 import { getStoredServices } from '../utils/adminStorage';
 import { DETAILED_SERVICES } from './ServicesCarousel';
+import { ServiceTitle } from './ServiceTitle';
 
 interface ServiceDetailPageProps {
   slug: string;
@@ -36,7 +37,7 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
         <div className="mt-7 grid overflow-hidden border border-slate-200 bg-white lg:grid-cols-2">
           <div className="p-6 sm:p-10 lg:p-12">
             <p className="section-label">{content.category}</p>
-            <h1 className="mt-4 font-display text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl">{content.title}</h1>
+            <h1 className="mt-4 font-display text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl"><ServiceTitle title={content.title} /></h1>
             <p className="mt-5 text-lg font-semibold text-cyan-800">{content.tagline}</p>
             <p className="mt-5 text-base leading-7 text-slate-600">{content.description}</p>
             <button type="button" onClick={() => onQuote(content.title)} className="button-primary mt-8">Minta estimasi<ArrowRight className="h-4 w-4" /></button>

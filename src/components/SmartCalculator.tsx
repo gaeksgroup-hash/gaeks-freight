@@ -37,7 +37,7 @@ const SEA_OPTIONS = buildPortOptions(STANDARD_SEAPORTS);
 const AIR_OPTIONS = buildPortOptions(STANDARD_AIRPORTS);
 const INLAND_OPTIONS: LocationOption[] = INDONESIA_CITIES.map((city) => ({
   id: `CITY-${city.code}`,
-  value: `${city.name.trim()} — ${city.province}`,
+  value: `${city.name.trim()}, ${city.province}`,
   label: city.name.trim(),
   meta: city.province,
   searchText: `${city.name} ${city.province} ${city.code}`
@@ -221,17 +221,12 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
   return (
     <section id="calculator" aria-labelledby="calculator-title" className="section-block bg-[#f4f5f1]">
       <div className="page-shell">
-        <header className="grid gap-6 border-b border-slate-300 pb-8 lg:grid-cols-[1fr_auto] lg:items-end">
+        <header className="border-b border-slate-300 pb-8">
           <div className="max-w-3xl">
             <p className="section-label">Perencanaan kargo</p>
             <h2 id="calculator-title" className="section-title">Rencanakan rute dan kapasitas dalam satu layar.</h2>
             <p className="section-copy">Pilih moda, cari simpul keberangkatan dan tujuan, lalu hitung dasar kebutuhan kargo sebelum meminta tarif.</p>
             {prefillService && <p className="mt-4 text-sm font-semibold text-cyan-800">Layanan dipilih: {prefillService}</p>}
-          </div>
-          <div className="flex flex-wrap gap-2 text-xs font-semibold text-slate-600">
-            <span className="rounded-full border border-slate-300 bg-white px-3 py-2">500 pelabuhan</span>
-            <span className="rounded-full border border-slate-300 bg-white px-3 py-2">574 bandara</span>
-            <span className="rounded-full border border-slate-300 bg-white px-3 py-2">514 kabupaten/kota</span>
           </div>
         </header>
 
@@ -288,7 +283,7 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
 
             <details className="group">
               <summary className="flex min-h-16 items-center justify-between px-5 py-3 font-bold text-[#12363a] sm:px-7"><span><span className="mr-2 text-xs tracking-[0.14em] text-cyan-700">03</span>Ketentuan perdagangan</span><ChevronDown className="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180" /></summary>
-              <div className="px-5 pb-7 sm:px-7"><label className="text-sm font-semibold text-slate-700">Incoterm<select className="field mt-2" value={selectedIncoterm} onChange={(event) => setSelectedIncoterm(event.target.value)}>{INCOTERMS_LIST.map((item) => <option key={item.code} value={item.code}>{item.code} — {item.desc}</option>)}</select></label></div>
+              <div className="px-5 pb-7 sm:px-7"><label className="text-sm font-semibold text-slate-700">Incoterm<select className="field mt-2" value={selectedIncoterm} onChange={(event) => setSelectedIncoterm(event.target.value)}>{INCOTERMS_LIST.map((item) => <option key={item.code} value={item.code}>{item.code}: {item.desc}</option>)}</select></label></div>
             </details>
           </form>
 

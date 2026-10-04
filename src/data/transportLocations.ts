@@ -7538,5 +7538,5 @@ export const formatTransportLocation = (location: TransportLocation) => {
   const place = location.city && location.city !== location.name
     ? `${location.name}, ${location.city}`
     : location.name;
-  return `${place} (${location.code}) — ${location.country}`;
+  return `${place} (${location.code}), ${location.country}`;
 };

@@ -6,7 +6,7 @@ type DataRecord = Record<string, unknown>;
 
 const record = (value: unknown): DataRecord => value && typeof value === 'object' && !Array.isArray(value) ? value as DataRecord : {};
 const list = (value: unknown): unknown[] => Array.isArray(value) ? value : [];
-const read = (source: DataRecord, keys: string[], fallback = '—') => {
+const read = (source: DataRecord, keys: string[], fallback = 'Belum tersedia') => {
   for (const key of keys) {
     const value = source[key];
     if (typeof value === 'string' || typeof value === 'number') return String(value);

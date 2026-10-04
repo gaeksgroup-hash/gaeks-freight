@@ -31,13 +31,14 @@ Motion supports orientation and continuity. The hero service carousel advances a
 
 ## Page patterns
 
-- Home: editorial hero, three task shortcuts, compact service list, process list, and latest updates.
-- Hero visual: service carousel populated from operator-managed service titles, taglines, and photos. The first frame renders without waiting for the animation bundle; slide numbering and UI metadata are omitted.
+- Home: editorial hero, three task shortcuts, optional network badges, compact service list, optional client logos, process list, and latest updates.
+- Hero visual: operator-managed image, GIF, or video sits behind the main message with a fixed contrast layer. The service carousel remains a separate operational preview populated from operator-managed services. The first carousel frame renders without waiting for the animation bundle; slide numbering and UI metadata are omitted.
 - Services: seven indexed disclosure rows.
 - Tracking: one search field followed directly by API status and a vertical milestone timeline.
 - Calculator: grouped input disclosures and one persistent results panel.
 - Routes: mode, search, region filter, then route disclosures.
 - News: search, category select, compact article rows, and a restrained article layout.
+- Newsletter: one clearly bounded signup panel with a visible email field, consent, and one action.
 - Contact: contact details beside one structured inquiry form.
 - Service detail: one overview, one image, and three disclosure groups.
 
@@ -51,4 +52,5 @@ Use direct operational language. Avoid hype, vague superiority claims, fake urge
 - Render one hero slide at a time and preload only the next image.
 - Pause carousel movement during hover or keyboard interaction and honor reduced motion preferences.
 - Keep the footer compact through short line lengths, shallow section padding, and tightly grouped navigation while preserving 44 pixel interaction targets.
+- Load hero video metadata first and keep network/client logo sections absent when they have no valid operator data.
 - Use cache headers for versioned static assets. Cookies are not used as a caching mechanism.

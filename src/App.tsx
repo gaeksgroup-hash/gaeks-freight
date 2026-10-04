@@ -6,6 +6,7 @@ import { Hero } from './components/Hero';
 import { ServicesCarousel } from './components/ServicesCarousel';
 import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
+import { HomeClients, HomeNetworks } from './components/HomePartners';
 import { Language } from './types/freight';
 import { getStoredBranding, getStoredSeo, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
@@ -279,7 +280,9 @@ export const App: React.FC = () => {
         {currentPage === 'home' && (
           <>
             <Hero onNavigate={navigateTo} onOpenService={handleOpenService} currentLang={currentLang} />
+            <HomeNetworks />
             <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
+            <HomeClients />
             <HomeEditorial
               currentLang={currentLang}
               onNavigate={navigateTo}

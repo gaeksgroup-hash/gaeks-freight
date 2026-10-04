@@ -37,6 +37,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 | Newsletter | Double opt-in, daftar operator, unsubscribe, dan broadcast artikel baru aktif |
 | Operator multiuser | Peran Gaekadmin, Administrator Website, CMS Berita, dan SEO aktif dengan izin server per modul |
 | Pengaturan situs global | Branding, kontak, navigasi, footer, sosial, hero, layanan, berita, dan SEO tersimpan di server dan diterapkan ke publik |
+| Media hero dan logo partner | Video/GIF/gambar hero, Our Networks, dan Our Clients dikelola dari operator; section partner kosong tidak dirender |
 
 ## Batasan yang masih terbuka
 

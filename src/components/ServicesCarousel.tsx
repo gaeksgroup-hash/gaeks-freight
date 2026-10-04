@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ArrowRight, Check, ChevronDown } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { ServiceTitle } from './ServiceTitle';
 
 export const DETAILED_SERVICES: ServiceDetail[] = [
   {
@@ -179,7 +180,7 @@ export const ServicesCarousel: React.FC<{
                   <summary className="flex min-h-[82px] items-center gap-3 px-4 py-4 transition-colors duration-300 group-hover:bg-cyan-50/45 group-open:bg-[#f1f8f6] sm:gap-4 sm:px-5">
                     <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white font-mono text-[11px] font-semibold text-slate-500 transition-colors duration-300 group-hover:border-cyan-600/30 group-hover:text-cyan-800 group-open:border-cyan-700/35 group-open:bg-cyan-50 group-open:text-cyan-800">{String(index + 1).padStart(2, '0')}</span>
                     <span className="min-w-0 flex-1">
-                      <strong className="block text-base font-bold text-[#12363a] transition-colors duration-300 group-hover:text-[#076876]">{item.title}</strong>
+                      <strong className="block text-base font-bold text-[#12363a] transition-colors duration-300 group-hover:text-[#076876]"><ServiceTitle title={item.title} /></strong>
                       <span className="mt-1 block truncate text-sm text-slate-500 transition-colors duration-300 group-hover:text-slate-600">{item.category}</span>
                     </span>
                     <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-[color,background-color,border-color] duration-300 group-hover:border-cyan-600/30 group-hover:bg-cyan-50 group-hover:text-cyan-800 group-open:border-cyan-700 group-open:bg-[#0a5861] group-open:text-white">
