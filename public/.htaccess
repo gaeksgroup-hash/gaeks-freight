@@ -15,3 +15,8 @@
     Header set Cache-Control "no-cache, must-revalidate"
   </Files>
 </IfModule>
+
+<IfModule mod_mime.c>
+  AddType video/webm .webm
+  AddType video/mp4 .mp4
+</IfModule>
