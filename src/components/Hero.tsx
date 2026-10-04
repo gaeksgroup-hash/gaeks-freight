@@ -16,7 +16,7 @@ const copy = {
     eyebrow: 'Freight forwarding dan kepabeanan',
     title: 'Kargo bergerak dengan rencana yang jelas.',
     body: 'GAEKS mengatur freight laut dan udara, kepabeanan, serta pengiriman darat melalui satu tim operasional.',
-    primary: 'Minta estimasi', secondary: 'Lihat layanan', service: 'Layanan', detail: 'Lihat detail',
+    primary: 'Minta estimasi', secondary: 'Lihat layanan', detail: 'Lihat detail',
     utilities: [
       ['Lacak shipment', 'AWB, B/L, GJO, atau kontainer', 'tracking'],
       ['Hitung kebutuhan kargo', 'CBM dan berat volumetrik', 'calculator'],
@@ -27,7 +27,7 @@ const copy = {
     eyebrow: 'Freight forwarding and customs',
     title: 'Cargo moves better with a clear plan.',
     body: 'GAEKS coordinates ocean and air freight, customs clearance, and inland delivery through one operations team.',
-    primary: 'Request an estimate', secondary: 'View services', service: 'Service', detail: 'View details',
+    primary: 'Request an estimate', secondary: 'View services', detail: 'View details',
     utilities: [
       ['Track a shipment', 'AWB, B/L, GJO, or container', 'tracking'],
       ['Calculate cargo', 'CBM and volumetric weight', 'calculator'],
@@ -38,7 +38,7 @@ const copy = {
     eyebrow: '货运代理与清关服务',
     title: '清晰规划，让货物高效流转。',
     body: 'GAEKS 通过一个运营团队协调海运、空运、清关和陆路配送。',
-    primary: '获取估算', secondary: '查看服务', service: '服务', detail: '查看详情',
+    primary: '获取估算', secondary: '查看服务', detail: '查看详情',
     utilities: [
       ['查询货件', '空运单、提单、工单或集装箱', 'tracking'],
       ['计算货物数据', '体积与体积重量', 'calculator'],
@@ -74,7 +74,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
 
         <div className="relative min-h-[360px] overflow-hidden bg-[#0b3438] lg:min-h-[520px]">
           <Suspense fallback={<HeroFallback imageUrl={firstService?.imageUrl} title={firstService?.title} />}>
-            {enhanced ? <HeroServiceCarousel currentLang={currentLang} onOpenService={onOpenService} labels={{ service: text.service, detail: text.detail }} /> : <HeroFallback imageUrl={firstService?.imageUrl} title={firstService?.title} />}
+            {enhanced ? <HeroServiceCarousel currentLang={currentLang} onOpenService={onOpenService} detailLabel={text.detail} /> : <HeroFallback imageUrl={firstService?.imageUrl} title={firstService?.title} />}
           </Suspense>
         </div>
       </div>

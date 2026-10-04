@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Check, ChevronDown, Circle, Loader2, PackageSearch } from 'lucide-react';
+import { Check, Circle, Loader2, PackageSearch } from 'lucide-react';
 import { ShipmentTrackingError, TrackingApiResponse, trackShipment } from '../services/trackingApi';
 
 type DataRecord = Record<string, unknown>;
@@ -49,7 +49,8 @@ export const ShipmentTracking: React.FC = () => {
   };
 
   const shipment = view.shipment;
-  const hasResult = result && Object.keys(shipment).length > 0;
+  const events = view.milestones.length ? view.milestones : view.timeline;
+  const hasResult = result && (Object.keys(shipment).length > 0 || events.length > 0);
 
   return (
     <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
@@ -58,45 +59,25 @@ export const ShipmentTracking: React.FC = () => {
           <header>
             <p className="section-label">Shipment tracking</p>
             <h1 className="section-title">Satu pencarian untuk beberapa nomor pengiriman.</h1>
-            <p className="section-copy">Masukkan AWB atau HAWB, B/L atau HBL, Job Order, nomor kontainer, maupun nomor dokumen.</p>
-            <details className="mt-8 border-y border-slate-300">
-              <summary className="flex min-h-14 items-center justify-between text-sm font-bold">Format yang didukung<ChevronDown className="h-4 w-4" /></summary>
-              <ul className="space-y-2 pb-5 font-mono text-xs text-slate-600">
-                <li>HAWB-GAEKS-2026-000002</li>
-                <li>HBL-GAEKS-2026-000001</li>
-                <li>GJO-GAEKS-2026-000001</li>
-                <li>MSKU7829104</li>
-                <li>NPE-045120-2026</li>
-              </ul>
-            </details>
+            <p className="section-copy">Masukkan nomor HAWB, B/L, atau kontainer untuk melihat milestone pengiriman.</p>
           </header>
 
           <div>
             <form onSubmit={submit} className="border border-slate-200 bg-white p-5 sm:p-7">
               <label htmlFor="shipment-reference" className="text-sm font-bold text-[#12363a]">Nomor shipment</label>
               <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-                <input id="shipment-reference" value={query} onChange={(event) => setQuery(event.target.value)} autoComplete="off" spellCheck={false} placeholder="Contoh: MSKU7829104" className="field flex-1 font-mono uppercase" />
+                <input id="shipment-reference" value={query} onChange={(event) => setQuery(event.target.value)} autoComplete="off" spellCheck={false} placeholder="HAWB, B/L, atau nomor kontainer" className="field flex-1 font-mono uppercase" />
                 <button type="submit" disabled={loading || !query.trim()} className="button-primary min-w-36 disabled:cursor-not-allowed disabled:opacity-50">
                   {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <PackageSearch className="h-4 w-4" />}
                   {loading ? 'Mencari' : 'Lacak'}
                 </button>
               </div>
-              <p className="mt-3 text-xs leading-5 text-slate-500">Spasi, tanda minus, serta huruf besar atau kecil akan dinormalisasi oleh sistem ERP.</p>
             </form>
-
-            {!result && !error && (
-              <div className="mt-5 border border-dashed border-slate-300 px-5 py-10 text-center">
-                <PackageSearch className="mx-auto h-6 w-6 text-cyan-700" />
-                <p className="mt-3 text-sm font-semibold">Status shipment akan tampil di sini.</p>
-                <p className="mt-1 text-xs text-slate-500">Data diambil langsung dari ERP GAEKS.</p>
-              </div>
-            )}
 
             {error && (
               <div role="alert" className="mt-5 border-l-4 border-amber-500 bg-white p-5">
                 <p className="font-bold text-[#12363a]">{error.code === 'SHIPMENT_NOT_FOUND' ? 'Shipment belum ditemukan' : 'Pencarian belum berhasil'}</p>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{error.message}</p>
-                {error.requestId && <p className="mt-3 font-mono text-xs text-slate-400">Request ID: {error.requestId}</p>}
               </div>
             )}
 
@@ -105,32 +86,16 @@ export const ShipmentTracking: React.FC = () => {
                 <div className="border-b border-slate-200 bg-[#0b3438] p-5 text-white sm:p-7">
                   <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Status terkini</p>
                   <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                    <h2 className="text-2xl font-bold">{read(shipment, ['statusLabel', 'status', 'currentStatus'])}</h2>
+                    <h2 className="text-2xl font-bold">{read(shipment, ['statusLabel', 'status', 'currentStatus'], 'Perjalanan shipment')}</h2>
                     <span className="font-mono text-sm text-slate-300">{read(shipment, ['trackingNumber', 'referenceNumber', 'jobOrderNumber', 'jobOrderNo', 'number'], result?.query || query)}</span>
                   </div>
                 </div>
 
-                <dl className="grid border-b border-slate-200 sm:grid-cols-2">
-                  {[
-                    ['Moda', read(shipment, ['mode', 'transportMode', 'shipmentMode'])],
-                    ['Carrier / armada', read(shipment, ['carrier', 'airline', 'vessel', 'vesselName'])],
-                    ['Asal', read(shipment, ['origin', 'originName', 'portOfLoading'])],
-                    ['Tujuan', read(shipment, ['destination', 'destinationName', 'portOfDischarge'])],
-                    ['Estimasi tiba', dateText(shipment.eta || shipment.estimatedArrival || shipment.estimatedDelivery) || '—'],
-                    ['Terakhir diperbarui', dateText(shipment.updatedAt || shipment.lastUpdated || shipment.statusDate) || '—']
-                  ].map(([label, value]) => (
-                    <div key={label} className="border-b border-slate-200 p-5 last:border-b-0 sm:border-r sm:[&:nth-child(even)]:border-r-0">
-                      <dt className="text-xs font-bold uppercase tracking-wider text-slate-400">{label}</dt>
-                      <dd className="mt-2 text-sm font-semibold text-[#12363a]">{value}</dd>
-                    </div>
-                  ))}
-                </dl>
-
-                {(view.timeline.length > 0 || view.milestones.length > 0) && (
+                {events.length > 0 && (
                   <div className="p-5 sm:p-7">
-                    <h3 className="font-bold">Perjalanan shipment</h3>
+                    <h3 className="font-bold">Milestone</h3>
                     <ol className="mt-5 border-l border-slate-300 pl-5">
-                      {(view.timeline.length ? view.timeline : view.milestones).map((item, index) => {
+                      {events.map((item, index) => {
                         const completed = Boolean(item.isCompleted || item.completed || item.status === 'COMPLETED');
                         const current = Boolean(item.isCurrent || item.current || item.status === 'CURRENT');
                         return (
@@ -150,9 +115,7 @@ export const ShipmentTracking: React.FC = () => {
               </section>
             )}
 
-            {result && !hasResult && !error && (
-              <div className="mt-5 border-l-4 border-amber-500 bg-white p-5 text-sm text-slate-600">Respons ERP diterima, tetapi detail shipment belum tersedia.</div>
-            )}
+            {result && !hasResult && !error && <p className="mt-5 border-t border-slate-300 py-5 text-sm text-slate-600">Belum ada milestone untuk nomor ini.</p>}
           </div>
         </div>
       </section>

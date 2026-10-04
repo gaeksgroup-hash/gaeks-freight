@@ -32,9 +32,9 @@ Motion is limited to menu state, disclosure rotation, and short hover feedback. 
 ## Page patterns
 
 - Home: editorial hero, three task shortcuts, compact service list, process list, and latest updates.
-- Hero visual: service carousel populated from operator-managed service titles, taglines, and photos. The first frame renders without waiting for the animation bundle.
+- Hero visual: service carousel populated from operator-managed service titles, taglines, and photos. The first frame renders without waiting for the animation bundle; slide numbering and UI metadata are omitted.
 - Services: seven indexed disclosure rows.
-- Tracking: one search field, clear lookup states, compact shipment facts, and a vertical milestone timeline.
+- Tracking: one search field followed directly by API status and a vertical milestone timeline.
 - Calculator: grouped input disclosures and one persistent results panel.
 - Routes: mode, search, region filter, then route disclosures.
 - News: search, category select, compact article rows, and a restrained article layout.

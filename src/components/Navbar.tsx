@@ -95,7 +95,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="GAEKS Freight, ke beranda"
         >
           <img
-            src="/logos/gaek-full.svg"
+            src="/logos/gaek-symbol.png?v=7"
+            onError={(event) => {
+              const target = event.currentTarget;
+              target.onerror = null;
+              target.src = '/logos/gaek-symbol.svg';
+            }}
             alt="GAEKS"
             className="h-8 w-auto object-contain brightness-0 invert"
           />

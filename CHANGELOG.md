@@ -12,7 +12,8 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 - Menambahkan client API ERP dengan timeout, penanganan CORS, state loading, not found, error, serta adapter milestone dan timeline.
 - Menambahkan route `/#tracking` dan `/tracking`, navigasi utama, pintasan hero, serta CTA footer.
 - Memecah halaman khusus dan carousel animasi menjadi chunk terpisah agar JavaScript pembuka lebih kecil.
-- Mengganti logo navigasi publik dan favicon ke SVG serta menambahkan cache header untuk aset versi.
+- Mempertahankan logo GAEKS asli, memakai favicon SVG, dan menambahkan cache header untuk aset versi.
+- Menyederhanakan tracking agar sebelum pencarian hanya menampilkan input; hasil difokuskan pada status dan milestone.
 - Menambahkan tautan kecil Gaeks Digital Product di footer.
 
 ### Penyederhanaan frontend

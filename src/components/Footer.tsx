@@ -47,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         <div className="grid gap-10 py-11 md:grid-cols-[1.2fr_.8fr_.8fr]">
           <div>
-            <img src="/logos/gaek-full.svg" alt="GAEKS" className="h-8 w-auto brightness-0 invert" />
+            <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-8 w-auto brightness-0 invert" />
             <p className="mt-4 max-w-sm text-sm leading-6 text-slate-400">Koordinasi freight, kepabeanan, dan pengiriman darat untuk kargo bisnis.</p>
             <div className="mt-5 grid gap-1 text-sm">
               <a href={'https://wa.me/' + whatsAppNumber(brandData.whatsappNumber || '6285608561745')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-3 hover:text-cyan-300"><PhoneCall className="h-4 w-4 text-cyan-300" />{brandData.whatsappDisplay || '+62 856 0856 1745'}</a>
