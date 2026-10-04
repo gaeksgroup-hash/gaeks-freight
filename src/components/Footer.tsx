@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Mail, MapPin, PackageSearch, PhoneCall } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { SocialLinks } from './SocialLinks';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -58,7 +59,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <div className="mt-2 grid grid-cols-2 gap-x-5">
               {navLinks.map(({ page, label }) => <a key={page} href={'#' + page} onClick={(event) => nav(page, event)} className="inline-flex min-h-11 items-center text-sm leading-none hover:text-cyan-300">{label}</a>)}
             </div>
-            {siteSettings.socialLinks.length > 0 && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">{siteSettings.socialLinks.map((item) => <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center text-xs text-slate-400 hover:text-cyan-300">{item.label}</a>)}</div>}
+            {siteSettings.socialLinks.length > 0 && <div className="mt-2"><SocialLinks links={siteSettings.socialLinks} tone="dark" /></div>}
           </nav>
 
           <div>

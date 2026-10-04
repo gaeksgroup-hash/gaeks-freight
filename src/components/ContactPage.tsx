@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, MessageCircle, Phone } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { SocialLinks } from './SocialLinks';
 
 export const ContactPage: React.FC<{ currentLang?: Language }> = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +12,10 @@ export const ContactPage: React.FC<{ currentLang?: Language }> = () => {
   });
   const [submitted, setSubmitted] = useState(false);
   const [branding, setBranding] = useState(getStoredBranding());
+  const [siteSettings, setSiteSettings] = useState(getStoredSiteSettings());
 
   useEffect(() => {
-    const reload = () => setBranding(getStoredBranding());
+    const reload = () => { setBranding(getStoredBranding()); setSiteSettings(getStoredSiteSettings()); };
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
@@ -46,6 +48,7 @@ Pesan: ${formData.message}`;
               <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Phone className="h-4 w-4" />{branding.whatsappDisplay}</a>
               <a href={`mailto:${branding.salesEmail}`} className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />{branding.salesEmail}</a>
             </div>
+            {siteSettings.socialLinks.length > 0 && <div className="mt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Media sosial</p><SocialLinks links={siteSettings.socialLinks} showLabels tone="light" /></div>}
           </header>
 
           <form onSubmit={handleSubmit} className="border border-slate-200 bg-white p-5 sm:p-8">

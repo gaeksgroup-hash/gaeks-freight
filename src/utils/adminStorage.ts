@@ -30,7 +30,8 @@ export interface HeroSettings {
 }
 
 export interface NavigationItem { page: string; label: string; mobileLabel: string; visible: boolean; }
-export interface SocialLink { id: string; label: string; url: string; }
+export type SocialPlatform = 'instagram' | 'facebook' | 'linkedin' | 'youtube' | 'x' | 'tiktok';
+export interface SocialLink { id: string; platform: SocialPlatform; url: string; label?: string; }
 export interface SiteSettings {
   footerTagline: string;
   footerHeading: string;
@@ -159,7 +160,13 @@ export const getStoredHero = () => readObject(STORAGE_KEY_HERO, DEFAULT_HERO);
 export const saveStoredHero = (data: HeroSettings) => writeObject(STORAGE_KEY_HERO, data);
 export const getStoredSiteSettings = () => {
   const stored = readObject(STORAGE_KEY_SITE, DEFAULT_SITE_SETTINGS);
-  return { ...stored, navigation: Array.isArray(stored.navigation) ? stored.navigation : DEFAULT_SITE_SETTINGS.navigation, socialLinks: Array.isArray(stored.socialLinks) ? stored.socialLinks : [] };
+  const supportedPlatforms: SocialPlatform[] = ['instagram', 'facebook', 'linkedin', 'youtube', 'x', 'tiktok'];
+  const socialLinks = Array.isArray(stored.socialLinks) ? stored.socialLinks.map((link) => {
+    const legacy = String(link.label || '').toLowerCase();
+    const platform = supportedPlatforms.includes(link.platform) ? link.platform : supportedPlatforms.includes(legacy as SocialPlatform) ? legacy as SocialPlatform : 'instagram';
+    return { ...link, platform };
+  }) : [];
+  return { ...stored, navigation: Array.isArray(stored.navigation) ? stored.navigation : DEFAULT_SITE_SETTINGS.navigation, socialLinks };
 };
 export const saveStoredSiteSettings = (data: SiteSettings) => writeObject(STORAGE_KEY_SITE, data);
 export const getStoredSeo = () => readObject(STORAGE_KEY_SEO, DEFAULT_SEO);

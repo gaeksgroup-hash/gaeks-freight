@@ -155,6 +155,28 @@ export const App: React.FC = () => {
 
   const isOperatorPage = currentPage === 'operator';
 
+  useEffect(() => {
+    if (isOperatorPage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const root = document.getElementById('public-content');
+    if (!root) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('scroll-reveal-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+    const register = () => root.querySelectorAll('section:not(.scroll-reveal)').forEach((section) => {
+      section.classList.add('scroll-reveal');
+      observer.observe(section);
+    });
+    register();
+    const mutations = new MutationObserver(register);
+    mutations.observe(root, { childList: true, subtree: true });
+    return () => { mutations.disconnect(); observer.disconnect(); };
+  }, [currentPage, isOperatorPage]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[#f4f5f1] text-[#12363a] font-sans">
       <Toaster position="bottom-right" richColors closeButton />
@@ -168,7 +190,8 @@ export const App: React.FC = () => {
         />
       )}
 
-      <main className="flex-grow">
+      <main id="public-content" className="flex-grow">
+        <div key={currentPage} className="page-transition">
         <Suspense fallback={<PageFallback />}>
         {currentPage === 'operator' && (
           <OperatorAdmin onNavigate={navigateTo} />
@@ -224,6 +247,7 @@ export const App: React.FC = () => {
           </>
         )}
         </Suspense>
+        </div>
       </main>
 
       {!isOperatorPage && (

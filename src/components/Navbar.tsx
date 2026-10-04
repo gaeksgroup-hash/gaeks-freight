@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Menu, PhoneCall, X } from 'lucide-react';
+import { ChevronDown, Menu, PhoneCall, X } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
@@ -11,11 +11,24 @@ export interface NavbarProps {
   onLanguageChange?: (lang: Language) => void;
 }
 
-const languageOptions: Array<{ value: Language; label: string; short: string }> = [
-  { value: 'id', label: 'Indonesia', short: 'ID' },
-  { value: 'en', label: 'English', short: 'EN' },
-  { value: 'zh', label: '中文', short: '中文' }
+const languageOptions: Array<{ value: Language; label: string; flag: string }> = [
+  { value: 'id', label: 'Bahasa Indonesia', flag: '🇮🇩' },
+  { value: 'en', label: 'English', flag: '🇬🇧' },
+  { value: 'zh', label: '中文', flag: '🇨🇳' }
 ];
+
+const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Language) => void; align?: 'left' | 'right' }> = ({ currentLang, onSelect, align = 'right' }) => {
+  const detailsRef = React.useRef<HTMLDetailsElement>(null);
+  const current = languageOptions.find((option) => option.value === currentLang) || languageOptions[0];
+  return <details ref={detailsRef} className="group relative">
+    <summary aria-label={`Bahasa aktif: ${current.label}`} title={current.label} className="flex min-h-11 min-w-14 cursor-pointer list-none items-center justify-center gap-1 rounded-full border border-white/20 px-2 text-xl transition-colors hover:border-cyan-300 hover:bg-white/5 [&::-webkit-details-marker]:hidden">
+      <span aria-hidden="true">{current.flag}</span><ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+    </summary>
+    <div className={`absolute top-[calc(100%+.5rem)] z-50 flex gap-1 rounded-xl border border-white/15 bg-[#082f34] p-1.5 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}>
+      {languageOptions.map((option) => <button key={option.value} type="button" aria-label={option.label} title={option.label} aria-current={currentLang === option.value ? 'true' : undefined} onClick={() => { onSelect(option.value); detailsRef.current?.removeAttribute('open'); }} className={`flex h-11 w-11 items-center justify-center rounded-lg text-xl transition-colors ${currentLang === option.value ? 'bg-cyan-400/20 ring-1 ring-cyan-300/60' : 'hover:bg-white/10'}`}><span aria-hidden="true">{option.flag}</span></button>)}
+    </div>
+  </details>;
+};
 
 const getWhatsAppNumber = (value: string) => {
   const digits = value.replace(/\D/g, '');
@@ -83,7 +96,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <a
           href="#home"
           onClick={(event) => handleNav('home', event)}
-          className="inline-flex min-h-11 shrink-0 items-center"
+          className="inline-flex min-h-11 shrink-0 items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
           aria-label="GAEKS Freight, ke beranda"
         >
           <img
@@ -94,18 +107,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               target.src = '/logos/gaek-symbol.svg';
             }}
             alt="GAEKS"
-            className="h-8 w-auto object-contain brightness-0 invert"
+            className="h-9 w-auto object-contain brightness-0 invert"
           />
         </a>
 
-        <nav aria-label="Navigasi utama" className="hidden min-w-0 items-center justify-center gap-1 lg:flex">
+        <nav aria-label="Navigasi utama" className="hidden min-w-0 items-center justify-center gap-0.5 xl:flex">
           {navigation.map(({ page, label }) => (
             <a
               key={page}
               href={`#${page}`}
               onClick={(event) => handleNav(page, event)}
               aria-current={currentTab === page ? 'page' : undefined}
-              className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-2 text-sm font-medium transition-colors ${
+              className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-2.5 text-[13px] font-semibold transition-colors ${
                 currentTab === page
                   ? 'border-cyan-400 text-white'
                   : 'border-transparent text-slate-300 hover:text-white'
@@ -116,23 +129,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           ))}
         </nav>
 
-        <div className="hidden shrink-0 items-center gap-2 lg:flex">
-          <label htmlFor="desktop-language" className="sr-only">Pilih bahasa</label>
-          <select
-            id="desktop-language"
-            value={currentLang}
-            onChange={(event) => handleTriggerLanguage(event.target.value as Language)}
-            className="min-h-11 cursor-pointer rounded-md border border-white/20 bg-[#011c20] px-2 text-sm text-white"
-          >
-            {languageOptions.map((option) => (
-              <option key={option.value} value={option.value}>{option.short}</option>
-            ))}
-          </select>
+        <div className="hidden shrink-0 items-center gap-2 xl:flex">
+          <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} />
           <a
             href={whatsAppUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 items-center gap-2 rounded-md bg-cyan-400 px-3 text-sm font-semibold text-[#011417] transition-colors hover:bg-cyan-300"
+            className="inline-flex min-h-11 items-center gap-2 rounded-full bg-cyan-400 px-4 text-sm font-bold text-[#011417] transition-colors hover:bg-cyan-300"
           >
             <PhoneCall className="h-4 w-4" aria-hidden="true" />
             Chat WhatsApp
@@ -145,7 +148,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label={mobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
           aria-controls="mobile-navigation"
           aria-expanded={mobileMenuOpen}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-md border border-white/20 px-3 text-sm font-medium lg:hidden"
+          className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-sm font-semibold xl:hidden"
         >
           <span>Menu</span>
           {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
@@ -153,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-[#011c20] px-4 pb-5 shadow-lg lg:hidden">
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-[#011c20] px-4 pb-5 shadow-lg xl:hidden">
           <nav aria-label="Navigasi seluler" className="mx-auto max-w-7xl">
             <div className="py-2">
               {navigation.map(({ page, mobileLabel }) => (
@@ -173,17 +176,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
             <div className="flex flex-col gap-3 border-t border-white/10 pt-4 sm:flex-row sm:items-center">
-              <label htmlFor="mobile-language" className="text-sm text-slate-300">Bahasa</label>
-              <select
-                id="mobile-language"
-                value={currentLang}
-                onChange={(event) => handleTriggerLanguage(event.target.value as Language)}
-                className="min-h-11 w-full rounded-md border border-white/20 bg-[#011c20] px-3 text-base text-white sm:w-auto"
-              >
-                {languageOptions.map((option) => (
-                  <option key={option.value} value={option.value}>{option.label}</option>
-                ))}
-              </select>
+              <span className="sr-only">Pilih bahasa</span>
+              <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} align="left" />
               <a
                 href={whatsAppUrl}
                 target="_blank"

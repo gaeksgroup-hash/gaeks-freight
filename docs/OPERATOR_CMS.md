@@ -42,6 +42,15 @@ Mengedit artikel yang sudah ada tidak mengirim broadcast ulang. Menghapus artike
 
 Media yang diunggah dari panel disimpan di `/uploads`. Hapus media hanya jika aset tersebut sudah tidak dipakai oleh logo, layanan, hero, atau artikel.
 
+## Media sosial
+
+1. Buka **Navigasi & Footer**.
+2. Pada bagian **Media sosial**, pilih **Tambah**.
+3. Pilih platform dari dropdown dan masukkan URL profil lengkap.
+4. Simpan ke server. Ikon platform muncul otomatis di footer dan halaman Kontak.
+
+Platform yang tersedia: Instagram, Facebook, LinkedIn, YouTube, X, dan TikTok.
+
 ## Keamanan
 
 - Cookie sesi memakai `Secure`, `HttpOnly`, dan `SameSite=Strict`.
