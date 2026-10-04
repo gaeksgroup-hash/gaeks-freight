@@ -48,7 +48,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 | Commit | Hasil |
 | --- | --- |
-| Belum dicatat | Penyederhanaan frontend 4 Oktober 2026 siap dikirim ke `main` |
+| `8f37b6c` | Penyederhanaan frontend 4 Oktober 2026, live di produksi dan terverifikasi |
 | `cb01153` | Navbar responsif, build Hostinger completed |
 | `d347542` | Konten/media produksi dipulihkan, build completed |
 | `86eb665` | Rewrite SPA ditambahkan, build completed |
