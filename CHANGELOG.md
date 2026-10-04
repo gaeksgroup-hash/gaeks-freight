@@ -4,6 +4,14 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Penerjemahan situs realtime
+
+- Memusatkan pemilihan bahasa Indonesia, Inggris, dan Mandarin agar seluruh konten publik, termasuk konten dari operator, mengikuti bahasa aktif.
+- Menghapus reload saat bendera dipilih; perubahan bahasa diterapkan langsung dan pilihan tersimpan untuk kunjungan berikutnya.
+- Memuat mesin penerjemahan setelah konten utama agar pembukaan situs tetap ringan.
+- Menyembunyikan banner, spinner, tooltip, dan elemen antarmuka Google Translate dari halaman publik.
+- Menerapkan ulang bahasa aktif setelah navigasi SPA, pembukaan artikel atau layanan, dan pembaruan konten operator.
+
 ### Navigasi, bahasa, dan media sosial
 
 - Mengubah pengaturan media sosial operator menjadi dropdown platform agar ikon Instagram, Facebook, LinkedIn, YouTube, X, atau TikTok dipilih otomatis.

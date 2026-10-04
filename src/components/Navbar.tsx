@@ -65,18 +65,6 @@ export const Navbar: React.FC<NavbarProps> = ({
     onSelectLang?.(lang);
     onLanguageChange?.(lang);
     setMobileMenuOpen(false);
-
-    const targetCode = lang === 'en' ? 'en' : lang === 'zh' ? 'zh-CN' : 'id';
-    document.cookie = `googtrans=/id/${targetCode}; path=/;`;
-    document.cookie = `googtrans=/id/${targetCode}; path=/; domain=${window.location.hostname};`;
-
-    const select = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
-    if (select) {
-      select.value = targetCode;
-      select.dispatchEvent(new Event('change'));
-    } else {
-      window.location.reload();
-    }
   };
 
   const handleNav = (page: string, event: React.MouseEvent<HTMLAnchorElement>) => {

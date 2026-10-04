@@ -8,6 +8,7 @@ import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
 import { Language } from './types/freight';
 import { getStoredBranding, getStoredSeo, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
+import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
 
 const SmartCalculator = React.lazy(() => import('./components/SmartCalculator').then((module) => ({ default: module.SmartCalculator })));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').then((module) => ({ default: module.InteractiveMap })));
@@ -20,7 +21,7 @@ const ShipmentTracking = React.lazy(() => import('./components/ShipmentTracking'
 const PageFallback = () => <div className="min-h-[60vh] bg-[#f4f5f1] pt-32 text-center text-sm text-slate-500">Memuat halaman…</div>;
 
 export const App: React.FC = () => {
-  const [currentLang, setCurrentLang] = useState<Language>('id');
+  const [currentLang, setCurrentLang] = useState<Language>(() => getPreferredLanguage());
   const [activeArticleId, setActiveArticleId] = useState<string>('');
   const getServiceSlug = () => {
     const path = window.location.pathname.toLowerCase();
@@ -156,6 +157,42 @@ export const App: React.FC = () => {
   const isOperatorPage = currentPage === 'operator';
 
   useEffect(() => {
+    if (isOperatorPage) return;
+
+    const canUseIdleCallback = typeof window.requestIdleCallback === 'function';
+    const schedule = canUseIdleCallback
+      ? window.requestIdleCallback(() => preloadTranslationEngine(), { timeout: 1800 })
+      : window.setTimeout(() => preloadTranslationEngine(), 800);
+
+    return () => {
+      if (canUseIdleCallback) window.cancelIdleCallback(schedule);
+      else window.clearTimeout(schedule);
+    };
+  }, [isOperatorPage]);
+
+  useEffect(() => {
+    if (isOperatorPage || currentLang === 'id') return;
+    const timer = window.setTimeout(() => {
+      void applySiteLanguage(currentLang);
+    }, 80);
+    return () => window.clearTimeout(timer);
+  }, [currentLang, currentPage, activeArticleId, activeServiceSlug, isOperatorPage]);
+
+  useEffect(() => {
+    if (isOperatorPage) return;
+    const reapply = () => {
+      if (currentLang !== 'id') window.setTimeout(() => void applySiteLanguage(currentLang), 80);
+    };
+    window.addEventListener(GAEKS_UPDATE_EVENT, reapply);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reapply);
+  }, [currentLang, isOperatorPage]);
+
+  const handleLanguageChange = (language: Language) => {
+    setCurrentLang(language);
+    void applySiteLanguage(language);
+  };
+
+  useEffect(() => {
     if (isOperatorPage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const root = document.getElementById('public-content');
     if (!root) return;
@@ -186,7 +223,7 @@ export const App: React.FC = () => {
           currentTab={currentPage} 
           onNavigate={navigateTo} 
           currentLang={currentLang} 
-          onSelectLang={setCurrentLang} 
+          onSelectLang={handleLanguageChange}
         />
       )}
 
