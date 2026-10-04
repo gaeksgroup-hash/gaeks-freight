@@ -14,6 +14,7 @@ export interface NavbarProps {
 const navigation = [
   { page: 'home', desktop: 'Beranda', mobile: 'Beranda' },
   { page: 'services', desktop: 'Layanan', mobile: 'Layanan' },
+  { page: 'tracking', desktop: 'Tracking', mobile: 'Shipment Tracking' },
   { page: 'calculator', desktop: 'Kalkulator', mobile: 'Kalkulator Kargo' },
   { page: 'network', desktop: 'Rute & Jadwal', mobile: 'Rute & Jadwal' },
   { page: 'news', desktop: 'Berita', mobile: 'Berita & Pembaruan' },
@@ -94,12 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="GAEKS Freight, ke beranda"
         >
           <img
-            src="/logos/gaek-symbol.png?v=7"
-            onError={(event) => {
-              const target = event.currentTarget;
-              target.onerror = null;
-              target.src = '/logos/gaek-symbol.svg';
-            }}
+            src="/logos/gaek-full.svg"
             alt="GAEKS"
             className="h-8 w-auto object-contain brightness-0 invert"
           />

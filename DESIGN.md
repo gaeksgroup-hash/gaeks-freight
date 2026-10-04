@@ -32,7 +32,9 @@ Motion is limited to menu state, disclosure rotation, and short hover feedback. 
 ## Page patterns
 
 - Home: editorial hero, three task shortcuts, compact service list, process list, and latest updates.
+- Hero visual: service carousel populated from operator-managed service titles, taglines, and photos. The first frame renders without waiting for the animation bundle.
 - Services: seven indexed disclosure rows.
+- Tracking: one search field, clear lookup states, compact shipment facts, and a vertical milestone timeline.
 - Calculator: grouped input disclosures and one persistent results panel.
 - Routes: mode, search, region filter, then route disclosures.
 - News: search, category select, compact article rows, and a restrained article layout.
@@ -42,3 +44,10 @@ Motion is limited to menu state, disclosure rotation, and short hover feedback. 
 ## Content voice
 
 Use direct operational language. Avoid hype, vague superiority claims, fake urgency, and generic software language. Explain what the visitor can do and what information is needed next.
+
+## Performance rules
+
+- Specialist pages and the Framer Motion carousel load as separate chunks.
+- Render one hero slide at a time and preload only the next image.
+- Pause carousel movement during hover or keyboard interaction and honor reduced motion preferences.
+- Use cache headers for versioned static assets. Cookies are not used as a caching mechanism.

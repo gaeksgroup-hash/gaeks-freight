@@ -1,19 +1,23 @@
 // filepath: /src/App.tsx
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ServicesCarousel } from './components/ServicesCarousel';
-import { SmartCalculator } from './components/SmartCalculator';
-import { InteractiveMap } from './components/InteractiveMap';
-import { NewsPage } from './components/NewsPage';
-import { OperatorAdmin } from './components/OperatorAdmin';
-import { ContactPage } from './components/ContactPage';
 import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
-import { ServiceDetailPage } from './components/ServiceDetailPage';
 import { Language } from './types/freight';
 import { syncFromServer } from './utils/adminStorage';
+
+const SmartCalculator = React.lazy(() => import('./components/SmartCalculator').then((module) => ({ default: module.SmartCalculator })));
+const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').then((module) => ({ default: module.InteractiveMap })));
+const NewsPage = React.lazy(() => import('./components/NewsPage').then((module) => ({ default: module.NewsPage })));
+const OperatorAdmin = React.lazy(() => import('./components/OperatorAdmin').then((module) => ({ default: module.OperatorAdmin })));
+const ContactPage = React.lazy(() => import('./components/ContactPage').then((module) => ({ default: module.ContactPage })));
+const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })));
+const ShipmentTracking = React.lazy(() => import('./components/ShipmentTracking').then((module) => ({ default: module.ShipmentTracking })));
+
+const PageFallback = () => <div className="min-h-[60vh] bg-[#f4f5f1] pt-32 text-center text-sm text-slate-500">Memuat halaman…</div>;
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>('id');
@@ -30,10 +34,10 @@ export const App: React.FC = () => {
   useEffect(() => {
     syncFromServer();
 
-    // Polling setiap 15 detik untuk memeriksa pembaruan server otomatis
+    // Polling ringan untuk pembaruan lintas perangkat; edit pada tab yang sama tetap memakai event lokal.
     const interval = setInterval(() => {
       syncFromServer();
-    }, 15000);
+    }, 60000);
 
     const onFocus = () => syncFromServer();
     window.addEventListener('focus', onFocus);
@@ -50,9 +54,10 @@ export const App: React.FC = () => {
       return 'operator';
     }
     if (getServiceSlug()) return 'service';
-    if (['home', 'services', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
+    if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
       return hash;
     }
+    if (path === 'tracking') return 'tracking';
     return 'home';
   };
 
@@ -74,7 +79,9 @@ export const App: React.FC = () => {
         const articleId = fullHash.includes('id=') ? fullHash.substring(fullHash.indexOf('id=') + 3) : '';
         setActiveArticleId(articleId);
         setCurrentPage('news');
-      } else if (['home', 'services', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
+      } else if (path === 'tracking' && !fullHash) {
+        setCurrentPage('tracking');
+      } else if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
         setActiveServiceSlug('');
         setCurrentPage(fullHash);
@@ -89,7 +96,7 @@ export const App: React.FC = () => {
   }, []);
 
   const navigateTo = (page: string) => {
-    if (window.location.pathname.startsWith('/layanan/')) {
+    if (window.location.pathname !== '/') {
       window.history.pushState({}, '', '/');
     }
     window.location.hash = page;
@@ -132,6 +139,7 @@ export const App: React.FC = () => {
       )}
 
       <main className="flex-grow">
+        <Suspense fallback={<PageFallback />}>
         {currentPage === 'operator' && (
           <OperatorAdmin onNavigate={navigateTo} />
         )}
@@ -150,6 +158,10 @@ export const App: React.FC = () => {
           <div className="pt-24">
             <SmartCalculator prefillService={selectedServiceForQuote} />
           </div>
+        )}
+
+        {currentPage === 'tracking' && (
+          <ShipmentTracking />
         )}
 
         {currentPage === 'network' && (
@@ -172,7 +184,7 @@ export const App: React.FC = () => {
 
         {currentPage === 'home' && (
           <>
-            <Hero onNavigate={navigateTo} currentLang={currentLang} />
+            <Hero onNavigate={navigateTo} onOpenService={handleOpenService} currentLang={currentLang} />
             <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
             <HomeEditorial
               currentLang={currentLang}
@@ -181,6 +193,7 @@ export const App: React.FC = () => {
             />
           </>
         )}
+        </Suspense>
       </main>
 
       {!isOperatorPage && (

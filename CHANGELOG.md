@@ -4,6 +4,17 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Carousel layanan dan shipment tracking
+
+- Mengubah gambar hero menjadi carousel layanan yang memakai data dari Manajemen Layanan & Foto operator.
+- Menambahkan animasi transisi Framer Motion yang menghormati reduced motion, berhenti saat berinteraksi, dan hanya merender satu slide.
+- Menambahkan halaman Shipment Tracking untuk AWB/HAWB, B/L/HBL, GJO, nomor kontainer, dan nomor dokumen.
+- Menambahkan client API ERP dengan timeout, penanganan CORS, state loading, not found, error, serta adapter milestone dan timeline.
+- Menambahkan route `/#tracking` dan `/tracking`, navigasi utama, pintasan hero, serta CTA footer.
+- Memecah halaman khusus dan carousel animasi menjadi chunk terpisah agar JavaScript pembuka lebih kecil.
+- Mengganti logo navigasi publik dan favicon ke SVG serta menambahkan cache header untuk aset versi.
+- Menambahkan tautan kecil Gaeks Digital Product di footer.
+
 ### Penyederhanaan frontend
 
 - Mengganti hero yang padat dengan satu pesan utama, satu CTA, dan tiga pintasan tugas.

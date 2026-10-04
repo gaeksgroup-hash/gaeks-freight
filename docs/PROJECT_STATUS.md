@@ -8,7 +8,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 ## Pemeriksaan yang lulus
 
-- `npm run build`: lulus, 1.487 modul diproses.
+- `npm run build`: lulus, 1.896 modul diproses dengan route khusus dan carousel dipisah menjadi chunk lazy-load.
 - `npx tsc --noEmit`: lulus.
 - `git diff --check`: lulus.
 - `git fsck --full`: lulus.
@@ -27,6 +27,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 | Rute dan jadwal | Aktif |
 | Berita | Aktif dari data repository |
 | Kontak dan WhatsApp | Aktif |
+| Shipment Tracking | Terintegrasi ke endpoint publik ERP; menunggu nomor produksi untuk validasi respons sukses |
 | Bahasa | Pilihan ID/EN/ZH tersedia |
 | Detail layanan | Aktif melalui route `/layanan/<slug>` |
 | Desain publik ringkas | Aktif; data panjang memakai daftar dan disclosure |
@@ -43,6 +44,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 5. Penerjemahan otomatis dapat mengirim potongan teks ke MyMemory API. Perlu keputusan privasi dan fallback sebelum digunakan untuk konten sensitif.
 6. Script generator lama masih disimpan untuk referensi. Script tersebut dapat menimpa source dan tidak menjadi bagian workflow release.
 7. PRD V2 adalah target arsitektur. Implementasi produksi saat ini masih aplikasi Vite legacy yang telah diamankan untuk mode baca.
+8. Nomor tracking contoh pada dokumentasi ERP merespons `SHIPMENT_NOT_FOUND` saat audit 4 Oktober 2026. State sukses sudah disiapkan, tetapi perlu diverifikasi kembali memakai nomor shipment produksi yang valid.
 
 ## Riwayat deployment terakhir
 
