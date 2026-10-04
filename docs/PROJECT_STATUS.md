@@ -54,6 +54,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 | Commit | Hasil |
 | --- | --- |
+| `40c0756` | Hero headline responsif, video adaptif, penghapusan runtime Framer Motion, font sistem, dan newsletter ringkas |
 | `d6ccffb` | Audit seluruh frontend, media hero operator, Our Networks, Our Clients, proteksi istilah LCL/FCL, dan newsletter baru |
 | `376bb94` | Operator multiuser, izin per modul, CMS berita, pengaturan situs global, dan SEO live terverifikasi |
 | `4d5e55e` | Carousel layanan operator, Shipment Tracking ERP, footer baru, lazy chunks, dan cache aset live terverifikasi |
