@@ -171,21 +171,23 @@ export const ServicesCarousel: React.FC<{
             <p className="mt-8 text-sm font-semibold text-slate-500">{servicesList.length} layanan tersedia</p>
           </header>
 
-          <div className="border-b border-slate-200">
+          <div className="space-y-2 rounded-2xl bg-[#e8efed] p-2 sm:p-3">
             {servicesList.map((service, index) => {
               const item = getLocalized(service);
               return (
-                <details key={service.id} className="manifest-row group">
-                  <summary className="flex min-h-[82px] items-center gap-4 py-4">
-                    <span className="w-7 shrink-0 font-mono text-xs text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                <details key={service.id} className="group overflow-hidden rounded-xl border border-transparent bg-[#f8faf8] transition-[background-color,border-color,box-shadow] duration-300 hover:border-cyan-700/20 hover:bg-white hover:shadow-[0_10px_28px_rgba(8,47,52,0.08)] open:border-cyan-700/25 open:bg-white open:shadow-[0_12px_32px_rgba(8,47,52,0.09)]">
+                  <summary className="flex min-h-[82px] items-center gap-3 px-4 py-4 transition-colors duration-300 group-hover:bg-cyan-50/45 group-open:bg-[#f1f8f6] sm:gap-4 sm:px-5">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white font-mono text-[11px] font-semibold text-slate-500 transition-colors duration-300 group-hover:border-cyan-600/30 group-hover:text-cyan-800 group-open:border-cyan-700/35 group-open:bg-cyan-50 group-open:text-cyan-800">{String(index + 1).padStart(2, '0')}</span>
                     <span className="min-w-0 flex-1">
-                      <strong className="block text-base font-bold text-[#12363a]">{item.title}</strong>
-                      <span className="mt-1 block truncate text-sm text-slate-500">{item.category}</span>
+                      <strong className="block text-base font-bold text-[#12363a] transition-colors duration-300 group-hover:text-[#076876]">{item.title}</strong>
+                      <span className="mt-1 block truncate text-sm text-slate-500 transition-colors duration-300 group-hover:text-slate-600">{item.category}</span>
                     </span>
-                    <ChevronDown className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-500 transition-[color,background-color,border-color] duration-300 group-hover:border-cyan-600/30 group-hover:bg-cyan-50 group-hover:text-cyan-800 group-open:border-cyan-700 group-open:bg-[#0a5861] group-open:text-white">
+                      <ChevronDown className="h-4 w-4 transition-transform duration-300 group-open:rotate-180" aria-hidden="true" />
+                    </span>
                   </summary>
-                  <div className="grid gap-6 pb-8 pl-11 sm:grid-cols-[180px_1fr]">
-                    <img src={service.imageUrl} alt="" loading="lazy" className="h-32 w-full object-cover sm:h-full" />
+                  <div className="grid gap-6 border-t border-slate-200/80 px-4 pb-6 pt-5 sm:grid-cols-[180px_1fr] sm:px-5 sm:pb-7">
+                    <img src={service.imageUrl} alt="" loading="lazy" className="h-36 w-full rounded-lg object-cover sm:h-full" />
                     <div>
                       <p className="font-semibold text-[#12363a]">{item.tagline}</p>
                       <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>

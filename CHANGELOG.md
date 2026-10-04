@@ -12,6 +12,13 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 - Menyembunyikan banner, spinner, tooltip, dan elemen antarmuka Google Translate dari halaman publik.
 - Menerapkan ulang bahasa aktif setelah navigasi SPA, pembukaan artikel atau layanan, dan pembaruan konten operator.
 
+### Daftar layanan
+
+- Mengubah daftar layanan menjadi baris berlatar lembut dengan jarak yang lebih jelas antarlayanan.
+- Menambahkan respons hover dan fokus berupa perubahan warna, border, bayangan ringan, serta indikator buka yang lebih tegas.
+- Merapikan panel detail dengan pemisah, padding responsif, dan gambar bersudut halus.
+- Memperbaiki ambang animasi reveal agar daftar layanan yang panjang langsung terlihat pada layar pendek.
+
 ### Navigasi, bahasa, dan media sosial
 
 - Mengubah pengaturan media sosial operator menjadi dropdown platform agar ikon Instagram, Facebook, LinkedIn, YouTube, X, atau TikTok dipilih otomatis.

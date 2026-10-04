@@ -203,10 +203,14 @@ export const App: React.FC = () => {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
+    }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
     const register = () => root.querySelectorAll('section:not(.scroll-reveal)').forEach((section) => {
       section.classList.add('scroll-reveal');
-      observer.observe(section);
+      if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
+        section.classList.add('scroll-reveal-visible');
+      } else {
+        observer.observe(section);
+      }
     });
     register();
     const mutations = new MutationObserver(register);
