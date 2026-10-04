@@ -1,11 +1,7 @@
-// filepath: /src/components/ServicesCarousel.tsx
-import React, { useState, useEffect, useRef } from 'react';
-import { animate as animateMotion, motion, useMotionValue, useReducedMotion, useTransform, useVelocity } from 'framer-motion';
-import { ChevronLeft, ChevronRight, CheckCircle2, ArrowUpRight, Play, Pause, ShieldCheck } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ArrowRight, Check, ChevronDown } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
-import { UI_TEXT, getTranslation } from '../utils/translations';
 import { getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
-import { sectionReveal, staggerReveal, itemReveal, viewportOnce } from '../utils/motionVariants';
 
 export const DETAILED_SERVICES: ServiceDetail[] = [
   {
@@ -143,254 +139,73 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
   }
 ];
 
-export const ServicesCarousel: React.FC<{ onSelectService: (serviceName: string) => void; onOpenService?: (serviceId: string) => void; currentLang?: Language }> = ({ onSelectService, onOpenService, currentLang = 'id' }) => {
+
+export const ServicesCarousel: React.FC<{
+  onSelectService: (serviceName: string) => void;
+  onOpenService?: (serviceId: string) => void;
+  currentLang?: Language;
+}> = ({ onSelectService, onOpenService, currentLang = 'id' }) => {
   const [servicesList, setServicesList] = useState<ServiceDetail[]>(getStoredServices());
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const [isHovered, setIsHovered] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
-  const carouselViewportRef = useRef<HTMLDivElement>(null);
-  const [carouselWidth, setCarouselWidth] = useState(900);
-  const trackXMotion = useMotionValue(0);
-  const trackVelocity = useVelocity(trackXMotion);
-  const velocityScale = useTransform(trackVelocity, [-1800, 0, 1800], [0.985, 1, 0.985]);
-  const velocitySkew = useTransform(trackVelocity, [-1800, 0, 1800], [-1.5, 0, 1.5]);
 
   useEffect(() => {
-    const reloadServices = () => {
-      setServicesList(getStoredServices());
-    };
-    reloadServices();
-    window.addEventListener(GAEKS_UPDATE_EVENT, reloadServices);
-    window.addEventListener('storage', reloadServices);
-
-    let channel: BroadcastChannel | null = null;
-    try {
-      channel = new BroadcastChannel('gaeks_sync_channel');
-      channel.onmessage = () => reloadServices();
-    } catch (e) {}
-
-    return () => {
-      window.removeEventListener(GAEKS_UPDATE_EVENT, reloadServices);
-      window.removeEventListener('storage', reloadServices);
-      if (channel) channel.close();
-    };
+    const reload = () => setServicesList(getStoredServices());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
 
-  useEffect(() => {
-    if (!isPlaying || isHovered) return;
-    const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % (servicesList.length || 1));
-    }, 2800);
-    return () => clearInterval(interval);
-  }, [isPlaying, isHovered, servicesList.length]);
-
-  useEffect(() => {
-    const viewport = carouselViewportRef.current;
-    if (!viewport) return;
-    const measure = () => setCarouselWidth(Math.min(900, Math.max(280, viewport.clientWidth * (viewport.clientWidth < 768 ? 0.86 : 0.8))));
-    measure();
-    const observer = new ResizeObserver(measure);
-    observer.observe(viewport);
-    return () => observer.disconnect();
-  }, []);
-
-  const total = servicesList.length || 1;
-  const prevIndex = (currentIndex - 1 + total) % total;
-  const nextIndex = (currentIndex + 1) % total;
-  const slideGap = 20;
-  const targetTrackX = -(currentIndex * (carouselWidth + slideGap));
-
-  useEffect(() => {
-    const controls = animateMotion(trackXMotion, targetTrackX, {
-      type: 'spring',
-      stiffness: 190,
-      damping: 30,
-      mass: 0.8
-    });
-    return () => controls.stop();
-  }, [carouselWidth, currentIndex, targetTrackX, trackXMotion]);
-
-  const selectSlideFromDrag = (_event: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number }; velocity: { x: number } }) => {
-    if (shouldReduceMotion || total < 2) return;
-    const threshold = Math.max(60, carouselWidth * 0.16);
-    const direction = Math.abs(info.offset.x) > threshold ? info.offset.x : info.velocity.x;
-    if (direction < -20) setCurrentIndex((index) => (index + 1) % total);
-    if (direction > 20) setCurrentIndex((index) => (index - 1 + total) % total);
-    setIsHovered(false);
-  };
-
-  const getLocalized = (svc: ServiceDetail) => {
-    if (!svc) return DETAILED_SERVICES[0];
-    return {
-      ...svc,
-      title: currentLang === 'en' ? (svc.title_en || svc.title) : currentLang === 'zh' ? (svc.title_zh || svc.title) : svc.title,
-      category: currentLang === 'en' ? (svc.category_en || svc.category) : currentLang === 'zh' ? (svc.category_zh || svc.category) : svc.category,
-      tagline: currentLang === 'en' ? (svc.tagline_en || svc.tagline) : currentLang === 'zh' ? (svc.tagline_zh || svc.tagline) : svc.tagline,
-      description: currentLang === 'en' ? (svc.description_en || svc.description) : currentLang === 'zh' ? (svc.description_zh || svc.description) : svc.description,
-    };
-  };
+  const getLocalized = (service: ServiceDetail) => ({
+    title: currentLang === 'en' ? service.title_en || service.title : currentLang === 'zh' ? service.title_zh || service.title : service.title,
+    category: currentLang === 'en' ? service.category_en || service.category : currentLang === 'zh' ? service.category_zh || service.category : service.category,
+    tagline: currentLang === 'en' ? service.tagline_en || service.tagline : currentLang === 'zh' ? service.tagline_zh || service.tagline : service.tagline,
+    description: currentLang === 'en' ? service.description_en || service.description : currentLang === 'zh' ? service.description_zh || service.description : service.description,
+  });
 
   return (
-    <motion.section
-      id="services" 
-      data-motion-section
-      aria-labelledby="services-title"
-      variants={sectionReveal}
-      initial={shouldReduceMotion ? 'visible' : 'hidden'}
-      animate={shouldReduceMotion ? 'visible' : undefined}
-      whileInView={shouldReduceMotion ? undefined : 'visible'}
-      transition={shouldReduceMotion ? { duration: 0 } : undefined}
-      viewport={viewportOnce}
-      className="py-24 bg-slate-50 border-y border-slate-200 text-slate-900 overflow-hidden select-none"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header Bersih */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
-          <div>
-            <span className="text-xs font-black uppercase tracking-widest text-cyan-600 block mb-2">
-              {getTranslation(currentLang, UI_TEXT.services.tag)}
-            </span>
-            <h2 id="services-title" className="font-display text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              {getTranslation(currentLang, UI_TEXT.services.title)}
-            </h2>
-            <p className="mt-2 text-slate-600 text-sm sm:text-base max-w-2xl">
-              {getTranslation(currentLang, UI_TEXT.services.desc)}
-            </p>
-          </div>
+    <section id="services" aria-labelledby="services-title" className="section-block">
+      <div className="page-shell">
+        <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-16">
+          <header>
+            <p className="section-label">Layanan</p>
+            <h2 id="services-title" className="section-title">Pilih bagian perjalanan kargo yang perlu kami tangani.</h2>
+            <p className="section-copy">Setiap layanan diringkas dalam satu baris. Buka detailnya hanya saat dibutuhkan.</p>
+            <p className="mt-8 text-sm font-semibold text-slate-500">{servicesList.length} layanan tersedia</p>
+          </header>
 
-          {/* Minimalist Controls */}
-          <div className="flex items-center space-x-3 mt-6 md:mt-0">
-            <button 
-              onClick={() => setIsPlaying(!isPlaying)}
-              aria-label="Toggle Auto-Slide"
-              className={`p-3 rounded-xl border text-xs font-bold transition-all shadow-sm ${
-                isPlaying 
-                  ? 'bg-white border-slate-200 text-slate-700 hover:border-cyan-500' 
-                  : 'bg-cyan-50 border-cyan-300 text-[#012E34]'
-              }`}
-            >
-              {isPlaying ? <Pause className="w-4 h-4 fill-slate-700" /> : <Play className="w-4 h-4 fill-[#012E34]" />}
-            </button>
-
-            <button 
-              onClick={() => setCurrentIndex(prevIndex)} 
-              aria-label="Previous Service"
-              className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-[#012E34] hover:text-white transition-colors shadow-sm"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-
-            <button 
-              onClick={() => setCurrentIndex(nextIndex)} 
-              aria-label="Next Service"
-              className="p-3 rounded-xl border border-slate-200 bg-white text-slate-700 hover:bg-[#012E34] hover:text-white transition-colors shadow-sm"
-            >
-              <ChevronRight className="w-5 h-5" />
-            </button>
-          </div>
-        </div>
-
-        <motion.div variants={staggerReveal} className="relative py-4">
-          <div ref={carouselViewportRef} data-carousel-viewport className="relative overflow-visible">
-            <motion.div
-              data-carousel-track
-              className="flex items-stretch gap-5 overflow-visible cursor-grab active:cursor-grabbing"
-              drag={shouldReduceMotion ? false : 'x'}
-              dragMomentum={!shouldReduceMotion}
-              dragElastic={0.14}
-              dragDirectionLock
-              dragConstraints={{ left: -Math.max(0, (total - 1) * (carouselWidth + slideGap)), right: 0 }}
-              style={{ x: trackXMotion, skewX: velocitySkew, scaleY: velocityScale, width: `${total * carouselWidth + (total - 1) * slideGap}px`, touchAction: 'pan-y' }}
-              onDragStart={() => setIsHovered(true)}
-              onDragEnd={selectSlideFromDrag}
-            >
-              {servicesList.map((service, index) => {
-                const item = getLocalized(service);
-                return (
-              <motion.article data-carousel-slide key={service.id} variants={itemReveal} style={{ width: carouselWidth, flex: '0 0 auto', scale: index === currentIndex ? velocityScale : 0.985, skewX: index === currentIndex ? velocitySkew : 0 }} animate={{ opacity: index === currentIndex ? 1 : 0.72 }} transition={{ opacity: { duration: 0.45, ease: 'easeOut' } }} className="grid grid-cols-1 xl:grid-cols-[.9fr_1.1fr] min-h-[500px] bg-[#012E34] text-white overflow-hidden rounded-[1.75rem] select-none">
-                <div className="relative min-h-[260px] xl:min-h-full overflow-visible">
-                  <motion.img initial={shouldReduceMotion ? false : { scale: 1.04 }} animate={{ scale: 1 }} transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }} src={item.imageUrl} alt={item.title} draggable={false} className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#011417]/90 via-[#012E34]/15 to-transparent" />
-                  <div className="absolute left-5 right-5 bottom-5 flex items-end justify-between gap-4">
-                    <span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{item.category}</span>
-                    <ShieldCheck className="w-5 h-5 text-cyan-300" aria-label="Layanan terverifikasi" />
-                  </div>
-                </div>
-
-                <div className="flex flex-col justify-between p-6 sm:p-8 lg:p-10 bg-[#012E34]">
-                  <div>
-                    <div className="flex items-center justify-between gap-4 mb-6"><span className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-300">{item.category}</span><span className="font-mono text-[10px] text-slate-400">{String(currentIndex + 1).padStart(2, '0')} / {String(total).padStart(2, '0')}</span></div>
-                    <h3 className="font-display text-2xl sm:text-4xl font-extrabold leading-tight text-white">{item.title}</h3>
-                    <p className="text-sm sm:text-base font-semibold text-cyan-300 mt-4">{item.tagline}</p>
-                    <p className="text-sm text-slate-300 leading-relaxed mt-4 line-clamp-3">{item.description}</p>
-
-                    <div className="grid sm:grid-cols-2 gap-x-5 gap-y-3 mt-7 pt-6 border-t border-white/15">
-                      {item.features.slice(0, 2).map((feature, featureIndex) => <div key={featureIndex} className="flex items-start gap-2 text-xs text-slate-200"><CheckCircle2 className="w-4 h-4 flex-shrink-0 text-cyan-300" /><span>{feature}</span></div>)}
-                    </div>
-                  </div>
-
-                  <div className="pt-7 mt-7 border-t border-white/15 flex justify-end">
-                    <div className="flex flex-wrap justify-end gap-3">
-                      {onOpenService && <button type="button" onClick={() => onOpenService(service.id)} className="inline-flex items-center gap-2 border border-white/20 hover:border-cyan-300 text-white px-4 py-3 font-bold text-sm transition-colors">Lihat detail</button>}
-                      <button type="button" onClick={() => onSelectService(item.title)} className="inline-flex items-center gap-2 bg-cyan-400 hover:bg-cyan-300 text-[#011417] px-5 py-3 font-bold text-sm transition-colors">{getTranslation(currentLang, UI_TEXT.services.quoteBtn)}<ArrowUpRight className="w-4 h-4" /></button>
-                    </div>
-                  </div>
-                </div>
-              </motion.article>
-                );
-              })}
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Minimal Indicators */}
-        <div className="mt-8 flex justify-center items-center gap-2">
-          {servicesList.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`h-2 rounded-full transition-all ${
-                idx === currentIndex ? 'w-8 bg-[#012E34]' : 'w-2 bg-slate-300 hover:bg-slate-400'
-              }`}
-              aria-label={`Slide ${idx + 1}`}
-            />
-          ))}
-        </div>
-
-        <div className="mt-20 border-t border-slate-200 pt-12">
-          <div className="max-w-2xl mb-8">
-            <span className="text-xs font-black uppercase tracking-[0.18em] text-cyan-700">Solusi berdasarkan kebutuhan</span>
-            <h3 className="font-display text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2">Satu partner untuk alur cargo yang lebih rapi</h3>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed mt-3">Mulai dari klasifikasi dokumen sampai pengantaran ke gudang, pilih layanan yang paling sesuai dengan jenis dan tujuan pengiriman Anda.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-            {servicesList.map((service) => {
-              const localizedService = getLocalized(service);
+          <div className="border-b border-slate-200">
+            {servicesList.map((service, index) => {
+              const item = getLocalized(service);
               return (
-                <article key={service.id} className="group flex flex-col rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-sm hover:-translate-y-1 hover:border-cyan-300 hover:shadow-lg transition-all duration-300">
-                  <div className="h-36 overflow-hidden bg-slate-100">
-                    <img src={localizedService.imageUrl} alt={localizedService.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <details key={service.id} className="manifest-row group">
+                  <summary className="flex min-h-[82px] items-center gap-4 py-4">
+                    <span className="w-7 shrink-0 font-mono text-xs text-slate-400">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="min-w-0 flex-1">
+                      <strong className="block text-base font-bold text-[#12363a]">{item.title}</strong>
+                      <span className="mt-1 block truncate text-sm text-slate-500">{item.category}</span>
+                    </span>
+                    <ChevronDown className="h-5 w-5 shrink-0 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+                  </summary>
+                  <div className="grid gap-6 pb-8 pl-11 sm:grid-cols-[180px_1fr]">
+                    <img src={service.imageUrl} alt="" loading="lazy" className="h-32 w-full object-cover sm:h-full" />
+                    <div>
+                      <p className="font-semibold text-[#12363a]">{item.tagline}</p>
+                      <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
+                      <ul className="mt-5 grid gap-2">
+                        {service.features.slice(0, 3).map((feature) => (
+                          <li key={feature} className="flex gap-2 text-sm text-slate-600"><Check className="mt-0.5 h-4 w-4 shrink-0 text-cyan-700" aria-hidden="true" />{feature}</li>
+                        ))}
+                      </ul>
+                      <div className="mt-6 flex flex-wrap gap-3">
+                        <button type="button" onClick={() => onSelectService(item.title)} className="button-primary">Minta estimasi<ArrowRight className="h-4 w-4" /></button>
+                        {onOpenService && <button type="button" onClick={() => onOpenService(service.id)} className="button-link">Detail layanan<ArrowRight className="h-4 w-4" /></button>}
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-1 flex-col p-5">
-                    <span className="text-[10px] font-black uppercase tracking-wider text-cyan-700">{localizedService.category}</span>
-                    <h4 className="font-display text-lg font-extrabold text-slate-900 mt-2 leading-tight">{localizedService.title}</h4>
-                    <p className="text-xs text-slate-600 leading-relaxed mt-3 line-clamp-3">{localizedService.description}</p>
-                    <button type="button" onClick={() => onOpenService ? onOpenService(service.id) : onSelectService(localizedService.title)} className="inline-flex items-center gap-2 mt-auto pt-5 text-xs font-extrabold text-[#012E34] hover:text-cyan-700">
-                      Lihat detail layanan <ArrowUpRight className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </article>
+                </details>
               );
             })}
           </div>
         </div>
-
       </div>
-    </motion.section>
+    </section>
   );
 };

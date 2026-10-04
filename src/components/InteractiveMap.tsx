@@ -1,9 +1,6 @@
-// filepath: /src/components/InteractiveMap.tsx
-import React, { useState, useMemo } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { Ship, Plane, Clock, Compass, Search, CheckCircle2, AlertTriangle, ArrowRight, ShieldCheck, Info } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
+import { ArrowRight, ChevronDown, Plane, Search, Ship } from 'lucide-react';
 import { toast } from 'sonner';
-import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 interface OceanRouteSchedule {
   region: 'EAST ASIA' | 'SEA & INDIA' | 'EUROPE' | 'USA';
@@ -376,7 +373,6 @@ const AIR_ROUTES: AirRouteSchedule[] = [
 ];
 
 export const InteractiveMap: React.FC = () => {
-  const shouldReduceMotion = useReducedMotion();
   const [activeTransportMode, setActiveTransportMode] = useState<'sea' | 'air'>('sea');
   const [selectedRegion, setSelectedRegion] = useState<string>('Semua');
   const [searchQuery, setSearchQuery] = useState('');
@@ -418,232 +414,75 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
     });
   };
 
+
+  const rows = activeTransportMode === 'sea' ? filteredOceanRoutes : filteredAirRoutes;
+
   return (
-    <motion.section id="network" data-motion-section variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="py-24 bg-[#011C20] text-white relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Header Bersih & Modern */}
-        <div className="max-w-3xl mb-10">
-          <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-[#012E34]/80 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-3 border border-sky-500/30">
-            <Compass className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Global Route & Schedule Directory</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-            Panduan Rute & Rekomendasi Carrier Resmi
-          </h2>
-          <p className="mt-3 text-slate-300 text-sm sm:text-base leading-relaxed">
-            Daftar pelayaran kapal laut FCL dan maskapai kargo udara prioritas dunia langsung menuju Jakarta (Tanjung Priok), Semarang (Tanjung Emas), dan Surabaya (Tanjung Perak).
-          </p>
-        </div>
+    <section id="network" aria-labelledby="network-title" className="section-block bg-[#0b3438] text-white">
+      <div className="page-shell">
+        <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-16">
+          <header>
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Rute dan jadwal</p>
+            <h2 id="network-title" className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Cari koridor pengiriman tanpa membuka tabel yang padat.</h2>
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">Saring berdasarkan moda, wilayah, atau titik asal. Buka satu rute untuk melihat carrier dan perkiraan waktu.</p>
+          </header>
 
-        {/* Tab Switcher: Laut vs Udara */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pb-8 border-b border-cyan-900/40 mb-8">
-          <div className="grid grid-cols-2 p-1.5 rounded-2xl bg-slate-900 border border-cyan-900/40 max-w-md w-full">
-            <button
-              onClick={() => { setActiveTransportMode('sea'); setSelectedRegion('Semua'); }}
-              className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-black transition-all ${
-                activeTransportMode === 'sea'
-                  ? 'bg-[#012E34] text-white shadow-lg shadow-cyan-900/30'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Ship className="w-4 h-4" />
-              <span>Jalur Laut (Preferred Carriers)</span>
-            </button>
-            <button
-              onClick={() => { setActiveTransportMode('air'); setSelectedRegion('Semua'); }}
-              className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl text-xs font-black transition-all ${
-                activeTransportMode === 'air'
-                  ? 'bg-cyan-700 text-white shadow-lg shadow-cyan-600/30'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Plane className="w-4 h-4" />
-              <span>Jalur Udara (Available Airlines)</span>
-            </button>
-          </div>
-
-          {/* Search Box */}
-          <div className="relative max-w-sm w-full">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={activeTransportMode === 'sea' ? 'Cari pelabuhan, negara, atau carrier...' : 'Cari bandara asal atau maskapai kargo...'}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-cyan-900/40 bg-slate-900 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
-            />
-          </div>
-        </div>
-
-        {/* Region Filter Pills */}
-        <div className="flex overflow-x-auto pb-4 gap-2 mb-8 no-scrollbar">
-          {regions.map((reg) => (
-            <button
-              key={reg}
-              onClick={() => setSelectedRegion(reg)}
-              className={`flex-shrink-0 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                selectedRegion === reg
-                  ? 'bg-white text-slate-950 font-black shadow-md'
-                  : 'bg-slate-900 text-slate-400 border border-cyan-900/40 hover:border-cyan-900/40'
-              }`}
-            >
-              {reg === 'Semua' ? 'Seluruh Region Global' : reg}
-            </button>
-          ))}
-        </div>
-
-        {/* --- TABEL 1: JALUR LAUT (OCEAN FREIGHT CARRIER MATRIX) --- */}
-        {activeTransportMode === 'sea' && (
-          <div className="space-y-6">
-            <div className="bg-[#011C20]/90 border border-cyan-900/40 rounded-3xl overflow-hidden shadow-2xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border-collapse">
-                  <thead>
-                    <tr className="bg-[#011C20]/80 border-b border-cyan-900/40 text-slate-400 uppercase tracking-wider font-extrabold text-[11px]">
-                      <th className="py-4 px-6">Region</th>
-                      <th className="py-4 px-6">Pelabuhan Asal</th>
-                      <th className="py-4 px-6 text-emerald-400">Preferred Carrier (FCL)</th>
-                      <th className="py-4 px-6 text-center">Lead Time Jakarta (ELT)</th>
-                      <th className="py-4 px-6 text-rose-400">Non-Preferred Carrier</th>
-                      <th className="py-4 px-6">Justifikasi & Tindakan</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60">
-                    {filteredOceanRoutes.map((route, idx) => (
-                      <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
-                        <td className="py-4 px-6 font-bold text-slate-400">
-                          <span className="px-2.5 py-1 rounded bg-[#011C20] border border-cyan-900/40 text-[10px]">
-                            {route.region}
-                          </span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <strong className="text-white text-sm block">{route.origin}</strong>
-                          <span className="text-[11px] text-slate-400">Direct Call / Fast Feeder</span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="p-2.5 rounded-xl bg-emerald-950/40 border border-emerald-500/30 text-emerald-300 font-extrabold text-xs">
-                            {route.preferredCarrier}
-                          </div>
-                        </td>
-                        <td className="py-4 px-6 text-center">
-                          <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-[#012E34] border border-cyan-500/30 text-cyan-300 font-black text-xs">
-                            <Clock className="w-3.5 h-3.5 text-cyan-400" />
-                            <span>{route.leadTime}</span>
-                          </span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="p-2.5 rounded-xl bg-rose-950/30 border border-rose-500/20 text-rose-300 font-semibold text-xs">
-                            {route.nonPreferredCarrier}
-                          </div>
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="space-y-2">
-                            <p className="text-[11px] text-slate-300 leading-relaxed">
-                              {route.justification}
-                            </p>
-                            <button
-                              onClick={() => handleInquiryRoute(route.origin, route.preferredCarrier, 'Laut (FCL)', route.leadTime)}
-                              className="inline-flex items-center space-x-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
-                            >
-                              <span>Konsultasi Slot Kapal</span>
-                              <ArrowRight className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          <div>
+            <div className="grid gap-3 border-b border-white/15 pb-6 sm:grid-cols-[auto_1fr_auto]">
+              <div className="grid grid-cols-2">
+                <button type="button" onClick={() => { setActiveTransportMode('sea'); setSelectedRegion('Semua'); }} className={activeTransportMode === 'sea' ? 'min-h-11 bg-cyan-300 px-5 text-sm font-bold text-[#082f34]' : 'min-h-11 border border-white/25 px-5 text-sm font-bold'}>Laut</button>
+                <button type="button" onClick={() => { setActiveTransportMode('air'); setSelectedRegion('Semua'); }} className={activeTransportMode === 'air' ? 'min-h-11 bg-cyan-300 px-5 text-sm font-bold text-[#082f34]' : 'min-h-11 border border-white/25 px-5 text-sm font-bold'}>Udara</button>
               </div>
+              <label className="relative">
+                <Search className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" aria-hidden="true" />
+                <span className="sr-only">Cari rute</span>
+                <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Cari kota, pelabuhan, kode, atau carrier" className="min-h-11 w-full border border-white/25 bg-white/5 pl-10 pr-3 text-base text-white placeholder:text-slate-400 focus:outline-none" />
+              </label>
+              <select aria-label="Wilayah" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className="min-h-11 border border-white/25 bg-[#0b3438] px-3 text-sm text-white">
+                {regions.map((region) => <option key={region}>{region}</option>)}
+              </select>
             </div>
 
-            
-          </div>
-        )}
-
-        {/* --- TABEL 2: JALUR UDARA (AIR FREIGHT CARRIER & AIRLINES MATRIX) --- */}
-        {activeTransportMode === 'air' && (
-          <div className="space-y-6">
-            <div className="bg-[#011C20]/90 border border-cyan-900/40 rounded-3xl overflow-hidden shadow-2xl">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs border-collapse">
-                  <thead>
-                    <tr className="bg-[#011C20]/80 border-b border-cyan-900/40 text-slate-400 uppercase tracking-wider font-extrabold text-[11px]">
-                      <th className="py-4 px-6">Region</th>
-                      <th className="py-4 px-6">Bandara Asal</th>
-                      <th className="py-4 px-6 text-cyan-400">Rekomendasi Maskapai Utama</th>
-                      <th className="py-4 px-6 text-center">Lead Time (Air Cargo)</th>
-                      <th className="py-4 px-6 text-slate-300">Available Airlines Cadangan</th>
-                      <th className="py-4 px-6">Tipe Penerbangan & Justifikasi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60">
-                    {filteredAirRoutes.map((route, idx) => (
-                      <tr key={idx} className="hover:bg-slate-800/40 transition-colors">
-                        <td className="py-4 px-6 font-bold text-slate-400">
-                          <span className="px-2.5 py-1 rounded bg-[#011C20] border border-cyan-900/40 text-[10px]">
-                            {route.region}
-                          </span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <strong className="text-white text-sm block">{route.origin}</strong>
-                          <span className="text-[11px] text-cyan-400 font-mono font-bold">({route.airportCode})</span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="p-2.5 rounded-xl bg-sky-950/40 border border-sky-500/30 text-sky-200 font-extrabold text-xs">
-                            {route.recommendedAirline}
-                          </div>
-                        </td>
-                        <td className="py-4 px-6 text-center">
-                          <span className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 font-black text-xs">
-                            <Clock className="w-3.5 h-3.5 text-emerald-400" />
-                            <span>{route.leadTime}</span>
-                          </span>
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="p-2.5 rounded-xl bg-[#011C20] border border-cyan-900/40 text-slate-300 font-medium text-xs">
-                            {route.availableAirlines}
-                          </div>
-                        </td>
-                        <td className="py-4 px-6">
-                          <div className="space-y-2">
-                            <span className="px-2 py-0.5 rounded bg-blue-950 text-blue-300 font-bold text-[10px] block w-fit border border-blue-800/60">
-                              {route.flightType}
-                            </span>
-                            <p className="text-[11px] text-slate-300 leading-relaxed">
-                              {route.justification}
-                            </p>
-                            <button
-                              onClick={() => handleInquiryRoute(route.origin + ` (${route.airportCode})`, route.recommendedAirline, 'Udara (Air Cargo)', route.leadTime)}
-                              className="inline-flex items-center space-x-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors"
-                            >
-                              <span>Booking Air Space / AWB</span>
-                              <ArrowRight className="w-3.5 h-3.5" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+            <p className="py-4 text-sm text-slate-400">{rows.length} rute ditemukan</p>
+            <div className="border-b border-white/15">
+              {activeTransportMode === 'sea' ? filteredOceanRoutes.map((route) => (
+                <details key={route.region + route.origin} className="group border-t border-white/15">
+                  <summary className="flex min-h-[76px] items-center gap-4 py-4">
+                    <Ship className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden="true" />
+                    <span className="min-w-0 flex-1"><strong className="block text-sm font-bold">{route.origin}</strong><span className="mt-1 block text-xs text-slate-400">{route.region} · estimasi {route.leadTime}</span></span>
+                    <ChevronDown className="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="pb-6 pl-8">
+                    <dl className="grid gap-3 text-sm sm:grid-cols-2">
+                      <div><dt className="text-slate-400">Carrier rujukan</dt><dd className="mt-1 font-semibold">{route.preferredCarrier}</dd></div>
+                      <div><dt className="text-slate-400">Alternatif</dt><dd className="mt-1">{route.nonPreferredCarrier}</dd></div>
+                    </dl>
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">{route.justification}</p>
+                    <button type="button" onClick={() => handleInquiryRoute(route.origin, route.preferredCarrier, 'Laut (FCL)', route.leadTime)} className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-cyan-300 underline-offset-4 hover:underline">Tanyakan rute ini<ArrowRight className="h-4 w-4" /></button>
+                  </div>
+                </details>
+              )) : filteredAirRoutes.map((route) => (
+                <details key={route.region + route.airportCode} className="group border-t border-white/15">
+                  <summary className="flex min-h-[76px] items-center gap-4 py-4">
+                    <Plane className="h-4 w-4 shrink-0 text-cyan-300" aria-hidden="true" />
+                    <span className="min-w-0 flex-1"><strong className="block text-sm font-bold">{route.origin} ({route.airportCode})</strong><span className="mt-1 block text-xs text-slate-400">{route.region} · estimasi {route.leadTime}</span></span>
+                    <ChevronDown className="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180" />
+                  </summary>
+                  <div className="pb-6 pl-8">
+                    <dl className="grid gap-3 text-sm sm:grid-cols-2">
+                      <div><dt className="text-slate-400">Maskapai rujukan</dt><dd className="mt-1 font-semibold">{route.recommendedAirline}</dd></div>
+                      <div><dt className="text-slate-400">Pilihan lain</dt><dd className="mt-1">{route.availableAirlines}</dd></div>
+                    </dl>
+                    <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300">{route.justification}</p>
+                    <button type="button" onClick={() => handleInquiryRoute(route.origin + ' (' + route.airportCode + ')', route.recommendedAirline, 'Udara', route.leadTime)} className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm font-bold text-cyan-300 underline-offset-4 hover:underline">Tanyakan rute ini<ArrowRight className="h-4 w-4" /></button>
+                  </div>
+                </details>
+              ))}
             </div>
-
-            {/* Kotak Informasi Layanan Kargo Udara Prioritas */}
-            <div className="p-5 bg-[#012E34]/40 border border-cyan-500/40 rounded-2xl flex items-start space-x-3.5 text-xs text-sky-200">
-              <Info className="w-5 h-5 text-cyan-400 flex-shrink-0 mt-0.5" />
-              <div className="leading-relaxed">
-                <strong className="text-cyan-300 font-extrabold block text-sm mb-1">
-                  Konektivitas Kargo Udara Ekspres Gaek Freight:
-                </strong>
-                Seluruh maskapai yang tercantum memiliki perjanjian kontrak ruang langsung (direct space contract) dan terhubung dengan sistem clearance cepat bandara internasional Soekarno-Hatta (CGK), Juanda (SUB), dan Ahmad Yani (SRG) untuk kargo berprioritas kritis (*time-sensitive cargo*).
-              </div>
-            </div>
+            <p className="mt-5 text-xs leading-5 text-slate-400">Carrier dan waktu tempuh bersifat rujukan. Jadwal serta ketersediaan ruang perlu dikonfirmasi saat pemesanan.</p>
           </div>
-        )}
-
+        </div>
       </div>
-    </motion.section>
+    </section>
   );
 };

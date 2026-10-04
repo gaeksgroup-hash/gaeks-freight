@@ -2,6 +2,20 @@
 
 Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git tetap menjadi catatan teknis lengkap.
 
+## 2026-10-04
+
+### Penyederhanaan frontend
+
+- Mengganti hero yang padat dengan satu pesan utama, satu CTA, dan tiga pintasan tugas.
+- Menghapus status operasional semu, angka tanpa sumber, carousel otomatis, efek glow, serta kartu dekoratif berulang.
+- Mengubah katalog layanan, rute, proses, dan rincian data menjadi daftar ringkas dengan disclosure.
+- Memisahkan kalkulator dan direktori rute dari homepage agar setiap alat memiliki halaman kerja sendiri.
+- Menyederhanakan kalkulator menjadi kelompok input dan satu panel hasil yang tetap mudah dibaca.
+- Mengubah berita menjadi daftar yang dapat dicari dan menyederhanakan halaman artikel.
+- Merapikan formulir kontak, halaman detail layanan, dan footer.
+- Menambahkan `DESIGN.md` sebagai acuan visual, kepadatan, interaksi, dan gaya bahasa.
+- Memverifikasi build produksi dan tampilan desktop serta ponsel di browser lokal.
+
 ## 2026-10-03
 
 ### Dokumentasi dan audit

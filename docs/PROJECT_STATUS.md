@@ -1,6 +1,6 @@
 # Status Project GAEKS Freight
 
-Tanggal audit: 3 Oktober 2026.
+Tanggal audit: 4 Oktober 2026.
 
 ## Ringkasan
 
@@ -8,7 +8,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 ## Pemeriksaan yang lulus
 
-- `npm run build`: lulus, 1.895 modul diproses.
+- `npm run build`: lulus, 1.487 modul diproses.
 - `npx tsc --noEmit`: lulus.
 - `git diff --check`: lulus.
 - `git fsck --full`: lulus.
@@ -29,6 +29,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 | Kontak dan WhatsApp | Aktif |
 | Bahasa | Pilihan ID/EN/ZH tersedia |
 | Detail layanan | Aktif melalui route `/layanan/<slug>` |
+| Desain publik ringkas | Aktif; data panjang memakai daftar dan disclosure |
 | Operator login | Dinonaktifkan |
 | Simpan konten ke server | Dinonaktifkan |
 | Upload/hapus media | Dinonaktifkan untuk metode selain GET |
@@ -47,6 +48,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 | Commit | Hasil |
 | --- | --- |
+| Belum dicatat | Penyederhanaan frontend 4 Oktober 2026 siap dikirim ke `main` |
 | `cb01153` | Navbar responsif, build Hostinger completed |
 | `d347542` | Konten/media produksi dipulihkan, build completed |
 | `86eb665` | Rewrite SPA ditambahkan, build completed |

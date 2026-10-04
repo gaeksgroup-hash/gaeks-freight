@@ -1,18 +1,19 @@
-// filepath: /src/components/Footer.tsx
 import React from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { PhoneCall, Mail, MapPin, ShieldCheck } from 'lucide-react';
+import { Mail, PhoneCall } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
-import { sectionReveal, viewportOnce } from '../utils/motionVariants';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
   currentLang?: Language;
 }
 
+const whatsAppNumber = (value: string) => {
+  const digits = value.replace(/\D/g, '');
+  return digits.startsWith('0') ? '62' + digits.slice(1) : digits;
+};
+
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
-  const shouldReduceMotion = useReducedMotion();
   const [brandData, setBrandData] = React.useState(getStoredBranding());
 
   React.useEffect(() => {
@@ -21,86 +22,34 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
 
-  const handleNav = (page: string, e: React.MouseEvent) => {
+  const nav = (page: string, event: React.MouseEvent<HTMLAnchorElement>) => {
     if (onNavigate) {
-      e.preventDefault();
+      event.preventDefault();
       onNavigate(page);
     }
   };
 
   return (
-    <motion.footer data-motion-section variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="bg-[#011C20] text-slate-300 border-t border-cyan-900/40 relative overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
-          
-          {/* Kolom 1: Positioning and trust */}
-          <div className="lg:col-span-4 space-y-4">
-            <div className="font-display text-2xl font-extrabold tracking-[-0.04em] text-white">GAEKS</div>
-            <span className="block text-[10px] uppercase tracking-[0.18em] text-cyan-300">Forwarding &amp; customs desk</span>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
-              Penyedia solusi logistik rantai pasok global terintegrasi: Ocean Freight (FCL/LCL), Priority Air Cargo, Customs Brokerage PPJK Ceisa 4.0, Stevedoring PBM, dan Inland Trucking.
-            </p>
-            <div className="flex items-center space-x-2 text-xs text-cyan-400 pt-1 font-bold">
-              <ShieldCheck className="w-4 h-4 text-cyan-400 flex-shrink-0" />
-              <span>Verified Member of WCA World & JCtrans Network</span>
+    <footer className="border-t border-white/15 bg-[#082f34] text-slate-300">
+      <div className="page-shell py-12">
+        <div className="grid gap-10 md:grid-cols-[1fr_auto]">
+          <div>
+            <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-8 w-auto brightness-0 invert" />
+            <p className="mt-4 max-w-md text-sm leading-6 text-slate-400">Koordinasi freight, kepabeanan, dan pengiriman darat untuk kargo bisnis.</p>
+            <div className="mt-5 flex flex-col gap-2 text-sm sm:flex-row sm:gap-6">
+              <a href={'https://wa.me/' + whatsAppNumber(brandData.whatsappNumber || '6285608561745')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><PhoneCall className="h-4 w-4" />{brandData.whatsappDisplay || '+62 856 0856 1745'}</a>
+              <a href={'mailto:' + (brandData.salesEmail || 'Sales01@gaeks.com')} className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><Mail className="h-4 w-4" />{brandData.salesEmail || 'Sales01@gaeks.com'}</a>
             </div>
           </div>
-
-          {/* Kolom 2: Layanan Utama */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm font-black text-white uppercase tracking-wider">Layanan Utama</h4>
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Customs Clearance (PPJK Ceisa 4.0)</a></li>
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Full Container Load (FCL Ocean)</a></li>
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Less than Container Load (LCL Consolidation)</a></li>
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Air Shipment Priority (Express Air)</a></li>
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Project Cargo & Heavy Lift (ODOW / Breakbulk)</a></li>
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Gudang & PBM (Stevedoring Dermaga)</a></li>
-              <li><a href="#services" onClick={(e) => handleNav('services', e)} className="hover:text-cyan-400 transition-colors">Domestic Trucking Multi-Moda</a></li>
-            </ul>
-          </div>
-
-          {/* Kolom 3: Hub Pelabuhan */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-sm font-black text-white uppercase tracking-wider">Pelabuhan Hub</h4>
-            <ul className="space-y-2 text-xs text-slate-400">
-              <li className="flex items-center space-x-1.5"><MapPin className="w-3.5 h-3.5 text-cyan-400" /><span>Tanjung Priok, Jakarta</span></li>
-              <li className="flex items-center space-x-1.5"><MapPin className="w-3.5 h-3.5 text-cyan-400" /><span>Tanjung Emas, Semarang</span></li>
-              <li className="flex items-center space-x-1.5"><MapPin className="w-3.5 h-3.5 text-cyan-400" /><span>Tanjung Perak, Surabaya</span></li>
-              <li className="flex items-center space-x-1.5"><MapPin className="w-3.5 h-3.5 text-cyan-400" /><span>Bandara Soekarno-Hatta</span></li>
-            </ul>
-          </div>
-
-          {/* Kolom 4: Kontak Resmi */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm font-black text-white uppercase tracking-wider">Kontak & Operasional</h4>
-            <div className="space-y-2 text-xs text-slate-400">
-              <a href={`https://wa.me/${brandData.whatsappNumber || '6285608561745'}`} target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
-                <PhoneCall className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{brandData.whatsappDisplay || '+62 0856-0856-1745'}</span>
-              </a>
-              <a href={`mailto:${brandData.salesEmail || 'Sales01@gaeks.com'}`} className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
-                <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{brandData.salesEmail || 'Sales01@gaeks.com'}</span>
-              </a>
-              <a href={`mailto:${brandData.infoEmail || 'info@gaeks.com'}`} className="flex items-center space-x-2 text-slate-300 hover:text-cyan-400 transition-colors">
-                <Mail className="w-3.5 h-3.5 text-cyan-400" />
-                <span>{brandData.infoEmail || 'info@gaeks.com'}</span>
-              </a>
-            </div>
-          </div>
-
+          <nav aria-label="Navigasi footer" className="grid grid-cols-2 gap-x-8 gap-y-1 text-sm sm:grid-cols-3">
+            {[
+              ['services', 'Layanan'], ['calculator', 'Kalkulator'], ['network', 'Rute'],
+              ['news', 'Berita'], ['contact', 'Kontak'], ['home', 'Beranda']
+            ].map(([page, label]) => <a key={page} href={'#' + page} onClick={(e) => nav(page, e)} className="inline-flex min-h-11 items-center hover:text-cyan-300">{label}</a>)}
+          </nav>
         </div>
-
-        <div className="mt-12 pt-6 border-t border-cyan-950 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} GAEKS - Global Andalan Ekspress. All rights reserved.</p>
-          <div className="flex space-x-6">
-            <a href="#calculator" onClick={(e) => handleNav('calculator', e)} className="hover:text-cyan-400">Kalkulator Kargo</a>
-            <a href="#network" onClick={(e) => handleNav('network', e)} className="hover:text-cyan-400">Rute & Maskapai</a>
-            <a href="#news" onClick={(e) => handleNav('news', e)} className="hover:text-cyan-400">News & Updates</a>
-          </div>
-        </div>
+        <div className="mt-10 border-t border-white/15 pt-6 text-xs text-slate-500">© {new Date().getFullYear()} GAEKS · Global Andalan Ekspress</div>
       </div>
-    </motion.footer>
+    </footer>
   );
 };

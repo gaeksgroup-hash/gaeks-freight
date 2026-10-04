@@ -9,7 +9,6 @@ import { InteractiveMap } from './components/InteractiveMap';
 import { NewsPage } from './components/NewsPage';
 import { OperatorAdmin } from './components/OperatorAdmin';
 import { ContactPage } from './components/ContactPage';
-import { StatsNetwork } from './components/StatsNetwork';
 import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
 import { ServiceDetailPage } from './components/ServiceDetailPage';
@@ -120,7 +119,7 @@ export const App: React.FC = () => {
   const isOperatorPage = currentPage === 'operator';
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#011417] text-slate-100 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#f4f5f1] text-[#12363a] font-sans">
       <Toaster position="bottom-right" richColors closeButton />
 
       {!isOperatorPage && (
@@ -175,9 +174,6 @@ export const App: React.FC = () => {
           <>
             <Hero onNavigate={navigateTo} currentLang={currentLang} />
             <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
-            <SmartCalculator prefillService={selectedServiceForQuote} />
-            <InteractiveMap />
-            <StatsNetwork />
             <HomeEditorial
               currentLang={currentLang}
               onNavigate={navigateTo}

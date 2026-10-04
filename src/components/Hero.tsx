@@ -1,194 +1,85 @@
-// filepath: /src/components/Hero.tsx
-import React, { useState, useEffect } from 'react';
-import { motion, useReducedMotion, type Variants } from 'framer-motion';
-import { ArrowUpRight, FileCheck2, Globe2, Clock4, AlertCircle, ArrowDownRight, ShieldCheck } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Calculator, Route, Ship } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredHero, GAEKS_UPDATE_EVENT, HeroSettings } from '../utils/adminStorage';
-
-const revealContainer: Variants = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.08 } }
-};
-
-const revealItem: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.58, ease: 'easeOut' } }
-};
 
 export interface HeroProps {
   onNavigate?: (page: string) => void;
   currentLang?: Language;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onNavigate }) => {
-  const [heroData, setHeroData] = useState<HeroSettings>(getStoredHero());
-  const shouldReduceMotion = useReducedMotion();
+const copy = {
+  id: {
+    eyebrow: 'Freight forwarding dan kepabeanan',
+    title: 'Kargo bergerak dengan rencana yang jelas.',
+    body: 'GAEKS mengatur freight laut dan udara, kepabeanan, serta pengiriman darat melalui satu tim operasional.',
+    primary: 'Minta estimasi',
+    secondary: 'Lihat layanan',
+    utilities: [
+      ['Hitung kebutuhan kargo', 'CBM dan berat volumetrik', 'calculator'],
+      ['Cari rute pengiriman', 'Jadwal laut dan udara', 'network'],
+      ['Bahas kebutuhan khusus', 'Project cargo dan kepabeanan', 'contact']
+    ]
+  },
+  en: {
+    eyebrow: 'Freight forwarding and customs',
+    title: 'Cargo moves better with a clear plan.',
+    body: 'GAEKS coordinates ocean and air freight, customs clearance, and inland delivery through one operations team.',
+    primary: 'Request an estimate',
+    secondary: 'View services',
+    utilities: [
+      ['Calculate cargo', 'CBM and volumetric weight', 'calculator'],
+      ['Find a route', 'Ocean and air schedules', 'network'],
+      ['Discuss special cargo', 'Projects and customs', 'contact']
+    ]
+  },
+  zh: {
+    eyebrow: '货运代理与清关服务',
+    title: '清晰规划，让货物高效流转。',
+    body: 'GAEKS 通过一个运营团队协调海运、空运、清关和陆路配送。',
+    primary: '获取估算',
+    secondary: '查看服务',
+    utilities: [
+      ['计算货物数据', '体积与体积重量', 'calculator'],
+      ['查找运输路线', '海运及空运班次', 'network'],
+      ['咨询特殊货物', '项目货与清关', 'contact']
+    ]
+  }
+} as const;
 
-  useEffect(() => {
-    const reload = () => {
-      setHeroData(getStoredHero());
-    };
-    reload();
-    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
-    window.addEventListener('storage', reload);
-    return () => {
-      window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
-      window.removeEventListener('storage', reload);
-    };
-  }, []);
+const icons = [Calculator, Route, Ship];
 
-  const handleNav = (page: string, e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    if (onNavigate) onNavigate(page);
-  };
+export const Hero: React.FC<HeroProps> = ({ onNavigate, currentLang = 'id' }) => {
+  const text = copy[currentLang];
 
   return (
-    <section id="home" aria-labelledby="hero-title" className="relative min-h-[92vh] flex items-center pt-24 pb-16 overflow-hidden bg-[#011417] text-white">
-      <motion.div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" animate={shouldReduceMotion ? undefined : { scale: [1, 1.025, 1] }} transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}>
-        {heroData.bgType === 'video' ? (
-          <video 
-            key={heroData.videoUrl}
-            autoPlay 
-            loop 
-            muted 
-            playsInline 
-            preload="auto"
-            className="w-full h-full object-cover scale-105 filter brightness-[0.7] transform-gpu will-change-transform"
-            src={heroData.videoUrl}
-            poster={heroData.imageUrl}
-          />
-        ) : (
-          <img 
-            key={heroData.imageUrl}
-            src={heroData.imageUrl} 
-            alt="GAEKS Background" 
-            className="w-full h-full object-cover scale-105 filter brightness-[0.7]"
-          />
-        )}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(1,20,23,.98)_0%,rgba(1,46,52,.88)_48%,rgba(1,20,23,.72)_100%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_42%,rgba(34,211,238,.18),transparent_28%)]" />
-      </motion.div>
-
-      <motion.div initial={shouldReduceMotion ? false : { opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }} className="absolute top-16 left-0 right-0 z-20 bg-[#011417]/80 backdrop-blur-md border-b border-white/10 py-2 px-4">
-        <div className="max-w-7xl mx-auto flex items-center justify-between text-[11px] font-bold text-slate-300 overflow-x-auto no-scrollbar space-x-6">
-          <div className="flex items-center space-x-2 flex-shrink-0">
-            <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-            <span className="text-cyan-300 uppercase tracking-[0.18em] font-black">Operational desk / Indonesia</span>
-          </div>
-          <div className="flex items-center space-x-6 flex-shrink-0 text-slate-300 font-mono">
-            <span>Priok: <strong className="text-emerald-400 font-bold">OPEN</strong></span>
-            <span>Semarang: <strong className="text-emerald-400 font-bold">OPEN</strong></span>
-            <span>Surabaya: <strong className="text-emerald-400 font-bold">OPEN</strong></span>
-            <span>Response desk: <strong className="text-cyan-300 font-bold">24/7</strong></span>
+    <section id="home" aria-labelledby="hero-title" className="border-b border-slate-200 bg-[#f4f5f1] pt-16 text-[#12363a]">
+      <div className="mx-auto grid max-w-7xl lg:grid-cols-[1.05fr_.95fr]">
+        <div className="flex min-h-[520px] flex-col justify-center px-5 py-16 sm:px-8 lg:px-12 lg:py-20">
+          <p className="section-label">{text.eyebrow}</p>
+          <h1 id="hero-title" className="mt-5 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-[-0.04em] text-[#092f34] sm:text-5xl lg:text-6xl">{text.title}</h1>
+          <p className="mt-6 max-w-xl text-base leading-7 text-slate-600 sm:text-lg">{text.body}</p>
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            <button type="button" onClick={() => onNavigate?.('calculator')} className="button-primary">{text.primary}<ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
+            <button type="button" onClick={() => onNavigate?.('services')} className="button-link">{text.secondary}<ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
           </div>
         </div>
-      </motion.div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full mt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,.9fr)] gap-10 lg:gap-20 items-center">
-          <motion.div variants={revealContainer} initial={shouldReduceMotion ? false : 'hidden'} animate="visible" className="space-y-7 text-center lg:text-left">
-            <motion.h1 variants={revealItem} id="hero-title" className="font-display text-4xl sm:text-6xl lg:text-7xl font-extrabold text-white tracking-tight leading-[1.02] max-w-4xl">
-              {heroData.titlePrefix}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-100 to-white">
-                {heroData.titleHighlight}
-              </span>
-              {heroData.titleSuffix}
-            </motion.h1>
-
-            <motion.p variants={revealItem} className="text-base sm:text-lg text-slate-200/90 max-w-2xl leading-relaxed font-normal mx-auto lg:mx-0">
-              {heroData.caption}
-            </motion.p>
-
-            <motion.div variants={revealItem} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 pt-1">
-              <a
-                href="#calculator"
-                onClick={(e) => handleNav('calculator', e)}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-xl font-bold text-sm bg-cyan-400 hover:bg-cyan-300 text-[#011417] shadow-xl shadow-cyan-950/30 transition-all active:scale-95"
-              >
-                <span>Hitung Tarif Kargo (CBM / Volumetrik)</span>
-                <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
-              </a>
-
-              <button
-                type="button"
-                onClick={() => handleNav('services')}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm bg-white/10 hover:bg-white/15 border border-white/25 text-white backdrop-blur-md transition-all active:scale-95"
-              >
-                <span>Lihat layanan utama</span>
-                <ArrowDownRight className="w-4 h-4" />
-              </button>
-            </motion.div>
-
-            <motion.div variants={revealItem} className="pt-5 border-t border-white/15 grid grid-cols-3 gap-4 max-w-2xl mx-auto lg:mx-0 text-left">
-              <div>
-                <strong className="block text-2xl font-display font-extrabold text-white">3</strong>
-                <span className="text-[11px] leading-tight text-slate-300">gateway pelabuhan utama</span>
-              </div>
-              <div>
-                <strong className="block text-2xl font-display font-extrabold text-white">24/7</strong>
-                <span className="text-[11px] leading-tight text-slate-300">support operasional</span>
-              </div>
-              <div>
-                <strong className="block text-2xl font-display font-extrabold text-white">1 desk</strong>
-                <span className="text-[11px] leading-tight text-slate-300">dari dokumen ke delivery</span>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          <motion.div variants={revealItem} initial={shouldReduceMotion ? false : 'hidden'} animate="visible" whileHover={shouldReduceMotion ? undefined : { y: -6 }} transition={{ duration: 0.5, ease: 'easeOut' }} className="relative">
-            <div className="absolute -inset-5 rounded-[2rem] border border-cyan-300/20 rotate-3" />
-            <div className="relative rounded-[1.5rem] border border-white/15 bg-[#011c20]/85 backdrop-blur-xl p-5 sm:p-6 shadow-2xl shadow-black/30">
-              <div className="flex items-center justify-between border-b border-white/10 pb-4 mb-5">
-                <div>
-                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-cyan-300">Cargo brief</span>
-                  <h2 className="font-display text-xl font-extrabold text-white mt-1">Mulai dari kebutuhan Anda</h2>
-                </div>
-                <ShieldCheck className="w-6 h-6 text-cyan-300" />
-              </div>
-
-              <div className="space-y-3 text-left">
-                <div className="rounded-xl border border-white/10 bg-white/[.04] p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-cyan-400/10 text-cyan-300"><FileCheck2 className="w-5 h-5" /></div>
-                    <div><strong className="block text-sm text-white">Kepabeanan & dokumen</strong><span className="text-xs text-slate-400">PIB, PEB, HS code, Lartas</span></div>
-                  </div>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/[.04] p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-cyan-400/10 text-cyan-300"><Globe2 className="w-5 h-5" /></div>
-                    <div><strong className="block text-sm text-white">Freight laut & udara</strong><span className="text-xs text-slate-400">LCL, FCL, air cargo, charter</span></div>
-                  </div>
-                </div>
-                <div className="rounded-xl border border-white/10 bg-white/[.04] p-4">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-cyan-400/10 text-cyan-300"><Clock4 className="w-5 h-5" /></div>
-                    <div><strong className="block text-sm text-white">Project & inland cargo</strong><span className="text-xs text-slate-400">Trucking, warehouse, heavy lift</span></div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5 pt-4 border-t border-white/10 flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2 text-xs text-slate-300"><span className="w-2 h-2 rounded-full bg-emerald-400" />Tim respons aktif</div>
-                <button type="button" onClick={() => handleNav('calculator')} className="inline-flex items-center gap-2 text-xs font-bold text-cyan-300 hover:text-white">Buat estimasi <ArrowUpRight className="w-4 h-4" /></button>
-              </div>
-            </div>
-          </motion.div>
+        <div className="relative min-h-[320px] overflow-hidden bg-[#0b3438] lg:min-h-[520px]">
+          <img src="https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1600&q=82" alt="Terminal peti kemas dan operasi pengiriman kargo" className="absolute inset-0 h-full w-full object-cover opacity-80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#082e33]/65 via-transparent to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 border-t border-white/25 bg-[#082e33]/90 px-6 py-4 text-sm text-white backdrop-blur-sm">Satu titik koordinasi untuk dokumen, pengangkutan, dan pengantaran.</div>
         </div>
-
-        <div className="relative z-10 mt-10 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-3 text-xs text-slate-300">
-          <span className="inline-flex items-center gap-2"><FileCheck2 className="w-4 h-4 text-cyan-400" />PPJK & customs support</span>
-          <span className="inline-flex items-center gap-2"><Globe2 className="w-4 h-4 text-cyan-400" />Global trade lanes</span>
-          <span className="inline-flex items-center gap-2"><Clock4 className="w-4 h-4 text-cyan-400" />Response desk 24/7</span>
-          <span className="inline-flex items-center gap-2"><AlertCircle className="w-4 h-4 text-cyan-400" />{heroData.commodityTitle}</span>
-        </div>
-
-        {/* Trust marks remain visible without competing with the primary CTA. */}
-        <div className="relative z-10 mt-5 flex flex-wrap items-center justify-center lg:justify-start gap-3 text-[11px] text-slate-400">
-          <span>Didukung partner jaringan:</span>
-          <span className="font-bold text-slate-300">WCA World</span>
-          <span className="text-slate-600">/</span>
-          <span className="font-bold text-slate-300">JCtrans GCP</span>
-        </div>
+      </div>
+      <div className="mx-auto grid max-w-7xl border-x border-slate-200 bg-white md:grid-cols-3">
+        {text.utilities.map(([title, description, page], index) => {
+          const Icon = icons[index];
+          return (
+            <button key={page} type="button" onClick={() => onNavigate?.(page)} className="group flex min-h-[112px] items-center gap-4 border-b border-slate-200 px-5 py-5 text-left transition-colors hover:bg-cyan-50 md:border-b-0 md:border-r last:border-r-0">
+              <Icon className="h-5 w-5 shrink-0 text-cyan-700" aria-hidden="true" />
+              <span className="min-w-0 flex-1"><strong className="block text-sm font-bold text-[#12363a]">{title}</strong><span className="mt-1 block text-sm text-slate-500">{description}</span></span>
+              <ArrowRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-1" aria-hidden="true" />
+            </button>
+          );
+        })}
       </div>
     </section>
   );

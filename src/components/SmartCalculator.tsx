@@ -1,11 +1,8 @@
-// filepath: /src/components/SmartCalculator.tsx
 import React, { useState, useMemo } from 'react';
-import { motion, useReducedMotion } from 'framer-motion';
-import { Ship, Plane, ArrowRight, MessageCircle, Mail, Package, Box, Layers, CheckCircle2, ShieldAlert, Sparkles, Scale } from 'lucide-react';
+import { ChevronDown, Mail, MessageCircle } from 'lucide-react';
 import { findSmartNearestPort } from '../utils/portFinder';
 import { ShippingMode, Language } from '../types/freight';
-import { UI_TEXT, getTranslation } from '../utils/translations';
-import { sectionReveal, viewportOnce } from '../utils/motionVariants';
+
 
 interface SmartCalculatorProps {
   prefillService?: string;
@@ -30,7 +27,6 @@ const INCOTERMS_LIST = [
 const QUICK_CITIES = ['Jakarta', 'Cikarang', 'Karawang', 'Semarang', 'Surabaya', 'Bandung', 'Batam'];
 
 export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService, currentLang = 'id' }) => {
-  const shouldReduceMotion = useReducedMotion();
   const [shippingMode, setShippingMode] = useState<ShippingMode>('ocean');
   const [selectedIncoterm, setSelectedIncoterm] = useState('FOB');
   const [originInput, setOriginInput] = useState('Cikarang, Bekasi');
@@ -157,328 +153,107 @@ Terima kasih.`;
     window.location.href = `mailto:Sales01@gaeks.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
+
   return (
-    <motion.section id="calculator" data-motion-section variants={sectionReveal} initial={shouldReduceMotion ? 'visible' : 'hidden'} animate={shouldReduceMotion ? 'visible' : undefined} whileInView={shouldReduceMotion ? undefined : 'visible'} transition={shouldReduceMotion ? { duration: 0 } : undefined} viewport={viewportOnce} className="py-20 bg-slate-50 border-y border-slate-200 text-slate-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Header Bersih & Ringkas */}
-        <div className="max-w-3xl mb-10">
-          <span className="text-xs font-black uppercase tracking-widest text-cyan-600 block mb-2">
-            Smart Dispatch & Volumetric Engine
-          </span>
-          <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-            Cargo Check!
-          </h2>
-          <p className="mt-2 text-slate-600 text-sm sm:text-base">
-            Hitung kubikasi laut (CBM), evaluasi rekomendasi cerdas LCL vs FCL vs Air, tentukan Incoterms, dan deteksi port terdekat dalam hitungan detik.
-          </p>
-        </div>
+    <section id="calculator" aria-labelledby="calculator-title" className="section-block bg-[#f4f5f1]">
+      <div className="page-shell">
+        <header className="max-w-3xl">
+          <p className="section-label">Perencanaan kargo</p>
+          <h2 id="calculator-title" className="section-title">Hitung kebutuhan dasar sebelum meminta tarif.</h2>
+          <p className="section-copy">Masukkan ukuran dan berat. Hasil ini membantu memilih moda dan menjadi ringkasan awal untuk tim kami.</p>
+          {prefillService && <p className="mt-4 text-sm font-semibold text-cyan-800">Layanan dipilih: {prefillService}</p>}
+        </header>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Kolom Kiri: Formulir Interaktif Cepat */}
-          <div className="lg:col-span-7 bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-xl space-y-6">
-            
-            {/* Step 1: Mode Kargo & Pilihan Incoterms 2020 */}
-            <div className="space-y-4">
-              <div>
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block mb-2">
-                  1. Pilih Moda Kargo & Klausul Incoterms 2020:
-                </label>
-                <div className="grid grid-cols-2 gap-3 mb-3">
-                  <button
-                    onClick={() => setShippingMode('ocean')}
-                    className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all ${
-                      shippingMode === 'ocean'
-                        ? 'bg-[#012E34] text-white border-[#012E34] shadow-md shadow-cyan-900/25'
-                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Ship className="w-4 h-4" />
-                    <span>Kargo Laut (CBM / 1.000.000)</span>
+        <div className="mt-10 grid gap-8 lg:grid-cols-[1.15fr_.85fr]">
+          <form className="border border-slate-200 bg-white" onSubmit={(event) => event.preventDefault()}>
+            <fieldset className="p-5 sm:p-7">
+              <legend className="px-1 text-sm font-bold text-[#12363a]">Moda pengiriman</legend>
+              <div className="mt-3 grid grid-cols-2 gap-2">
+                {(['ocean', 'air'] as ShippingMode[]).map((mode) => (
+                  <button key={mode} type="button" aria-pressed={shippingMode === mode} onClick={() => setShippingMode(mode)} className={shippingMode === mode ? 'button-primary w-full' : 'button-secondary w-full'}>
+                    {mode === 'ocean' ? 'Laut' : 'Udara'}
                   </button>
-                  <button
-                    onClick={() => setShippingMode('air')}
-                    className={`flex items-center justify-center space-x-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all ${
-                      shippingMode === 'air'
-                        ? 'bg-[#012E34] text-white border-[#012E34] shadow-md shadow-cyan-900/25'
-                        : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
-                    }`}
-                  >
-                    <Plane className="w-4 h-4" />
-                    <span>Kargo Udara (/ 6.000)</span>
-                  </button>
-                </div>
+                ))}
               </div>
+            </fieldset>
 
-              {/* Incoterms Selector Pills */}
-              <div>
-                <span className="text-[11px] text-slate-500 font-bold block mb-1.5">Pilih Klausul Incoterms:</span>
-                <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
-                  {INCOTERMS_LIST.map((inco) => (
-                    <button
-                      key={inco.code}
-                      onClick={() => setSelectedIncoterm(inco.code)}
-                      className={`py-2 px-2 rounded-xl text-xs font-extrabold border transition-all text-center ${
-                        selectedIncoterm === inco.code
-                          ? 'bg-slate-900 text-white border-slate-900 shadow-sm'
-                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:border-blue-400'
-                      }`}
-                      title={inco.desc}
-                    >
-                      {inco.code}
-                    </button>
-                  ))}
-                </div>
-                <span className="text-[10px] text-cyan-700 font-medium block mt-1">
-                  * Terpilih: {selectedIncoterm} — {INCOTERMS_LIST.find(i => i.code === selectedIncoterm)?.desc}
-                </span>
-              </div>
-            </div>
-
-            {/* Step 2: Lokasi & Rekomendasi Port */}
-            <div className="space-y-3 pt-2">
-              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
-                2. Lokasi Asal & Pelabuhan Tujuan:
-              </label>
-              
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  value={originInput}
-                  onChange={(e) => setOriginInput(e.target.value)}
-                  placeholder="Ketik alamat pabrik, kota, atau kawasan industri..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                />
-
-                {/* Quick City Chips */}
-                <div className="flex flex-wrap gap-1.5 items-center">
-                  <span className="text-[11px] text-slate-500 font-medium mr-1">Kota Populer:</span>
-                  {QUICK_CITIES.map((city) => (
-                    <button
-                      key={city}
-                      onClick={() => setOriginInput(city)}
-                      className="px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-cyan-50 text-slate-700 hover:text-cyan-700 text-xs font-bold border border-slate-200 transition-colors"
-                    >
-                      {city}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Rekomendasi Port Terdekat Badge Otomatis */}
-              {nearestPortRecommendation && (
-                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between text-xs text-emerald-800 font-medium">
-                  <div className="flex items-center space-x-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
-                    <span>Rekomendasi Port Terdekat: <strong>{nearestPortRecommendation.port}</strong> ({nearestPortRecommendation.code})</span>
-                  </div>
-                  <span className="text-[10px] text-emerald-700 font-bold bg-emerald-100 px-2 py-0.5 rounded">Rute Terdekat</span>
-                </div>
-              )}
-
-              {/* Pelabuhan Tujuan */}
-              <div>
-                <select
-                  value={destinationPort}
-                  onChange={(e) => setDestinationPort(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-slate-50 text-sm text-slate-900 focus:ring-2 focus:ring-cyan-500 focus:outline-none font-medium"
-                >
-                  <option value="Jakarta (Tanjung Priok / IDJKT)">Jakarta — Pelabuhan Tanjung Priok (IDJKT)</option>
-                  <option value="Semarang (Tanjung Emas / IDSRG)">Semarang — Pelabuhan Tanjung Emas (IDSRG)</option>
-                  <option value="Surabaya (Tanjung Perak / IDSUB)">Surabaya — Pelabuhan Tanjung Perak (IDSUB)</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Step 3: Dimensi & Pilihan Preset Cepat */}
-            <div className="space-y-3 pt-2">
-              <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">
-                  3. Ukuran Paket (P x L x T cm & Berat kg):
+            <details open className="border-t border-slate-200">
+              <summary className="flex min-h-14 items-center justify-between px-5 py-3 font-bold text-[#12363a] sm:px-7">Rute <ChevronDown className="h-4 w-4 text-slate-400" /></summary>
+              <div className="grid gap-5 px-5 pb-7 sm:grid-cols-2 sm:px-7">
+                <label className="text-sm font-semibold text-slate-700">Lokasi asal
+                  <input className="field mt-2" value={originInput} onChange={(e) => setOriginInput(e.target.value)} />
+                  {nearestPortRecommendation && <span className="mt-2 block text-xs font-normal text-slate-500">Hub terdekat: {nearestPortRecommendation.port}</span>}
                 </label>
-                <div className="flex items-center space-x-1">
-                  {PRESET_PACKAGES.map((preset) => (
-                    <button
-                      key={preset.name}
-                      onClick={() => applyPreset(preset)}
-                      className="px-2 py-1 rounded bg-slate-100 hover:bg-slate-200 text-slate-600 text-[10px] font-bold border border-slate-200"
-                      title="Klik untuk isi ukuran otomatis"
-                    >
-                      {preset.name.split(' ')[0]}
-                    </button>
+                <label className="text-sm font-semibold text-slate-700">Tujuan
+                  <input className="field mt-2" value={destinationPort} onChange={(e) => setDestinationPort(e.target.value)} />
+                </label>
+              </div>
+            </details>
+
+            <details open className="border-t border-slate-200">
+              <summary className="flex min-h-14 items-center justify-between px-5 py-3 font-bold text-[#12363a] sm:px-7">Kargo <ChevronDown className="h-4 w-4 text-slate-400" /></summary>
+              <div className="px-5 pb-7 sm:px-7">
+                <label className="block text-sm font-semibold text-slate-700">Preset
+                  <select className="field mt-2" defaultValue="" onChange={(e) => { const p = PRESET_PACKAGES.find((item) => item.name === e.target.value); if (p) applyPreset(p); }}>
+                    <option value="">Pilih jika sesuai</option>
+                    {PRESET_PACKAGES.map((preset) => <option key={preset.name} value={preset.name}>{preset.name}</option>)}
+                  </select>
+                </label>
+                <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-5">
+                  {[
+                    ['Panjang (cm)', lengthCm, setLengthCm],
+                    ['Lebar (cm)', widthCm, setWidthCm],
+                    ['Tinggi (cm)', heightCm, setHeightCm],
+                    ['Berat/koli (kg)', weightKg, setWeightKg],
+                    ['Jumlah koli', quantity, setQuantity]
+                  ].map(([label, value, setter]) => (
+                    <label key={label as string} className="text-xs font-semibold text-slate-600">{label as string}
+                      <input type="number" min="0" className="field mt-2" value={value as number} onChange={(e) => (setter as React.Dispatch<React.SetStateAction<number>>)(Number(e.target.value))} />
+                    </label>
                   ))}
                 </div>
               </div>
+            </details>
 
-              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-                <div>
-                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Panjang (cm)</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={lengthCm}
-                    onChange={(e) => setLengthCm(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Lebar (cm)</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={widthCm}
-                    onChange={(e) => setWidthCm(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Tinggi (cm)</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={heightCm}
-                    onChange={(e) => setHeightCm(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Berat (kg/koli)</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={weightKg}
-                    onChange={(e) => setWeightKg(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <span className="text-[11px] text-slate-500 font-bold block mb-1">Jumlah (pcs)</span>
-                  <input
-                    type="number"
-                    min="1"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, Number(e.target.value)))}
-                    className="w-full px-3 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-sm text-slate-900 font-bold focus:ring-2 focus:ring-cyan-500 focus:outline-none"
-                  />
-                </div>
+            <details className="border-t border-slate-200">
+              <summary className="flex min-h-14 items-center justify-between px-5 py-3 font-bold text-[#12363a] sm:px-7">Ketentuan perdagangan <ChevronDown className="h-4 w-4 text-slate-400" /></summary>
+              <div className="px-5 pb-7 sm:px-7">
+                <label className="text-sm font-semibold text-slate-700">Incoterm
+                  <select className="field mt-2" value={selectedIncoterm} onChange={(e) => setSelectedIncoterm(e.target.value)}>
+                    {INCOTERMS_LIST.map((item) => <option key={item.code} value={item.code}>{item.code} — {item.desc}</option>)}
+                  </select>
+                </label>
               </div>
+            </details>
+          </form>
+
+          <aside className="border-t-4 border-cyan-700 bg-[#0b3438] p-6 text-white sm:p-8 lg:sticky lg:top-24">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Ringkasan hitung</p>
+            <div className="mt-6 grid grid-cols-2 gap-6 border-y border-white/15 py-6">
+              <div><span className="block text-sm text-slate-300">Volume</span><strong className="mt-1 block text-3xl">{totalVolumeCbm}</strong><span className="text-xs text-slate-400">CBM</span></div>
+              <div><span className="block text-sm text-slate-300">{shippingMode === 'air' ? 'Berat tagihan' : 'Basis tagihan'}</span><strong className="mt-1 block text-3xl">{shippingMode === 'air' ? airChargeableBasis.toFixed(1) : oceanChargeableBasis.toFixed(3)}</strong><span className="text-xs text-slate-400">{shippingMode === 'air' ? 'kg' : 'W/M'}</span></div>
             </div>
-
-          </div>
-
-          {/* Kolom Kanan: Dashboard Hasil Real-Time & Rekomendasi Cerdas */}
-          <div className="lg:col-span-5 bg-white p-6 sm:p-10 rounded-3xl border-2 border-[#012E34] shadow-2xl space-y-6">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-              <span className="text-xs font-black uppercase tracking-wider text-cyan-700">
-                Live Calculation Output
-              </span>
-              <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
-                Real-Time
-              </span>
+            <div className="py-6">
+              <span className="text-xs text-slate-400">Saran awal</span>
+              <h3 className="mt-2 text-xl font-bold">{recommendations.primary.title}</h3>
+              <p className="mt-3 text-sm leading-6 text-slate-300">{recommendations.primary.desc}</p>
             </div>
-
-            {/* Metric Stat Cards */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
-                <span className="text-xs text-slate-500 block mb-1">Kubikasi Laut (CBM)</span>
-                <span className="text-2xl font-black text-slate-900">{totalVolumeCbm}</span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">Rumus: PxLxT / 1.000.000</span>
-              </div>
-              <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200">
-                <span className="text-xs text-slate-500 block mb-1">Volumetrik Udara</span>
-                <span className="text-2xl font-black text-slate-900">{totalVolumetricAirKg} <small className="text-xs font-normal">kg</small></span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">Rumus: PxLxT / 6.000</span>
-              </div>
+            <details className="border-y border-white/15">
+              <summary className="flex min-h-12 items-center justify-between text-sm font-bold">Lihat dasar perhitungan <ChevronDown className="h-4 w-4" /></summary>
+              <dl className="space-y-2 pb-5 text-sm text-slate-300">
+                <div className="flex justify-between gap-4"><dt>Berat aktual</dt><dd>{totalActualWeightKg} kg</dd></div>
+                <div className="flex justify-between gap-4"><dt>Berat volumetrik udara</dt><dd>{totalVolumetricAirKg} kg</dd></div>
+                <div className="flex justify-between gap-4"><dt>Penggunaan kontainer 20ft</dt><dd>{containerUsagePercent}%</dd></div>
+              </dl>
+            </details>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <button type="button" onClick={handleSendWhatsApp} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-4 text-sm font-bold text-[#082f34] hover:bg-cyan-200"><MessageCircle className="h-4 w-4" />Kirim ke WhatsApp</button>
+              <button type="button" onClick={handleSendEmail} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-white/30 px-4 text-sm font-bold hover:bg-white/10"><Mail className="h-4 w-4" />Kirim email</button>
             </div>
-
-            {/* Visual Container 20ft Capacity Usage Meter */}
-            <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-              <div className="flex items-center justify-between text-xs font-bold text-slate-700">
-                <span>Kapasitas Kontainer 20ft:</span>
-                <span className="text-cyan-600 font-extrabold">{containerUsagePercent}% Terpakai</span>
-              </div>
-              <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                <div 
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-500" 
-                  style={{ width: `${containerUsagePercent}%` }}
-                />
-              </div>
-              <span className="text-[10px] text-slate-500 block">
-                Volume {totalVolumeCbm} CBM dari kapasitas standar 33 CBM (Kontainer 20ft).
-              </span>
-            </div>
-
-            {/* Rekomendasi Ganda Cerdas: LCL vs FCL vs Air */}
-            <div className="space-y-3">
-              <span className="text-xs font-bold text-slate-900 uppercase tracking-wider block">
-                Rekomendasi Rute & Moda Pengiriman:
-              </span>
-
-              {/* Rekomendasi Utama */}
-              <div className="p-3.5 bg-cyan-50/80 border border-cyan-200 rounded-2xl">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-black text-[#012E34]">{recommendations.primary.title}</span>
-                  <span className="text-[10px] font-bold text-cyan-700 bg-cyan-100 px-2 py-0.5 rounded">
-                    {recommendations.primary.badge}
-                  </span>
-                </div>
-                <p className="text-xs text-cyan-800 leading-relaxed">
-                  {recommendations.primary.desc}
-                </p>
-              </div>
-
-              {/* Rekomendasi Alternatif (Jika Urgent) */}
-              <div className="p-3.5 bg-amber-50/80 border border-amber-200 rounded-2xl">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-sm font-black text-amber-950">{recommendations.alternative.title}</span>
-                  <span className="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded">
-                    {recommendations.alternative.badge}
-                  </span>
-                </div>
-                <p className="text-xs text-amber-800 leading-relaxed">
-                  {recommendations.alternative.desc}
-                </p>
-              </div>
-            </div>
-
-            {/* Evaluasi Dasar Tagihan (Chargeable Rule) */}
-            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs space-y-1">
-              <strong className="text-slate-900 block">Dasar Tagihan Resmi (Chargeable Weight):</strong>
-              <div className="text-cyan-700 font-extrabold text-sm">
-                {shippingMode === 'ocean' ? `${oceanChargeableBasis.toFixed(3)} CBM` : `${airChargeableBasis} KG`}
-              </div>
-              <span className="text-[11px] text-slate-500 block">
-                {shippingMode === 'ocean'
-                  ? (isOceanWeightDominant ? 'Dikenakan tarif tonase karena berat fisik melampaui volume.' : 'Dikenakan tarif volume CBM murni.')
-                  : (isAirVolumetricDominant ? 'Dikenakan berat volumetrik udara karena volume melampaui berat fisik.' : 'Dikenakan berat aktual fisik.')}
-              </span>
-            </div>
-
-            {/* Action Buttons: WhatsApp & Email Instan */}
-            <div className="space-y-3 pt-2">
-              <button
-                onClick={handleSendWhatsApp}
-                className="w-full flex items-center justify-center space-x-2 bg-[#012E34] hover:bg-[#011C20] text-white py-4 px-6 rounded-xl font-bold text-sm transition-all shadow-md shadow-cyan-900/25 hover:scale-[1.01]"
-              >
-                <MessageCircle className="w-4 h-4" />
-                <span>Kirim Rincian & Incoterms ke WhatsApp</span>
-              </button>
-
-              <button
-                onClick={handleSendEmail}
-                className="w-full flex items-center justify-center space-x-2 bg-slate-900 hover:bg-slate-800 text-white py-3 px-6 rounded-xl font-bold text-xs transition-all shadow-sm"
-              >
-                <Mail className="w-4 h-4" />
-                <span>Kirim via Email Resmi (Sales01@gaeks.com)</span>
-              </button>
-            </div>
-
-          </div>
-
+            <p className="mt-4 text-xs leading-5 text-slate-400">Hasil bersifat estimasi volume dan dasar tagihan, bukan harga final.</p>
+          </aside>
         </div>
-
       </div>
-    </motion.section>
+    </section>
   );
 };
