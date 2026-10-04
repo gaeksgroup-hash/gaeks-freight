@@ -8,7 +8,7 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 - Mengubah pengaturan media sosial operator menjadi dropdown platform agar ikon Instagram, Facebook, LinkedIn, YouTube, X, atau TikTok dipilih otomatis.
 - Menampilkan tautan sosial sebagai ikon ringkas di footer dan sebagai tombol berlabel pada halaman Kontak.
-- Mengganti pemilih bahasa navbar menjadi dropdown bendera tanpa singkatan teks serta mempertahankan nama bahasa untuk pembaca layar.
+- Mengganti pemilih bahasa navbar menjadi dropdown aset SVG bendera Indonesia, Inggris, dan Tiongkok tanpa singkatan teks serta mempertahankan nama bahasa untuk pembaca layar.
 - Memindahkan breakpoint navigasi penuh ke layar yang lebih lebar agar navbar tidak berdesakan pada laptop kecil dan tablet.
 - Menambahkan transisi halaman serta reveal saat scroll dengan CSS dan IntersectionObserver; reduced motion tetap dihormati.
 - Mempertahankan Framer Motion carousel sebagai chunk terpisah agar animasi tambahan tidak memperbesar JavaScript pembuka secara berarti.

@@ -11,10 +11,10 @@ export interface NavbarProps {
   onLanguageChange?: (lang: Language) => void;
 }
 
-const languageOptions: Array<{ value: Language; label: string; flag: string }> = [
-  { value: 'id', label: 'Bahasa Indonesia', flag: '🇮🇩' },
-  { value: 'en', label: 'English', flag: '🇬🇧' },
-  { value: 'zh', label: '中文', flag: '🇨🇳' }
+const languageOptions: Array<{ value: Language; label: string; flagSrc: string }> = [
+  { value: 'id', label: 'Bahasa Indonesia', flagSrc: '/flags/id.svg' },
+  { value: 'en', label: 'English', flagSrc: '/flags/gb.svg' },
+  { value: 'zh', label: '中文', flagSrc: '/flags/cn.svg' }
 ];
 
 const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Language) => void; align?: 'left' | 'right' }> = ({ currentLang, onSelect, align = 'right' }) => {
@@ -22,10 +22,10 @@ const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Langu
   const current = languageOptions.find((option) => option.value === currentLang) || languageOptions[0];
   return <details ref={detailsRef} className="group relative">
     <summary aria-label={`Bahasa aktif: ${current.label}`} title={current.label} className="flex min-h-11 min-w-14 cursor-pointer list-none items-center justify-center gap-1 rounded-full border border-white/20 px-2 text-xl transition-colors hover:border-cyan-300 hover:bg-white/5 [&::-webkit-details-marker]:hidden">
-      <span aria-hidden="true">{current.flag}</span><ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+      <img src={current.flagSrc} alt="" width="24" height="18" className="h-[18px] w-6 rounded-[2px] object-cover shadow-sm" /><ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
     </summary>
     <div className={`absolute top-[calc(100%+.5rem)] z-50 flex gap-1 rounded-xl border border-white/15 bg-[#082f34] p-1.5 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}>
-      {languageOptions.map((option) => <button key={option.value} type="button" aria-label={option.label} title={option.label} aria-current={currentLang === option.value ? 'true' : undefined} onClick={() => { onSelect(option.value); detailsRef.current?.removeAttribute('open'); }} className={`flex h-11 w-11 items-center justify-center rounded-lg text-xl transition-colors ${currentLang === option.value ? 'bg-cyan-400/20 ring-1 ring-cyan-300/60' : 'hover:bg-white/10'}`}><span aria-hidden="true">{option.flag}</span></button>)}
+      {languageOptions.map((option) => <button key={option.value} type="button" aria-label={option.label} title={option.label} aria-current={currentLang === option.value ? 'true' : undefined} onClick={() => { onSelect(option.value); detailsRef.current?.removeAttribute('open'); }} className={`flex h-11 w-12 items-center justify-center rounded-lg transition-colors ${currentLang === option.value ? 'bg-cyan-400/20 ring-1 ring-cyan-300/60' : 'hover:bg-white/10'}`}><img src={option.flagSrc} alt="" width="28" height="21" className="h-[21px] w-7 rounded-[2px] object-cover shadow-sm" /></button>)}
     </div>
   </details>;
 };
