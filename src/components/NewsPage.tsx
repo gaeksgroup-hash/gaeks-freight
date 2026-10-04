@@ -1,10 +1,11 @@
 // filepath: /src/components/NewsPage.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { Send, Search, CheckCircle2, ArrowRight, Calendar, Share2, Copy, MessageCircle, Twitter, Linkedin, ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Clock, UserCheck, BookmarkCheck, ChevronDown } from 'lucide-react';
-import { getStoredArticles, addSubscriber } from '../utils/newsStorage';
+import { getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
+import { subscribeToNewsletter } from '../services/newsletterApi';
 
 export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => void; onSelectArticle?: (id: string) => void; currentLang?: Language }> = ({ activeDetailId, onBackToList, onSelectArticle, currentLang = 'id' }) => {
   const rawArticles = getStoredArticles();
@@ -14,6 +15,18 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
   const [emailInput, setEmailInput] = useState('');
+  const [newsletterConsent, setNewsletterConsent] = useState(false);
+  const [newsletterCompany, setNewsletterCompany] = useState('');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+
+  useEffect(() => {
+    const state = new URLSearchParams(window.location.search).get('newsletter');
+    if (state === 'confirmed') toast.success('Email terkonfirmasi', { description: 'Anda akan menerima berita baru dari GAEKS.' });
+    if (state === 'unsubscribed') toast.success('Langganan dihentikan', { description: 'Email Anda tidak akan menerima newsletter berikutnya.' });
+    if (state && window.history.replaceState) {
+      window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+    }
+  }, []);
 
   // Paginasi: 6 artikel per halaman
   const [currentPageNum, setCurrentPageNum] = useState(1);
@@ -42,19 +55,21 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
   const totalPages = Math.ceil(filtered.length / articlesPerPage) || 1;
   const currentArticles = filtered.slice((currentPageNum - 1) * articlesPerPage, currentPageNum * articlesPerPage);
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!emailInput || !emailInput.includes('@')) return;
-    const ok = addSubscriber(emailInput);
-    if (ok) {
-      toast.success('Pendaftaran Berhasil!', {
-        description: 'Terima kasih, email Anda telah terdaftar di buletin intelijen Gaek Freight.'
-      });
+    if (!emailInput || !newsletterConsent || isSubscribing) return;
+    setIsSubscribing(true);
+    try {
+      const message = await subscribeToNewsletter(emailInput, newsletterConsent, newsletterCompany);
+      toast.success('Periksa email Anda', { description: message });
       setEmailInput('');
-    } else {
-      toast.info('Email Sudah Terdaftar', {
-        description: 'Alamat email ini sudah terdaftar dalam sistem buletin kami.'
+      setNewsletterConsent(false);
+    } catch (error) {
+      toast.error('Pendaftaran belum berhasil', {
+        description: error instanceof Error ? error.message : 'Coba kembali beberapa saat lagi.'
       });
+    } finally {
+      setIsSubscribing(false);
     }
   };
 
@@ -184,10 +199,17 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             <p className="section-copy">Cari catatan regulasi, rute, dan operasi. Setiap artikel tampil sebagai baris ringkas.</p>
             <details className="mt-8 border-y border-slate-300">
               <summary className="flex min-h-14 items-center justify-between text-sm font-bold">Langganan pembaruan<ChevronDown className="h-4 w-4" /></summary>
-              <form onSubmit={handleSubscribe} className="flex flex-col gap-2 pb-5 sm:flex-row">
-                <label className="sr-only" htmlFor="news-email">Email</label>
-                <input id="news-email" type="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="Email perusahaan" className="field flex-1" />
-                <button type="submit" className="button-primary">Daftar</button>
+              <form onSubmit={handleSubscribe} className="space-y-3 pb-5">
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <label className="sr-only" htmlFor="news-email">Email</label>
+                  <input id="news-email" type="email" autoComplete="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="Email perusahaan" className="field flex-1" />
+                  <button type="submit" disabled={isSubscribing || !newsletterConsent} className="button-primary disabled:cursor-not-allowed disabled:opacity-50">{isSubscribing ? 'Mengirim…' : 'Daftar'}</button>
+                </div>
+                <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-slate-600">
+                  <input type="checkbox" required checked={newsletterConsent} onChange={(event) => setNewsletterConsent(event.target.checked)} className="mt-1 h-4 w-4 accent-cyan-700" />
+                  <span>Saya setuju menerima berita GAEKS melalui email dan dapat berhenti kapan saja.</span>
+                </label>
+                <label className="absolute -left-[10000px]" aria-hidden="true">Perusahaan<input tabIndex={-1} autoComplete="off" value={newsletterCompany} onChange={(event) => setNewsletterCompany(event.target.value)} /></label>
               </form>
             </details>
           </header>

@@ -1,4 +1,7 @@
 <?php
+declare(strict_types=1);
+
+require_once __DIR__ . '/_bootstrap.php';
 header("Content-Type: application/json; charset=UTF-8");
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
@@ -9,11 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $uploadDir   = __DIR__ . '/../uploads';
 $libraryFile = __DIR__ . '/media_library.json';
 
-// Legacy media mutations remain disabled until server-side auth and object storage exist.
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    http_response_code(410);
-    echo json_encode(["status" => "error", "message" => "Legacy media mutations are disabled"]);
-    exit;
+    gaeks_require_operator(true);
 }
 
 if (!is_dir($uploadDir)) {
@@ -58,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['action']) && $_GET['ac
 
 // 3. POST: Upload File Baru dengan Auto-Kompresi WebP
 if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
-    $fileName = $_FILES['file']['name'];
+    $fileName = basename((string) $_FILES['file']['name']);
     $fileTmpPath = $_FILES['file']['tmp_name'];
     $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
@@ -68,13 +68,12 @@ if (isset($_FILES['file']) && $_FILES['file']['error'] === UPLOAD_ERR_OK) {
     $allAllowed    = array_merge($allowedImages, $allowedVideos, $allowedDocs);
 
     if (!in_array($fileExtension, $allAllowed)) {
-        http_response_code(400);
-        echo json_encode(["status" => "error", "message" => "Format file tidak didukung"]);
-        exit;
+        gaeks_json(["status" => "error", "message" => "Format file tidak didukung"], 400);
     }
 
     $type = in_array($fileExtension, $allowedVideos) ? 'video' : (in_array($fileExtension, $allowedDocs) ? 'document' : 'image');
     $cleanName = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', pathinfo($fileName, PATHINFO_FILENAME));
+    $cleanName = $cleanName !== '' ? $cleanName : 'media';
     $newFileName = time() . '_' . $cleanName . '.' . $fileExtension;
     $destPath = $uploadDir . '/' . $newFileName;
 

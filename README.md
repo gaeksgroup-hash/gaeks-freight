@@ -48,9 +48,11 @@ Setiap push ke `main` memicu build otomatis Hostinger. Konfigurasi aktif:
 
 Prosedur verifikasi dan rollback ada di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-## Keadaan operator
+## Operator dan newsletter
 
-Mutasi konten dan media dari halaman operator sengaja dinonaktifkan sampai autentikasi server tersedia. Login operator selalu ditolak dan endpoint POST legacy mengembalikan HTTP 410. Situs publik tetap membaca konten dari file JSON produksi.
+Halaman operator memakai sesi PHP server dengan cookie HttpOnly, CSRF, dan pembatasan percobaan login. Mutasi konten serta media memerlukan sesi operator yang valid.
+
+Pelanggan newsletter disimpan di direktori privat di luar web root. Pendaftaran publik memakai konfirmasi email dan tautan berhenti berlangganan. Publikasi artikel baru melalui operator mengirim pembaruan individual dari `news@gaeks.com` kepada subscriber aktif.
 
 Lihat [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md) untuk hasil audit terbaru dan batasan yang masih terbuka.
 

@@ -16,9 +16,9 @@ GAEKS is a freight forwarding and customs operations website for importers, expo
 
 - ENERGY: 1/5
 - RHYTHM: 2/5
-- MOTION: 1/5
+- MOTION: 2/5
 
-Motion is limited to menu state, disclosure rotation, and short hover feedback. There are no autoplay carousels, looping scale effects, glowing surfaces, or decorative animation.
+Motion supports orientation and continuity. The hero service carousel advances automatically with a restrained pan, directional transition, progress line, and manual controls. It pauses during pointer or keyboard interaction and disables automatic movement when reduced motion is requested. Glowing surfaces and decorative loops are not used.
 
 ## Density rules
 
@@ -50,4 +50,5 @@ Use direct operational language. Avoid hype, vague superiority claims, fake urge
 - Specialist pages and the Framer Motion carousel load as separate chunks.
 - Render one hero slide at a time and preload only the next image.
 - Pause carousel movement during hover or keyboard interaction and honor reduced motion preferences.
+- Keep the footer compact through short line lengths, shallow section padding, and tightly grouped navigation while preserving 44 pixel interaction targets.
 - Use cache headers for versioned static assets. Cookies are not used as a caching mechanism.

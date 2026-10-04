@@ -9,10 +9,11 @@ import {
   getStoredBranding, saveStoredBranding, BrandingSettings, DEFAULT_BRANDING,
   getStoredHero, saveStoredHero, HeroSettings, DEFAULT_HERO,
   getStoredServices, saveStoredServices, isOperatorLoggedIn, loginOperator, logoutOperator, exportSubscribersToCSV,
-  saveToServerGlobally
+  saveToServerGlobally, operatorFetch
 } from '../utils/adminStorage';
-import { getStoredArticles, saveStoredArticles, getSubscribers } from '../utils/newsStorage';
-import { ServiceDetail, ArticleItem } from '../types/freight';
+import { getStoredArticles, saveStoredArticles } from '../utils/newsStorage';
+import { fetchNewsletterSubscribers } from '../services/newsletterApi';
+import { ServiceDetail, ArticleItem, NewsletterSubscriber } from '../types/freight';
 
 export interface MediaServerItem {
   id: string;
@@ -35,6 +36,9 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [mediaList, setMediaList] = useState<MediaServerItem[]>([]);
   const [mediaFilter, setMediaFilter] = useState<'all' | 'image' | 'video' | 'document'>('all');
+  const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
+  const [newsletterSender, setNewsletterSender] = useState('news@gaeks.com');
+  const [mailAvailable, setMailAvailable] = useState(false);
 
   const [editingService, setEditingService] = useState<ServiceDetail | null>(null);
   const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
@@ -53,36 +57,55 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
     } catch (e) {}
   };
 
-  useEffect(() => {
-    const isLogged = isOperatorLoggedIn();
-    setAuthenticated(isLogged);
-    if (isLogged) {
-      setHero(getStoredHero());
-      setBranding(getStoredBranding());
-      setServices(getStoredServices());
-      setArticles(getStoredArticles());
-      fetchMediaLibrary();
-    }
-  }, []);
-
-  const handleLoginSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (loginOperator(loginUser, loginPass)) {
-      setAuthenticated(true);
-      setHero(getStoredHero());
-      setBranding(getStoredBranding());
-      setServices(getStoredServices());
-      setArticles(getStoredArticles());
-      fetchMediaLibrary();
-      toast.success('Login Berhasil', { description: 'Selamat datang di Control Center Gaekadmin' });
-    } else {
-      toast.error('Autentikasi Gagal', { description: 'Username atau Password tidak valid.' });
+  const loadSubscribers = async () => {
+    try {
+      const result = await fetchNewsletterSubscribers();
+      setSubscribers(result.subscribers);
+      setNewsletterSender(result.sender);
+      setMailAvailable(result.mailAvailable);
+    } catch (error) {
+      toast.error('Daftar newsletter belum dapat dimuat', { description: error instanceof Error ? error.message : undefined });
     }
   };
 
-  const handleLogout = () => {
-    logoutOperator();
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      const isLogged = await isOperatorLoggedIn();
+      if (!active) return;
+      setAuthenticated(isLogged);
+      if (isLogged) {
+        setHero(getStoredHero());
+        setBranding(getStoredBranding());
+        setServices(getStoredServices());
+        setArticles(getStoredArticles());
+        await Promise.all([fetchMediaLibrary(), loadSubscribers()]);
+      }
+    })();
+    return () => { active = false; };
+  }, []);
+
+  const handleLoginSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const result = await loginOperator(loginUser, loginPass);
+    if (result.success) {
+      setAuthenticated(true);
+      setLoginPass('');
+      setHero(getStoredHero());
+      setBranding(getStoredBranding());
+      setServices(getStoredServices());
+      setArticles(getStoredArticles());
+      await Promise.all([fetchMediaLibrary(), loadSubscribers()]);
+      toast.success('Login Berhasil', { description: 'Selamat datang di Control Center Gaekadmin' });
+    } else {
+      toast.error('Autentikasi Gagal', { description: result.message || 'Username atau Password tidak valid.' });
+    }
+  };
+
+  const handleLogout = async () => {
+    await logoutOperator();
     setAuthenticated(false);
+    setSubscribers([]);
     toast.info('Sesi Ditutup');
   };
 
@@ -92,7 +115,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await fetch('/api/upload.php', { method: 'POST', body: formData });
+      const res = await operatorFetch('/api/upload.php', { method: 'POST', body: formData });
       const data = await res.json();
       if (res.ok && data.status === 'success' && data.url) {
         toast.success('File Berhasil Disimpan di Media Server!', { id: toastId, description: data.url });
@@ -109,7 +132,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   const handleDeleteMedia = async (url: string) => {
     if (confirm('Hapus file ini dari Media Server Hostinger?')) {
       try {
-        const res = await fetch('/api/upload.php?action=delete', {
+        const res = await operatorFetch('/api/upload.php?action=delete', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ url })
@@ -128,9 +151,14 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
     const res = await saveToServerGlobally();
     setIsSavingGlobal(false);
     if (res.success) {
+      const sent = res.newsletter?.sent || 0;
+      const failed = res.newsletter?.failed || 0;
       toast.success('Perubahan Berhasil Tersimpan di Server Hostinger!', { 
-        description: 'Aktif secara global untuk seluruh pengunjung di semua perangkat.' 
+        description: res.newsletter?.articles
+          ? `Berita dipublikasikan. Newsletter terkirim ke ${sent} pelanggan${failed ? `, ${failed} gagal` : ''}.`
+          : 'Aktif secara global untuk seluruh pengunjung di semua perangkat.'
       });
+      if (res.newsletter?.articles) await loadSubscribers();
     } else {
       toast.error('Peringatan Penyimpanan', { description: res.message });
     }
@@ -300,7 +328,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
             <span>CMS Berita ({articles.length})</span>
           </button>
           <button 
-            onClick={() => setActiveTab('subscribers')} 
+            onClick={() => { setActiveTab('subscribers'); void loadSubscribers(); }}
             className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'subscribers' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
           >
             <Download className="w-4 h-4 text-cyan-400" />
@@ -840,15 +868,40 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
           {/* TAB 7: SUBSCRIBERS */}
           {activeTab === 'subscribers' && (
             <div className="space-y-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <h3 className="text-2xl font-black text-white">Daftar Pelanggan Buletin ({getSubscribers().length})</h3>
-                  <p className="text-xs text-slate-400 mt-1">Unduh data prospek dalam format CSV.</p>
+                  <h3 className="text-2xl font-black text-white">Pelanggan Newsletter ({subscribers.length})</h3>
+                  <p className="mt-1 text-xs text-slate-400">Pengirim: {newsletterSender} · {mailAvailable ? 'layanan email server aktif' : 'layanan email server belum tersedia'}</p>
                 </div>
-                <button onClick={exportSubscribersToCSV} className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md">
+                <button onClick={() => exportSubscribersToCSV(subscribers)} className="inline-flex min-h-11 items-center justify-center space-x-2 rounded-lg bg-emerald-700 px-4 text-xs font-bold text-white hover:bg-emerald-600">
                   <Download className="w-4 h-4" />
-                  <span>Ekspor Data ke CSV</span>
+                  <span>Ekspor CSV</span>
                 </button>
+              </div>
+
+              <div className="grid grid-cols-3 border-y border-cyan-900/60 py-4 text-center">
+                <div><strong className="block text-xl text-white">{subscribers.filter((item) => item.status === 'active').length}</strong><span className="text-[11px] text-slate-400">Aktif</span></div>
+                <div><strong className="block text-xl text-amber-300">{subscribers.filter((item) => item.status === 'pending').length}</strong><span className="text-[11px] text-slate-400">Menunggu konfirmasi</span></div>
+                <div><strong className="block text-xl text-slate-300">{subscribers.filter((item) => item.status === 'unsubscribed').length}</strong><span className="text-[11px] text-slate-400">Berhenti</span></div>
+              </div>
+
+              <div className="overflow-x-auto border border-cyan-900/50">
+                <table className="w-full min-w-[620px] text-left text-xs">
+                  <thead className="bg-[#012E34] text-cyan-200">
+                    <tr><th className="px-4 py-3">Email</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Terdaftar</th><th className="px-4 py-3">Konfirmasi</th></tr>
+                  </thead>
+                  <tbody className="divide-y divide-cyan-950 bg-[#011C20]">
+                    {subscribers.map((subscriber) => (
+                      <tr key={subscriber.email}>
+                        <td className="px-4 py-3 font-semibold text-white">{subscriber.email}</td>
+                        <td className="px-4 py-3 capitalize text-cyan-300">{subscriber.status}</td>
+                        <td className="px-4 py-3 text-slate-400">{new Date(subscriber.subscribedAt).toLocaleString('id-ID')}</td>
+                        <td className="px-4 py-3 text-slate-400">{subscriber.confirmedAt ? new Date(subscriber.confirmedAt).toLocaleString('id-ID') : '—'}</td>
+                      </tr>
+                    ))}
+                    {subscribers.length === 0 && <tr><td colSpan={4} className="px-4 py-8 text-center text-slate-400">Belum ada pelanggan newsletter.</td></tr>}
+                  </tbody>
+                </table>
               </div>
             </div>
           )}

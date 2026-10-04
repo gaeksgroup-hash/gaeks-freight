@@ -4,6 +4,8 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Language, ServiceDetail } from '../types/freight';
 import { GAEKS_UPDATE_EVENT, getStoredServices } from '../utils/adminStorage';
 
+const SLIDE_DURATION_SECONDS = 5.2;
+
 interface HeroServiceCarouselProps {
   currentLang: Language;
   onOpenService?: (serviceId: string) => void;
@@ -35,12 +37,12 @@ export const HeroServiceCarousel: React.FC<HeroServiceCarouselProps> = ({ curren
 
   useEffect(() => {
     if (paused || reduceMotion || services.length < 2) return;
-    const timer = window.setInterval(() => {
+    const timer = window.setTimeout(() => {
       setDirection(1);
       setActiveIndex((index) => (index + 1) % services.length);
-    }, 6500);
-    return () => window.clearInterval(timer);
-  }, [paused, reduceMotion, services.length]);
+    }, SLIDE_DURATION_SECONDS * 1000);
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, paused, reduceMotion, services.length]);
 
   useEffect(() => {
     if (services.length < 2) return;
@@ -59,10 +61,10 @@ export const HeroServiceCarousel: React.FC<HeroServiceCarouselProps> = ({ curren
   if (!activeService || !activeContent) return null;
 
   return (
-    <div className="relative h-full w-full" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)}>
-      <AnimatePresence initial={false} mode="wait">
-        <motion.div key={activeService.id} className="absolute inset-0" initial={reduceMotion ? false : { opacity: 0, x: direction * 28, scale: 1.035 }} animate={{ opacity: 1, x: 0, scale: 1 }} exit={reduceMotion ? undefined : { opacity: 0, x: direction * -18 }} transition={{ duration: reduceMotion ? 0 : 0.65, ease: [0.22, 1, 0.36, 1] }}>
-          <img src={activeService.imageUrl} alt={activeContent.title} width="1200" height="800" decoding="async" className="h-full w-full object-cover" />
+    <motion.div className="relative h-full w-full touch-pan-y overflow-hidden" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)} onPanEnd={(_, info) => { if (Math.abs(info.offset.x) > 55) move(info.offset.x < 0 ? 1 : -1); }}>
+      <AnimatePresence initial={false} mode="sync" custom={direction}>
+        <motion.div key={activeService.id} custom={direction} className="absolute inset-0" initial={reduceMotion ? false : { opacity: 0, x: direction * 36 }} animate={{ opacity: 1, x: 0 }} exit={reduceMotion ? undefined : { opacity: 0, x: direction * -28 }} transition={{ duration: reduceMotion ? 0 : 0.72, ease: [0.22, 1, 0.36, 1] }}>
+          <motion.img src={activeService.imageUrl} alt={activeContent.title} width="1200" height="800" decoding="async" className="h-full w-full object-cover" initial={reduceMotion ? false : { scale: 1.045, x: direction * 8 }} animate={{ scale: 1, x: 0 }} transition={{ duration: reduceMotion ? 0 : SLIDE_DURATION_SECONDS, ease: 'linear' }} />
           <div className="absolute inset-0 bg-gradient-to-t from-[#082e33]/95 via-[#082e33]/15 to-transparent" />
         </motion.div>
       </AnimatePresence>
@@ -76,12 +78,20 @@ export const HeroServiceCarousel: React.FC<HeroServiceCarouselProps> = ({ curren
         </AnimatePresence>
         <div className="mt-5 flex items-center justify-between gap-4 border-t border-white/25 pt-4">
           <button type="button" onClick={() => onOpenService?.(activeService.id)} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-white underline-offset-4 hover:underline">{detailLabel}<ArrowRight className="h-4 w-4" /></button>
-          <div className="flex gap-2">
+          <div className="flex items-center gap-2">
+            <div className="hidden items-center gap-1.5 sm:flex" aria-label="Pilih layanan">
+              {services.map((service, index) => (
+                <button key={service.id} type="button" onClick={() => { setDirection(index > activeIndex ? 1 : -1); setActiveIndex(index); }} aria-label={`Tampilkan ${localize(service, currentLang).title}`} aria-current={index === activeIndex ? 'true' : undefined} className="group inline-flex min-h-11 items-center px-0.5">
+                  <span className={`block h-0.5 transition-[width,background-color] duration-300 ${index === activeIndex ? 'w-7 bg-white' : 'w-3 bg-white/40 group-hover:bg-white/75'}`} />
+                </button>
+              ))}
+            </div>
             <button type="button" onClick={() => move(-1)} aria-label="Layanan sebelumnya" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/35 bg-[#082e33]/65 hover:bg-[#082e33]"><ArrowLeft className="h-4 w-4" /></button>
             <button type="button" onClick={() => move(1)} aria-label="Layanan berikutnya" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/35 bg-[#082e33]/65 hover:bg-[#082e33]"><ArrowRight className="h-4 w-4" /></button>
           </div>
         </div>
       </div>
-    </div>
+      {!reduceMotion && !paused && services.length > 1 && <motion.span key={activeService.id + '-progress'} aria-hidden="true" className="absolute inset-x-0 bottom-0 z-20 h-1 origin-left bg-cyan-300" initial={{ scaleX: 0 }} animate={{ scaleX: 1 }} transition={{ duration: SLIDE_DURATION_SECONDS, ease: 'linear' }} />}
+    </motion.div>
   );
 };

@@ -97,7 +97,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
 
 const HeroFallback: React.FC<{ imageUrl?: string; title?: string }> = ({ imageUrl, title }) => (
   <>
-    <img src={imageUrl} alt={title || ''} width="1200" height="800" decoding="async" fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+    <img src={imageUrl} alt={title || ''} width="1200" height="800" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
     <div className="absolute inset-0 bg-gradient-to-t from-[#082e33]/80 via-transparent to-transparent" />
   </>
 );

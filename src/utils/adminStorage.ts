@@ -1,7 +1,7 @@
 // filepath: /src/utils/adminStorage.ts
-import { ServiceDetail } from '../types/freight';
+import { NewsletterSubscriber, ServiceDetail } from '../types/freight';
 import { DETAILED_SERVICES } from '../components/ServicesCarousel';
-import { getStoredArticles, getSubscribers } from './newsStorage';
+import { getStoredArticles } from './newsStorage';
 
 export interface BrandingSettings {
   faviconUrl: string;
@@ -29,8 +29,8 @@ export interface HeroSettings {
 const STORAGE_KEY_BRANDING = 'gaeks_branding_v7';
 const STORAGE_KEY_HERO = 'gaeks_hero_v7';
 const STORAGE_KEY_SERVICES = 'gaeks_services_v7';
-const STORAGE_KEY_AUTH = 'gaeks_operator_auth_session';
 export const GAEKS_UPDATE_EVENT = 'gaeks_auto_update_event';
+let operatorCsrfToken = '';
 
 export const DEFAULT_BRANDING: BrandingSettings = {
   faviconUrl: '/favicon.png?v=8',
@@ -92,11 +92,35 @@ export async function syncFromServer(): Promise<boolean> {
   }
 }
 
-export async function saveToServerGlobally(): Promise<{ success: boolean; message: string }> {
-  return {
-    success: false,
-    message: 'Penyimpanan server legacy dinonaktifkan sampai autentikasi server baru tersedia.'
-  };
+export interface ServerSaveResult {
+  success: boolean;
+  message: string;
+  newsletter?: { articles: number; sent: number; failed: number };
+}
+
+export async function saveToServerGlobally(): Promise<ServerSaveResult> {
+  try {
+    const response = await operatorFetch('/api/sync.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        payload: {
+          branding: getStoredBranding(),
+          hero: getStoredHero(),
+          services: getStoredServices(),
+          articles: getStoredArticles(),
+        }
+      }),
+    });
+    const result = await response.json();
+    if (!response.ok || result.status !== 'success') {
+      return { success: false, message: result.message || 'Konten belum dapat disimpan.' };
+    }
+    notifyLocalUpdate();
+    return { success: true, message: result.message || 'Konten tersimpan.', newsletter: result.newsletter };
+  } catch (error) {
+    return { success: false, message: error instanceof Error ? error.message : 'Koneksi server gagal.' };
+  }
 }
 
 export function getStoredBranding(): BrandingSettings {
@@ -146,32 +170,66 @@ export function saveStoredServices(services: ServiceDetail[]): void {
   notifyLocalUpdate();
 }
 
-export function isOperatorLoggedIn(): boolean {
+export async function isOperatorLoggedIn(): Promise<boolean> {
   try {
-    return sessionStorage.getItem(STORAGE_KEY_AUTH) === 'true' || localStorage.getItem(STORAGE_KEY_AUTH) === 'true';
+    const response = await fetch('/api/auth.php', { credentials: 'same-origin', cache: 'no-store' });
+    const result = await response.json();
+    if (response.ok && result.authenticated) {
+      operatorCsrfToken = result.csrfToken || '';
+      return true;
+    }
+    operatorCsrfToken = '';
+    return false;
   } catch {
     return false;
   }
 }
 
-export function loginOperator(user: string, pass: string): boolean {
-  // Legacy client-side authentication is intentionally disabled.
-  return false;
+export async function loginOperator(user: string, pass: string): Promise<{ success: boolean; message?: string }> {
+  try {
+    const response = await fetch('/api/auth.php', {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pass }),
+    });
+    const result = await response.json();
+    if (response.ok && result.authenticated) {
+      operatorCsrfToken = result.csrfToken || '';
+      return { success: true };
+    }
+    return { success: false, message: result.message || 'Autentikasi gagal.' };
+  } catch {
+    return { success: false, message: 'Server autentikasi tidak dapat dihubungi.' };
+  }
 }
 
-export function logoutOperator(): void {
-  sessionStorage.removeItem(STORAGE_KEY_AUTH);
-  localStorage.removeItem(STORAGE_KEY_AUTH);
+export async function logoutOperator(): Promise<void> {
+  try {
+    await operatorFetch('/api/auth.php', { method: 'DELETE' });
+  } finally {
+    operatorCsrfToken = '';
+  }
 }
 
-export function exportSubscribersToCSV(): void {
-  const subs = getSubscribers();
+export async function operatorFetch(input: RequestInfo | URL, init: RequestInit = {}): Promise<Response> {
+  if (!operatorCsrfToken) {
+    await isOperatorLoggedIn();
+  }
+  const headers = new Headers(init.headers);
+  if (operatorCsrfToken && init.method && init.method.toUpperCase() !== 'GET') {
+    headers.set('X-CSRF-Token', operatorCsrfToken);
+  }
+  return fetch(input, { ...init, credentials: 'same-origin', headers });
+}
+
+export function exportSubscribersToCSV(subs: NewsletterSubscriber[]): void {
   if (subs.length === 0) {
     alert('Belum ada subscriber terdaftar.');
     return;
   }
-  const headers = 'Email,Tanggal Langganan\n';
-  const rows = subs.map(s => `"${s.email}","${s.subscribedAt}"`).join('\n');
+  const headers = 'Email,Status,Tanggal Langganan,Tanggal Konfirmasi\n';
+  const rows = subs.map(s => `"${s.email}","${s.status}","${s.subscribedAt}","${s.confirmedAt || ''}"`).join('\n');
   const blob = new Blob([headers + rows], { type: 'text/csv;charset=utf-8;' });
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');

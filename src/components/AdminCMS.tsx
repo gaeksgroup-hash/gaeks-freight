@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Lock, PlusCircle, Trash2, Mail, LogOut, CheckCircle, ShieldAlert } from 'lucide-react';
 import { ArticleItem, NewsletterSubscriber } from '../types/freight';
-import { getStoredArticles, saveStoredArticles, getSubscribers } from '../utils/newsStorage';
+import { getStoredArticles, saveStoredArticles } from '../utils/newsStorage';
 
 export const AdminCMS: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -11,7 +11,7 @@ export const AdminCMS: React.FC = () => {
   const [loginError, setLoginError] = useState('');
 
   const [articles, setArticles] = useState<ArticleItem[]>(getStoredArticles());
-  const [subscribers] = useState<NewsletterSubscriber[]>(getSubscribers());
+  const [subscribers] = useState<NewsletterSubscriber[]>([]);
 
   const [newTitle, setNewTitle] = useState('');
   const [newCategory, setNewCategory] = useState('Regulasi Kepabeanan');

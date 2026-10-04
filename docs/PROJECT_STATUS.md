@@ -31,19 +31,20 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 | Bahasa | Pilihan ID/EN/ZH tersedia |
 | Detail layanan | Aktif melalui route `/layanan/<slug>` |
 | Desain publik ringkas | Aktif; data panjang memakai daftar dan disclosure |
-| Operator login | Dinonaktifkan |
-| Simpan konten ke server | Dinonaktifkan |
-| Upload/hapus media | Dinonaktifkan untuk metode selain GET |
+| Operator login | Aktif dengan sesi server, CSRF, dan rate limit login |
+| Simpan konten ke server | Aktif untuk operator terautentikasi |
+| Upload/hapus media | Aktif untuk operator terautentikasi |
+| Newsletter | Double opt-in, daftar operator, unsubscribe, dan broadcast artikel baru aktif |
 
 ## Batasan yang masih terbuka
 
-1. Operator belum memiliki autentikasi server. `loginOperator` selalu mengembalikan `false`.
-2. Konten publik masih memakai JSON dan browser storage; PostgreSQL pada PRD belum diterapkan.
-3. File video produksi sekitar 23 MB disimpan di repository. Object storage/CDN akan mengurangi ukuran clone dan deployment.
-4. Sitemap masih berisi hash URL dan tanggal `lastmod` lama. Sitemap sebaiknya dipindahkan ke URL halaman yang dapat diindeks setelah route publik stabil.
-5. Penerjemahan otomatis dapat mengirim potongan teks ke MyMemory API. Perlu keputusan privasi dan fallback sebelum digunakan untuk konten sensitif.
-6. Script generator lama masih disimpan untuk referensi. Script tersebut dapat menimpa source dan tidak menjadi bagian workflow release.
-7. PRD V2 adalah target arsitektur. Implementasi produksi saat ini masih aplikasi Vite legacy yang telah diamankan untuk mode baca.
+1. Konten publik masih memakai JSON dan browser storage; PostgreSQL pada PRD belum diterapkan.
+2. File video produksi sekitar 23 MB disimpan di repository. Object storage/CDN akan mengurangi ukuran clone dan deployment.
+3. Sitemap masih berisi hash URL dan tanggal `lastmod` lama. Sitemap sebaiknya dipindahkan ke URL halaman yang dapat diindeks setelah route publik stabil.
+4. Penerjemahan otomatis dapat mengirim potongan teks ke MyMemory API. Perlu keputusan privasi dan fallback sebelum digunakan untuk konten sensitif.
+5. Script generator lama masih disimpan untuk referensi. Script tersebut dapat menimpa source dan tidak menjadi bagian workflow release.
+6. PRD V2 adalah target arsitektur. Implementasi produksi saat ini masih aplikasi Vite dengan endpoint PHP untuk kebutuhan server ringan.
+7. Hostinger Reach belum tersedia untuk akun ini (API 403), sehingga broadcast memakai mail transport Hostinger. SPF, DKIM, dan DMARC domain tersedia; statistik bounce/click lanjutan menunggu provider kampanye.
 8. Nomor tracking contoh pada dokumentasi ERP merespons `SHIPMENT_NOT_FOUND` saat audit 4 Oktober 2026. State sukses sudah disiapkan, tetapi perlu diverifikasi kembali memakai nomor shipment produksi yang valid.
 
 ## Riwayat deployment terakhir

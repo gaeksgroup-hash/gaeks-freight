@@ -4,6 +4,18 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Footer, carousel, dan newsletter
+
+- Memadatkan jarak vertikal footer, navigasi, kontak, serta bilah legal tanpa mengurangi target interaksi.
+- Menghidupkan carousel hero dengan pergantian otomatis 5,2 detik, gerak gambar ringan, transisi arah, indikator layanan, gesture geser, dan progress line.
+- Mempertahankan penghentian carousel saat hover/fokus serta dukungan reduced motion.
+- Memindahkan pendaftaran newsletter dari localStorage ke endpoint PHP dan penyimpanan privat di luar public web root.
+- Menambahkan konfirmasi email, persetujuan eksplisit, rate limit, honeypot, status pelanggan, dan tautan berhenti berlangganan satu klik.
+- Mengaktifkan autentikasi operator berbasis sesi server, cookie HttpOnly/Secure/SameSite, CSRF, dan pembatasan percobaan login.
+- Menampilkan daftar subscriber global beserta status dan ekspor CSV di panel operator.
+- Mengirim newsletter otomatis dari `news@gaeks.com` saat artikel baru dipublikasikan, dengan header `List-Unsubscribe` dan catatan hasil pengiriman.
+- Menghapus data subscriber dari file konten publik.
+
 ### Carousel layanan dan shipment tracking
 
 - Mengubah gambar hero menjadi carousel layanan yang memakai data dari Manajemen Layanan & Foto operator.

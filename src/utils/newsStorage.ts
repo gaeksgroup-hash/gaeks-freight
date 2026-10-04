@@ -1,8 +1,7 @@
 // filepath: /src/utils/newsStorage.ts
-import { ArticleItem, NewsletterSubscriber } from '../types/freight';
+import { ArticleItem } from '../types/freight';
 
 const STORAGE_KEY_ARTICLES = 'gaeks_articles_v15_full';
-const STORAGE_KEY_SUBSCRIBERS = 'gaeks_subscribers';
 
 export const DEFAULT_ARTICLES: ArticleItem[] = [
   {
@@ -535,23 +534,4 @@ export function getStoredArticles(): ArticleItem[] {
 
 export function saveStoredArticles(articles: ArticleItem[]): void {
   localStorage.setItem(STORAGE_KEY_ARTICLES, JSON.stringify(articles));
-}
-
-export function getSubscribers(): NewsletterSubscriber[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY_SUBSCRIBERS);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-export function addSubscriber(email: string): boolean {
-  const list = getSubscribers();
-  if (list.some(s => s.email.toLowerCase() === email.toLowerCase())) {
-    return false;
-  }
-  list.unshift({ email, subscribedAt: new Date().toISOString() });
-  localStorage.setItem(STORAGE_KEY_SUBSCRIBERS, JSON.stringify(list));
-  return true;
 }

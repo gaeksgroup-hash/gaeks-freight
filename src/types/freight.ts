@@ -78,4 +78,7 @@ export interface ArticleItem {
 export interface NewsletterSubscriber {
   email: string;
   subscribedAt: string;
+  status: 'pending' | 'active' | 'unsubscribed';
+  confirmedAt?: string | null;
+  unsubscribedAt?: string | null;
 }
