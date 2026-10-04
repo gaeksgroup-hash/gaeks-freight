@@ -54,6 +54,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 | Commit | Hasil |
 | --- | --- |
+| `d6ccffb` | Audit seluruh frontend, media hero operator, Our Networks, Our Clients, proteksi istilah LCL/FCL, dan newsletter baru |
 | `376bb94` | Operator multiuser, izin per modul, CMS berita, pengaturan situs global, dan SEO live terverifikasi |
 | `4d5e55e` | Carousel layanan operator, Shipment Tracking ERP, footer baru, lazy chunks, dan cache aset live terverifikasi |
 | `8f37b6c` | Penyederhanaan frontend 4 Oktober 2026, live di produksi dan terverifikasi |
