@@ -80,7 +80,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 block h-16 border-b border-white/10 bg-[#011c20] text-white">
-      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-2 px-3 min-[360px]:gap-4 min-[360px]:px-4 sm:px-6 lg:px-8">
         <a
           href="#home"
           onClick={(event) => handleNav('home', event)}
@@ -95,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               target.src = '/logos/gaek-symbol.svg';
             }}
             alt="GAEKS"
-            className="h-9 w-auto object-contain brightness-0 invert"
+            className="h-9 max-w-[112px] w-auto object-contain brightness-0 invert sm:max-w-[148px]"
           />
         </a>
 
@@ -136,7 +136,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label={mobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
           aria-controls="mobile-navigation"
           aria-expanded={mobileMenuOpen}
-          className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-sm font-semibold xl:hidden"
+          className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-sm font-semibold xl:hidden"
         >
           <span>Menu</span>
           {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}

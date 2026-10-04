@@ -74,10 +74,10 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
         {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" className="absolute inset-0 -z-30 h-full w-full object-cover" />}
         {heroSettings.bgType === 'video' && loadVideo && heroSettings.videoUrl && <video key={heroSettings.videoUrl} className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${videoVisible ? 'opacity-100' : 'opacity-0'}`} autoPlay muted loop playsInline preload="none" poster={posterUrl} aria-hidden="true" onCanPlay={() => setVideoVisible(true)}><source src={heroSettings.videoUrl} /></video>}
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.96)_0%,rgba(3,29,33,.82)_55%,rgba(3,29,33,.58)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(3,29,33,.93)_0%,rgba(3,29,33,.78)_58%,rgba(3,29,33,.9)_100%)]" />
-        <div className="page-shell grid min-h-[600px] lg:grid-cols-[1.15fr_.85fr] lg:gap-16">
-          <div className="flex flex-col justify-center py-14 sm:py-20 lg:py-24">
+        <div className="page-shell grid min-h-[600px] min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-16">
+          <div className="min-w-0 flex flex-col justify-center py-14 sm:py-20 lg:py-24">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{text.eyebrow}</p>
-            <h1 id="hero-title" className="mt-5 max-w-3xl font-display text-4xl font-bold leading-[1.04] tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">{text.title}</h1>
+            <h1 id="hero-title" className="mt-5 max-w-3xl break-words font-display text-3xl font-bold leading-[1.04] tracking-[-0.04em] text-white min-[360px]:text-4xl sm:text-5xl lg:text-6xl">{text.title}</h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">{text.body}</p>
             <div className="mt-8 flex flex-wrap items-center gap-4"><button type="button" onClick={() => onNavigate?.('calculator')} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200">{text.primary}<ArrowRight className="h-4 w-4" /></button><button type="button" onClick={() => onNavigate?.('services')} className="inline-flex min-h-11 items-center gap-2 px-1 text-sm font-bold text-white underline-offset-4 hover:underline">{text.secondary}<ArrowRight className="h-4 w-4" /></button></div>
           </div>

@@ -34,7 +34,7 @@ export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id'
 
   return (
     <section aria-labelledby="process-title" className="section-block bg-[#f4f5f1]">
-      <div className="page-shell grid gap-12 lg:grid-cols-2 lg:gap-20">
+      <div className="page-shell grid min-w-0 grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-2 lg:gap-20">
         <div>
           <p className="section-label">Cara kerja</p>
           <h2 id="process-title" className="section-title">Empat tahap, satu jalur koordinasi.</h2>

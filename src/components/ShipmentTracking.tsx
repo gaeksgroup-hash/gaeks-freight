@@ -55,14 +55,14 @@ export const ShipmentTracking: React.FC = () => {
   return (
     <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
       <section className="page-shell py-14 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr] lg:gap-16">
-          <header>
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)] lg:gap-16">
+          <header className="min-w-0">
             <p className="section-label">Shipment tracking</p>
             <h1 className="section-title">Satu pencarian untuk beberapa nomor pengiriman.</h1>
             <p className="section-copy">Masukkan nomor HAWB, B/L, atau kontainer untuk melihat milestone pengiriman.</p>
           </header>
 
-          <div>
+          <div className="min-w-0">
             <form onSubmit={submit} className="border border-slate-200 bg-white p-5 sm:p-7">
               <label htmlFor="shipment-reference" className="text-sm font-bold text-[#12363a]">Nomor shipment</label>
               <div className="mt-3 flex flex-col gap-3 sm:flex-row">
@@ -87,7 +87,7 @@ export const ShipmentTracking: React.FC = () => {
                   <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Status terkini</p>
                   <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                     <h2 className="text-2xl font-bold">{read(shipment, ['statusLabel', 'status', 'currentStatus'], 'Perjalanan shipment')}</h2>
-                    <span className="font-mono text-sm text-slate-300">{read(shipment, ['trackingNumber', 'referenceNumber', 'jobOrderNumber', 'jobOrderNo', 'number'], result?.query || query)}</span>
+                    <span className="break-all font-mono text-sm text-slate-300">{read(shipment, ['trackingNumber', 'referenceNumber', 'jobOrderNumber', 'jobOrderNo', 'number'], result?.query || query)}</span>
                   </div>
                 </div>
 

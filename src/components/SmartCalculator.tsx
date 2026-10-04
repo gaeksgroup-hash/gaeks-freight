@@ -230,8 +230,8 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
           </div>
         </header>
 
-        <div className="mt-8 grid gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(330px,.65fr)]">
-          <form className="rounded-2xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(8,47,52,0.06)]" onSubmit={(event) => event.preventDefault()}>
+        <div className="mt-8 grid min-w-0 grid-cols-[minmax(0,1fr)] gap-6 xl:grid-cols-[minmax(0,1.35fr)_minmax(330px,.65fr)]">
+          <form className="min-w-0 rounded-2xl border border-slate-200 bg-white shadow-[0_18px_50px_rgba(8,47,52,0.06)]" onSubmit={(event) => event.preventDefault()}>
             <fieldset className="border-b border-slate-200 bg-[#f7faf8] p-5 sm:p-7">
               <legend className="px-1 text-sm font-bold text-[#12363a]">Moda pengiriman</legend>
               <div className="mt-3 grid gap-2 sm:grid-cols-3">
@@ -271,7 +271,7 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
                     {PRESET_PACKAGES.map((preset) => <option key={preset.name} value={preset.name}>{preset.name}</option>)}
                   </select>
                 </label>
-                <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-5">
+                <div className="mt-5 grid grid-cols-1 gap-4 min-[360px]:grid-cols-2 sm:grid-cols-5">
                   {[
                     ['Panjang (cm)', lengthCm, setLengthCm], ['Lebar (cm)', widthCm, setWidthCm], ['Tinggi (cm)', heightCm, setHeightCm], ['Berat/koli (kg)', weightKg, setWeightKg], ['Jumlah koli', quantity, setQuantity]
                   ].map(([label, value, setter]) => (
@@ -291,7 +291,7 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
             <div className="border-b border-white/10 bg-white/[0.04] px-6 py-5"><div className="flex items-center justify-between gap-4"><div><p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Ringkasan rencana</p><h3 className="mt-2 text-xl font-bold">{mode.shortLabel}</h3></div><span className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-300 text-[#082f34]"><ModeIcon className="h-5 w-5" /></span></div></div>
             <div className="px-6 py-6">
               <div className="rounded-xl border border-white/10 bg-black/10 p-4"><span className="block text-xs text-slate-400">Rute terpilih</span><strong className="mt-2 block text-sm leading-6 text-white">{route.origin || 'Pilih lokasi asal'}</strong><span className="my-2 block h-px bg-white/10" /><strong className="block text-sm leading-6 text-white">{route.destination || 'Pilih lokasi tujuan'}</strong></div>
-              <div className="mt-5 grid grid-cols-2 gap-3"><div className="rounded-xl border border-white/10 p-4"><span className="block text-xs text-slate-400">Volume</span><strong className="mt-1 block text-2xl">{totalVolumeCbm}</strong><span className="text-xs text-slate-400">CBM</span></div><div className="rounded-xl border border-white/10 p-4"><span className="block text-xs text-slate-400">Basis tagihan</span><strong className="mt-1 block text-2xl">{basisValue}</strong><span className="text-xs text-slate-400">{basisUnit}</span></div></div>
+              <div className="mt-5 grid grid-cols-1 gap-3 min-[360px]:grid-cols-2"><div className="rounded-xl border border-white/10 p-4"><span className="block text-xs text-slate-400">Volume</span><strong className="mt-1 block text-2xl">{totalVolumeCbm}</strong><span className="text-xs text-slate-400">CBM</span></div><div className="rounded-xl border border-white/10 p-4"><span className="block text-xs text-slate-400">Basis tagihan</span><strong className="mt-1 block text-2xl">{basisValue}</strong><span className="text-xs text-slate-400">{basisUnit}</span></div></div>
               <div className="mt-6"><span className="text-xs text-slate-400">Saran awal</span><h3 className="mt-2 text-xl font-bold">{recommendations.title}</h3><p className="mt-3 text-sm leading-6 text-slate-300">{recommendations.desc}</p><p className="mt-3 border-l-2 border-cyan-300/70 pl-3 text-xs leading-5 text-slate-400">{recommendations.alternative}</p></div>
               <details className="group mt-6 border-y border-white/15"><summary className="flex min-h-12 items-center justify-between text-sm font-bold">Dasar perhitungan <ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" /></summary><dl className="space-y-2 pb-5 text-sm text-slate-300"><div className="flex justify-between gap-4"><dt>Berat aktual</dt><dd>{totalActualWeightKg} kg</dd></div><div className="flex justify-between gap-4"><dt>Berat volumetrik udara</dt><dd>{totalVolumetricAirKg} kg</dd></div>{shippingMode === 'ocean' && <div className="flex justify-between gap-4"><dt>Penggunaan kontainer 20ft</dt><dd>{containerUsagePercent}%</dd></div>}</dl></details>
               <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2"><button type="button" onClick={handleSendWhatsApp} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg bg-cyan-300 px-4 text-sm font-bold text-[#082f34] transition-colors hover:bg-cyan-200"><MessageCircle className="h-4 w-4" />WhatsApp</button><button type="button" onClick={handleSendEmail} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-lg border border-white/25 px-4 text-sm font-bold transition-colors hover:bg-white/10"><Mail className="h-4 w-4" />Email</button></div>

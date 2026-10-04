@@ -420,14 +420,14 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
   return (
     <section id="network" aria-labelledby="network-title" className="section-block bg-[#0b3438] text-white">
       <div className="page-shell">
-        <div className="grid gap-8 lg:grid-cols-[.7fr_1.3fr] lg:gap-16">
-          <header>
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)] lg:gap-16">
+          <header className="min-w-0">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Rute dan jadwal</p>
             <h2 id="network-title" className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Cari koridor pengiriman tanpa membuka tabel yang padat.</h2>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">Saring berdasarkan moda, wilayah, atau titik asal. Buka satu rute untuk melihat carrier dan perkiraan waktu.</p>
           </header>
 
-          <div>
+          <div className="min-w-0">
             <div className="grid gap-3 border-b border-white/15 pb-6 sm:grid-cols-[auto_1fr_auto]">
               <div className="grid grid-cols-2">
                 <button type="button" onClick={() => { setActiveTransportMode('sea'); setSelectedRegion('Semua'); }} className={activeTransportMode === 'sea' ? 'min-h-11 bg-cyan-300 px-5 text-sm font-bold text-[#082f34]' : 'min-h-11 border border-white/25 px-5 text-sm font-bold'}>Laut</button>
@@ -436,7 +436,7 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
               <label className="relative">
                 <Search className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" aria-hidden="true" />
                 <span className="sr-only">Cari rute</span>
-                <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Cari kota, pelabuhan, kode, atau carrier" className="min-h-11 w-full border border-white/25 bg-white/5 pl-10 pr-3 text-base text-white placeholder:text-slate-400 focus:outline-none" />
+                <input value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Cari kota, pelabuhan, kode, atau carrier" className="min-h-11 min-w-0 w-full border border-white/25 bg-white/5 pl-10 pr-3 text-base text-white placeholder:text-slate-400 focus:outline-none" />
               </label>
               <select aria-label="Wilayah" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)} className="min-h-11 border border-white/25 bg-[#0b3438] px-3 text-sm text-white">
                 {regions.map((region) => <option key={region}>{region}</option>)}

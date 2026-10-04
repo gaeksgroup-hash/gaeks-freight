@@ -4,6 +4,14 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Responsif ponsel dan tablet
+
+- Menghapus batas lebar minimum halaman yang menyebabkan sisi kanan konten terpotong pada viewport sempit.
+- Membuat kolom layanan, hero, tracking, kalkulator, rute, berita, dan kontak dapat menyusut tanpa mendorong lebar dokumen.
+- Menyesuaikan ukuran judul, padding halaman, kartu layanan, dan grid kalkulator untuk ponsel berukuran kecil.
+- Mengamankan judul, nomor tracking, email, logo, dan teks dinamis dari operator agar membungkus di dalam ruang yang tersedia.
+- Mempertahankan target sentuh navbar, pemilih bahasa, carousel, dan tombol utama sekurangnya 44 piksel.
+
 ### Sinkronisasi operator dan optimasi media
 
 - Memindahkan sumber konten operator dan indeks media ke penyimpanan privat di luar checkout Git agar deployment berikutnya tidak menimpa perubahan operator.

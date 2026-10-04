@@ -39,21 +39,21 @@ Pesan: ${formData.message}`;
   return (
     <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
       <section className="page-shell py-14 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-[.65fr_1.35fr] lg:gap-16">
-          <header>
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,.65fr)_minmax(0,1.35fr)] lg:gap-16">
+          <header className="min-w-0">
             {branding.fullLogoUrl && <img src={branding.fullLogoUrl} alt="GAEKS" className="mb-7 h-9 w-auto object-contain" />}
             <p className="section-label">Kontak</p>
             <h1 className="section-title">Ceritakan rute dan kebutuhan kargo Anda.</h1>
             <p className="section-copy">Kami akan membuka ringkasan terisi di WhatsApp agar Anda dapat memeriksanya sebelum mengirim.</p>
             <div className="mt-8 border-y border-slate-300 py-4 text-sm">
-              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Phone className="h-4 w-4" />{branding.whatsappDisplay}</a>
-              <a href={`mailto:${branding.salesEmail}`} className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />{branding.salesEmail}</a>
-              {branding.infoEmail && branding.infoEmail.toLowerCase() !== branding.salesEmail.toLowerCase() && <a href={`mailto:${branding.infoEmail}`} className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />{branding.infoEmail}</a>}
+              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 min-w-0 items-center gap-3 hover:text-cyan-700"><Phone className="h-4 w-4 shrink-0" /><span className="min-w-0 break-all">{branding.whatsappDisplay}</span></a>
+              <a href={`mailto:${branding.salesEmail}`} className="flex min-h-11 min-w-0 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4 shrink-0" /><span className="min-w-0 break-all">{branding.salesEmail}</span></a>
+              {branding.infoEmail && branding.infoEmail.toLowerCase() !== branding.salesEmail.toLowerCase() && <a href={`mailto:${branding.infoEmail}`} className="flex min-h-11 min-w-0 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4 shrink-0" /><span className="min-w-0 break-all">{branding.infoEmail}</span></a>}
             </div>
             {siteSettings.socialLinks.length > 0 && <div className="mt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Media sosial</p><SocialLinks links={siteSettings.socialLinks} showLabels tone="light" /></div>}
           </header>
 
-          <form onSubmit={handleSubmit} className="border border-slate-200 bg-white p-5 sm:p-8">
+          <form onSubmit={handleSubmit} className="min-w-0 border border-slate-200 bg-white p-5 sm:p-8">
             <fieldset>
               <legend className="text-sm font-bold">Kontak</legend>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">

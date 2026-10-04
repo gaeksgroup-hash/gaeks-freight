@@ -199,8 +199,8 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
   return (
     <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
       <section className="page-shell py-14 sm:py-20">
-        <div className="grid gap-10 lg:grid-cols-[.65fr_1.35fr] lg:gap-16">
-          <header>
+        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,.65fr)_minmax(0,1.35fr)] lg:gap-16">
+          <header className="min-w-0">
             <p className="section-label">Berita dan pembaruan</p>
             <h1 className="section-title">Informasi yang membantu keputusan pengiriman.</h1>
             <p className="section-copy">Cari catatan regulasi, rute, dan operasi. Setiap artikel tampil sebagai baris ringkas.</p>
@@ -219,7 +219,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             </aside>
           </header>
 
-          <div>
+          <div className="min-w-0">
             <div className="grid gap-3 border-b border-slate-300 pb-5 sm:grid-cols-[1fr_auto]">
               <label><span className="sr-only">Cari berita</span><input value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); setCurrentPageNum(1); }} placeholder="Cari judul atau topik" className="field" /></label>
               <label><span className="sr-only">Kategori</span><select value={selectedCategory} onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPageNum(1); }} className="field sm:w-56">{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
