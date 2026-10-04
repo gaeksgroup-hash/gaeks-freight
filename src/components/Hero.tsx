@@ -50,7 +50,8 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
   }, []);
 
   useEffect(() => {
-    if (heroSettings.bgType !== 'video' || !heroSettings.videoUrl || window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.matchMedia('(max-width: 1023px)').matches) return;
+    if (heroSettings.bgType !== 'video' || !heroSettings.videoUrl || heroSettings.videoLoadMode === 'poster-only' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (heroSettings.videoLoadMode === 'adaptive' && window.matchMedia('(max-width: 1023px)').matches) return;
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     if (connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g' || connection?.effectiveType === '3g') return;
     let idleId = 0;
@@ -63,14 +64,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
         idleId = idleWindow.requestIdleCallback(startVideo, { timeout: 2000 });
         fallbackTimer = setTimeout(startVideo, 2200);
       } else startVideo();
-    }, 1400);
+    }, Math.max(0, Math.min(10000, Number(heroSettings.videoLoadDelayMs) || 0)));
     return () => { if (idleId) window.cancelIdleCallback(idleId); window.clearTimeout(timer); if (fallbackTimer) window.clearTimeout(fallbackTimer); };
-  }, [heroSettings.bgType, heroSettings.videoUrl]);
+  }, [heroSettings.bgType, heroSettings.videoLoadDelayMs, heroSettings.videoLoadMode, heroSettings.videoUrl]);
 
   return (
     <section id="home" aria-labelledby="hero-title" className="border-b border-slate-200 bg-[#062d32] pt-16 text-white">
       <div className="relative isolate overflow-hidden">
-        {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" fetchPriority="high" className="absolute inset-0 -z-30 h-full w-full object-cover" />}
+        {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" className="absolute inset-0 -z-30 h-full w-full object-cover" />}
         {heroSettings.bgType === 'video' && loadVideo && heroSettings.videoUrl && <video key={heroSettings.videoUrl} className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${videoVisible ? 'opacity-100' : 'opacity-0'}`} autoPlay muted loop playsInline preload="none" poster={posterUrl} aria-hidden="true" onCanPlay={() => setVideoVisible(true)}><source src={heroSettings.videoUrl} /></video>}
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.96)_0%,rgba(3,29,33,.82)_55%,rgba(3,29,33,.58)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(3,29,33,.93)_0%,rgba(3,29,33,.78)_58%,rgba(3,29,33,.9)_100%)]" />
         <div className="page-shell grid min-h-[600px] lg:grid-cols-[1.15fr_.85fr] lg:gap-16">

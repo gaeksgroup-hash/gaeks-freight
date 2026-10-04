@@ -36,16 +36,28 @@ export const App: React.FC = () => {
   useEffect(() => {
     syncFromServer();
 
-    // Polling ringan untuk pembaruan lintas perangkat; edit pada tab yang sama tetap memakai event lokal.
+    // Pembaruan lintas perangkat tetap ringan, sedangkan tab pada perangkat yang sama menerima BroadcastChannel secara langsung.
     const interval = setInterval(() => {
       syncFromServer();
-    }, 60000);
+    }, 15000);
 
     const onFocus = () => syncFromServer();
+    const publishLocalRefresh = () => window.dispatchEvent(new CustomEvent(GAEKS_UPDATE_EVENT, { detail: { timestamp: Date.now() } }));
+    const onStorage = (event: StorageEvent) => {
+      if (event.key?.startsWith('gaeks_')) publishLocalRefresh();
+    };
+    let channel: BroadcastChannel | null = null;
+    try {
+      channel = new BroadcastChannel('gaeks_sync_channel');
+      channel.onmessage = publishLocalRefresh;
+    } catch {}
     window.addEventListener('focus', onFocus);
+    window.addEventListener('storage', onStorage);
     return () => {
       clearInterval(interval);
       window.removeEventListener('focus', onFocus);
+      window.removeEventListener('storage', onStorage);
+      channel?.close();
     };
   }, []);
 

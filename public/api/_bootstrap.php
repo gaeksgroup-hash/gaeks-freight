@@ -194,6 +194,27 @@ function gaeks_private_dir(): string
     return $directory;
 }
 
+function gaeks_content_file(): string
+{
+    return gaeks_private_dir() . '/site_content.json';
+}
+
+function gaeks_media_library_file(): string
+{
+    return gaeks_private_dir() . '/media_library.json';
+}
+
+function gaeks_seed_private_json(string $privatePath, string $bundledPath): void
+{
+    if (is_file($privatePath) || !is_file($bundledPath)) {
+        return;
+    }
+    $seed = gaeks_read_json_file($bundledPath, []);
+    if ($seed !== []) {
+        gaeks_write_json_file($privatePath, $seed);
+    }
+}
+
 function gaeks_read_json_file(string $path, array $fallback = []): array
 {
     if (!is_file($path)) {

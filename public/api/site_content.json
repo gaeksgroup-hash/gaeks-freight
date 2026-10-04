@@ -13,8 +13,10 @@
     },
     "hero": {
         "bgType": "video",
-        "videoUrl": "/uploads/1789231898_387699.mp4",
-        "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80",
+        "videoUrl": "/uploads/gaeks-hero-cargo-optimized.webm",
+        "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
+        "videoLoadMode": "adaptive",
+        "videoLoadDelayMs": 1400,
         "titlePrefix": "Kargo bergerak ",
         "titleHighlight": "dengan rencana",
         "titleSuffix": " yang jelas.",

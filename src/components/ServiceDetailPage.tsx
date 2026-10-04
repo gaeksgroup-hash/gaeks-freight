@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Check, ChevronDown } from 'lucide-react';
 import { Language, ServiceDetail } from '../types/freight';
-import { getStoredServices } from '../utils/adminStorage';
+import { GAEKS_UPDATE_EVENT, getStoredServices } from '../utils/adminStorage';
 import { DETAILED_SERVICES } from './ServicesCarousel';
 import { ServiceTitle } from './ServiceTitle';
 
@@ -26,7 +26,12 @@ const localize = (service: ServiceDetail, language: Language) => ({
 });
 
 export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, currentLang = 'id', onBack, onQuote }) => {
-  const services = getStoredServices();
+  const [services, setServices] = useState(getStoredServices());
+  useEffect(() => {
+    const reload = () => setServices(getStoredServices());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
+  }, []);
   const service = services.find((item) => slugFor(item) === slug) || DETAILED_SERVICES.find((item) => slugFor(item) === slug) || DETAILED_SERVICES[0];
   const content = localize(service, currentLang);
 

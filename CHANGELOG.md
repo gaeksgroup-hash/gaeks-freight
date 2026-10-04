@@ -4,6 +4,16 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Sinkronisasi operator dan optimasi media
+
+- Memindahkan sumber konten operator dan indeks media ke penyimpanan privat di luar checkout Git agar deployment berikutnya tidak menimpa perubahan operator.
+- Membuat tab publik pada perangkat yang sama menerima perubahan operator secara langsung dan memperpendek sinkronisasi lintas perangkat menjadi 15 detik.
+- Mencegah polling tanpa perubahan mereset hero, carousel layanan, atau state halaman publik.
+- Menambahkan pilihan pemuatan video adaptif, semua perangkat yang mampu, atau poster saja beserta pengaturan jeda di modul Beranda.
+- Merender upload video di browser operator menjadi WebM 720p tanpa audio, membuat poster WebP otomatis, dan menolak publikasi video mentah melalui endpoint media.
+- Mengompres gambar dengan Imagick atau GD di server, mempertahankan animasi GIF, dan mencatat ukuran serta penghematan setiap aset.
+- Mengganti dua MP4 HEVC lama dengan WebM VP9 dan poster WebP. Video hero aktif berkurang dari 11,48 MB menjadi 883 KB.
+
 ### Hero headline dan akselerasi pembuka
 
 - Menghapus panel gambar carousel yang bersaing dengan headline utama dan menggantinya dengan carousel teks layanan yang mengambang pada bidang hero yang sama.

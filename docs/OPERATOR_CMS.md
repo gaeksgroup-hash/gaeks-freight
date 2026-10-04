@@ -15,8 +15,9 @@ Pembatasan peran diperiksa oleh antarmuka dan endpoint PHP. Menyembunyikan menu 
 
 ## Penyimpanan global
 
-- Branding, beranda, navigasi, footer, layanan, artikel, dan SEO ditulis ke `public/api/site_content.json` pada server produksi.
-- Browser publik mengambil file tersebut saat halaman dibuka, saat tab kembali aktif, dan setiap 60 detik.
+- Branding, beranda, navigasi, footer, layanan, artikel, dan SEO ditulis ke `gaeks-private/site_content.json` di luar checkout Git dan `public_html`.
+- Browser publik mengambil data melalui `/api/sync.php` saat halaman dibuka, saat tab kembali aktif, dan setiap 15 detik.
+- Tab operator dan publik pada perangkat yang sama memakai BroadcastChannel serta storage event agar perubahan yang baru disimpan tampil langsung.
 - Penyimpanan browser hanya menjadi cache tampilan. Sumber bersama tetap berkas server.
 - Akun operator, hash kata sandi, subscriber, token newsletter, log pengiriman, dan konfigurasi SMTP disimpan di `gaeks-private` di luar `public_html`.
 
@@ -40,7 +41,14 @@ Mengedit artikel yang sudah ada tidak mengirim broadcast ulang. Menghapus artike
 
 ## Aset dan media
 
-Media yang diunggah dari panel disimpan di `/uploads`. Hapus media hanya jika aset tersebut sudah tidak dipakai oleh logo, layanan, hero, atau artikel.
+Media yang diunggah dari panel diproses sebelum dipublikasikan ke `/uploads`:
+
+- Gambar diringkas ke ukuran maksimum 1920 piksel dan WebP kualitas 82 melalui Imagick atau GD.
+- GIF animasi diperkecil dan ditulis ulang oleh Imagick tanpa membuang animasinya.
+- Video maksimal 90 detik dirender di browser operator menjadi WebM 720p, 24 fps, tanpa audio. Poster WebP dibuat otomatis dan diisi ke pengaturan hero.
+- Endpoint menolak video yang tidak melewati renderer operator. Indeks media disimpan di `gaeks-private/media_library.json` sehingga tidak tertimpa deployment Git.
+
+Pada modul Beranda, operator dapat memilih mode video **Adaptif**, **Semua perangkat yang mampu**, atau **Poster saja**, serta jeda sebelum video diminta. Hapus media hanya jika aset tersebut sudah tidak dipakai oleh logo, layanan, hero, atau artikel.
 
 ## Media sosial
 

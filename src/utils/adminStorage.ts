@@ -18,6 +18,8 @@ export interface HeroSettings {
   bgType: 'video' | 'image' | 'gif' | 'none';
   videoUrl: string;
   imageUrl: string;
+  videoLoadMode: 'adaptive' | 'all-capable' | 'poster-only';
+  videoLoadDelayMs: number;
   eyebrow: string;
   titlePrefix: string;
   titleHighlight: string;
@@ -86,8 +88,10 @@ export const DEFAULT_BRANDING: BrandingSettings = {
 };
 export const DEFAULT_HERO: HeroSettings = {
   bgType: 'video',
-  videoUrl: 'https://cdn.pixabay.com/video/2020/05/25/40149-425134707_large.mp4',
-  imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1920&q=80',
+  videoUrl: '/uploads/gaeks-hero-cargo-optimized.webm',
+  imageUrl: '/uploads/gaeks-hero-cargo-poster.webp',
+  videoLoadMode: 'adaptive',
+  videoLoadDelayMs: 1400,
   eyebrow: 'Freight forwarding dan kepabeanan',
   titlePrefix: 'Kargo bergerak ',
   titleHighlight: 'dengan rencana',
@@ -134,18 +138,26 @@ function writeObject<T>(key: string, data: T): void { localStorage.setItem(key, 
 
 export async function syncFromServer(): Promise<boolean> {
   try {
-    let response = await fetch('/api/site_content.json?t=' + Date.now(), { cache: 'no-store' });
-    if (!response.ok) response = await fetch('/api/sync.php?t=' + Date.now(), { cache: 'no-store' });
+    const response = await fetch('/api/sync.php?t=' + Date.now(), { cache: 'no-store' });
     if (!response.ok) return false;
     const data = await response.json();
     if (!data || data.status === 'empty') return false;
-    if (data.branding) localStorage.setItem(STORAGE_KEY_BRANDING, JSON.stringify(data.branding));
-    if (data.hero) localStorage.setItem(STORAGE_KEY_HERO, JSON.stringify(data.hero));
-    if (data.siteSettings) localStorage.setItem(STORAGE_KEY_SITE, JSON.stringify(data.siteSettings));
-    if (data.seo) localStorage.setItem(STORAGE_KEY_SEO, JSON.stringify(data.seo));
-    if (Array.isArray(data.services)) localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(data.services));
-    if (Array.isArray(data.articles)) localStorage.setItem(STORAGE_KEY_ARTICLES, JSON.stringify(data.articles));
-    notifyLocalUpdate(); return true;
+    let changed = false;
+    const storeWhenChanged = (key: string, value: unknown) => {
+      const encoded = JSON.stringify(value);
+      if (localStorage.getItem(key) !== encoded) {
+        localStorage.setItem(key, encoded);
+        changed = true;
+      }
+    };
+    if (data.branding) storeWhenChanged(STORAGE_KEY_BRANDING, data.branding);
+    if (data.hero) storeWhenChanged(STORAGE_KEY_HERO, data.hero);
+    if (data.siteSettings) storeWhenChanged(STORAGE_KEY_SITE, data.siteSettings);
+    if (data.seo) storeWhenChanged(STORAGE_KEY_SEO, data.seo);
+    if (Array.isArray(data.services)) storeWhenChanged(STORAGE_KEY_SERVICES, data.services);
+    if (Array.isArray(data.articles)) storeWhenChanged(STORAGE_KEY_ARTICLES, data.articles);
+    if (changed) notifyLocalUpdate();
+    return true;
   } catch { return false; }
 }
 

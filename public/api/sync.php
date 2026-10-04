@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/_bootstrap.php';
 
-$dataFile = __DIR__ . '/site_content.json';
+$bundledDataFile = __DIR__ . '/site_content.json';
+$dataFile = gaeks_content_file();
+gaeks_seed_private_json($dataFile, $bundledDataFile);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (is_file($dataFile) && filesize($dataFile) > 10) {
@@ -84,6 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     gaeks_json([
         'status' => 'success',
         'message' => 'Konten tersimpan di server.',
+        'updatedAt' => $current['updatedAt'],
         'newsletter' => $newsletter,
     ]);
 }
