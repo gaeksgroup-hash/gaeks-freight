@@ -179,7 +179,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
       <header className="border-b border-cyan-950 bg-[#061b1f]">
         <div className="flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3"><img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-7 w-auto brightness-0 invert" /><div className="min-w-0"><p className="truncate text-sm font-bold">{session.displayName}</p><p className="text-xs text-cyan-300">{roleLabels[session.role]}</p></div></div>
-          <div className="flex items-center gap-2"><button type="button" onClick={() => onNavigate('home')} className={secondaryClass}><Eye className="h-4 w-4" /><span className="hidden sm:inline">Lihat website</span></button><button type="button" onClick={handleLogout} className={secondaryClass}><LogOut className="h-4 w-4" /><span className="hidden sm:inline">Keluar</span></button></div>
+          <div className="flex items-center gap-2"><button type="button" aria-label="Lihat website" onClick={() => onNavigate('home')} className={secondaryClass}><Eye className="h-4 w-4" /><span className="hidden sm:inline">Lihat website</span></button><button type="button" aria-label="Keluar" onClick={handleLogout} className={secondaryClass}><LogOut className="h-4 w-4" /><span className="hidden sm:inline">Keluar</span></button></div>
         </div>
       </header>
 
