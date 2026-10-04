@@ -41,12 +41,14 @@ Pesan: ${formData.message}`;
       <section className="page-shell py-14 sm:py-20">
         <div className="grid gap-10 lg:grid-cols-[.65fr_1.35fr] lg:gap-16">
           <header>
+            {branding.fullLogoUrl && <img src={branding.fullLogoUrl} alt="GAEKS" className="mb-7 h-9 w-auto object-contain" />}
             <p className="section-label">Kontak</p>
             <h1 className="section-title">Ceritakan rute dan kebutuhan kargo Anda.</h1>
             <p className="section-copy">Kami akan membuka ringkasan terisi di WhatsApp agar Anda dapat memeriksanya sebelum mengirim.</p>
             <div className="mt-8 border-y border-slate-300 py-4 text-sm">
               <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Phone className="h-4 w-4" />{branding.whatsappDisplay}</a>
               <a href={`mailto:${branding.salesEmail}`} className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />{branding.salesEmail}</a>
+              {branding.infoEmail && branding.infoEmail.toLowerCase() !== branding.salesEmail.toLowerCase() && <a href={`mailto:${branding.infoEmail}`} className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />{branding.infoEmail}</a>}
             </div>
             {siteSettings.socialLinks.length > 0 && <div className="mt-6"><p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-slate-500">Media sosial</p><SocialLinks links={siteSettings.socialLinks} showLabels tone="light" /></div>}
           </header>
