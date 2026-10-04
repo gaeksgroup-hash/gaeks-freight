@@ -35,22 +35,103 @@ function gaeks_start_session(): void
     session_start();
 }
 
-function gaeks_operator_credentials_valid(string $username, string $password): bool
+function gaeks_role_permissions(string $role): array
 {
-    if (!hash_equals(GAEKS_OPERATOR_USER, trim($username))) {
-        return false;
+    $roles = [
+        'super_admin' => ['*'],
+        'website_admin' => ['site.branding', 'site.home', 'site.navigation', 'site.services', 'media.manage', 'newsletter.read'],
+        'cms' => ['content.news', 'media.manage', 'newsletter.read'],
+        'seo' => ['site.seo'],
+    ];
+    return $roles[$role] ?? [];
+}
+
+function gaeks_operators_file(): string
+{
+    return gaeks_private_dir() . '/operators.json';
+}
+
+function gaeks_operators(): array
+{
+    return gaeks_read_json_file(gaeks_operators_file(), []);
+}
+
+function gaeks_save_operators(array $operators): bool
+{
+    return gaeks_write_json_file(gaeks_operators_file(), array_values($operators));
+}
+
+function gaeks_operator_credentials(string $username, string $password): ?array
+{
+    $username = trim($username);
+    if (hash_equals(GAEKS_OPERATOR_USER, $username)) {
+        $derived = hash_pbkdf2(
+            'sha256',
+            $password,
+            hex2bin(GAEKS_OPERATOR_SALT),
+            GAEKS_OPERATOR_ITERATIONS,
+            64,
+            false
+        );
+        if (hash_equals(GAEKS_OPERATOR_HASH, $derived)) {
+            return [
+                'username' => GAEKS_OPERATOR_USER,
+                'displayName' => 'Gaekadmin',
+                'role' => 'super_admin',
+            ];
+        }
+        return null;
     }
 
-    $derived = hash_pbkdf2(
-        'sha256',
-        $password,
-        hex2bin(GAEKS_OPERATOR_SALT),
-        GAEKS_OPERATOR_ITERATIONS,
-        64,
-        false
-    );
+    foreach (gaeks_operators() as $operator) {
+        if (!is_array($operator) || empty($operator['active']) || !isset($operator['username'], $operator['passwordHash'])) {
+            continue;
+        }
+        if (strcasecmp((string) $operator['username'], $username) === 0
+            && password_verify($password, (string) $operator['passwordHash'])) {
+            return [
+                'username' => (string) $operator['username'],
+                'displayName' => (string) ($operator['displayName'] ?? $operator['username']),
+                'role' => (string) ($operator['role'] ?? ''),
+            ];
+        }
+    }
+    return null;
+}
 
-    return hash_equals(GAEKS_OPERATOR_HASH, $derived);
+function gaeks_session_user(): ?array
+{
+    gaeks_start_session();
+    if (empty($_SESSION['operator_authenticated'])) {
+        return null;
+    }
+    if (empty($_SESSION['operator_user']) || !is_array($_SESSION['operator_user'])) {
+        $_SESSION['operator_user'] = [
+            'username' => GAEKS_OPERATOR_USER,
+            'displayName' => 'Gaekadmin',
+            'role' => 'super_admin',
+        ];
+    }
+    $user = $_SESSION['operator_user'];
+    if (($user['role'] ?? '') !== 'super_admin') {
+        $current = null;
+        foreach (gaeks_operators() as $operator) {
+            if (is_array($operator) && !empty($operator['active'])
+                && strcasecmp((string) ($operator['username'] ?? ''), (string) ($user['username'] ?? '')) === 0) {
+                $current = $operator;
+                break;
+            }
+        }
+        if ($current === null) {
+            $_SESSION = [];
+            return null;
+        }
+        $user['displayName'] = (string) ($current['displayName'] ?? $current['username']);
+        $user['role'] = (string) ($current['role'] ?? '');
+        $_SESSION['operator_user'] = $user;
+    }
+    $user['permissions'] = gaeks_role_permissions((string) ($user['role'] ?? ''));
+    return $user;
 }
 
 function gaeks_csrf_token(): string
@@ -75,6 +156,20 @@ function gaeks_require_operator(bool $requireCsrf = false): void
             gaeks_json(['status' => 'error', 'message' => 'Token keamanan tidak valid.'], 403);
         }
     }
+}
+
+function gaeks_require_permission(string $permission, bool $requireCsrf = false): array
+{
+    gaeks_require_operator($requireCsrf);
+    $user = gaeks_session_user();
+    if ($user === null) {
+        gaeks_json(['status' => 'error', 'message' => 'Sesi operator sudah tidak aktif.'], 401);
+    }
+    $permissions = $user['permissions'] ?? [];
+    if (!in_array('*', $permissions, true) && !in_array($permission, $permissions, true)) {
+        gaeks_json(['status' => 'error', 'message' => 'Peran Anda tidak memiliki akses ke modul ini.'], 403);
+    }
+    return $user;
 }
 
 function gaeks_read_json_body(): array

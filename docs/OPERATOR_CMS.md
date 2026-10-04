@@ -1,0 +1,50 @@
+# Operator dan CMS GAEKS
+
+Panel operator tersedia di `https://gaeks.com/operator` dan `https://gaeks.com/#operator`.
+
+## Peran
+
+| Peran | Modul |
+| --- | --- |
+| Gaekadmin | Semua modul, termasuk Pengguna & Peran |
+| Administrator Website | Brand & Kontak, Navigasi & Footer, Beranda, Layanan, Media, dan daftar Newsletter |
+| CMS Berita | CMS Berita, Media, dan daftar Newsletter |
+| SEO | SEO |
+
+Pembatasan peran diperiksa oleh antarmuka dan endpoint PHP. Menyembunyikan menu di browser bukan satu satunya kontrol akses.
+
+## Penyimpanan global
+
+- Branding, beranda, navigasi, footer, layanan, artikel, dan SEO ditulis ke `public/api/site_content.json` pada server produksi.
+- Browser publik mengambil file tersebut saat halaman dibuka, saat tab kembali aktif, dan setiap 60 detik.
+- Penyimpanan browser hanya menjadi cache tampilan. Sumber bersama tetap berkas server.
+- Akun operator, hash kata sandi, subscriber, token newsletter, log pengiriman, dan konfigurasi SMTP disimpan di `gaeks-private` di luar `public_html`.
+
+## Pengguna baru
+
+1. Masuk sebagai `Gaekadmin`.
+2. Buka **Pengguna & Peran**.
+3. Pilih **Tambah pengguna**.
+4. Isi username, nama, peran, dan kata sandi minimal 12 karakter.
+5. Simpan. Pengguna dapat langsung masuk dan hanya melihat modul sesuai perannya.
+
+## Publikasi berita
+
+1. Pengguna Gaekadmin atau CMS membuka **CMS Berita**.
+2. Pilih **Tulis berita**, isi judul, kategori, tanggal, ringkasan, foto, isi, dan sumber.
+3. Pilih **Simpan ke server**.
+4. Artikel langsung tersedia di halaman Berita dan ringkasan homepage.
+5. Jika ID artikel belum pernah ada, server mengirim newsletter kepada subscriber berstatus aktif.
+
+Mengedit artikel yang sudah ada tidak mengirim broadcast ulang. Menghapus artikel juga tidak mengirim email.
+
+## Aset dan media
+
+Media yang diunggah dari panel disimpan di `/uploads`. Hapus media hanya jika aset tersebut sudah tidak dipakai oleh logo, layanan, hero, atau artikel.
+
+## Keamanan
+
+- Cookie sesi memakai `Secure`, `HttpOnly`, dan `SameSite=Strict`.
+- Semua perubahan memakai token CSRF.
+- Akun utama Gaekadmin tidak dapat diedit atau dihapus dari endpoint pengguna.
+- Kata sandi operator tambahan disimpan sebagai hash PHP dan tidak pernah dikirim kembali ke browser.

@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, ChevronDown } from 'lucide-react';
 import { getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
+import { GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 interface HomeEditorialProps {
   currentLang?: Language;
@@ -22,9 +23,14 @@ const localize = (article: ArticleItem, language: Language) => ({
 });
 
 export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id', onNavigate, onSelectArticle }) => {
-  const articles = getStoredArticles()
-    .sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime())
-    .slice(0, 3);
+  const latestArticles = () => [...getStoredArticles()].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()).slice(0, 3);
+  const [articles, setArticles] = React.useState(latestArticles);
+
+  React.useEffect(() => {
+    const reload = () => setArticles(latestArticles());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
+  }, []);
 
   return (
     <section aria-labelledby="process-title" className="section-block bg-[#f4f5f1]">

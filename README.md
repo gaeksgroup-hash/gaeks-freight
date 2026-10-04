@@ -52,6 +52,8 @@ Prosedur verifikasi dan rollback ada di [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
 
 Halaman operator memakai sesi PHP server dengan cookie HttpOnly, CSRF, dan pembatasan percobaan login. Mutasi konten serta media memerlukan sesi operator yang valid.
 
+`Gaekadmin` dapat membuat akun Administrator Website, CMS Berita, dan SEO. Setiap peran hanya menerima modul dan izin server yang diperlukan. Panduan modul dan matriks akses tersedia di [docs/OPERATOR_CMS.md](docs/OPERATOR_CMS.md).
+
 Pelanggan newsletter disimpan di direktori privat di luar web root. Pendaftaran publik memakai konfirmasi email dan tautan berhenti berlangganan. Publikasi artikel baru melalui operator mengirim pembaruan individual dari `news@gaeks.com` kepada subscriber aktif.
 
 Konfigurasi SMTP produksi dijelaskan di [docs/SMTP_SETUP.md](docs/SMTP_SETUP.md). Kredensial disimpan di hosting di luar repository dan `public_html`.

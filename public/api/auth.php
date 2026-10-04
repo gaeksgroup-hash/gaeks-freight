@@ -5,11 +5,13 @@ require_once __DIR__ . '/_bootstrap.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     gaeks_start_session();
-    $authenticated = !empty($_SESSION['operator_authenticated']);
+    $user = !empty($_SESSION['operator_authenticated']) ? gaeks_session_user() : null;
+    $authenticated = $user !== null;
     gaeks_json([
         'status' => 'success',
         'authenticated' => $authenticated,
         'csrfToken' => $authenticated ? gaeks_csrf_token() : null,
+        'user' => $user,
     ]);
 }
 
@@ -22,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $body = gaeks_read_json_body();
-    if (!gaeks_operator_credentials_valid((string) ($body['username'] ?? ''), (string) ($body['password'] ?? ''))) {
+    $operator = gaeks_operator_credentials((string) ($body['username'] ?? ''), (string) ($body['password'] ?? ''));
+    if ($operator === null) {
         $attempts++;
         $_SESSION['login_attempts'] = $attempts;
         if ($attempts >= 6) {
@@ -35,9 +38,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     session_regenerate_id(true);
     $_SESSION['operator_authenticated'] = true;
+    $_SESSION['operator_user'] = $operator;
     $_SESSION['login_attempts'] = 0;
     $_SESSION['csrf'] = bin2hex(random_bytes(24));
-    gaeks_json(['status' => 'success', 'authenticated' => true, 'csrfToken' => $_SESSION['csrf']]);
+    $operator['permissions'] = gaeks_role_permissions((string) $operator['role']);
+    gaeks_json(['status' => 'success', 'authenticated' => true, 'csrfToken' => $_SESSION['csrf'], 'user' => $operator]);
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {

@@ -1,915 +1,253 @@
-// filepath: /src/components/OperatorAdmin.tsx
-import React, { useState, useEffect } from 'react';
-import { 
-  LayoutDashboard, Layers, Newspaper, Image as ImageIcon, LogOut, Plus, Trash2, 
-  Edit3, Save, Eye, Download, CheckCircle2, ArrowLeft, Film, FolderOpen, Copy, FileText
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  ArrowDown, ArrowLeft, ArrowUp, CheckCircle2, Download, Eye, FileText, FolderOpen,
+  Image as ImageIcon, Layers, LayoutDashboard, LogOut, Newspaper, Plus, Save,
+  Search, Settings2, ShieldCheck, Trash2, Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { 
-  getStoredBranding, saveStoredBranding, BrandingSettings, DEFAULT_BRANDING,
-  getStoredHero, saveStoredHero, HeroSettings, DEFAULT_HERO,
-  getStoredServices, saveStoredServices, isOperatorLoggedIn, loginOperator, logoutOperator, exportSubscribersToCSV,
-  saveToServerGlobally, operatorFetch
+import {
+  DEFAULT_BRANDING, DEFAULT_HERO, DEFAULT_SEO, DEFAULT_SITE_SETTINGS,
+  BrandingSettings, HeroSettings, ManagedOperator, OperatorRole, OperatorUser, SeoSettings, SiteSettings,
+  deleteOperatorAccount, exportSubscribersToCSV, fetchOperators, getOperatorSession, getStoredBranding,
+  getStoredHero, getStoredSeo, getStoredServices, getStoredSiteSettings, hasPermission, loginOperator,
+  logoutOperator, operatorFetch, saveOperatorAccount, saveSectionToServer, syncFromServer,
 } from '../utils/adminStorage';
-import { getStoredArticles, saveStoredArticles } from '../utils/newsStorage';
+import { getStoredArticles } from '../utils/newsStorage';
 import { fetchNewsletterSubscribers } from '../services/newsletterApi';
-import { ServiceDetail, ArticleItem, NewsletterSubscriber } from '../types/freight';
+import { ArticleItem, NewsletterSubscriber, ServiceDetail } from '../types/freight';
 
-export interface MediaServerItem {
-  id: string;
-  name: string;
-  url: string;
-  type: 'image' | 'video' | 'document';
-  size: string;
-  uploadedAt: string;
-}
+type TabId = 'overview' | 'users' | 'branding' | 'navigation' | 'hero' | 'services' | 'media' | 'news' | 'subscribers' | 'seo';
+type SectionId = 'branding' | 'hero' | 'siteSettings' | 'services' | 'articles' | 'seo';
+
+interface MediaServerItem { id: string; name: string; url: string; type: 'image' | 'video' | 'document'; size: string; uploadedAt: string; }
+
+const roleLabels: Record<OperatorRole, string> = {
+  super_admin: 'Gaekadmin', website_admin: 'Administrator Website', cms: 'CMS Berita', seo: 'SEO',
+};
+
+const tabDefinitions: Array<{ id: TabId; label: string; permission?: string; icon: React.ElementType }> = [
+  { id: 'overview', label: 'Ringkasan', icon: LayoutDashboard },
+  { id: 'users', label: 'Pengguna & Peran', permission: 'users.manage', icon: Users },
+  { id: 'branding', label: 'Brand & Kontak', permission: 'site.branding', icon: ImageIcon },
+  { id: 'navigation', label: 'Navigasi & Footer', permission: 'site.navigation', icon: Settings2 },
+  { id: 'hero', label: 'Beranda', permission: 'site.home', icon: FileText },
+  { id: 'services', label: 'Layanan', permission: 'site.services', icon: Layers },
+  { id: 'media', label: 'Media', permission: 'media.manage', icon: FolderOpen },
+  { id: 'news', label: 'CMS Berita', permission: 'content.news', icon: Newspaper },
+  { id: 'subscribers', label: 'Newsletter', permission: 'newsletter.read', icon: Download },
+  { id: 'seo', label: 'SEO', permission: 'site.seo', icon: Search },
+];
+
+const inputClass = 'mt-1.5 w-full rounded-lg border border-slate-700 bg-[#071d21] px-3 py-2.5 text-sm text-white outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400';
+const labelClass = 'block text-xs font-semibold text-slate-300';
+const panelClass = 'border border-cyan-950 bg-[#071d21] p-5 sm:p-6';
+const primaryClass = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-400 px-4 text-sm font-bold text-[#011417] hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50';
+const secondaryClass = 'inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-slate-700 px-3 text-sm font-semibold text-slate-200 hover:border-cyan-700 hover:text-white';
+
+const newService = (): ServiceDetail => ({
+  id: `service-${Date.now()}`, title: '', category: '', tagline: '', description: '', features: [], equipment: '', imageUrl: '', commodities: '',
+});
+const newArticle = (): ArticleItem => ({
+  id: `article-${Date.now()}`, title: '', category: 'Berita', excerpt: '', content: '', imageUrl: '', author: 'GAEKS Editorial',
+  publishedDate: new Date().toISOString().slice(0, 10), readTime: '5 menit', sources: [],
+});
+const emptyOperator = (): ManagedOperator & { password: string } => ({ username: '', displayName: '', role: 'website_admin', active: true, password: '' });
+
+const Field: React.FC<{ label: string; value: string; onChange: (value: string) => void; type?: string; placeholder?: string; rows?: number; required?: boolean; disabled?: boolean }> = ({ label, value, onChange, type = 'text', placeholder, rows, required, disabled }) => (
+  <label className={labelClass}>{label}{rows
+    ? <textarea rows={rows} required={required} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} className={inputClass} />
+    : <input type={type} required={required} disabled={disabled} value={value} placeholder={placeholder} onChange={(event) => onChange(event.target.value)} className={`${inputClass} disabled:cursor-not-allowed disabled:opacity-60`} />}
+  </label>
+);
 
 export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = ({ onNavigate }) => {
-  const [authenticated, setAuthenticated] = useState<boolean>(false);
+  const [session, setSession] = useState<OperatorUser | null>(null);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [loginUser, setLoginUser] = useState('');
   const [loginPass, setLoginPass] = useState('');
-  const [activeTab, setActiveTab] = useState<'overview' | 'media' | 'hero' | 'branding' | 'services' | 'news' | 'subscribers'>('overview');
+  const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [saving, setSaving] = useState(false);
 
-  const [hero, setHero] = useState<HeroSettings>(DEFAULT_HERO);
   const [branding, setBranding] = useState<BrandingSettings>(DEFAULT_BRANDING);
+  const [hero, setHero] = useState<HeroSettings>(DEFAULT_HERO);
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
+  const [seo, setSeo] = useState<SeoSettings>(DEFAULT_SEO);
   const [services, setServices] = useState<ServiceDetail[]>([]);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
-  const [mediaList, setMediaList] = useState<MediaServerItem[]>([]);
-  const [mediaFilter, setMediaFilter] = useState<'all' | 'image' | 'video' | 'document'>('all');
-  const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
-  const [newsletterSender, setNewsletterSender] = useState('news@gaeks.com');
-  const [mailAvailable, setMailAvailable] = useState(false);
-  const [smtpConfigured, setSmtpConfigured] = useState(false);
-
   const [editingService, setEditingService] = useState<ServiceDetail | null>(null);
   const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
-  const [isSavingGlobal, setIsSavingGlobal] = useState(false);
 
-  // Ambil daftar file dari Media Server Hostinger
-  const fetchMediaLibrary = async () => {
-    try {
-      const res = await fetch('/api/upload.php');
-      if (res.ok) {
-        const data = await res.json();
-        if (data.status === 'success' && Array.isArray(data.files)) {
-          setMediaList(data.files);
-        }
-      }
-    } catch (e) {}
+  const [mediaList, setMediaList] = useState<MediaServerItem[]>([]);
+  const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
+  const [newsletterSender, setNewsletterSender] = useState('news@gaeks.com');
+  const [mailStatus, setMailStatus] = useState('Belum diperiksa');
+  const [operators, setOperators] = useState<ManagedOperator[]>([]);
+  const [editingOperator, setEditingOperator] = useState<ManagedOperator & { password: string } | null>(null);
+
+  const allowedTabs = useMemo(() => tabDefinitions.filter((tab) => !tab.permission || hasPermission(tab.permission, session)), [session]);
+
+  const loadLocalData = () => {
+    setBranding(getStoredBranding()); setHero(getStoredHero()); setSiteSettings(getStoredSiteSettings()); setSeo(getStoredSeo());
+    setServices(getStoredServices()); setArticles(getStoredArticles());
   };
 
+  const fetchMediaLibrary = async () => {
+    try { const response = await fetch('/api/upload.php', { cache: 'no-store' }); const result = await response.json(); if (response.ok) setMediaList(result.files || []); } catch {}
+  };
   const loadSubscribers = async () => {
     try {
-      const result = await fetchNewsletterSubscribers();
-      setSubscribers(result.subscribers);
-      setNewsletterSender(result.sender);
-      setMailAvailable(result.mailAvailable);
-      setSmtpConfigured(result.smtpConfigured);
-    } catch (error) {
-      toast.error('Daftar newsletter belum dapat dimuat', { description: error instanceof Error ? error.message : undefined });
-    }
+      const result = await fetchNewsletterSubscribers(); setSubscribers(result.subscribers); setNewsletterSender(result.sender);
+      setMailStatus(result.smtpConfigured ? 'SMTP aktif' : result.mailAvailable ? 'PHP mail aktif' : 'Email belum tersedia');
+    } catch (error) { toast.error('Newsletter belum dapat dimuat', { description: error instanceof Error ? error.message : undefined }); }
+  };
+  const loadOperators = async () => {
+    try { setOperators(await fetchOperators()); } catch (error) { toast.error('Daftar pengguna belum dapat dimuat', { description: error instanceof Error ? error.message : undefined }); }
+  };
+
+  const loadAuthorizedData = async (user: OperatorUser) => {
+    await syncFromServer(); loadLocalData();
+    const work: Promise<unknown>[] = [];
+    if (hasPermission('media.manage', user)) work.push(fetchMediaLibrary());
+    if (hasPermission('newsletter.read', user)) work.push(loadSubscribers());
+    if (hasPermission('users.manage', user)) work.push(loadOperators());
+    await Promise.all(work);
   };
 
   useEffect(() => {
-    let active = true;
+    let mounted = true;
     void (async () => {
-      const isLogged = await isOperatorLoggedIn();
-      if (!active) return;
-      setAuthenticated(isLogged);
-      if (isLogged) {
-        setHero(getStoredHero());
-        setBranding(getStoredBranding());
-        setServices(getStoredServices());
-        setArticles(getStoredArticles());
-        await Promise.all([fetchMediaLibrary(), loadSubscribers()]);
-      }
+      const user = await getOperatorSession();
+      if (!mounted) return;
+      setSession(user); setCheckingSession(false);
+      if (user) await loadAuthorizedData(user);
     })();
-    return () => { active = false; };
+    return () => { mounted = false; };
   }, []);
 
-  const handleLoginSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (event: React.FormEvent) => {
+    event.preventDefault();
     const result = await loginOperator(loginUser, loginPass);
-    if (result.success) {
-      setAuthenticated(true);
-      setLoginPass('');
-      setHero(getStoredHero());
-      setBranding(getStoredBranding());
-      setServices(getStoredServices());
-      setArticles(getStoredArticles());
-      await Promise.all([fetchMediaLibrary(), loadSubscribers()]);
-      toast.success('Login Berhasil', { description: 'Selamat datang di Control Center Gaekadmin' });
-    } else {
-      toast.error('Autentikasi Gagal', { description: result.message || 'Username atau Password tidak valid.' });
-    }
+    if (!result.success || !result.user) { toast.error('Login gagal', { description: result.message }); return; }
+    setSession(result.user); setLoginPass(''); setActiveTab('overview'); await loadAuthorizedData(result.user);
+    toast.success(`Selamat datang, ${result.user.displayName}`);
   };
 
-  const handleLogout = async () => {
-    await logoutOperator();
-    setAuthenticated(false);
-    setSubscribers([]);
-    toast.info('Sesi Ditutup');
+  const handleLogout = async () => { await logoutOperator(); setSession(null); setActiveTab('overview'); toast.info('Sesi operator ditutup'); };
+
+  const saveSection = async (section: SectionId, payload: unknown, successMessage: string) => {
+    setSaving(true); const result = await saveSectionToServer(section, payload); setSaving(false);
+    if (!result.success) { toast.error('Perubahan belum tersimpan', { description: result.message }); return false; }
+    const delivery = result.newsletter?.articles ? ` Newsletter: ${result.newsletter.sent} terkirim, ${result.newsletter.failed} gagal.` : '';
+    toast.success(successMessage, { description: `Perubahan aktif untuk seluruh pengunjung.${delivery}` }); return true;
   };
 
-  // Upload File ke Media Server (/api/upload.php)
-  const uploadFileToMediaServer = async (file: File, onDone?: (url: string) => void) => {
-    const toastId = toast.loading(`Mengunggah & mengompresi ${file.name}...`);
+  const uploadMedia = async (file: File, onDone?: (url: string) => void) => {
+    const toastId = toast.loading(`Mengunggah ${file.name}`);
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-      const res = await operatorFetch('/api/upload.php', { method: 'POST', body: formData });
-      const data = await res.json();
-      if (res.ok && data.status === 'success' && data.url) {
-        toast.success('File Berhasil Disimpan di Media Server!', { id: toastId, description: data.url });
-        await fetchMediaLibrary();
-        if (onDone) onDone(data.url);
-        return data.url;
-      }
-    } catch (err) {}
-    toast.error('Gagal mengunggah file', { id: toastId });
-    return null;
+      const body = new FormData(); body.append('file', file);
+      const response = await operatorFetch('/api/upload.php', { method: 'POST', body }); const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Upload gagal.');
+      await fetchMediaLibrary(); onDone?.(result.url); toast.success('Media tersimpan', { id: toastId });
+    } catch (error) { toast.error('Media belum tersimpan', { id: toastId, description: error instanceof Error ? error.message : undefined }); }
   };
 
-  // Hapus File dari Media Server
-  const handleDeleteMedia = async (url: string) => {
-    if (confirm('Hapus file ini dari Media Server Hostinger?')) {
-      try {
-        const res = await operatorFetch('/api/upload.php?action=delete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url })
-        });
-        if (res.ok) {
-          toast.info('File Dihapus dari Media Server');
-          await fetchMediaLibrary();
-        }
-      } catch (e) {}
-    }
+  const deleteMedia = async (url: string) => {
+    if (!confirm('Hapus media ini dari server?')) return;
+    const response = await operatorFetch('/api/upload.php?action=delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ url }) });
+    if (response.ok) { await fetchMediaLibrary(); toast.success('Media dihapus'); } else toast.error('Media belum dapat dihapus');
   };
 
-  // Simpan Perubahan ke Server Hostinger Global
-  const commitToServer = async () => {
-    setIsSavingGlobal(true);
-    const res = await saveToServerGlobally();
-    setIsSavingGlobal(false);
-    if (res.success) {
-      const sent = res.newsletter?.sent || 0;
-      const failed = res.newsletter?.failed || 0;
-      toast.success('Perubahan Berhasil Tersimpan di Server Hostinger!', { 
-        description: res.newsletter?.articles
-          ? `Berita dipublikasikan. Newsletter terkirim ke ${sent} pelanggan${failed ? `, ${failed} gagal` : ''}.`
-          : 'Aktif secara global untuk seluruh pengunjung di semua perangkat.'
-      });
-      if (res.newsletter?.articles) await loadSubscribers();
-    } else {
-      toast.error('Peringatan Penyimpanan', { description: res.message });
-    }
-  };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success('Tautan Berhasil Disalin ke Clipboard!', { description: text });
-  };
-
-  const handleDeleteArticle = async (id: string) => {
-    if (confirm('Hapus artikel ini dari server?')) {
-      const updated = articles.filter(a => a.id !== id);
-      setArticles(updated);
-      saveStoredArticles(updated);
-      await commitToServer();
-      toast.info('Artikel Berhasil Dihapus');
-    }
-  };
-
-  const handleDeleteService = async (id: string) => {
-    if (confirm('Hapus layanan ini dari website?')) {
-      const updated = services.filter(s => s.id !== id);
-      setServices(updated);
-      saveStoredServices(updated);
-      await commitToServer();
-      toast.info('Layanan Berhasil Dihapus');
-    }
-  };
-
-  if (!authenticated) {
-    return (
-      <div className="min-h-screen bg-[#011417] text-white flex items-center justify-center p-4">
-        <div className="max-w-md w-full bg-[#011C20] border border-cyan-800/40 rounded-3xl p-8 sm:p-10 shadow-2xl relative overflow-hidden">
-          <div className="text-center mb-8">
-            <div className="inline-flex p-3 rounded-2xl bg-[#012E34] border border-cyan-500/30 mb-4 shadow-lg">
-              <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-10 w-auto" />
-            </div>
-            <h2 className="text-2xl font-black text-white tracking-tight">GAEKS Operator System</h2>
-            <p className="text-xs text-cyan-300/80 mt-1">Portal Manajemen Server Global & Media Arsip</p>
-          </div>
-
-          <form onSubmit={handleLoginSubmit} className="space-y-4">
-            <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">Username Operator</label>
-              <input 
-                type="text" 
-                value={loginUser}
-                onChange={(e) => setLoginUser(e.target.value)}
-                placeholder="Gaekadmin"
-                required
-                className="w-full px-4 py-3 rounded-xl bg-[#012E34]/90 border border-cyan-800/60 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">Password Otorisasi</label>
-              <input 
-                type="password" 
-                value={loginPass}
-                onChange={(e) => setLoginPass(e.target.value)}
-                placeholder="••••••••••••"
-                required
-                className="w-full px-4 py-3 rounded-xl bg-[#012E34]/90 border border-cyan-800/60 text-sm text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              />
-            </div>
-            <button 
-              type="submit" 
-              className="w-full mt-2 py-3.5 px-4 rounded-xl font-black text-sm bg-gradient-to-r from-cyan-500 to-[#012E34] hover:from-cyan-400 hover:to-[#011C20] text-white shadow-lg transition-all active:scale-95"
-            >
-              Masuk ke Control Center
-            </button>
-          </form>
-
-          <div className="mt-8 text-center">
-            <button onClick={() => onNavigate('home')} className="inline-flex items-center space-x-1.5 text-xs text-slate-400 hover:text-cyan-300 transition-colors">
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Kembali ke Beranda Situs</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const filteredMedia = mediaList.filter(item => {
-    if (mediaFilter === 'all') return true;
-    return item.type === mediaFilter;
-  });
+  if (checkingSession) return <div className="flex min-h-screen items-center justify-center bg-[#011417] text-sm text-slate-300">Memeriksa sesi operator…</div>;
+  if (!session) return (
+    <main className="flex min-h-screen items-center justify-center bg-[#011417] p-4 text-white">
+      <section className="w-full max-w-sm border border-cyan-900 bg-[#071d21] p-7">
+        <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-9 w-auto brightness-0 invert" />
+        <h1 className="mt-7 text-2xl font-bold">Operator GAEKS</h1>
+        <p className="mt-2 text-sm leading-6 text-slate-400">Masuk untuk mengelola modul sesuai peran Anda.</p>
+        <form onSubmit={handleLogin} className="mt-7 space-y-4">
+          <Field label="Username" value={loginUser} onChange={setLoginUser} required />
+          <Field label="Kata sandi" type="password" value={loginPass} onChange={setLoginPass} required />
+          <button className={`${primaryClass} w-full`} type="submit">Masuk</button>
+        </form>
+        <button type="button" onClick={() => onNavigate('home')} className="mt-4 inline-flex min-h-10 items-center gap-2 text-sm text-slate-400 hover:text-white"><ArrowLeft className="h-4 w-4" />Kembali ke website</button>
+      </section>
+    </main>
+  );
 
   return (
-    <div className="min-h-screen bg-[#011417] text-white flex flex-col">
-      {/* Topbar Nav */}
-      <header className="h-16 bg-[#011C20] border-b border-cyan-950 px-4 sm:px-8 flex items-center justify-between z-30 sticky top-0">
-        <div className="flex items-center space-x-3">
-          <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-8 w-auto" />
-          <div className="hidden sm:block border-l border-cyan-900/60 pl-3">
-            <span className="text-xs font-black text-white tracking-wider block">GAEKS CONTROL CENTER</span>
-            <span className="text-[10px] text-emerald-400 font-mono flex items-center space-x-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              <span>Hostinger Media & Server Sync: AKTIF GLOBAL</span>
-            </span>
-          </div>
-        </div>
-
-        <div className="flex items-center space-x-3">
-          <button 
-            onClick={() => onNavigate('home')}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-[#012E34] hover:bg-cyan-950 text-xs font-bold text-cyan-300 border border-cyan-800/40 transition-all"
-          >
-            <Eye className="w-3.5 h-3.5" />
-            <span>Lihat Website</span>
-          </button>
-          <button 
-            onClick={handleLogout}
-            className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-rose-950/60 hover:bg-rose-900 text-xs font-bold text-rose-300 border border-rose-800/40 transition-all"
-          >
-            <LogOut className="w-3.5 h-3.5" />
-            <span>Keluar</span>
-          </button>
+    <div className="min-h-screen bg-[#011417] text-white">
+      <header className="border-b border-cyan-950 bg-[#061b1f]">
+        <div className="flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3"><img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-7 w-auto brightness-0 invert" /><div className="min-w-0"><p className="truncate text-sm font-bold">{session.displayName}</p><p className="text-xs text-cyan-300">{roleLabels[session.role]}</p></div></div>
+          <div className="flex items-center gap-2"><button type="button" onClick={() => onNavigate('home')} className={secondaryClass}><Eye className="h-4 w-4" /><span className="hidden sm:inline">Lihat website</span></button><button type="button" onClick={handleLogout} className={secondaryClass}><LogOut className="h-4 w-4" /><span className="hidden sm:inline">Keluar</span></button></div>
         </div>
       </header>
 
-      {/* Main Panel */}
-      <div className="flex-grow flex flex-col md:flex-row">
-        {/* Sidebar Nav */}
-        <aside className="w-full md:w-64 bg-[#011C20] border-r border-cyan-950 p-4 space-y-1 flex-shrink-0">
-          <button 
-            onClick={() => setActiveTab('overview')} 
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'overview' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <LayoutDashboard className="w-4 h-4 text-cyan-400" />
-            <span>Ringkasan Sistem</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('media')} 
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'media' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <FolderOpen className="w-4 h-4 text-cyan-400" />
-            <span>Media Server ({mediaList.length})</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('hero')} 
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'hero' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <Film className="w-4 h-4 text-cyan-400" />
-            <span>Hero Latar & Caption</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('branding')} 
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'branding' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <ImageIcon className="w-4 h-4 text-cyan-400" />
-            <span>Logo & Branding</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('services')} 
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'services' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <Layers className="w-4 h-4 text-cyan-400" />
-            <span>Layanan & Foto ({services.length})</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('news')} 
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'news' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <Newspaper className="w-4 h-4 text-cyan-400" />
-            <span>CMS Berita ({articles.length})</span>
-          </button>
-          <button 
-            onClick={() => { setActiveTab('subscribers'); void loadSubscribers(); }}
-            className={`w-full flex items-center space-x-2.5 px-3.5 py-2.5 rounded-xl text-xs font-bold transition-all ${activeTab === 'subscribers' ? 'bg-[#012E34] text-cyan-300 border border-cyan-600/40' : 'text-slate-400 hover:text-white'}`}
-          >
-            <Download className="w-4 h-4 text-cyan-400" />
-            <span>Subscriber Buletin</span>
-          </button>
+      <div className="mx-auto flex max-w-[1500px] flex-col md:flex-row">
+        <aside className="border-b border-cyan-950 bg-[#061b1f] p-3 md:min-h-[calc(100vh-4rem)] md:w-60 md:border-b-0 md:border-r">
+          <nav aria-label="Modul operator" className="flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
+            {allowedTabs.map((tab) => { const Icon = tab.icon; return <button key={tab.id} type="button" onClick={() => { setActiveTab(tab.id); if (tab.id === 'users') void loadOperators(); if (tab.id === 'subscribers') void loadSubscribers(); }} className={`flex min-h-11 shrink-0 items-center gap-2.5 rounded-md px-3 text-left text-sm font-semibold md:w-full ${activeTab === tab.id ? 'bg-cyan-400 text-[#011417]' : 'text-slate-300 hover:bg-white/5 hover:text-white'}`}><Icon className="h-4 w-4" />{tab.label}</button>; })}
+          </nav>
         </aside>
 
-        {/* Content Area */}
-        <main className="flex-grow p-6 sm:p-10 max-w-5xl">
-          
-          {/* TAB 1: OVERVIEW */}
-          {activeTab === 'overview' && (
-            <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-black text-white">Ringkasan Sistem Hostinger Global</h3>
-                <p className="text-xs text-slate-400 mt-1">Setiap tombol simpan langsung menulis ke file server Hostinger sehingga aktif secara global untuk semua pengunjung di seluruh dunia.</p>
-              </div>
+        <main className="min-w-0 flex-1 p-4 sm:p-7 lg:p-10">
+          {activeTab === 'overview' && <Overview session={session} services={services.length} articles={articles.length} media={mediaList.length} subscribers={subscribers.length} allowedTabs={allowedTabs} onOpen={setActiveTab} />}
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                <div className="bg-[#011C20] border border-cyan-900/40 p-6 rounded-2xl">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Status Server</span>
-                  <div className="text-xl font-black text-emerald-400 flex items-center space-x-2">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    <span>Aktif Global (200 OK)</span>
-                  </div>
-                  <span className="text-[11px] text-slate-400 mt-2 block">Endpoint: /api/sync.php</span>
-                </div>
-                <div className="bg-[#011C20] border border-cyan-900/40 p-6 rounded-2xl">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Media Tersimpan</span>
-                  <div className="text-3xl font-black text-cyan-300">{mediaList.length} File</div>
-                  <span className="text-[11px] text-slate-400 mt-2 block">Video, Gambar & Dokumen</span>
-                </div>
-                <div className="bg-[#011C20] border border-cyan-900/40 p-6 rounded-2xl">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">Layanan & Berita</span>
-                  <div className="text-3xl font-black text-amber-300">{services.length + articles.length} Item</div>
-                  <span className="text-[11px] text-slate-400 mt-2 block">Penerjemah Universal Aktif</span>
-                </div>
-              </div>
-            </div>
-          )}
+          {activeTab === 'users' && hasPermission('users.manage', session) && <section className="space-y-6">
+            <PageTitle title="Pengguna & peran" copy="Gaekadmin mengatur siapa yang dapat mengubah situs, berita, atau SEO. Pemeriksaan akses juga berjalan di server." action={<button className={primaryClass} onClick={() => setEditingOperator(emptyOperator())}><Plus className="h-4 w-4" />Tambah pengguna</button>} />
+            {editingOperator && <form className={panelClass} onSubmit={async (event) => {
+              event.preventDefault(); setSaving(true);
+              try { await saveOperatorAccount(editingOperator); setEditingOperator(null); await loadOperators(); toast.success('Akun operator tersimpan'); }
+              catch (error) { toast.error('Akun belum tersimpan', { description: error instanceof Error ? error.message : undefined }); }
+              finally { setSaving(false); }
+            }}><div className="grid gap-4 sm:grid-cols-2"><Field label="Username" value={editingOperator.username} onChange={(value) => setEditingOperator({ ...editingOperator, username: value })} required disabled={operators.some((item) => item.username === editingOperator.username)} /><Field label="Nama tampilan" value={editingOperator.displayName} onChange={(value) => setEditingOperator({ ...editingOperator, displayName: value })} required /><label className={labelClass}>Peran<select className={inputClass} value={editingOperator.role} onChange={(event) => setEditingOperator({ ...editingOperator, role: event.target.value as OperatorRole })}><option value="website_admin">Administrator Website</option><option value="cms">CMS Berita</option><option value="seo">SEO</option></select></label><Field label="Kata sandi (minimal 12 karakter; kosongkan bila tidak diganti)" type="password" value={editingOperator.password} onChange={(value) => setEditingOperator({ ...editingOperator, password: value })} /><label className="flex min-h-11 items-center gap-3 text-sm text-slate-300"><input type="checkbox" checked={editingOperator.active} onChange={(event) => setEditingOperator({ ...editingOperator, active: event.target.checked })} className="h-4 w-4 accent-cyan-400" />Akun aktif</label></div><FormActions saving={saving} onCancel={() => setEditingOperator(null)} /></form>}
+            <div className="divide-y divide-cyan-950 border border-cyan-950 bg-[#071d21]">{operators.map((operator) => <div key={operator.username} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"><div><div className="flex items-center gap-2"><strong>{operator.displayName}</strong><span className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${operator.active ? 'bg-emerald-950 text-emerald-300' : 'bg-slate-800 text-slate-400'}`}>{operator.active ? 'Aktif' : 'Nonaktif'}</span></div><p className="mt-1 text-xs text-slate-400">{operator.username} · {roleLabels[operator.role]}</p></div>{operator.role !== 'super_admin' && <div className="flex gap-2"><button className={secondaryClass} onClick={() => setEditingOperator({ ...operator, password: '' })}>Edit</button><button className={secondaryClass} onClick={async () => { if (!confirm(`Hapus akun ${operator.username}?`)) return; try { await deleteOperatorAccount(operator.username); await loadOperators(); toast.success('Akun dihapus'); } catch (error) { toast.error('Akun belum dapat dihapus', { description: error instanceof Error ? error.message : undefined }); } }}><Trash2 className="h-4 w-4" /></button></div>}</div>)}</div>
+          </section>}
 
-          {/* TAB 2: MEDIA SERVER */}
-          {activeTab === 'media' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black text-white">Media Server GAEKS (Arsip File, Video & Dokumen)</h3>
-                <p className="text-xs text-slate-400 mt-1">Unggah file lokal ke server Hostinger dengan kompresi WebP otomatis untuk performa maksimal.</p>
-              </div>
+          {activeTab === 'branding' && hasPermission('site.branding', session) && <section className="space-y-6"><PageTitle title="Brand & kontak" copy="Aset dan informasi di sini dipakai oleh navbar, footer, halaman kontak, favicon, dan tombol WhatsApp." />
+            <form className={`${panelClass} space-y-6`} onSubmit={async (event) => { event.preventDefault(); await saveSection('branding', branding, 'Brand dan kontak tersimpan'); }}>
+              <div className="grid gap-4 sm:grid-cols-2"><AssetField label="Favicon" value={branding.faviconUrl} onChange={(value) => setBranding({ ...branding, faviconUrl: value })} uploadMedia={uploadMedia} /><AssetField label="Logo navbar" value={branding.navbarLogoUrl} onChange={(value) => setBranding({ ...branding, navbarLogoUrl: value })} uploadMedia={uploadMedia} /><AssetField label="Logo footer" value={branding.footerLogoUrl} onChange={(value) => setBranding({ ...branding, footerLogoUrl: value })} uploadMedia={uploadMedia} /><AssetField label="Logo lengkap" value={branding.fullLogoUrl} onChange={(value) => setBranding({ ...branding, fullLogoUrl: value })} uploadMedia={uploadMedia} /></div>
+              <div className="grid gap-4 sm:grid-cols-2"><Field label="Nomor WhatsApp" value={branding.whatsappNumber} onChange={(value) => setBranding({ ...branding, whatsappNumber: value })} required /><Field label="Tampilan nomor" value={branding.whatsappDisplay} onChange={(value) => setBranding({ ...branding, whatsappDisplay: value })} required /><Field label="Email penjualan" type="email" value={branding.salesEmail} onChange={(value) => setBranding({ ...branding, salesEmail: value })} required /><Field label="Email informasi" type="email" value={branding.infoEmail} onChange={(value) => setBranding({ ...branding, infoEmail: value })} /><div className="sm:col-span-2"><Field label="Alamat operasional" value={branding.companyAddress} onChange={(value) => setBranding({ ...branding, companyAddress: value })} required /></div></div><SaveButton saving={saving} />
+            </form></section>}
 
-              {/* Upload Dropzone */}
-              <div className="p-6 rounded-2xl bg-[#011C20] border-2 border-dashed border-cyan-700/60 flex flex-col items-center justify-center space-y-3">
-                <div className="p-3 rounded-2xl bg-[#012E34] text-cyan-400">
-                  <FolderOpen className="w-8 h-8" />
-                </div>
-                <div className="text-center">
-                  <p className="text-xs font-bold text-white">Pilih file Video (.mp4), Gambar (.jpg/.png/.webp), atau Dokumen (.pdf)</p>
-                  <span className="text-[10px] text-slate-400">Gambar otomatis dikonversi ke WebP berkualitas tinggi & ringan.</span>
-                </div>
-                <input 
-                  type="file" 
-                  accept="image/*,video/mp4,video/webm,application/pdf"
-                  onChange={(e) => {
-                    if (e.target.files?.[0]) {
-                      uploadFileToMediaServer(e.target.files[0]);
-                    }
-                  }}
-                  className="text-xs text-slate-300 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-bold file:bg-cyan-600 file:text-white hover:file:bg-cyan-500 cursor-pointer"
-                />
-              </div>
+          {activeTab === 'navigation' && hasPermission('site.navigation', session) && <section className="space-y-6"><PageTitle title="Navigasi & footer" copy="Atur urutan menu, tampilkan atau sembunyikan halaman, tautan sosial, dan identitas footer." />
+            <form className="space-y-6" onSubmit={async (event) => { event.preventDefault(); await saveSection('siteSettings', siteSettings, 'Navigasi dan footer tersimpan'); }}>
+              <div className={panelClass}><h2 className="text-sm font-bold">Menu utama</h2><div className="mt-4 divide-y divide-slate-800">{siteSettings.navigation.map((item, index) => <div key={item.page} className="grid gap-3 py-3 sm:grid-cols-[1fr_1fr_auto_auto]"><input aria-label={`Label ${item.page}`} className={inputClass.replace('mt-1.5 ', '')} value={item.label} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, label: event.target.value }; setSiteSettings({ ...siteSettings, navigation }); }} /><input aria-label={`Label seluler ${item.page}`} className={inputClass.replace('mt-1.5 ', '')} value={item.mobileLabel} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, mobileLabel: event.target.value }; setSiteSettings({ ...siteSettings, navigation }); }} /><label className="flex min-h-10 items-center gap-2 text-xs"><input type="checkbox" checked={item.visible} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, visible: event.target.checked }; setSiteSettings({ ...siteSettings, navigation }); }} />Tampil</label><div className="flex gap-1"><MoveButton icon={ArrowUp} disabled={index === 0} onClick={() => setSiteSettings({ ...siteSettings, navigation: move(siteSettings.navigation, index, index - 1) })} /><MoveButton icon={ArrowDown} disabled={index === siteSettings.navigation.length - 1} onClick={() => setSiteSettings({ ...siteSettings, navigation: move(siteSettings.navigation, index, index + 1) })} /></div></div>)}</div></div>
+              <div className={panelClass}><div className="grid gap-4 sm:grid-cols-2"><Field label="Judul ajakan tracking" value={siteSettings.footerHeading} onChange={(value) => setSiteSettings({ ...siteSettings, footerHeading: value })} /><Field label="Tagline footer" value={siteSettings.footerTagline} onChange={(value) => setSiteSettings({ ...siteSettings, footerTagline: value })} /><Field label="Label produk digital" value={siteSettings.digitalProductLabel} onChange={(value) => setSiteSettings({ ...siteSettings, digitalProductLabel: value })} /><Field label="Tautan produk digital" type="url" value={siteSettings.digitalProductUrl} onChange={(value) => setSiteSettings({ ...siteSettings, digitalProductUrl: value })} /></div><div className="mt-6 flex items-center justify-between"><h2 className="text-sm font-bold">Media sosial</h2><button type="button" className={secondaryClass} onClick={() => setSiteSettings({ ...siteSettings, socialLinks: [...siteSettings.socialLinks, { id: `social-${Date.now()}`, label: '', url: '' }] })}><Plus className="h-4 w-4" />Tambah</button></div><div className="mt-3 space-y-3">{siteSettings.socialLinks.map((item, index) => <div key={item.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]"><input aria-label="Nama media sosial" placeholder="LinkedIn" className={inputClass.replace('mt-1.5 ', '')} value={item.label} onChange={(event) => { const socialLinks = [...siteSettings.socialLinks]; socialLinks[index] = { ...item, label: event.target.value }; setSiteSettings({ ...siteSettings, socialLinks }); }} /><input aria-label="Tautan media sosial" placeholder="https://" className={inputClass.replace('mt-1.5 ', '')} value={item.url} onChange={(event) => { const socialLinks = [...siteSettings.socialLinks]; socialLinks[index] = { ...item, url: event.target.value }; setSiteSettings({ ...siteSettings, socialLinks }); }} /><button type="button" className={secondaryClass} onClick={() => setSiteSettings({ ...siteSettings, socialLinks: siteSettings.socialLinks.filter((link) => link.id !== item.id) })}><Trash2 className="h-4 w-4" /></button></div>)}</div></div><SaveButton saving={saving} />
+            </form></section>}
 
-              {/* Filter Tabs */}
-              <div className="flex items-center space-x-2 border-b border-cyan-950 pb-3">
-                <button onClick={() => setMediaFilter('all')} className={`px-3 py-1 rounded-lg text-xs font-bold ${mediaFilter === 'all' ? 'bg-[#012E34] text-cyan-300' : 'text-slate-400'}`}>Semua ({mediaList.length})</button>
-                <button onClick={() => setMediaFilter('image')} className={`px-3 py-1 rounded-lg text-xs font-bold ${mediaFilter === 'image' ? 'bg-[#012E34] text-cyan-300' : 'text-slate-400'}`}>Gambar ({mediaList.filter(m => m.type === 'image').length})</button>
-                <button onClick={() => setMediaFilter('video')} className={`px-3 py-1 rounded-lg text-xs font-bold ${mediaFilter === 'video' ? 'bg-[#012E34] text-cyan-300' : 'text-slate-400'}`}>Video ({mediaList.filter(m => m.type === 'video').length})</button>
-                <button onClick={() => setMediaFilter('document')} className={`px-3 py-1 rounded-lg text-xs font-bold ${mediaFilter === 'document' ? 'bg-[#012E34] text-cyan-300' : 'text-slate-400'}`}>Dokumen ({mediaList.filter(m => m.type === 'document').length})</button>
-              </div>
+          {activeTab === 'hero' && hasPermission('site.home', session) && <section className="space-y-6"><PageTitle title="Beranda" copy="Atur teks utama beranda. Carousel layanan tetap mengambil daftar dan foto dari modul Layanan." />
+            <form className={`${panelClass} space-y-4`} onSubmit={async (event) => { event.preventDefault(); await saveSection('hero', hero, 'Konten beranda tersimpan'); }}><Field label="Label kecil" value={hero.eyebrow} onChange={(value) => setHero({ ...hero, eyebrow: value })} /><div className="grid gap-4 sm:grid-cols-3"><Field label="Judul awal" value={hero.titlePrefix} onChange={(value) => setHero({ ...hero, titlePrefix: value })} /><Field label="Judul penekanan" value={hero.titleHighlight} onChange={(value) => setHero({ ...hero, titleHighlight: value })} /><Field label="Judul akhir" value={hero.titleSuffix} onChange={(value) => setHero({ ...hero, titleSuffix: value })} /></div><Field label="Deskripsi" rows={3} value={hero.caption} onChange={(value) => setHero({ ...hero, caption: value })} /><div className="grid gap-4 sm:grid-cols-2"><Field label="Tombol utama" value={hero.primaryLabel} onChange={(value) => setHero({ ...hero, primaryLabel: value })} /><Field label="Tombol kedua" value={hero.secondaryLabel} onChange={(value) => setHero({ ...hero, secondaryLabel: value })} /></div><SaveButton saving={saving} /></form></section>}
 
-              {/* Media Cards Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                {filteredMedia.map((item) => (
-                  <div key={item.id} className="bg-[#011C20] border border-cyan-900/40 rounded-2xl p-4 flex flex-col justify-between space-y-3 shadow-md">
-                    <div className="relative h-32 rounded-xl overflow-hidden bg-slate-900 flex items-center justify-center">
-                      {item.type === 'image' && (
-                        <img src={item.url} alt={item.name} className="w-full h-full object-cover" />
-                      )}
-                      {item.type === 'video' && (
-                        <video src={item.url} muted playsInline className="w-full h-full object-cover" />
-                      )}
-                      {item.type === 'document' && (
-                        <FileText className="w-12 h-12 text-cyan-400" />
-                      )}
-                      <span className="absolute top-2 left-2 bg-[#012E34]/90 text-cyan-300 text-[9px] font-bold px-2 py-0.5 rounded uppercase">
-                        {item.type} • {item.size}
-                      </span>
-                    </div>
+          {activeTab === 'services' && hasPermission('site.services', session) && <section className="space-y-6"><PageTitle title="Layanan" copy="Tambah, ubah, atau kurangi layanan yang tampil pada carousel dan halaman layanan." action={<button className={primaryClass} onClick={() => setEditingService(newService())}><Plus className="h-4 w-4" />Tambah layanan</button>} />
+            {editingService && <form className={`${panelClass} space-y-4`} onSubmit={async (event) => { event.preventDefault(); const exists = services.some((item) => item.id === editingService.id); const updated = exists ? services.map((item) => item.id === editingService.id ? editingService : item) : [editingService, ...services]; if (await saveSection('services', updated, 'Layanan tersimpan')) { setServices(updated); setEditingService(null); } }}><div className="grid gap-4 sm:grid-cols-2"><Field label="Nama layanan" value={editingService.title} onChange={(value) => setEditingService({ ...editingService, title: value })} required /><Field label="Kategori" value={editingService.category} onChange={(value) => setEditingService({ ...editingService, category: value })} required /></div><Field label="Tagline" value={editingService.tagline} onChange={(value) => setEditingService({ ...editingService, tagline: value })} /><Field label="Deskripsi" rows={4} value={editingService.description} onChange={(value) => setEditingService({ ...editingService, description: value })} required /><AssetField label="Foto layanan" value={editingService.imageUrl} onChange={(value) => setEditingService({ ...editingService, imageUrl: value })} uploadMedia={uploadMedia} /><Field label="Fitur (satu per baris)" rows={4} value={editingService.features.join('\n')} onChange={(value) => setEditingService({ ...editingService, features: value.split('\n').map((line) => line.trim()).filter(Boolean) })} /><div className="grid gap-4 sm:grid-cols-2"><Field label="Peralatan" value={editingService.equipment} onChange={(value) => setEditingService({ ...editingService, equipment: value })} /><Field label="Komoditas" value={editingService.commodities} onChange={(value) => setEditingService({ ...editingService, commodities: value })} /></div><FormActions saving={saving} onCancel={() => setEditingService(null)} /></form>}
+            <div className="grid gap-3 sm:grid-cols-2">{services.map((service) => <article key={service.id} className="flex gap-4 border border-cyan-950 bg-[#071d21] p-4"><img src={service.imageUrl} alt="" className="h-20 w-24 shrink-0 object-cover" /><div className="min-w-0 flex-1"><p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">{service.category}</p><h2 className="mt-1 truncate text-sm font-bold">{service.title}</h2><div className="mt-3 flex gap-2"><button className={secondaryClass} onClick={() => setEditingService(service)}>Edit</button><button className={secondaryClass} onClick={async () => { if (services.length <= 1) { toast.error('Website harus memiliki minimal satu layanan'); return; } if (!confirm(`Hapus ${service.title}?`)) return; const updated = services.filter((item) => item.id !== service.id); if (await saveSection('services', updated, 'Layanan dihapus')) setServices(updated); }}><Trash2 className="h-4 w-4" /></button></div></div></article>)}</div>
+          </section>}
 
-                    <div>
-                      <h5 className="text-xs font-bold text-white truncate" title={item.name}>{item.name}</h5>
-                      <span className="text-[10px] text-slate-400 font-mono block mt-0.5 truncate">{item.url}</span>
-                    </div>
+          {activeTab === 'media' && hasPermission('media.manage', session) && <section className="space-y-6"><PageTitle title="Media" copy="File disimpan di server Hostinger dan dapat dipakai untuk logo, layanan, atau berita." /><label className="flex cursor-pointer flex-col items-center justify-center border border-dashed border-cyan-700 bg-[#071d21] p-8 text-center"><FolderOpen className="h-7 w-7 text-cyan-300" /><span className="mt-3 text-sm font-bold">Pilih gambar, video, atau dokumen</span><input type="file" className="sr-only" accept="image/*,video/mp4,video/webm,application/pdf" onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadMedia(file); }} /></label><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{mediaList.map((item) => <article key={item.id} className="border border-cyan-950 bg-[#071d21] p-3">{item.type === 'image' ? <img src={item.url} alt={item.name} className="h-32 w-full object-cover" /> : <div className="flex h-32 items-center justify-center bg-[#011417] text-xs uppercase text-slate-400">{item.type}</div>}<p className="mt-3 truncate text-sm font-semibold">{item.name}</p><p className="mt-1 text-xs text-slate-500">{item.size}</p><div className="mt-3 flex gap-2"><button className={secondaryClass} onClick={() => { navigator.clipboard.writeText(item.url); toast.success('Tautan disalin'); }}>Salin URL</button><button className={secondaryClass} onClick={() => void deleteMedia(item.url)}><Trash2 className="h-4 w-4" /></button></div></article>)}</div></section>}
 
-                    <div className="flex flex-wrap items-center gap-1.5 pt-2 border-t border-cyan-950">
-                      <button 
-                        onClick={() => copyToClipboard(item.url)}
-                        className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-[#012E34] hover:bg-cyan-950 text-cyan-300 text-[10px] font-bold"
-                      >
-                        <Copy className="w-3 h-3" />
-                        <span>Salin URL</span>
-                      </button>
+          {activeTab === 'news' && hasPermission('content.news', session) && <section className="space-y-6"><PageTitle title="CMS berita" copy="Artikel yang dipublikasikan langsung tampil di situs. Artikel baru dikirim ke pelanggan newsletter yang sudah mengonfirmasi email." action={<button className={primaryClass} onClick={() => setEditingArticle(newArticle())}><Plus className="h-4 w-4" />Tulis berita</button>} />
+            {editingArticle && <form className={`${panelClass} space-y-4`} onSubmit={async (event) => { event.preventDefault(); const exists = articles.some((item) => item.id === editingArticle.id); const updated = exists ? articles.map((item) => item.id === editingArticle.id ? editingArticle : item) : [editingArticle, ...articles]; if (await saveSection('articles', updated, 'Berita dipublikasikan')) { setArticles(updated); setEditingArticle(null); await loadSubscribers(); } }}><div className="grid gap-4 sm:grid-cols-2"><Field label="Judul" value={editingArticle.title} onChange={(value) => setEditingArticle({ ...editingArticle, title: value })} required /><Field label="Kategori" value={editingArticle.category} onChange={(value) => setEditingArticle({ ...editingArticle, category: value })} required /><Field label="Tanggal publikasi" type="date" value={editingArticle.publishedDate} onChange={(value) => setEditingArticle({ ...editingArticle, publishedDate: value })} required /><Field label="Penulis" value={editingArticle.author || ''} onChange={(value) => setEditingArticle({ ...editingArticle, author: value })} /><Field label="Waktu baca" value={editingArticle.readTime || ''} onChange={(value) => setEditingArticle({ ...editingArticle, readTime: value })} /></div><Field label="Ringkasan" rows={3} value={editingArticle.excerpt} onChange={(value) => setEditingArticle({ ...editingArticle, excerpt: value })} required /><AssetField label="Foto utama" value={editingArticle.imageUrl} onChange={(value) => setEditingArticle({ ...editingArticle, imageUrl: value })} uploadMedia={uploadMedia} /><Field label="Isi artikel" rows={12} value={editingArticle.content} onChange={(value) => setEditingArticle({ ...editingArticle, content: value })} required /><Field label="Sumber (satu per baris)" rows={3} value={(editingArticle.sources || []).join('\n')} onChange={(value) => setEditingArticle({ ...editingArticle, sources: value.split('\n').map((line) => line.trim()).filter(Boolean) })} /><FormActions saving={saving} onCancel={() => setEditingArticle(null)} /></form>}
+            <div className="divide-y divide-cyan-950 border border-cyan-950 bg-[#071d21]">{articles.map((article) => <article key={article.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><p className="text-xs text-cyan-300">{article.publishedDate} · {article.category}</p><h2 className="mt-1 truncate text-sm font-bold">{article.title}</h2></div><div className="flex gap-2"><button className={secondaryClass} onClick={() => setEditingArticle(article)}>Edit</button><button className={secondaryClass} onClick={async () => { if (!confirm(`Hapus artikel ${article.title}?`)) return; const updated = articles.filter((item) => item.id !== article.id); if (await saveSection('articles', updated, 'Artikel dihapus')) setArticles(updated); }}><Trash2 className="h-4 w-4" /></button></div></article>)}</div>
+          </section>}
 
-                      {item.type === 'video' && (
-                        <button 
-                          onClick={async () => {
-                            const updated = { ...hero, bgType: 'video' as const, videoUrl: item.url };
-                            setHero(updated);
-                            saveStoredHero(updated);
-                            await commitToServer();
-                            toast.success('Video Berhasil Dipasang ke Hero Banner!');
-                          }}
-                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-cyan-700 hover:bg-cyan-600 text-white text-[10px] font-bold"
-                        >
-                          <Film className="w-3 h-3" />
-                          <span>Pasang di Hero</span>
-                        </button>
-                      )}
+          {activeTab === 'subscribers' && hasPermission('newsletter.read', session) && <section className="space-y-6"><PageTitle title="Newsletter" copy={`Pengirim ${newsletterSender} · ${mailStatus}`} action={<button className={primaryClass} onClick={() => exportSubscribersToCSV(subscribers)}><Download className="h-4 w-4" />Ekspor CSV</button>} /><div className="overflow-x-auto border border-cyan-950 bg-[#071d21]"><table className="w-full min-w-[620px] text-left text-sm"><thead className="bg-[#0b292e] text-xs uppercase tracking-wide text-cyan-300"><tr><th className="p-3">Email</th><th className="p-3">Status</th><th className="p-3">Terdaftar</th><th className="p-3">Konfirmasi</th></tr></thead><tbody className="divide-y divide-cyan-950">{subscribers.map((subscriber) => <tr key={subscriber.email}><td className="p-3 font-semibold">{subscriber.email}</td><td className="p-3">{subscriber.status}</td><td className="p-3 text-slate-400">{subscriber.subscribedAt}</td><td className="p-3 text-slate-400">{subscriber.confirmedAt || '—'}</td></tr>)}{subscribers.length === 0 && <tr><td colSpan={4} className="p-8 text-center text-slate-400">Belum ada pelanggan.</td></tr>}</tbody></table></div></section>}
 
-                      {item.type === 'image' && (
-                        <button 
-                          onClick={async () => {
-                            const updated = { ...hero, bgType: 'image' as const, imageUrl: item.url };
-                            setHero(updated);
-                            saveStoredHero(updated);
-                            await commitToServer();
-                            toast.success('Foto Berhasil Dipasang ke Hero Banner!');
-                          }}
-                          className="inline-flex items-center space-x-1 px-2.5 py-1 rounded-lg bg-cyan-700 hover:bg-cyan-600 text-white text-[10px] font-bold"
-                        >
-                          <ImageIcon className="w-3 h-3" />
-                          <span>Pasang di Hero</span>
-                        </button>
-                      )}
-
-                      <button 
-                        onClick={() => handleDeleteMedia(item.url)}
-                        className="p-1 rounded-lg text-rose-400 hover:bg-rose-950/40 ml-auto"
-                        title="Hapus file"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 3: HERO LATAR & CAPTION */}
-          {activeTab === 'hero' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black text-white">Editor Hero Banner (Latar Video/Foto & Caption)</h3>
-                <p className="text-xs text-slate-400 mt-1">Ganti latar belakang dan teks pengantar beranda. Video berputar otomatis (*looping*) dan responsif di mobile.</p>
-              </div>
-
-              <form onSubmit={async (e) => { e.preventDefault(); saveStoredHero(hero); await commitToServer(); }} className="space-y-6 bg-[#011C20] p-6 sm:p-8 rounded-2xl border border-cyan-900/40">
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Tipe Latar Belakang</label>
-                  <div className="grid grid-cols-2 gap-4 max-w-md">
-                    <button
-                      type="button"
-                      onClick={() => setHero({ ...hero, bgType: 'video' })}
-                      className={`py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${hero.bgType === 'video' ? 'bg-cyan-600 text-white border-cyan-400 shadow-md' : 'bg-slate-900 text-slate-400 border-slate-700'}`}
-                    >
-                      Video Maritim Aktif (.mp4)
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setHero({ ...hero, bgType: 'image' })}
-                      className={`py-2.5 px-4 rounded-xl text-xs font-bold border transition-all ${hero.bgType === 'image' ? 'bg-cyan-600 text-white border-cyan-400 shadow-md' : 'bg-slate-900 text-slate-400 border-slate-700'}`}
-                    >
-                      Gambar Statis (Foto .jpg/.png)
-                    </button>
-                  </div>
-                </div>
-
-                {hero.bgType === 'video' && (
-                  <div className="p-4 rounded-xl bg-[#012E34]/50 border border-cyan-900/50 space-y-3">
-                    <label className="block text-xs font-bold text-cyan-300">Pilih / Unggah Video Background (MP4)</label>
-                    {mediaList.filter(m => m.type === 'video').length > 0 && (
-                      <div>
-                        <span className="text-[11px] text-slate-400 block mb-1">Ambil dari Media Server GAEKS:</span>
-                        <select
-                          value={hero.videoUrl}
-                          onChange={(e) => setHero({ ...hero, videoUrl: e.target.value })}
-                          className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-xs text-cyan-300 font-bold"
-                        >
-                          {mediaList.filter(m => m.type === 'video').map(v => (
-                            <option key={v.id} value={v.url}>{v.name} ({v.size})</option>
-                          ))}
-                        </select>
-                      </div>
-                    )}
-                    <div>
-                      <span className="text-[11px] text-slate-400 block mb-1">Atau Unggah File Video Baru (.mp4):</span>
-                      <input 
-                        type="file" 
-                        accept="video/mp4,video/webm"
-                        onChange={(e) => {
-                          if (e.target.files?.[0]) {
-                            uploadFileToMediaServer(e.target.files[0], (url) => setHero({ ...hero, videoUrl: url }));
-                          }
-                        }}
-                        className="text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:bg-cyan-600 file:text-white"
-                      />
-                    </div>
-                    <div className="pt-2">
-                      <span className="text-[10px] text-slate-400 block mb-1">URL Video Langsung:</span>
-                      <input 
-                        type="text" 
-                        value={hero.videoUrl}
-                        onChange={(e) => setHero({ ...hero, videoUrl: e.target.value })}
-                        className="w-full px-3 py-1.5 text-xs rounded bg-slate-900 border border-slate-700 text-slate-200"
-                      />
-                    </div>
-                  </div>
-                )}
-
-                <div className="p-4 rounded-xl bg-[#012E34]/50 border border-cyan-900/50 space-y-3">
-                  <label className="block text-xs font-bold text-cyan-300">
-                    {hero.bgType === 'image' ? 'Foto Latar Belakang Hero' : 'Poster Gambar Cadangan (Saat video dimuat)'}
-                  </label>
-                  <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <img src={hero.imageUrl} alt="Preview" className="w-40 h-24 object-cover rounded-xl border border-slate-600 bg-slate-900" />
-                    <div className="space-y-2 flex-grow w-full">
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onChange={(e) => {
-                          if (e.target.files?.[0]) {
-                            uploadFileToMediaServer(e.target.files[0], (url) => setHero({ ...hero, imageUrl: url }));
-                          }
-                        }}
-                        className="text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:bg-cyan-600 file:text-white"
-                      />
-                      <input 
-                        type="text" 
-                        value={hero.imageUrl}
-                        onChange={(e) => setHero({ ...hero, imageUrl: e.target.value })}
-                        className="w-full px-3 py-1.5 text-xs rounded bg-slate-900 border border-slate-700 text-slate-200"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">Judul Utama H1</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <input type="text" value={hero.titlePrefix} onChange={(e) => setHero({ ...hero, titlePrefix: e.target.value })} placeholder="GAEKS: " className="px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    <input type="text" value={hero.titleHighlight} onChange={(e) => setHero({ ...hero, titleHighlight: e.target.value })} placeholder="Jasa Import & PPJK" className="px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-cyan-300 font-bold" />
-                    <input type="text" value={hero.titleSuffix} onChange={(e) => setHero({ ...hero, titleSuffix: e.target.value })} placeholder=", Solusi LCL Murah" className="px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                  </div>
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-1">Paragraf Caption Utama</label>
-                  <textarea rows={3} value={hero.caption} onChange={(e) => setHero({ ...hero, caption: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white leading-relaxed" />
-                </div>
-
-                <div className="pt-4 border-t border-cyan-950 flex justify-end">
-                  <button type="submit" disabled={isSavingGlobal} className="px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-lg transition-all active:scale-95 disabled:opacity-50">
-                    Simpan Hero ke Server Hostinger (Global)
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* TAB 4: BRANDING */}
-          {activeTab === 'branding' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black text-white">Logo & Favicon Resmi</h3>
-                <p className="text-xs text-slate-400 mt-1">Unggah file langsung ke server Hostinger.</p>
-              </div>
-
-              <form onSubmit={async (e) => { e.preventDefault(); saveStoredBranding(branding); await commitToServer(); }} className="space-y-6 bg-[#011C20] p-6 sm:p-8 rounded-2xl border border-cyan-900/40">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="p-4 rounded-xl bg-[#012E34]/40 border border-cyan-900/40 space-y-3">
-                    <label className="block text-xs font-bold text-white uppercase tracking-wider">Favicon Browser</label>
-                    <div className="flex items-center space-x-4">
-                      <img src={branding.faviconUrl} alt="Favicon Preview" className="w-12 h-12 p-2 bg-white rounded-xl object-contain border border-slate-300" />
-                      <div className="space-y-2 flex-grow">
-                        <input 
-                          type="file" 
-                          accept="image/*"
-                          onChange={(e) => {
-                            if (e.target.files?.[0]) {
-                              uploadFileToMediaServer(e.target.files[0], (url) => setBranding({ ...branding, faviconUrl: url }));
-                            }
-                          }}
-                          className="text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:bg-cyan-600 file:text-white"
-                        />
-                        <input type="text" value={branding.faviconUrl} onChange={(e) => setBranding({ ...branding, faviconUrl: e.target.value })} className="w-full px-3 py-1.5 text-xs rounded bg-slate-900 border border-slate-700 text-slate-200" />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-[#012E34]/40 border border-cyan-900/40 space-y-3">
-                    <label className="block text-xs font-bold text-white uppercase tracking-wider">Logo Simbol (Navbar & Footer)</label>
-                    <div className="flex items-center space-x-4">
-                      <img src={branding.symbolLogoUrl} alt="Symbol Preview" className="w-16 h-12 p-2 bg-[#011C20] rounded-xl object-contain border border-cyan-800" />
-                      <div className="space-y-2 flex-grow">
-                        <input 
-                          type="file" 
-                          accept="image/*"
-                          onChange={(e) => {
-                            if (e.target.files?.[0]) {
-                              uploadFileToMediaServer(e.target.files[0], (url) => setBranding({ ...branding, symbolLogoUrl: url }));
-                            }
-                          }}
-                          className="text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:bg-cyan-600 file:text-white"
-                        />
-                        <input type="text" value={branding.symbolLogoUrl} onChange={(e) => setBranding({ ...branding, symbolLogoUrl: e.target.value })} className="w-full px-3 py-1.5 text-xs rounded bg-slate-900 border border-slate-700 text-slate-200" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-cyan-950 flex justify-end">
-                  <button type="submit" disabled={isSavingGlobal} className="px-6 py-3 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md">
-                    Simpan Branding ke Server (Global)
-                  </button>
-                </div>
-              </form>
-            </div>
-          )}
-
-          {/* TAB 5: SERVICES & FOTO */}
-          {activeTab === 'services' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black text-white">Manajemen Layanan & Foto</h3>
-                <p className="text-xs text-slate-400 mt-1">Ubah foto dan deskripsi 7 layanan kargo secara global.</p>
-              </div>
-
-              {editingService && (
-                <div className="bg-[#011C20] border-2 border-cyan-600 p-6 sm:p-8 rounded-2xl space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-cyan-900">
-                    <h4 className="text-base font-bold text-cyan-300">Edit Layanan: {editingService.title}</h4>
-                    <button onClick={() => setEditingService(null)} className="text-xs text-slate-400 hover:text-white">Tutup</button>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Judul Layanan</label>
-                      <input type="text" value={editingService.title} onChange={(e) => setEditingService({ ...editingService, title: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Kategori</label>
-                      <input type="text" value={editingService.category} onChange={(e) => setEditingService({ ...editingService, category: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Tagline</label>
-                      <input type="text" value={editingService.tagline} onChange={(e) => setEditingService({ ...editingService, tagline: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Deskripsi</label>
-                      <textarea rows={3} value={editingService.description} onChange={(e) => setEditingService({ ...editingService, description: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-
-                    <div className="sm:col-span-2 p-4 rounded-xl bg-[#012E34]/50 border border-cyan-800/40 space-y-3">
-                      <span className="text-xs font-bold text-cyan-300 block">Foto Ilustrasi Layanan</span>
-                      <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <img src={editingService.imageUrl} alt="Preview" className="w-32 h-20 rounded-lg object-cover border border-slate-600 bg-slate-900" />
-                        <div className="space-y-2 flex-grow w-full">
-                          <input 
-                            type="file" 
-                            accept="image/*"
-                            onChange={(e) => {
-                              if (e.target.files?.[0]) {
-                                uploadFileToMediaServer(e.target.files[0], (url) => setEditingService({ ...editingService, imageUrl: url }));
-                              }
-                            }}
-                            className="text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:bg-cyan-600 file:text-white"
-                          />
-                          <input type="text" value={editingService.imageUrl} onChange={(e) => setEditingService({ ...editingService, imageUrl: e.target.value })} className="w-full px-3 py-1.5 text-xs rounded bg-slate-900 border border-slate-700 text-slate-200" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="pt-3 flex justify-end space-x-3">
-                    <button type="button" onClick={() => setEditingService(null)} className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white">Batal</button>
-                    <button 
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        const exists = services.some(s => s.id === editingService.id);
-                        const updated = exists ? services.map(s => s.id === editingService.id ? editingService : s) : [editingService, ...services];
-                        setServices(updated);
-                        saveStoredServices(updated);
-                        setEditingService(null);
-                        await commitToServer();
-                      }} 
-                      className="px-6 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md"
-                    >
-                      Simpan Layanan ke Server (Global)
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {services.map((svc) => (
-                  <div key={svc.id} className="bg-[#011C20] border border-cyan-900/40 rounded-2xl p-4 flex space-x-4 items-center">
-                    <img src={svc.imageUrl} alt={svc.title} className="w-24 h-20 rounded-xl object-cover flex-shrink-0 bg-slate-900" />
-                    <div className="flex-grow min-w-0">
-                      <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-wider block">{svc.category}</span>
-                      <h4 className="text-sm font-bold text-white truncate">{svc.title}</h4>
-                      <p className="text-[11px] text-slate-400 line-clamp-2 mt-0.5">"{svc.tagline}"</p>
-                      <button onClick={() => setEditingService(svc)} className="inline-flex items-center space-x-1 text-xs font-bold text-cyan-400 hover:text-cyan-300 mt-2">
-                        <Edit3 className="w-3.5 h-3.5" />
-                        <span>Edit & Ganti Foto</span>
-                      </button>
-                      <button onClick={() => handleDeleteService(svc.id)} className="inline-flex items-center space-x-1 text-xs font-bold text-rose-400 hover:text-rose-300 mt-2 ml-3">
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Hapus</span>
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* TAB 6: CMS BERITA */}
-          {activeTab === 'news' && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="text-2xl font-black text-white">CMS Artikel Berita ({articles.length})</h3>
-                <p className="text-xs text-slate-400 mt-1">Publikasi berita aktif secara global untuk seluruh pengunjung.</p>
-              </div>
-
-              {editingArticle && (
-                <div className="bg-[#011C20] border-2 border-cyan-600 p-6 sm:p-8 rounded-2xl space-y-4">
-                  <div className="flex items-center justify-between pb-3 border-b border-cyan-900">
-                    <h4 className="text-base font-bold text-cyan-300">Editor Artikel Berita</h4>
-                    <button onClick={() => setEditingArticle(null)} className="text-xs text-slate-400 hover:text-white">Tutup</button>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Judul Artikel</label>
-                      <input type="text" value={editingArticle.title} onChange={(e) => setEditingArticle({ ...editingArticle, title: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-                    <div>
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Kategori</label>
-                      <input type="text" value={editingArticle.category} onChange={(e) => setEditingArticle({ ...editingArticle, category: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Ringkasan Unik (Excerpt)</label>
-                      <textarea rows={2} value={editingArticle.excerpt} onChange={(e) => setEditingArticle({ ...editingArticle, excerpt: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white" />
-                    </div>
-                    <div className="sm:col-span-2 p-4 rounded-xl bg-[#012E34]/50 border border-cyan-800/40 space-y-3">
-                      <span className="text-xs font-bold text-cyan-300 block">Foto Utama Artikel</span>
-                      <div className="flex flex-col sm:flex-row items-center gap-4">
-                        <img src={editingArticle.imageUrl} alt="Preview" className="w-32 h-20 rounded-lg object-cover border border-slate-600 bg-slate-900" />
-                        <div className="space-y-2 flex-grow w-full">
-                          <input 
-                            type="file" 
-                            accept="image/*"
-                            onChange={(e) => {
-                              if (e.target.files?.[0]) {
-                                uploadFileToMediaServer(e.target.files[0], (url) => setEditingArticle({ ...editingArticle, imageUrl: url }));
-                              }
-                            }}
-                            className="text-xs text-slate-300 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-xs file:bg-cyan-600 file:text-white"
-                          />
-                          <input type="text" value={editingArticle.imageUrl} onChange={(e) => setEditingArticle({ ...editingArticle, imageUrl: e.target.value })} className="w-full px-3 py-1.5 text-xs rounded bg-slate-900 border border-slate-700 text-slate-200" />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="sm:col-span-2">
-                      <label className="block text-xs font-bold text-slate-300 mb-1">Isi Artikel Lengkap</label>
-                      <textarea rows={8} value={editingArticle.content} onChange={(e) => setEditingArticle({ ...editingArticle, content: e.target.value })} className="w-full px-3 py-2 text-xs rounded-xl bg-slate-900 border border-slate-700 text-white font-mono" />
-                    </div>
-                  </div>
-
-                  <div className="pt-3 flex justify-end space-x-3">
-                    <button type="button" onClick={() => setEditingArticle(null)} className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-white">Batal</button>
-                    <button 
-                      onClick={async (e) => {
-                        e.preventDefault();
-                        const exists = articles.some(a => a.id === editingArticle.id);
-                        const updated = exists ? articles.map(a => a.id === editingArticle.id ? editingArticle : a) : [editingArticle, ...articles];
-                        setArticles(updated);
-                        saveStoredArticles(updated);
-                        setEditingArticle(null);
-                        await commitToServer();
-                      }} 
-                      className="px-6 py-2.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs shadow-md"
-                    >
-                      Simpan Berita ke Server (Global)
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              <div className="bg-[#011C20] border border-cyan-900/40 rounded-2xl overflow-hidden">
-                <table className="w-full text-left text-xs">
-                  <thead className="bg-[#012E34] text-cyan-300 font-bold border-b border-cyan-900">
-                    <tr>
-                      <th className="py-3 px-4">Tanggal</th>
-                      <th className="py-3 px-4">Kategori</th>
-                      <th className="py-3 px-4">Judul Artikel</th>
-                      <th className="py-3 px-4 text-right">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-cyan-950">
-                    {articles.map((art) => (
-                      <tr key={art.id} className="hover:bg-slate-900/40 transition-colors">
-                        <td className="py-3 px-4 text-slate-400 whitespace-nowrap">{art.publishedDate}</td>
-                        <td className="py-3 px-4 font-bold text-cyan-400 whitespace-nowrap">{art.category}</td>
-                        <td className="py-3 px-4 font-bold text-white max-w-md truncate">{art.title}</td>
-                        <td className="py-3 px-4 text-right space-x-2 whitespace-nowrap">
-                          <button onClick={() => setEditingArticle(art)} className="text-cyan-400 hover:text-cyan-300 font-bold">Edit</button>
-                          <button onClick={() => handleDeleteArticle(art.id)} className="text-rose-400 hover:text-rose-300 font-bold">Hapus</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 7: SUBSCRIBERS */}
-          {activeTab === 'subscribers' && (
-            <div className="space-y-6">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <h3 className="text-2xl font-black text-white">Pelanggan Newsletter ({subscribers.length})</h3>
-                  <p className="mt-1 text-xs text-slate-400">Pengirim: {newsletterSender} · {smtpConfigured ? 'SMTP terautentikasi' : mailAvailable ? 'fallback PHP mail' : 'layanan email belum tersedia'}</p>
-                </div>
-                <button onClick={() => exportSubscribersToCSV(subscribers)} className="inline-flex min-h-11 items-center justify-center space-x-2 rounded-lg bg-emerald-700 px-4 text-xs font-bold text-white hover:bg-emerald-600">
-                  <Download className="w-4 h-4" />
-                  <span>Ekspor CSV</span>
-                </button>
-              </div>
-
-              <div className="grid grid-cols-3 border-y border-cyan-900/60 py-4 text-center">
-                <div><strong className="block text-xl text-white">{subscribers.filter((item) => item.status === 'active').length}</strong><span className="text-[11px] text-slate-400">Aktif</span></div>
-                <div><strong className="block text-xl text-amber-300">{subscribers.filter((item) => item.status === 'pending').length}</strong><span className="text-[11px] text-slate-400">Menunggu konfirmasi</span></div>
-                <div><strong className="block text-xl text-slate-300">{subscribers.filter((item) => item.status === 'unsubscribed').length}</strong><span className="text-[11px] text-slate-400">Berhenti</span></div>
-              </div>
-
-              <div className="overflow-x-auto border border-cyan-900/50">
-                <table className="w-full min-w-[620px] text-left text-xs">
-                  <thead className="bg-[#012E34] text-cyan-200">
-                    <tr><th className="px-4 py-3">Email</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Terdaftar</th><th className="px-4 py-3">Konfirmasi</th></tr>
-                  </thead>
-                  <tbody className="divide-y divide-cyan-950 bg-[#011C20]">
-                    {subscribers.map((subscriber) => (
-                      <tr key={subscriber.email}>
-                        <td className="px-4 py-3 font-semibold text-white">{subscriber.email}</td>
-                        <td className="px-4 py-3 capitalize text-cyan-300">{subscriber.status}</td>
-                        <td className="px-4 py-3 text-slate-400">{new Date(subscriber.subscribedAt).toLocaleString('id-ID')}</td>
-                        <td className="px-4 py-3 text-slate-400">{subscriber.confirmedAt ? new Date(subscriber.confirmedAt).toLocaleString('id-ID') : '—'}</td>
-                      </tr>
-                    ))}
-                    {subscribers.length === 0 && <tr><td colSpan={4} className="px-4 py-8 text-center text-slate-400">Belum ada pelanggan newsletter.</td></tr>}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-
+          {activeTab === 'seo' && hasPermission('site.seo', session) && <section className="space-y-6"><PageTitle title="SEO" copy="Metadata ini diterapkan ke halaman publik dan dapat dirayapi mesin pencari setelah halaman dimuat." /><form className={`${panelClass} space-y-4`} onSubmit={async (event) => { event.preventDefault(); await saveSection('seo', seo, 'Pengaturan SEO tersimpan'); }}><Field label="Judul situs" value={seo.siteTitle} onChange={(value) => setSeo({ ...seo, siteTitle: value })} required /><Field label="Deskripsi mesin pencari" rows={3} value={seo.metaDescription} onChange={(value) => setSeo({ ...seo, metaDescription: value })} required /><Field label="Kata kunci" value={seo.keywords} onChange={(value) => setSeo({ ...seo, keywords: value })} /><div className="grid gap-4 sm:grid-cols-2"><Field label="Judul saat dibagikan" value={seo.ogTitle} onChange={(value) => setSeo({ ...seo, ogTitle: value })} /><Field label="Gambar saat dibagikan" value={seo.ogImageUrl} onChange={(value) => setSeo({ ...seo, ogImageUrl: value })} /></div><Field label="Deskripsi saat dibagikan" rows={3} value={seo.ogDescription} onChange={(value) => setSeo({ ...seo, ogDescription: value })} /><label className="flex min-h-11 items-center gap-3 text-sm text-slate-300"><input type="checkbox" checked={seo.robotsIndex} onChange={(event) => setSeo({ ...seo, robotsIndex: event.target.checked })} className="h-4 w-4 accent-cyan-400" />Izinkan mesin pencari mengindeks situs</label><SaveButton saving={saving} /></form></section>}
         </main>
       </div>
     </div>
   );
 };
+
+const PageTitle: React.FC<{ title: string; copy: string; action?: React.ReactNode }> = ({ title, copy, action }) => <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1><p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{copy}</p></div>{action}</header>;
+const SaveButton: React.FC<{ saving: boolean }> = ({ saving }) => <div className="flex justify-end border-t border-slate-800 pt-5"><button type="submit" disabled={saving} className={primaryClass}><Save className="h-4 w-4" />{saving ? 'Menyimpan…' : 'Simpan ke server'}</button></div>;
+const FormActions: React.FC<{ saving: boolean; onCancel: () => void }> = ({ saving, onCancel }) => <div className="flex justify-end gap-2 border-t border-slate-800 pt-5"><button type="button" onClick={onCancel} className={secondaryClass}>Batal</button><button type="submit" disabled={saving} className={primaryClass}><Save className="h-4 w-4" />{saving ? 'Menyimpan…' : 'Simpan ke server'}</button></div>;
+const MoveButton: React.FC<{ icon: React.ElementType; disabled: boolean; onClick: () => void }> = ({ icon: Icon, disabled, onClick }) => <button type="button" disabled={disabled} onClick={onClick} className="inline-flex h-10 w-10 items-center justify-center border border-slate-700 text-slate-300 hover:text-white disabled:opacity-25"><Icon className="h-4 w-4" /></button>;
+const move = <T,>(items: T[], from: number, to: number): T[] => { const updated = [...items]; const [item] = updated.splice(from, 1); updated.splice(to, 0, item); return updated; };
+
+const AssetField: React.FC<{ label: string; value: string; onChange: (value: string) => void; uploadMedia: (file: File, onDone?: (url: string) => void) => Promise<void> }> = ({ label, value, onChange, uploadMedia }) => <div className="border border-slate-800 p-3"><label className={labelClass}>{label}</label><div className="mt-3 flex items-center gap-3">{value ? <img src={value} alt="" className="h-14 w-20 bg-[#011417] object-contain" /> : <div className="flex h-14 w-20 items-center justify-center bg-[#011417]"><ImageIcon className="h-5 w-5 text-slate-600" /></div>}<label className={`${secondaryClass} cursor-pointer`}>Unggah<input type="file" accept="image/*" className="sr-only" onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadMedia(file, onChange); }} /></label></div><input aria-label={`URL ${label}`} value={value} onChange={(event) => onChange(event.target.value)} className={inputClass} placeholder="/uploads/..." /></div>;
+
+const Overview: React.FC<{ session: OperatorUser; services: number; articles: number; media: number; subscribers: number; allowedTabs: typeof tabDefinitions; onOpen: (tab: TabId) => void }> = ({ session, services, articles, media, subscribers, allowedTabs, onOpen }) => <section className="space-y-7"><PageTitle title={`Halo, ${session.displayName}`} copy="Setiap perubahan yang disimpan dari panel ini ditulis ke server dan dipakai oleh website publik untuk semua pengunjung." /><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{[{ label: 'Layanan', value: services }, { label: 'Berita', value: articles }, { label: 'Media', value: media }, { label: 'Newsletter', value: subscribers }].map((item) => <div key={item.label} className={panelClass}><p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{item.label}</p><p className="mt-2 text-3xl font-bold text-cyan-300">{item.value}</p></div>)}</div><div className={panelClass}><div className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-emerald-300" /><h2 className="font-bold">Akses aktif: {roleLabels[session.role]}</h2></div><div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{allowedTabs.filter((tab) => tab.id !== 'overview').map((tab) => <button key={tab.id} type="button" onClick={() => onOpen(tab.id)} className="flex min-h-12 items-center justify-between border border-slate-800 px-3 text-left text-sm font-semibold hover:border-cyan-700"><span>{tab.label}</span><CheckCircle2 className="h-4 w-4 text-cyan-300" /></button>)}</div></div></section>;
+
+export default OperatorAdmin;

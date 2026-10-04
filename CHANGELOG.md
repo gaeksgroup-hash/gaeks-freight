@@ -4,6 +4,18 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Operator multiuser dan CMS global
+
+- Menambahkan akun operator tersimpan privat dengan peran Gaekadmin, Administrator Website, CMS Berita, dan SEO.
+- Menegakkan izin per modul di endpoint server untuk konten, media, newsletter, SEO, dan manajemen pengguna.
+- Menambahkan panel Pengguna & Peran untuk membuat, menonaktifkan, memperbarui, dan menghapus akun operator; akun utama Gaekadmin tidak dapat dihapus.
+- Memisahkan penyimpanan operator per bagian agar perubahan satu modul tidak menimpa data modul lain.
+- Menambahkan pengaturan global untuk favicon, logo navbar, logo footer, nomor WhatsApp, email, alamat, menu, footer, media sosial, dan tautan produk digital.
+- Menambahkan pengaturan SEO untuk judul, deskripsi, kata kunci, Open Graph, dan kebijakan indeks.
+- Menghubungkan Hero, Navbar, Contact, Footer, daftar layanan, serta berita publik ke data server operator.
+- Melengkapi CMS berita dengan tombol tambah, editor artikel, hapus, foto, sumber, penulis, tanggal publikasi, dan broadcast newsletter saat artikel baru diterbitkan.
+- Memastikan pembaruan berita dan layanan yang tiba setelah halaman dibuka langsung dirender tanpa reload manual.
+
 ### Footer, carousel, dan newsletter
 
 - Memadatkan jarak vertikal footer, navigasi, kontak, serta bilah legal tanpa mengurangi target interaksi.

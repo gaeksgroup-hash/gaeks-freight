@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Menu, PhoneCall, X } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export interface NavbarProps {
   currentTab?: string;
@@ -10,16 +10,6 @@ export interface NavbarProps {
   onSelectLang?: (lang: Language) => void;
   onLanguageChange?: (lang: Language) => void;
 }
-
-const navigation = [
-  { page: 'home', desktop: 'Beranda', mobile: 'Beranda' },
-  { page: 'services', desktop: 'Layanan', mobile: 'Layanan' },
-  { page: 'tracking', desktop: 'Tracking', mobile: 'Shipment Tracking' },
-  { page: 'calculator', desktop: 'Kalkulator', mobile: 'Kalkulator Kargo' },
-  { page: 'network', desktop: 'Rute & Jadwal', mobile: 'Rute & Jadwal' },
-  { page: 'news', desktop: 'Berita', mobile: 'Berita & Pembaruan' },
-  { page: 'contact', desktop: 'Kontak', mobile: 'Hubungi Kami' }
-];
 
 const languageOptions: Array<{ value: Language; label: string; short: string }> = [
   { value: 'id', label: 'Indonesia', short: 'ID' },
@@ -41,9 +31,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [brandData, setBrandData] = useState(getStoredBranding());
+  const [siteSettings, setSiteSettings] = useState(getStoredSiteSettings());
 
   useEffect(() => {
-    const reload = () => setBrandData(getStoredBranding());
+    const reload = () => { setBrandData(getStoredBranding()); setSiteSettings(getStoredSiteSettings()); };
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
@@ -84,6 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   };
 
   const whatsAppUrl = `https://wa.me/${getWhatsAppNumber(brandData.whatsappNumber || '')}`;
+  const navigation = siteSettings.navigation.filter((item) => item.visible);
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 block h-16 border-b border-white/10 bg-[#011c20] text-white">
@@ -95,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="GAEKS Freight, ke beranda"
         >
           <img
-            src="/logos/gaek-symbol.png?v=7"
+            src={brandData.navbarLogoUrl || brandData.symbolLogoUrl}
             onError={(event) => {
               const target = event.currentTarget;
               target.onerror = null;
@@ -107,7 +99,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </a>
 
         <nav aria-label="Navigasi utama" className="hidden min-w-0 items-center justify-center gap-1 lg:flex">
-          {navigation.map(({ page, desktop }) => (
+          {navigation.map(({ page, label }) => (
             <a
               key={page}
               href={`#${page}`}
@@ -119,7 +111,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   : 'border-transparent text-slate-300 hover:text-white'
               }`}
             >
-              {desktop}
+              {label}
             </a>
           ))}
         </nav>
@@ -164,7 +156,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div id="mobile-navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-[#011c20] px-4 pb-5 shadow-lg lg:hidden">
           <nav aria-label="Navigasi seluler" className="mx-auto max-w-7xl">
             <div className="py-2">
-              {navigation.map(({ page, mobile }) => (
+              {navigation.map(({ page, mobileLabel }) => (
                 <a
                   key={page}
                   href={`#${page}`}
@@ -176,7 +168,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       : 'border-transparent text-slate-200 hover:bg-white/5 hover:text-white'
                   }`}
                 >
-                  {mobile}
+                  {mobileLabel}
                 </a>
               ))}
             </div>

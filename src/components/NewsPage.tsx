@@ -6,12 +6,13 @@ import { getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
 import { UI_TEXT, getTranslation } from '../utils/translations';
 import { subscribeToNewsletter } from '../services/newsletterApi';
+import { GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => void; onSelectArticle?: (id: string) => void; currentLang?: Language }> = ({ activeDetailId, onBackToList, onSelectArticle, currentLang = 'id' }) => {
   const rawArticles = getStoredArticles();
   const sortedArticles = [...rawArticles].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
 
-  const [articles] = useState<ArticleItem[]>(sortedArticles);
+  const [articles, setArticles] = useState<ArticleItem[]>(sortedArticles);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
   const [emailInput, setEmailInput] = useState('');
@@ -26,6 +27,12 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
     if (state && window.history.replaceState) {
       window.history.replaceState({}, '', window.location.pathname + window.location.hash);
     }
+  }, []);
+
+  useEffect(() => {
+    const reload = () => setArticles([...getStoredArticles()].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()));
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
 
   // Paginasi: 6 artikel per halaman

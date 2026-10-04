@@ -7,7 +7,7 @@ import { ServicesCarousel } from './components/ServicesCarousel';
 import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
 import { Language } from './types/freight';
-import { syncFromServer } from './utils/adminStorage';
+import { getStoredBranding, getStoredSeo, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 
 const SmartCalculator = React.lazy(() => import('./components/SmartCalculator').then((module) => ({ default: module.SmartCalculator })));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').then((module) => ({ default: module.InteractiveMap })));
@@ -45,6 +45,36 @@ export const App: React.FC = () => {
       clearInterval(interval);
       window.removeEventListener('focus', onFocus);
     };
+  }, []);
+
+  useEffect(() => {
+    const applyMetadata = () => {
+      const seo = getStoredSeo();
+      const branding = getStoredBranding();
+      document.title = seo.siteTitle;
+      const setMeta = (selector: string, attribute: string, value: string) => {
+        let element = document.querySelector(selector) as HTMLMetaElement | null;
+        if (!element) {
+          element = document.createElement('meta');
+          const match = selector.match(/meta\[(name|property)="([^"]+)"\]/);
+          if (match) element.setAttribute(match[1], match[2]);
+          document.head.appendChild(element);
+        }
+        element.setAttribute(attribute, value);
+      };
+      setMeta('meta[name="description"]', 'content', seo.metaDescription);
+      setMeta('meta[name="keywords"]', 'content', seo.keywords);
+      setMeta('meta[name="robots"]', 'content', seo.robotsIndex ? 'index, follow' : 'noindex, nofollow');
+      setMeta('meta[property="og:title"]', 'content', seo.ogTitle);
+      setMeta('meta[property="og:description"]', 'content', seo.ogDescription);
+      setMeta('meta[property="og:image"]', 'content', seo.ogImageUrl);
+      let icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+      if (!icon) { icon = document.createElement('link'); icon.rel = 'icon'; document.head.appendChild(icon); }
+      icon.href = branding.faviconUrl;
+    };
+    applyMetadata();
+    window.addEventListener(GAEKS_UPDATE_EVENT, applyMetadata);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, applyMetadata);
   }, []);
 
   const getInitialPage = () => {

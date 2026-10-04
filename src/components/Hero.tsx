@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { ArrowRight, Calculator, PackageSearch, Route } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredServices } from '../utils/adminStorage';
+import { getStoredHero, getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 const HeroServiceCarousel = React.lazy(() => import('./HeroServiceCarousel').then((module) => ({ default: module.HeroServiceCarousel })));
 
@@ -51,12 +51,27 @@ const icons = [PackageSearch, Calculator, Route];
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLang = 'id' }) => {
   const [enhanced, setEnhanced] = useState(false);
-  const text = copy[currentLang];
+  const [heroSettings, setHeroSettings] = useState(getStoredHero());
+  const baseText = copy[currentLang];
+  const text = currentLang === 'id' ? {
+    ...baseText,
+    eyebrow: heroSettings.eyebrow,
+    title: `${heroSettings.titlePrefix}${heroSettings.titleHighlight}${heroSettings.titleSuffix}`,
+    body: heroSettings.caption,
+    primary: heroSettings.primaryLabel,
+    secondary: heroSettings.secondaryLabel,
+  } : baseText;
   const firstService = getStoredServices()[0];
 
   useEffect(() => {
     const timer = window.setTimeout(() => setEnhanced(true), 500);
     return () => window.clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const reload = () => setHeroSettings(getStoredHero());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
 
   return (

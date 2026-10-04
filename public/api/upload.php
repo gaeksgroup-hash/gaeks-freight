@@ -12,9 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 $uploadDir   = __DIR__ . '/../uploads';
 $libraryFile = __DIR__ . '/media_library.json';
 
-if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-    gaeks_require_operator(true);
-}
+gaeks_require_permission('media.manage', $_SERVER['REQUEST_METHOD'] !== 'GET');
 
 if (!is_dir($uploadDir)) {
     @mkdir($uploadDir, 0777, true);

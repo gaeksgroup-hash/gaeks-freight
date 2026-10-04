@@ -522,7 +522,7 @@ export function getStoredArticles(): ArticleItem[] {
       return DEFAULT_ARTICLES;
     }
     const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed) || parsed.length < 20) {
+    if (!Array.isArray(parsed)) {
       localStorage.setItem(STORAGE_KEY_ARTICLES, JSON.stringify(DEFAULT_ARTICLES));
       return DEFAULT_ARTICLES;
     }

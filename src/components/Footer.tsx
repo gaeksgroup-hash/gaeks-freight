@@ -1,7 +1,7 @@
 import React from 'react';
 import { ArrowRight, Mail, MapPin, PackageSearch, PhoneCall } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -15,9 +15,10 @@ const whatsAppNumber = (value: string) => {
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [brandData, setBrandData] = React.useState(getStoredBranding());
+  const [siteSettings, setSiteSettings] = React.useState(getStoredSiteSettings());
 
   React.useEffect(() => {
-    const reload = () => setBrandData(getStoredBranding());
+    const reload = () => { setBrandData(getStoredBranding()); setSiteSettings(getStoredSiteSettings()); };
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
@@ -29,10 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
     }
   };
 
-  const navLinks = [
-    ['services', 'Layanan'], ['tracking', 'Shipment Tracking'], ['calculator', 'Kalkulator'],
-    ['network', 'Rute & Jadwal'], ['news', 'Berita'], ['contact', 'Kontak']
-  ];
+  const navLinks = siteSettings.navigation.filter((item) => item.visible && item.page !== 'home');
 
   return (
     <footer className="border-t border-white/15 bg-[#082f34] text-slate-300">
@@ -40,15 +38,15 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <div className="flex flex-col gap-4 border-b border-white/15 py-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Status pengiriman</p>
-            <h2 className="mt-1.5 text-lg font-bold leading-tight text-white sm:text-xl">Temukan shipment dari satu nomor referensi.</h2>
+            <h2 className="mt-1.5 text-lg font-bold leading-tight text-white sm:text-xl">{siteSettings.footerHeading}</h2>
           </div>
           <a href="#tracking" onClick={(event) => nav('tracking', event)} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 border border-cyan-300 px-5 text-sm font-bold text-white hover:bg-white/10"><PackageSearch className="h-4 w-4" />Lacak shipment<ArrowRight className="h-4 w-4" /></a>
         </div>
 
         <div className="grid gap-7 py-7 md:grid-cols-[1.15fr_1fr_.85fr] md:gap-8">
           <div>
-            <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-7 w-auto brightness-0 invert" />
-            <p className="mt-3 max-w-sm text-sm leading-5 text-slate-400">Koordinasi freight, kepabeanan, dan pengiriman darat untuk kargo bisnis.</p>
+            <img src={brandData.footerLogoUrl || brandData.symbolLogoUrl} alt="GAEKS" className="h-7 w-auto brightness-0 invert" />
+            <p className="mt-3 max-w-sm text-sm leading-5 text-slate-400">{siteSettings.footerTagline}</p>
             <div className="mt-3 flex flex-wrap gap-x-5 text-sm">
               <a href={'https://wa.me/' + whatsAppNumber(brandData.whatsappNumber || '6285608561745')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><PhoneCall className="h-4 w-4 text-cyan-300" />{brandData.whatsappDisplay || '+62 856 0856 1745'}</a>
               <a href={'mailto:' + (brandData.salesEmail || 'Sales01@gaeks.com')} className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><Mail className="h-4 w-4 text-cyan-300" />{brandData.salesEmail || 'Sales01@gaeks.com'}</a>
@@ -58,8 +56,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <nav aria-label="Navigasi footer">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Jelajahi</p>
             <div className="mt-2 grid grid-cols-2 gap-x-5">
-              {navLinks.map(([page, label]) => <a key={page} href={'#' + page} onClick={(event) => nav(page, event)} className="inline-flex min-h-11 items-center text-sm leading-none hover:text-cyan-300">{label}</a>)}
+              {navLinks.map(({ page, label }) => <a key={page} href={'#' + page} onClick={(event) => nav(page, event)} className="inline-flex min-h-11 items-center text-sm leading-none hover:text-cyan-300">{label}</a>)}
             </div>
+            {siteSettings.socialLinks.length > 0 && <div className="mt-2 flex flex-wrap gap-x-4 gap-y-1">{siteSettings.socialLinks.map((item) => <a key={item.id} href={item.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-9 items-center text-xs text-slate-400 hover:text-cyan-300">{item.label}</a>)}</div>}
           </nav>
 
           <div>
@@ -73,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
         <div className="flex flex-col gap-1 border-t border-white/15 py-3 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} GAEKS · Global Andalan Ekspress</span>
-          <a href="https://gdp.gaeks.com" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-slate-400 hover:text-cyan-300">Gaeks Digital Product<ArrowRight className="h-3.5 w-3.5" /></a>
+          <a href={siteSettings.digitalProductUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-1.5 text-slate-400 hover:text-cyan-300">{siteSettings.digitalProductLabel}<ArrowRight className="h-3.5 w-3.5" /></a>
         </div>
       </div>
     </footer>

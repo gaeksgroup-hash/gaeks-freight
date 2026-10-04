@@ -43,7 +43,7 @@ if (in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'], true) && isset($_GET['
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    gaeks_require_operator();
+    gaeks_require_permission('newsletter.read');
     $subscribers = array_map('gaeks_public_subscriber', gaeks_subscribers());
     usort($subscribers, static fn(array $a, array $b): int => strcmp($b['subscribedAt'], $a['subscribedAt']));
     $smtpConfig = gaeks_smtp_config();

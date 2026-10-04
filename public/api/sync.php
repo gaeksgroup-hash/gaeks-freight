@@ -17,35 +17,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    gaeks_require_operator(true);
     $body = gaeks_read_json_body();
+    $section = (string) ($body['section'] ?? '');
     $payload = $body['payload'] ?? null;
     if (!is_array($payload)) {
         gaeks_json(['status' => 'error', 'message' => 'Payload konten kosong.'], 400);
     }
-
-    unset($payload['subscribers']);
-    if (!isset($payload['branding'], $payload['hero'], $payload['services'], $payload['articles'])
-        || !is_array($payload['services']) || !is_array($payload['articles'])) {
-        gaeks_json(['status' => 'error', 'message' => 'Struktur konten tidak lengkap.'], 422);
-    }
-
     $current = gaeks_read_json_file($dataFile, []);
-    $currentIds = [];
-    foreach (($current['articles'] ?? []) as $article) {
-        if (is_array($article) && isset($article['id'])) {
-            $currentIds[(string) $article['id']] = true;
-        }
-    }
     $newArticles = [];
-    foreach ($payload['articles'] as $article) {
-        if (is_array($article) && isset($article['id']) && !isset($currentIds[(string) $article['id']])) {
-            $newArticles[] = $article;
+
+    $permissions = [
+        'branding' => 'site.branding',
+        'hero' => 'site.home',
+        'siteSettings' => 'site.navigation',
+        'services' => 'site.services',
+        'articles' => 'content.news',
+        'seo' => 'site.seo',
+    ];
+    if (!isset($permissions[$section])) {
+        gaeks_json(['status' => 'error', 'message' => 'Modul konten tidak dikenal.'], 422);
+    }
+    gaeks_require_permission($permissions[$section], true);
+
+    if (in_array($section, ['services', 'articles'], true)) {
+        $sectionPayload = $payload[$section] ?? $payload;
+        if (!is_array($sectionPayload)) {
+            gaeks_json(['status' => 'error', 'message' => 'Daftar konten tidak valid.'], 422);
+        }
+    } else {
+        $sectionPayload = $payload[$section] ?? $payload;
+        if (!is_array($sectionPayload)) {
+            gaeks_json(['status' => 'error', 'message' => 'Pengaturan tidak valid.'], 422);
         }
     }
 
-    $payload['updatedAt'] = (int) round(microtime(true) * 1000);
-    $encoded = json_encode($payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    if ($section === 'articles') {
+        $currentIds = [];
+        foreach (($current['articles'] ?? []) as $article) {
+            if (is_array($article) && isset($article['id'])) {
+                $currentIds[(string) $article['id']] = true;
+            }
+        }
+        foreach ($sectionPayload as $article) {
+            if (is_array($article) && isset($article['id']) && !isset($currentIds[(string) $article['id']])) {
+                $newArticles[] = $article;
+            }
+        }
+    }
+
+    $current[$section] = $sectionPayload;
+    unset($current['subscribers']);
+    $current['updatedAt'] = (int) round(microtime(true) * 1000);
+    $encoded = json_encode($current, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     if ($encoded === false || @file_put_contents($dataFile, $encoded, LOCK_EX) === false) {
         gaeks_json(['status' => 'error', 'message' => 'Konten belum dapat ditulis ke server.'], 500);
     }

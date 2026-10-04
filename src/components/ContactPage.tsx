@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, MessageCircle, Phone } from 'lucide-react';
 import { Language } from '../types/freight';
+import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 
 export const ContactPage: React.FC<{ currentLang?: Language }> = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +10,15 @@ export const ContactPage: React.FC<{ currentLang?: Language }> = () => {
     mode: 'Laut (FCL / LCL)', volume: '', consent: false, message: ''
   });
   const [submitted, setSubmitted] = useState(false);
+  const [branding, setBranding] = useState(getStoredBranding());
+
+  useEffect(() => {
+    const reload = () => setBranding(getStoredBranding());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
+  }, []);
+
+  const whatsappNumber = (() => { const digits = branding.whatsappNumber.replace(/\D/g, ''); return digits.startsWith('0') ? `62${digits.slice(1)}` : digits; })();
 
   const set = (key: keyof typeof formData, value: string | boolean) => setFormData((current) => ({ ...current, [key]: value }));
   const handleSubmit = (event: React.FormEvent) => {
@@ -20,7 +30,7 @@ Rute: ${formData.origin} ke ${formData.destination}
 Volume: ${formData.volume}
 Komoditas: ${formData.commodity}
 Pesan: ${formData.message}`;
-    window.open('https://wa.me/6285608561745?text=' + encodeURIComponent(text), '_blank');
+    window.open(`https://wa.me/${whatsappNumber}?text=` + encodeURIComponent(text), '_blank');
     setSubmitted(true);
   };
 
@@ -33,8 +43,8 @@ Pesan: ${formData.message}`;
             <h1 className="section-title">Ceritakan rute dan kebutuhan kargo Anda.</h1>
             <p className="section-copy">Kami akan membuka ringkasan terisi di WhatsApp agar Anda dapat memeriksanya sebelum mengirim.</p>
             <div className="mt-8 border-y border-slate-300 py-4 text-sm">
-              <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Phone className="h-4 w-4" />+62 856 0856 1745</a>
-              <a href="mailto:Sales01@gaeks.com" className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />Sales01@gaeks.com</a>
+              <a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Phone className="h-4 w-4" />{branding.whatsappDisplay}</a>
+              <a href={`mailto:${branding.salesEmail}`} className="flex min-h-11 items-center gap-3 hover:text-cyan-700"><Mail className="h-4 w-4" />{branding.salesEmail}</a>
             </div>
           </header>
 
