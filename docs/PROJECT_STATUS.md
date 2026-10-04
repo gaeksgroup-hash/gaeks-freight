@@ -8,7 +8,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 
 ## Pemeriksaan yang lulus
 
-- `npm run build`: lulus, 1.896 modul diproses dengan route khusus dan carousel dipisah menjadi chunk lazy-load.
+- `npm run build`: lulus, 1.496 modul diproses. Halaman khusus tetap dipisah menjadi lazy chunk dan carousel headline tidak lagi membawa runtime animasi tambahan.
 - `npx tsc --noEmit`: lulus.
 - `git diff --check`: lulus.
 - `git fsck --full`: lulus.
@@ -42,7 +42,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 ## Batasan yang masih terbuka
 
 1. Konten publik masih memakai JSON server dengan browser storage sebagai cache; PostgreSQL pada PRD belum diterapkan.
-2. File video produksi sekitar 23 MB disimpan di repository. Object storage/CDN akan mengurangi ukuran clone dan deployment.
+2. Dua file video produksi sekitar 12 MB per file masih disimpan di repository. Hero menunda pemuatan video, tetapi object storage/CDN dan versi video lebih kecil tetap akan mengurangi ukuran clone serta transfer saat video diminta.
 3. Sitemap masih berisi hash URL dan tanggal `lastmod` lama. Sitemap sebaiknya dipindahkan ke URL halaman yang dapat diindeks setelah route publik stabil.
 4. Penerjemahan otomatis dapat mengirim potongan teks ke MyMemory API. Perlu keputusan privasi dan fallback sebelum digunakan untuk konten sensitif.
 5. Script generator lama masih disimpan untuk referensi. Script tersebut dapat menimpa source dan tidak menjadi bagian workflow release.

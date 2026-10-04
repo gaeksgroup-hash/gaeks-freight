@@ -4,6 +4,18 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ## 2026-10-04
 
+### Hero headline dan akselerasi pembuka
+
+- Menghapus panel gambar carousel yang bersaing dengan headline utama dan menggantinya dengan carousel teks layanan yang mengambang pada bidang hero yang sama.
+- Menambahkan pemisah responsif agar headline utama dan headline layanan tetap terbaca sebagai dua bagian pada tablet dan ponsel.
+- Menghapus gambar layanan kedua dari hero sehingga browser hanya memuat satu visual utama.
+- Mengganti animasi Framer Motion dengan transisi CSS kecil dan menghapus dependency beserta chunk animasi sekitar 45 KB gzip.
+- Menampilkan poster terlebih dahulu serta menunda request video sampai halaman selesai dimuat dan browser senggang.
+- Memakai poster responsif pada tablet, ponsel, data saver, koneksi 3G atau lebih lambat, dan reduced motion sehingga video besar tidak diminta.
+- Menghapus stylesheet Google Fonts dari jalur pembuka dan memakai font sistem untuk menghindari request render blocking.
+- Menambahkan cache immutable untuk GIF, MP4, dan WebM serta pengaturan poster video pada operator.
+- Memadatkan panel newsletter ponsel menjadi satu bidang dengan input dan tombol dalam satu baris.
+
 ### Penyempurnaan seluruh frontend dan beranda dinamis
 
 - Menggunakan media operator sebagai background hero dengan pilihan video, GIF, gambar, atau tanpa media serta lapisan kontras tetap agar judul selalu terbaca.

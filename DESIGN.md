@@ -18,7 +18,7 @@ GAEKS is a freight forwarding and customs operations website for importers, expo
 - RHYTHM: 2/5
 - MOTION: 2/5
 
-Motion supports orientation and continuity. The hero service carousel advances automatically with a restrained pan, directional transition, progress line, and manual controls. It pauses during pointer or keyboard interaction and disables automatic movement when reduced motion is requested. Glowing surfaces and decorative loops are not used.
+Motion supports orientation and continuity. The hero service headline advances automatically with a short opacity and vertical transition plus manual controls. It pauses during pointer or keyboard interaction and disables automatic movement when reduced motion is requested. Glowing surfaces and decorative loops are not used.
 
 ## Density rules
 
@@ -32,7 +32,7 @@ Motion supports orientation and continuity. The hero service carousel advances a
 ## Page patterns
 
 - Home: editorial hero, three task shortcuts, optional network badges, compact service list, optional client logos, process list, and latest updates.
-- Hero visual: operator-managed image, GIF, or video sits behind the main message with a fixed contrast layer. The service carousel remains a separate operational preview populated from operator-managed services. The first carousel frame renders without waiting for the animation bundle; slide numbering and UI metadata are omitted.
+- Hero visual: operator-managed image, GIF, or video sits behind the main message with a fixed contrast layer. The service carousel appears as a floating editorial headline on the same visual field, without a second image or boxed panel. On smaller screens a visible rule separates the main message and service headline.
 - Services: seven indexed disclosure rows.
 - Tracking: one search field followed directly by API status and a vertical milestone timeline.
 - Calculator: grouped input disclosures and one persistent results panel.
@@ -48,9 +48,10 @@ Use direct operational language. Avoid hype, vague superiority claims, fake urge
 
 ## Performance rules
 
-- Specialist pages and the Framer Motion carousel load as separate chunks.
-- Render one hero slide at a time and preload only the next image.
+- Specialist pages load as separate chunks.
+- Render service carousel text without loading a second hero image.
 - Pause carousel movement during hover or keyboard interaction and honor reduced motion preferences.
 - Keep the footer compact through short line lengths, shallow section padding, and tightly grouped navigation while preserving 44 pixel interaction targets.
-- Load hero video metadata first and keep network/client logo sections absent when they have no valid operator data.
+- Keep network/client logo sections absent when they have no valid operator data.
+- Show a responsive poster immediately, then request hero video only on desktop after page load during browser idle time. Keep the poster on tablets, phones, data saver, 3G or slower, and reduced motion.
 - Use cache headers for versioned static assets. Cookies are not used as a caching mechanism.

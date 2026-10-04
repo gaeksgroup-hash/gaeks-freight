@@ -204,17 +204,18 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
             <p className="section-label">Berita dan pembaruan</p>
             <h1 className="section-title">Informasi yang membantu keputusan pengiriman.</h1>
             <p className="section-copy">Cari catatan regulasi, rute, dan operasi. Setiap artikel tampil sebagai baris ringkas.</p>
-            <aside aria-labelledby="newsletter-title" className="mt-8 overflow-hidden bg-[#08383e] text-white shadow-[0_18px_44px_rgba(8,47,52,0.15)]">
-              <div className="flex items-center gap-3 bg-cyan-300 px-5 py-3 text-[#062d32]"><span className="flex h-9 w-9 items-center justify-center bg-[#062d32] text-cyan-200"><Send className="h-4 w-4" aria-hidden="true" /></span><p className="text-xs font-bold uppercase tracking-[0.14em]">Briefing logistik GAEKS</p></div>
-              <div className="p-5 sm:p-6"><h2 id="newsletter-title" className="text-2xl font-bold leading-tight">Langganan pembaruan</h2><p className="mt-2 text-sm leading-6 text-cyan-50/80">Terima berita operasional, regulasi, dan rute terbaru saat dipublikasikan.</p>
+            <aside aria-labelledby="newsletter-title" className="mt-8 border-l-4 border-cyan-300 bg-[#08383e] p-5 text-white shadow-[0_14px_32px_rgba(8,47,52,0.12)] sm:p-6">
+              <div className="flex items-center gap-3 text-cyan-200"><Send className="h-4 w-4" aria-hidden="true" /><p className="text-[11px] font-bold uppercase tracking-[0.14em]">Briefing logistik GAEKS</p></div>
+              <h2 id="newsletter-title" className="mt-4 text-2xl font-bold leading-tight">Langganan pembaruan</h2><p className="mt-2 text-sm leading-6 text-cyan-50/75">Berita operasional, regulasi, dan rute terbaru saat dipublikasikan.</p>
                 <form onSubmit={handleSubscribe} className="mt-5 space-y-3">
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
                   <label className="sr-only" htmlFor="news-email">Email perusahaan</label>
-                  <input id="news-email" type="email" autoComplete="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="nama@perusahaan.com" className="min-h-12 w-full rounded-md border border-white/25 bg-white px-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-cyan-300 focus:outline-none" />
-                  <button type="submit" disabled={isSubscribing || !newsletterConsent} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-50">{isSubscribing ? 'Mengirim…' : 'Daftar newsletter'}<ArrowRight className="h-4 w-4" /></button>
+                  <input id="news-email" type="email" autoComplete="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="nama@perusahaan.com" className="min-h-12 min-w-0 rounded-md border border-white/25 bg-white px-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-cyan-300 focus:outline-none" />
+                  <button type="submit" disabled={isSubscribing || !newsletterConsent} aria-label="Daftar newsletter" className="inline-flex min-h-12 min-w-12 items-center justify-center rounded-md bg-cyan-300 px-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-50"><span className="hidden sm:inline">{isSubscribing ? 'Mengirim' : 'Daftar'}</span><ArrowRight className="h-4 w-4 sm:ml-2" /></button>
+                  </div>
                   <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-cyan-50/75"><input type="checkbox" required checked={newsletterConsent} onChange={(event) => setNewsletterConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-cyan-300" /><span>Saya setuju menerima berita GAEKS melalui email dan dapat berhenti kapan saja.</span></label>
                   <label className="absolute -left-[10000px]" aria-hidden="true">Perusahaan<input tabIndex={-1} autoComplete="off" value={newsletterCompany} onChange={(event) => setNewsletterCompany(event.target.value)} /></label>
                 </form>
-              </div>
             </aside>
           </header>
 

@@ -6,7 +6,7 @@ Website produksi [gaeks.com](https://gaeks.com) untuk layanan freight forwarding
 
 - React 18, TypeScript, dan Vite 5.
 - Tailwind CSS 3.
-- Framer Motion untuk interaksi yang memang membutuhkan gerak.
+- CSS transition ringan untuk carousel headline dan perpindahan halaman.
 - Hostinger Node.js Application dengan sumber GitHub branch `main`.
 
 ## Menjalankan secara lokal
