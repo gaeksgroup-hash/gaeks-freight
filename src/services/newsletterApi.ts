@@ -5,6 +5,8 @@ interface NewsletterResponse {
   message?: string;
   sender?: string;
   mailAvailable?: boolean;
+  smtpConfigured?: boolean;
+  transport?: 'smtp' | 'php_mail';
   subscribers?: NewsletterSubscriber[];
 }
 
@@ -25,6 +27,8 @@ export async function fetchNewsletterSubscribers(): Promise<{
   subscribers: NewsletterSubscriber[];
   sender: string;
   mailAvailable: boolean;
+  smtpConfigured: boolean;
+  transport: 'smtp' | 'php_mail';
 }> {
   const response = await fetch('/api/newsletter.php', { credentials: 'same-origin', cache: 'no-store' });
   const result = await response.json() as NewsletterResponse;
@@ -35,5 +39,7 @@ export async function fetchNewsletterSubscribers(): Promise<{
     subscribers: result.subscribers || [],
     sender: result.sender || 'news@gaeks.com',
     mailAvailable: Boolean(result.mailAvailable),
+    smtpConfigured: Boolean(result.smtpConfigured),
+    transport: result.transport || 'php_mail',
   };
 }

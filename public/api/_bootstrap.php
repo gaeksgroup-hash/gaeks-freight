@@ -154,16 +154,50 @@ function gaeks_email_header(string $value): string
     return str_replace(["\r", "\n"], '', trim($value));
 }
 
-function gaeks_send_html_mail(string $to, string $subject, string $html, ?string $unsubscribeUrl = null): bool
+function gaeks_smtp_config(): ?array
 {
-    if (!filter_var($to, FILTER_VALIDATE_EMAIL) || !function_exists('mail')) {
-        return false;
+    $environmentUser = getenv('GAEKS_SMTP_USERNAME');
+    $environmentPassword = getenv('GAEKS_SMTP_PASSWORD');
+    if ($environmentUser && $environmentPassword) {
+        return [
+            'host' => getenv('GAEKS_SMTP_HOST') ?: 'smtp.hostinger.com',
+            'port' => (int) (getenv('GAEKS_SMTP_PORT') ?: 465),
+            'encryption' => getenv('GAEKS_SMTP_ENCRYPTION') ?: 'ssl',
+            'username' => $environmentUser,
+            'password' => $environmentPassword,
+        ];
     }
 
+    $configPath = gaeks_private_dir() . '/smtp.php';
+    if (!is_file($configPath)) {
+        return null;
+    }
+    $config = require $configPath;
+    if (!is_array($config)) {
+        return null;
+    }
+
+    $host = (string) ($config['host'] ?? '');
+    $port = (int) ($config['port'] ?? 0);
+    $encryption = strtolower((string) ($config['encryption'] ?? ''));
+    $username = (string) ($config['username'] ?? '');
+    $password = (string) ($config['password'] ?? '');
+    if (!preg_match('/^[a-z0-9.-]+$/i', $host)
+        || !in_array($port, [465, 587], true)
+        || !in_array($encryption, ['ssl', 'tls', 'starttls'], true)
+        || !filter_var($username, FILTER_VALIDATE_EMAIL)
+        || $password === '') {
+        return null;
+    }
+
+    return compact('host', 'port', 'encryption', 'username', 'password');
+}
+
+function gaeks_mail_headers(?string $unsubscribeUrl = null): array
+{
     $headers = [
         'MIME-Version: 1.0',
         'Content-Type: text/html; charset=UTF-8',
-        'Content-Transfer-Encoding: 8bit',
         'From: GAEKS News <' . GAEKS_NEWS_FROM . '>',
         'Reply-To: ' . GAEKS_NEWS_FROM,
         'X-Mailer: GAEKS Newsletter',
@@ -173,7 +207,96 @@ function gaeks_send_html_mail(string $to, string $subject, string $html, ?string
         $headers[] = 'List-Unsubscribe-Post: List-Unsubscribe=One-Click';
         $headers[] = 'Precedence: bulk';
     }
+    return $headers;
+}
 
+function gaeks_smtp_read($socket, array $expectedCodes): bool
+{
+    $response = '';
+    while (($line = fgets($socket, 1024)) !== false) {
+        $response .= $line;
+        if (strlen($line) >= 4 && $line[3] === ' ') {
+            break;
+        }
+    }
+    $code = (int) substr($response, 0, 3);
+    return in_array($code, $expectedCodes, true);
+}
+
+function gaeks_smtp_command($socket, string $command, array $expectedCodes): bool
+{
+    if (fwrite($socket, $command . "\r\n") === false) {
+        return false;
+    }
+    return gaeks_smtp_read($socket, $expectedCodes);
+}
+
+function gaeks_send_via_smtp(array $config, string $to, string $subject, string $html, ?string $unsubscribeUrl): bool
+{
+    $transport = $config['encryption'] === 'ssl' ? 'ssl://' : 'tcp://';
+    $socket = @stream_socket_client(
+        $transport . $config['host'] . ':' . $config['port'],
+        $errorNumber,
+        $errorMessage,
+        15,
+        STREAM_CLIENT_CONNECT
+    );
+    if (!$socket) {
+        return false;
+    }
+    stream_set_timeout($socket, 15);
+
+    $hostname = parse_url(GAEKS_SITE_URL, PHP_URL_HOST) ?: 'gaeks.com';
+    $ok = gaeks_smtp_read($socket, [220])
+        && gaeks_smtp_command($socket, 'EHLO ' . $hostname, [250]);
+
+    if ($ok && in_array($config['encryption'], ['tls', 'starttls'], true)) {
+        $ok = gaeks_smtp_command($socket, 'STARTTLS', [220])
+            && @stream_socket_enable_crypto($socket, true, STREAM_CRYPTO_METHOD_TLS_CLIENT)
+            && gaeks_smtp_command($socket, 'EHLO ' . $hostname, [250]);
+    }
+
+    $ok = $ok
+        && gaeks_smtp_command($socket, 'AUTH LOGIN', [334])
+        && gaeks_smtp_command($socket, base64_encode($config['username']), [334])
+        && gaeks_smtp_command($socket, base64_encode($config['password']), [235])
+        && gaeks_smtp_command($socket, 'MAIL FROM:<' . gaeks_email_header(GAEKS_NEWS_FROM) . '>', [250])
+        && gaeks_smtp_command($socket, 'RCPT TO:<' . gaeks_email_header($to) . '>', [250, 251])
+        && gaeks_smtp_command($socket, 'DATA', [354]);
+
+    if ($ok) {
+        $headers = array_merge([
+            'Date: ' . date(DATE_RFC2822),
+            'Message-ID: <' . bin2hex(random_bytes(12)) . '@' . $hostname . '>',
+            'To: <' . gaeks_email_header($to) . '>',
+            'Subject: =?UTF-8?B?' . base64_encode(gaeks_email_header($subject)) . '?=',
+            'Content-Transfer-Encoding: base64',
+        ], gaeks_mail_headers($unsubscribeUrl));
+        $payload = implode("\r\n", $headers) . "\r\n\r\n" . chunk_split(base64_encode($html), 76, "\r\n");
+        $payload = preg_replace('/(^|\r\n)\./', '$1..', $payload) ?? $payload;
+        $ok = fwrite($socket, $payload . "\r\n.\r\n") !== false && gaeks_smtp_read($socket, [250]);
+    }
+
+    @fwrite($socket, "QUIT\r\n");
+    fclose($socket);
+    return $ok;
+}
+
+function gaeks_send_html_mail(string $to, string $subject, string $html, ?string $unsubscribeUrl = null): bool
+{
+    if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
+        return false;
+    }
+
+    $smtp = gaeks_smtp_config();
+    if ($smtp !== null) {
+        return gaeks_send_via_smtp($smtp, $to, $subject, $html, $unsubscribeUrl);
+    }
+    if (!function_exists('mail')) {
+        return false;
+    }
+
+    $headers = array_merge(['Content-Transfer-Encoding: 8bit'], gaeks_mail_headers($unsubscribeUrl));
     $encodedSubject = '=?UTF-8?B?' . base64_encode(gaeks_email_header($subject)) . '?=';
     $headerText = implode("\r\n", $headers);
     if (@mail($to, $encodedSubject, $html, $headerText, '-f' . GAEKS_NEWS_FROM)) {

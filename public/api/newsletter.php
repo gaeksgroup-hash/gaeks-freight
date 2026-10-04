@@ -46,10 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     gaeks_require_operator();
     $subscribers = array_map('gaeks_public_subscriber', gaeks_subscribers());
     usort($subscribers, static fn(array $a, array $b): int => strcmp($b['subscribedAt'], $a['subscribedAt']));
+    $smtpConfig = gaeks_smtp_config();
     gaeks_json([
         'status' => 'success',
         'sender' => GAEKS_NEWS_FROM,
-        'mailAvailable' => function_exists('mail'),
+        'mailAvailable' => $smtpConfig !== null || function_exists('mail'),
+        'smtpConfigured' => $smtpConfig !== null,
+        'transport' => $smtpConfig !== null ? 'smtp' : 'php_mail',
         'subscribers' => $subscribers,
     ]);
 }

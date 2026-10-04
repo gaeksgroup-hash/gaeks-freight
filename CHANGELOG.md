@@ -14,6 +14,7 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 - Mengaktifkan autentikasi operator berbasis sesi server, cookie HttpOnly/Secure/SameSite, CSRF, dan pembatasan percobaan login.
 - Menampilkan daftar subscriber global beserta status dan ekspor CSV di panel operator.
 - Mengirim newsletter otomatis dari `news@gaeks.com` saat artikel baru dipublikasikan, dengan header `List-Unsubscribe` dan catatan hasil pengiriman.
+- Menambahkan transport SMTP Hostinger dengan konfigurasi privat di luar `public_html`; PHP mail tetap menjadi fallback saat SMTP belum dikonfigurasi.
 - Menghapus data subscriber dari file konten publik.
 
 ### Carousel layanan dan shipment tracking

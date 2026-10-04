@@ -39,6 +39,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
   const [newsletterSender, setNewsletterSender] = useState('news@gaeks.com');
   const [mailAvailable, setMailAvailable] = useState(false);
+  const [smtpConfigured, setSmtpConfigured] = useState(false);
 
   const [editingService, setEditingService] = useState<ServiceDetail | null>(null);
   const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
@@ -63,6 +64,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
       setSubscribers(result.subscribers);
       setNewsletterSender(result.sender);
       setMailAvailable(result.mailAvailable);
+      setSmtpConfigured(result.smtpConfigured);
     } catch (error) {
       toast.error('Daftar newsletter belum dapat dimuat', { description: error instanceof Error ? error.message : undefined });
     }
@@ -871,7 +873,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <h3 className="text-2xl font-black text-white">Pelanggan Newsletter ({subscribers.length})</h3>
-                  <p className="mt-1 text-xs text-slate-400">Pengirim: {newsletterSender} · {mailAvailable ? 'layanan email server aktif' : 'layanan email server belum tersedia'}</p>
+                  <p className="mt-1 text-xs text-slate-400">Pengirim: {newsletterSender} · {smtpConfigured ? 'SMTP terautentikasi' : mailAvailable ? 'fallback PHP mail' : 'layanan email belum tersedia'}</p>
                 </div>
                 <button onClick={() => exportSubscribersToCSV(subscribers)} className="inline-flex min-h-11 items-center justify-center space-x-2 rounded-lg bg-emerald-700 px-4 text-xs font-bold text-white hover:bg-emerald-600">
                   <Download className="w-4 h-4" />

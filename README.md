@@ -54,6 +54,8 @@ Halaman operator memakai sesi PHP server dengan cookie HttpOnly, CSRF, dan pemba
 
 Pelanggan newsletter disimpan di direktori privat di luar web root. Pendaftaran publik memakai konfirmasi email dan tautan berhenti berlangganan. Publikasi artikel baru melalui operator mengirim pembaruan individual dari `news@gaeks.com` kepada subscriber aktif.
 
+Konfigurasi SMTP produksi dijelaskan di [docs/SMTP_SETUP.md](docs/SMTP_SETUP.md). Kredensial disimpan di hosting di luar repository dan `public_html`.
+
 Lihat [docs/PROJECT_STATUS.md](docs/PROJECT_STATUS.md) untuk hasil audit terbaru dan batasan yang masih terbuka.
 
 ## Riwayat perubahan
