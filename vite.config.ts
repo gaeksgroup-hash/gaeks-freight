@@ -9,10 +9,15 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
     emptyOutDir: true,
-    rollupOptions: {
+    rolldownOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'lucide-react']
+        codeSplitting: {
+          groups: [
+            {
+              name: 'vendor',
+              test: /node_modules[\\/](?:react(?:-dom)?|lucide-react)[\\/]/,
+            },
+          ],
         }
       }
     }

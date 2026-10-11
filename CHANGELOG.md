@@ -14,7 +14,9 @@ Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git 
 
 ### Keamanan, indeksasi, dan toolchain
 
-- Memperbarui Vite ke versi 6 dan Tailwind CSS ke versi 4; seluruh dependency lulus `npm audit` tanpa advisory.
+- Memperbarui Vite ke versi 8, plugin React ke versi 6, dan Tailwind CSS ke versi 4; seluruh dependency lulus `npm audit` tanpa advisory.
+- Mengganti pipeline esbuild dengan Rolldown bawaan Vite 8 untuk menghapus paket yang ditandai pemindai keamanan Hostinger tanpa memaksa versi dependency di luar rentang kompatibilitasnya.
+- Memigrasikan konfigurasi vendor chunk dari `manualChunks` ke `codeSplitting` agar cache React dan ikon tetap stabil pada pipeline baru.
 - Menambahkan header HSTS, nosniff, SAMEORIGIN, referrer policy, serta pembatasan kamera, mikrofon, dan geolokasi melalui konfigurasi Apache.
 - Mengganti sitemap berbasis hash dengan route kanonis yang dapat diindeks untuk tracking dan seluruh tujuh halaman layanan.
 - Memverifikasi build TypeScript, halaman publik dan operator pada desktop serta ponsel, tujuh route detail layanan, endpoint baca, proteksi endpoint privat, dan ketiadaan overflow horizontal.

@@ -4,11 +4,11 @@ Tanggal audit: 11 Oktober 2026.
 
 ## Ringkasan
 
-Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger dari branch `main`. Kandidat rilis saat audit menggunakan React 18, TypeScript 5, Vite 6, dan Tailwind CSS 4.
+Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger dari branch `main`. Kandidat rilis saat audit menggunakan React 18, TypeScript 5, Vite 8, dan Tailwind CSS 4.
 
 ## Pemeriksaan yang lulus
 
-- `npm run build`: lulus, 1.494 modul diproses. Halaman khusus tetap dipisah menjadi lazy chunk dan carousel headline tidak membawa runtime animasi tambahan.
+- `npm run build`: lulus dengan Vite 8 dan Rolldown, 1.481 modul diproses. Halaman khusus tetap dipisah menjadi lazy chunk dan carousel headline tidak membawa runtime animasi tambahan.
 - `npx tsc --noEmit`: lulus.
 - `git diff --check` dan `git fsck --full`: lulus.
 - `npm audit`: 0 advisory pada seluruh dependency.
