@@ -1,22 +1,22 @@
 # Status Project GAEKS Freight
 
-Tanggal audit: 4 Oktober 2026.
+Tanggal audit: 11 Oktober 2026.
 
 ## Ringkasan
 
-Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger dari branch `main`. Versi aplikasi saat audit menggunakan React 18, TypeScript 5, Vite 5, dan Tailwind CSS 3.
+Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger dari branch `main`. Kandidat rilis saat audit menggunakan React 18, TypeScript 5, Vite 6, dan Tailwind CSS 4.
 
 ## Pemeriksaan yang lulus
 
-- `npm run build`: lulus, 1.496 modul diproses. Halaman khusus tetap dipisah menjadi lazy chunk dan carousel headline tidak lagi membawa runtime animasi tambahan.
+- `npm run build`: lulus, 1.494 modul diproses. Halaman khusus tetap dipisah menjadi lazy chunk dan carousel headline tidak membawa runtime animasi tambahan.
 - `npx tsc --noEmit`: lulus.
-- `git diff --check`: lulus.
-- `git fsck --full`: lulus.
-- `npm audit --omit=dev`: 0 advisory pada dependency produksi.
-- Halaman utama: HTTP 200.
-- Route `/layanan/ppjk-customs-clearance`: HTTP 200.
+- `git diff --check` dan `git fsck --full`: lulus.
+- `npm audit`: 0 advisory pada seluruh dependency.
+- Halaman utama, tracking, seluruh tujuh route layanan, operator, API sinkronisasi, robots, dan sitemap produksi: HTTP 200.
+- Smoke test desktop dan ponsel pada seluruh halaman utama: lulus tanpa overflow horizontal atau error console.
+- Kontras teks utama operator: lulus WCAG AA; target sentuh utama sekurangnya 44 piksel.
 - `/api/site_content.json` dan `/api/sync.php` GET: HTTP 200. Endpoint pengguna, media, dan daftar newsletter menolak pengunjung tanpa sesi dengan HTTP 401.
-- Deployment navbar commit `cb01153`: build Hostinger selesai dan tampilan live terverifikasi.
+- Login operator lokal: state loading, tampil/sembunyi kata sandi, dan error server terverifikasi. Alur setelah login memerlukan sesi operator produksi untuk pemeriksaan akhir.
 
 ## Keadaan fitur
 
@@ -32,6 +32,7 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 | Detail layanan | Aktif melalui route `/layanan/<slug>` |
 | Desain publik ringkas | Aktif; data panjang memakai daftar dan disclosure |
 | Operator login | Aktif dengan sesi server, CSRF, dan rate limit login |
+| Ruang kerja operator | Navigasi modul berbasis URL, status sinkronisasi server, refresh manual, responsive reflow, dan state akses tampil jelas |
 | Simpan konten ke server | Aktif di penyimpanan privat; tab lokal langsung diperbarui dan perangkat lain sinkron maksimal 15 detik |
 | Upload/hapus media | Aktif dengan kompresi gambar server, render WebM 720p browser, poster otomatis, dan penolakan video mentah |
 | Newsletter | Double opt-in, daftar operator, unsubscribe, dan broadcast artikel baru aktif |
@@ -42,12 +43,12 @@ Situs publik aktif di `https://gaeks.com` dan dibangun otomatis oleh Hostinger d
 ## Batasan yang masih terbuka
 
 1. Konten publik masih memakai JSON server dengan browser storage sebagai cache; PostgreSQL pada PRD belum diterapkan.
-2. Sitemap masih berisi hash URL dan tanggal `lastmod` lama. Sitemap sebaiknya dipindahkan ke URL halaman yang dapat diindeks setelah route publik stabil.
-3. Penerjemahan otomatis dapat mengirim potongan teks ke MyMemory API. Perlu keputusan privasi dan fallback sebelum digunakan untuk konten sensitif.
-4. Script generator lama masih disimpan untuk referensi. Script tersebut dapat menimpa source dan tidak menjadi bagian workflow release.
-5. PRD V2 adalah target arsitektur. Implementasi produksi saat ini masih aplikasi Vite dengan endpoint PHP untuk kebutuhan server ringan.
-6. Hostinger Reach belum tersedia untuk akun ini (API 403), sehingga broadcast memakai mail transport Hostinger. SPF, DKIM, dan DMARC domain tersedia; statistik bounce/click lanjutan menunggu provider kampanye.
-7. Nomor tracking contoh pada dokumentasi ERP merespons `SHIPMENT_NOT_FOUND` saat audit 4 Oktober 2026. State sukses sudah disiapkan, tetapi perlu diverifikasi kembali memakai nomor shipment produksi yang valid.
+2. Penerjemahan otomatis dapat mengirim potongan teks ke MyMemory API. Perlu keputusan privasi dan fallback sebelum digunakan untuk konten sensitif.
+3. Script generator lama masih disimpan untuk referensi. Script tersebut dapat menimpa source dan tidak menjadi bagian workflow release.
+4. PRD V2 adalah target arsitektur. Implementasi produksi saat ini masih aplikasi Vite dengan endpoint PHP untuk kebutuhan server ringan.
+5. Hostinger Reach belum tersedia untuk akun ini (API 403), sehingga broadcast memakai mail transport Hostinger. SPF, DKIM, dan DMARC domain tersedia; statistik bounce/click lanjutan menunggu provider kampanye.
+6. Nomor tracking contoh pada dokumentasi ERP merespons `SHIPMENT_NOT_FOUND`. State sukses perlu diverifikasi memakai nomor shipment produksi yang valid.
+7. Pemeriksaan penuh modul operator setelah login, termasuk mutasi konten dan media, memerlukan sesi operator produksi. Audit ini tidak mencoba kredensial atau menulis data produksi.
 
 ## Riwayat deployment terakhir
 

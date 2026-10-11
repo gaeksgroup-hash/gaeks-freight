@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
-  ArrowDown, ArrowLeft, ArrowUp, CheckCircle2, Download, Eye, FileText, FolderOpen,
-  Image as ImageIcon, Layers, LayoutDashboard, LogOut, Newspaper, Plus, Save,
-  Search, Settings2, ShieldCheck, Trash2, Users,
+  ArrowDown, ArrowLeft, ArrowUp, ChevronRight, Download, Eye, EyeOff,
+  FileText, FolderOpen, Image as ImageIcon, Layers, LayoutDashboard, LogOut,
+  Newspaper, Plus, RefreshCw, Save, Search, Server, Settings2, ShieldCheck,
+  Trash2, Users,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -58,11 +59,17 @@ const tabDefinitions: Array<{ id: TabId; label: string; permission?: string; ico
   { id: 'seo', label: 'SEO', permission: 'site.seo', icon: Search },
 ];
 
-const inputClass = 'mt-1.5 w-full rounded-lg border border-slate-700 bg-[#071d21] px-3 py-2.5 text-sm text-white outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400';
-const labelClass = 'block text-xs font-semibold text-slate-300';
-const panelClass = 'border border-cyan-950 bg-[#071d21] p-5 sm:p-6';
-const primaryClass = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-400 px-4 text-sm font-bold text-[#011417] hover:bg-cyan-300 disabled:cursor-not-allowed disabled:opacity-50';
-const secondaryClass = 'inline-flex min-h-10 items-center justify-center gap-2 rounded-md border border-slate-700 px-3 text-sm font-semibold text-slate-200 hover:border-cyan-700 hover:text-white';
+const inputClass = 'mt-1.5 min-h-11 w-full rounded-md border border-slate-600 bg-[#08282d] px-3 py-2.5 text-base text-white outline-none placeholder:text-slate-500 focus:border-cyan-300 focus:ring-2 focus:ring-cyan-300/30 disabled:cursor-not-allowed disabled:opacity-60';
+const labelClass = 'block text-sm font-semibold text-slate-200';
+const panelClass = 'border border-cyan-950/90 bg-[#071d21] p-5 sm:p-6';
+const primaryClass = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-4 text-sm font-bold text-[#011417] transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-50';
+const secondaryClass = 'inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-slate-600 px-3 text-sm font-semibold text-slate-200 transition-colors hover:border-cyan-400 hover:bg-cyan-950/50 hover:text-white';
+
+const isTabId = (value: string | null): value is TabId => Boolean(value && tabDefinitions.some((tab) => tab.id === value));
+const getInitialTab = (): TabId => {
+  const requested = new URLSearchParams(window.location.search).get('module');
+  return isTabId(requested) ? requested : 'overview';
+};
 
 const newService = (): ServiceDetail => ({
   id: `service-${Date.now()}`, title: '', category: '', tagline: '', description: '', features: [], equipment: '', imageUrl: '', commodities: '',
@@ -85,8 +92,13 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   const [checkingSession, setCheckingSession] = useState(true);
   const [loginUser, setLoginUser] = useState('');
   const [loginPass, setLoginPass] = useState('');
-  const [activeTab, setActiveTab] = useState<TabId>('overview');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [loggingIn, setLoggingIn] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabId>(getInitialTab);
   const [saving, setSaving] = useState(false);
+  const [dataState, setDataState] = useState<'idle' | 'loading' | 'ready' | 'error'>('idle');
+  const [lastSyncedAt, setLastSyncedAt] = useState<Date | null>(null);
 
   const [branding, setBranding] = useState<BrandingSettings>(DEFAULT_BRANDING);
   const [hero, setHero] = useState<HeroSettings>(DEFAULT_HERO);
@@ -105,6 +117,25 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   const [editingOperator, setEditingOperator] = useState<ManagedOperator & { password: string } | null>(null);
 
   const allowedTabs = useMemo(() => tabDefinitions.filter((tab) => !tab.permission || hasPermission(tab.permission, session)), [session]);
+
+  useEffect(() => {
+    if (session && !allowedTabs.some((tab) => tab.id === activeTab)) {
+      setActiveTab('overview');
+      const url = new URL(window.location.href);
+      url.searchParams.set('module', 'overview');
+      window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+    }
+  }, [activeTab, allowedTabs, session]);
+
+  const selectTab = (tab: TabId) => {
+    setActiveTab(tab);
+    const url = new URL(window.location.href);
+    url.searchParams.set('module', tab);
+    window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+    if (tab === 'users') void loadOperators();
+    if (tab === 'subscribers') void loadSubscribers();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const loadLocalData = () => {
     setBranding(getStoredBranding()); setHero(getStoredHero()); setSiteSettings(getStoredSiteSettings()); setSeo(getStoredSeo());
@@ -125,12 +156,20 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   };
 
   const loadAuthorizedData = async (user: OperatorUser) => {
-    await syncFromServer(); loadLocalData();
-    const work: Promise<unknown>[] = [];
-    if (hasPermission('media.manage', user)) work.push(fetchMediaLibrary());
-    if (hasPermission('newsletter.read', user)) work.push(loadSubscribers());
-    if (hasPermission('users.manage', user)) work.push(loadOperators());
-    await Promise.all(work);
+    setDataState('loading');
+    try {
+      await syncFromServer();
+      loadLocalData();
+      const work: Promise<unknown>[] = [];
+      if (hasPermission('media.manage', user)) work.push(fetchMediaLibrary());
+      if (hasPermission('newsletter.read', user)) work.push(loadSubscribers());
+      if (hasPermission('users.manage', user)) work.push(loadOperators());
+      await Promise.all(work);
+      setLastSyncedAt(new Date());
+      setDataState('ready');
+    } catch {
+      setDataState('error');
+    }
   };
 
   useEffect(() => {
@@ -146,13 +185,19 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
 
   const handleLogin = async (event: React.FormEvent) => {
     event.preventDefault();
-    const result = await loginOperator(loginUser, loginPass);
-    if (!result.success || !result.user) { toast.error('Login gagal', { description: result.message }); return; }
-    setSession(result.user); setLoginPass(''); setActiveTab('overview'); await loadAuthorizedData(result.user);
+    setLoggingIn(true);
+    setLoginError('');
+    const result = await loginOperator(loginUser.trim(), loginPass);
+    setLoggingIn(false);
+    if (!result.success || !result.user) {
+      setLoginError(result.message || 'Username atau kata sandi tidak valid.');
+      return;
+    }
+    setSession(result.user); setLoginPass(''); selectTab('overview'); await loadAuthorizedData(result.user);
     toast.success(`Selamat datang, ${result.user.displayName}`);
   };
 
-  const handleLogout = async () => { await logoutOperator(); setSession(null); setActiveTab('overview'); toast.info('Sesi operator ditutup'); };
+  const handleLogout = async () => { await logoutOperator(); setSession(null); setActiveTab('overview'); setDataState('idle'); toast.info('Sesi operator ditutup'); };
 
   const saveSection = async (section: SectionId, payload: unknown, successMessage: string) => {
     setSaving(true); const result = await saveSectionToServer(section, payload); setSaving(false);
@@ -190,41 +235,85 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
     if (response.ok) { await fetchMediaLibrary(); toast.success('Media dihapus'); } else toast.error('Media belum dapat dihapus');
   };
 
-  if (checkingSession) return <div className="flex min-h-screen items-center justify-center bg-[#011417] text-sm text-slate-300">Memeriksa sesi operator…</div>;
+  if (checkingSession) return (
+    <main className="flex min-h-screen items-center justify-center bg-[#011417] px-5 text-white" aria-busy="true">
+      <div className="w-full max-w-sm">
+        <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-8 w-auto brightness-0 invert" />
+        <div className="mt-8 h-px overflow-hidden bg-cyan-950"><div className="h-full w-1/2 animate-pulse bg-cyan-300" /></div>
+        <p className="mt-4 text-sm text-slate-300">Memeriksa sesi operator dan koneksi server.</p>
+      </div>
+    </main>
+  );
   if (!session) return (
-    <main className="flex min-h-screen items-center justify-center bg-[#011417] p-4 text-white">
-      <section className="w-full max-w-sm border border-cyan-900 bg-[#071d21] p-7">
-        <img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-9 w-auto brightness-0 invert" />
-        <h1 className="mt-7 text-2xl font-bold">Operator GAEKS</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-400">Masuk untuk mengelola modul sesuai peran Anda.</p>
-        <form onSubmit={handleLogin} className="mt-7 space-y-4">
-          <Field label="Username" value={loginUser} onChange={setLoginUser} required />
-          <Field label="Kata sandi" type="password" value={loginPass} onChange={setLoginPass} required />
-          <button className={`${primaryClass} w-full`} type="submit">Masuk</button>
-        </form>
-        <button type="button" onClick={() => onNavigate('home')} className="mt-4 inline-flex min-h-10 items-center gap-2 text-sm text-slate-400 hover:text-white"><ArrowLeft className="h-4 w-4" />Kembali ke website</button>
+    <main className="grid min-h-screen bg-[#f4f5f1] text-[#12363a] lg:grid-cols-[minmax(0,1.08fr)_minmax(420px,.92fr)]">
+      <section className="relative flex flex-col justify-between overflow-hidden bg-[#032a30] px-5 py-7 text-white sm:min-h-[38vh] sm:px-10 sm:py-10 lg:min-h-screen lg:px-[clamp(2.5rem,6vw,7rem)] lg:py-12">
+        <div className="absolute inset-x-0 top-0 h-1 bg-cyan-300" aria-hidden="true" />
+        <img src="/logos/gaek-full.png?v=7" alt="GAEKS Global Andalan Ekspress" className="h-9 w-auto self-start object-contain object-left brightness-0 invert sm:h-11" />
+        <div className="mt-9 max-w-2xl sm:my-12 lg:my-auto">
+          <p className="text-sm font-semibold text-cyan-200">Pusat kendali website</p>
+          <h1 className="mt-3 max-w-xl text-3xl font-bold leading-[1.08] tracking-[-0.04em] sm:mt-4 sm:text-5xl lg:text-6xl">Kelola informasi publik dari satu alur kerja.</h1>
+          <p className="mt-6 hidden max-w-xl text-base leading-7 text-slate-300 sm:block">Konten, layanan, media, berita, dan metadata disimpan ke server GAEKS lalu dibaca website publik untuk seluruh pengunjung.</p>
+          <dl className="mt-9 hidden max-w-xl border-y border-white/15 sm:block">
+            {[
+              ['Akses', 'Modul mengikuti peran operator'],
+              ['Penyimpanan', 'Perubahan ditulis ke server'],
+              ['Publikasi', 'Website membaca versi terbaru'],
+            ].map(([term, description]) => <div key={term} className="grid grid-cols-[7rem_1fr] gap-4 border-b border-white/10 py-3.5 last:border-b-0"><dt className="text-xs font-bold text-cyan-200">{term}</dt><dd className="text-sm text-slate-300">{description}</dd></div>)}
+          </dl>
+        </div>
+        <p className="hidden text-xs text-slate-400 lg:block">Akses internal GAEKS. Gunakan akun sesuai tanggung jawab Anda.</p>
+      </section>
+
+      <section className="flex items-center px-5 py-10 sm:px-10 lg:px-[clamp(3rem,7vw,8rem)]" aria-labelledby="operator-login-title">
+        <div className="mx-auto w-full max-w-md">
+          <p className="text-sm font-bold text-[#0b6873]">Operator GAEKS</p>
+          <h2 id="operator-login-title" className="mt-3 text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Masuk ke ruang kerja</h2>
+          <p className="mt-3 text-sm leading-6 text-[#526568]">Sesi akan dibatasi pada modul yang sesuai dengan peran akun Anda.</p>
+          <form onSubmit={handleLogin} className="mt-8 space-y-5">
+            <label className="block text-sm font-semibold text-[#12363a]">Username
+              <input autoComplete="username" spellCheck={false} required value={loginUser} onChange={(event) => { setLoginUser(event.target.value); setLoginError(''); }} className="mt-2 min-h-12 w-full rounded-md border border-[#9eb1ae] bg-white px-3.5 text-base text-[#12363a] outline-none transition focus:border-[#0b6873] focus:ring-2 focus:ring-[#0b6873]/20" />
+            </label>
+            <label className="block text-sm font-semibold text-[#12363a]">Kata sandi
+              <span className="relative mt-2 block">
+                <input autoComplete="current-password" required type={showPassword ? 'text' : 'password'} value={loginPass} onChange={(event) => { setLoginPass(event.target.value); setLoginError(''); }} className="min-h-12 w-full rounded-md border border-[#9eb1ae] bg-white px-3.5 pr-12 text-base text-[#12363a] outline-none transition focus:border-[#0b6873] focus:ring-2 focus:ring-[#0b6873]/20" />
+                <button type="button" onClick={() => setShowPassword((visible) => !visible)} className="absolute inset-y-0 right-0 flex min-h-12 min-w-12 items-center justify-center text-[#526568] hover:text-[#0b6873]" aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}>{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button>
+              </span>
+            </label>
+            {loginError && <div role="alert" className="border-l-4 border-red-700 bg-red-50 px-4 py-3 text-sm leading-6 text-red-900"><strong className="block">Login belum berhasil</strong>{loginError}</div>}
+            <button className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-md bg-[#075a64] px-4 text-sm font-bold text-white transition-colors hover:bg-[#04454d] disabled:cursor-wait disabled:opacity-70" type="submit" disabled={loggingIn}>{loggingIn ? <><RefreshCw className="h-4 w-4 animate-spin" />Memeriksa akun</> : 'Masuk ke ruang kerja'}</button>
+          </form>
+          <button type="button" onClick={() => onNavigate('home')} className="mt-5 inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-[#526568] hover:text-[#0b6873]"><ArrowLeft className="h-4 w-4" />Kembali ke website publik</button>
+        </div>
       </section>
     </main>
   );
 
   return (
     <div className="min-h-screen bg-[#011417] text-white">
-      <header className="border-b border-cyan-950 bg-[#061b1f]">
-        <div className="flex min-h-16 items-center justify-between gap-4 px-4 sm:px-6">
-          <div className="flex min-w-0 items-center gap-3"><img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-7 w-auto brightness-0 invert" /><div className="min-w-0"><p className="truncate text-sm font-bold">{session.displayName}</p><p className="text-xs text-cyan-300">{roleLabels[session.role]}</p></div></div>
-          <div className="flex items-center gap-2"><button type="button" aria-label="Lihat website" onClick={() => onNavigate('home')} className={secondaryClass}><Eye className="h-4 w-4" /><span className="hidden sm:inline">Lihat website</span></button><button type="button" aria-label="Keluar" onClick={handleLogout} className={secondaryClass}><LogOut className="h-4 w-4" /><span className="hidden sm:inline">Keluar</span></button></div>
+      <header className="sticky top-0 z-30 border-b border-cyan-950 bg-[#041a1e]/95 backdrop-blur">
+        <div className="mx-auto flex min-h-16 max-w-[1600px] items-center justify-between gap-4 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3"><img src="/logos/gaek-symbol.png?v=7" alt="GAEKS" className="h-7 w-auto brightness-0 invert" /><div className="hidden h-7 w-px bg-cyan-900 sm:block" aria-hidden="true" /><div className="min-w-0"><p className="truncate text-sm font-bold">{session.displayName}</p><p className="text-xs text-cyan-300">{roleLabels[session.role]}</p></div></div>
+          <div className="flex items-center gap-2">
+            <div className="mr-1 hidden items-center gap-2 text-xs text-slate-400 lg:flex" aria-live="polite"><Server className="h-4 w-4 text-cyan-300" />{dataState === 'loading' ? 'Menyinkronkan data' : dataState === 'error' ? 'Sinkronisasi perlu diulang' : lastSyncedAt ? `Tersinkron ${lastSyncedAt.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}` : 'Menunggu sinkronisasi'}</div>
+            <button type="button" aria-label="Sinkronkan ulang" onClick={() => void loadAuthorizedData(session)} className={secondaryClass} disabled={dataState === 'loading'}><RefreshCw className={`h-4 w-4 ${dataState === 'loading' ? 'animate-spin' : ''}`} /><span className="hidden xl:inline">Sinkronkan</span></button>
+            <button type="button" aria-label="Lihat website" onClick={() => onNavigate('home')} className={secondaryClass}><Eye className="h-4 w-4" /><span className="hidden sm:inline">Website</span></button>
+            <button type="button" aria-label="Keluar" onClick={handleLogout} className={secondaryClass}><LogOut className="h-4 w-4" /><span className="hidden sm:inline">Keluar</span></button>
+          </div>
         </div>
       </header>
 
-      <div className="mx-auto flex max-w-[1500px] flex-col md:flex-row">
-        <aside className="border-b border-cyan-950 bg-[#061b1f] p-3 md:min-h-[calc(100vh-4rem)] md:w-60 md:border-b-0 md:border-r">
-          <nav aria-label="Modul operator" className="flex gap-1 overflow-x-auto md:flex-col md:overflow-visible">
-            {allowedTabs.map((tab) => { const Icon = tab.icon; return <button key={tab.id} type="button" onClick={() => { setActiveTab(tab.id); if (tab.id === 'users') void loadOperators(); if (tab.id === 'subscribers') void loadSubscribers(); }} className={`flex min-h-11 shrink-0 items-center gap-2.5 rounded-md px-3 text-left text-sm font-semibold md:w-full ${activeTab === tab.id ? 'bg-cyan-400 text-[#011417]' : 'text-slate-300 hover:bg-white/5 hover:text-white'}`}><Icon className="h-4 w-4" />{tab.label}</button>; })}
+      <div className="mx-auto flex max-w-[1600px] flex-col lg:flex-row">
+        <aside className="border-b border-cyan-950 bg-[#041a1e] p-3 lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:w-64 lg:border-b-0 lg:border-r lg:p-5">
+          <p className="mb-3 hidden px-3 text-xs font-bold text-slate-500 lg:block">Modul kerja</p>
+          <nav aria-label="Modul operator" className="flex gap-1 overflow-x-auto pb-1 lg:flex-col lg:overflow-visible lg:pb-0">
+            {allowedTabs.map((tab) => { const Icon = tab.icon; return <button key={tab.id} type="button" onClick={() => selectTab(tab.id)} aria-current={activeTab === tab.id ? 'page' : undefined} className={`flex min-h-11 shrink-0 items-center gap-2.5 rounded-md px-3 text-left text-sm font-semibold lg:w-full ${activeTab === tab.id ? 'bg-cyan-300 text-[#011417]' : 'text-slate-300 hover:bg-white/5 hover:text-white'}`}><Icon className="h-4 w-4" />{tab.label}</button>; })}
           </nav>
+          <div className="mt-auto hidden border-t border-cyan-950 px-3 pt-5 text-xs leading-5 text-slate-500 lg:block">Perubahan tersimpan di server dan diterapkan ke website publik.</div>
         </aside>
 
-        <main className="min-w-0 flex-1 p-4 sm:p-7 lg:p-10">
-          {activeTab === 'overview' && <Overview session={session} services={services.length} articles={articles.length} media={mediaList.length} subscribers={subscribers.length} allowedTabs={allowedTabs} onOpen={setActiveTab} />}
+        <main className="min-w-0 flex-1 p-4 sm:p-7 lg:p-10 xl:p-12">
+          {dataState === 'error' && <div role="alert" className="mb-6 flex flex-col gap-3 border border-amber-800 bg-amber-950/40 p-4 text-sm text-amber-100 sm:flex-row sm:items-center sm:justify-between"><span>Beberapa data server belum dapat dimuat. Data lokal tetap tersedia.</span><button type="button" onClick={() => void loadAuthorizedData(session)} className={secondaryClass}>Coba sinkronkan lagi</button></div>}
+          {activeTab === 'overview' && <Overview session={session} services={services.length} articles={articles.length} media={mediaList.length} subscribers={subscribers.length} allowedTabs={allowedTabs} onOpen={selectTab} lastSyncedAt={lastSyncedAt} dataState={dataState} />}
 
           {activeTab === 'users' && hasPermission('users.manage', session) && <section className="space-y-6">
             <PageTitle title="Pengguna & peran" copy="Gaekadmin mengatur siapa yang dapat mengubah situs, berita, atau SEO. Pemeriksaan akses juga berjalan di server." action={<button className={primaryClass} onClick={() => setEditingOperator(emptyOperator())}><Plus className="h-4 w-4" />Tambah pengguna</button>} />
@@ -245,7 +334,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
 
           {activeTab === 'navigation' && hasPermission('site.navigation', session) && <section className="space-y-6"><PageTitle title="Navigasi & footer" copy="Atur urutan menu, tampilkan atau sembunyikan halaman, tautan sosial, dan identitas footer." />
             <form className="space-y-6" onSubmit={async (event) => { event.preventDefault(); await saveSection('siteSettings', siteSettings, 'Navigasi dan footer tersimpan'); }}>
-              <div className={panelClass}><h2 className="text-sm font-bold">Menu utama</h2><div className="mt-4 divide-y divide-slate-800">{siteSettings.navigation.map((item, index) => <div key={item.page} className="grid gap-3 py-3 sm:grid-cols-[1fr_1fr_auto_auto]"><input aria-label={`Label ${item.page}`} className={inputClass.replace('mt-1.5 ', '')} value={item.label} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, label: event.target.value }; setSiteSettings({ ...siteSettings, navigation }); }} /><input aria-label={`Label seluler ${item.page}`} className={inputClass.replace('mt-1.5 ', '')} value={item.mobileLabel} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, mobileLabel: event.target.value }; setSiteSettings({ ...siteSettings, navigation }); }} /><label className="flex min-h-10 items-center gap-2 text-xs"><input type="checkbox" checked={item.visible} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, visible: event.target.checked }; setSiteSettings({ ...siteSettings, navigation }); }} />Tampil</label><div className="flex gap-1"><MoveButton icon={ArrowUp} disabled={index === 0} onClick={() => setSiteSettings({ ...siteSettings, navigation: move(siteSettings.navigation, index, index - 1) })} /><MoveButton icon={ArrowDown} disabled={index === siteSettings.navigation.length - 1} onClick={() => setSiteSettings({ ...siteSettings, navigation: move(siteSettings.navigation, index, index + 1) })} /></div></div>)}</div></div>
+              <div className={panelClass}><h2 className="text-sm font-bold">Menu utama</h2><div className="mt-4 divide-y divide-slate-800">{siteSettings.navigation.map((item, index) => <div key={item.page} className="grid gap-3 py-3 sm:grid-cols-[1fr_1fr_auto_auto]"><input aria-label={`Label ${item.page}`} className={inputClass.replace('mt-1.5 ', '')} value={item.label} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, label: event.target.value }; setSiteSettings({ ...siteSettings, navigation }); }} /><input aria-label={`Label seluler ${item.page}`} className={inputClass.replace('mt-1.5 ', '')} value={item.mobileLabel} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, mobileLabel: event.target.value }; setSiteSettings({ ...siteSettings, navigation }); }} /><label className="flex min-h-11 items-center gap-2 text-xs"><input type="checkbox" checked={item.visible} onChange={(event) => { const navigation = [...siteSettings.navigation]; navigation[index] = { ...item, visible: event.target.checked }; setSiteSettings({ ...siteSettings, navigation }); }} />Tampil</label><div className="flex gap-1"><MoveButton icon={ArrowUp} disabled={index === 0} onClick={() => setSiteSettings({ ...siteSettings, navigation: move(siteSettings.navigation, index, index - 1) })} /><MoveButton icon={ArrowDown} disabled={index === siteSettings.navigation.length - 1} onClick={() => setSiteSettings({ ...siteSettings, navigation: move(siteSettings.navigation, index, index + 1) })} /></div></div>)}</div></div>
               <div className={panelClass}><div className="grid gap-4 sm:grid-cols-2"><Field label="Judul ajakan tracking" value={siteSettings.footerHeading} onChange={(value) => setSiteSettings({ ...siteSettings, footerHeading: value })} /><Field label="Tagline footer" value={siteSettings.footerTagline} onChange={(value) => setSiteSettings({ ...siteSettings, footerTagline: value })} /><Field label="Label produk digital" value={siteSettings.digitalProductLabel} onChange={(value) => setSiteSettings({ ...siteSettings, digitalProductLabel: value })} /><Field label="Tautan produk digital" type="url" value={siteSettings.digitalProductUrl} onChange={(value) => setSiteSettings({ ...siteSettings, digitalProductUrl: value })} /></div><div className="mt-6 flex items-center justify-between"><div><h2 className="text-sm font-bold">Media sosial</h2><p className="mt-1 text-xs text-slate-400">Pilih platform agar ikon ditampilkan otomatis di website.</p></div><button type="button" className={secondaryClass} onClick={() => setSiteSettings({ ...siteSettings, socialLinks: [...siteSettings.socialLinks, { id: `social-${Date.now()}`, platform: 'instagram', url: '' }] })}><Plus className="h-4 w-4" />Tambah</button></div><div className="mt-3 space-y-3">{siteSettings.socialLinks.map((item, index) => <div key={item.id} className="grid gap-2 sm:grid-cols-[1fr_2fr_auto]"><select aria-label="Platform media sosial" className={inputClass.replace('mt-1.5 ', '')} value={item.platform || 'instagram'} onChange={(event) => { const socialLinks = [...siteSettings.socialLinks]; socialLinks[index] = { ...item, platform: event.target.value as SocialPlatform }; setSiteSettings({ ...siteSettings, socialLinks }); }}>{socialOptions.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select><input aria-label="Tautan media sosial" type="url" required placeholder="https://" className={inputClass.replace('mt-1.5 ', '')} value={item.url} onChange={(event) => { const socialLinks = [...siteSettings.socialLinks]; socialLinks[index] = { ...item, url: event.target.value }; setSiteSettings({ ...siteSettings, socialLinks }); }} /><button type="button" aria-label="Hapus media sosial" className={secondaryClass} onClick={() => setSiteSettings({ ...siteSettings, socialLinks: siteSettings.socialLinks.filter((link) => link.id !== item.id) })}><Trash2 className="h-4 w-4" /></button></div>)}</div></div><SaveButton saving={saving} />
             </form></section>}
 
@@ -279,10 +368,10 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   );
 };
 
-const PageTitle: React.FC<{ title: string; copy: string; action?: React.ReactNode }> = ({ title, copy, action }) => <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1><p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{copy}</p></div>{action}</header>;
+const PageTitle: React.FC<{ title: string; copy: string; action?: React.ReactNode }> = ({ title, copy, action }) => <header className="flex flex-col gap-4 border-b border-cyan-950 pb-6 sm:flex-row sm:items-end sm:justify-between"><div><p className="text-xs font-bold text-cyan-300">Ruang kerja operator</p><h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1><p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{copy}</p></div>{action}</header>;
 const SaveButton: React.FC<{ saving: boolean }> = ({ saving }) => <div className="flex justify-end border-t border-slate-800 pt-5"><button type="submit" disabled={saving} className={primaryClass}><Save className="h-4 w-4" />{saving ? 'Menyimpan…' : 'Simpan ke server'}</button></div>;
 const FormActions: React.FC<{ saving: boolean; onCancel: () => void }> = ({ saving, onCancel }) => <div className="flex justify-end gap-2 border-t border-slate-800 pt-5"><button type="button" onClick={onCancel} className={secondaryClass}>Batal</button><button type="submit" disabled={saving} className={primaryClass}><Save className="h-4 w-4" />{saving ? 'Menyimpan…' : 'Simpan ke server'}</button></div>;
-const MoveButton: React.FC<{ icon: React.ElementType; disabled: boolean; onClick: () => void }> = ({ icon: Icon, disabled, onClick }) => <button type="button" disabled={disabled} onClick={onClick} className="inline-flex h-10 w-10 items-center justify-center border border-slate-700 text-slate-300 hover:text-white disabled:opacity-25"><Icon className="h-4 w-4" /></button>;
+const MoveButton: React.FC<{ icon: React.ElementType; disabled: boolean; onClick: () => void }> = ({ icon: Icon, disabled, onClick }) => <button type="button" disabled={disabled} onClick={onClick} className="inline-flex h-11 w-11 items-center justify-center border border-slate-700 text-slate-300 hover:text-white disabled:opacity-25"><Icon className="h-4 w-4" /></button>;
 const move = <T,>(items: T[], from: number, to: number): T[] => { const updated = [...items]; const [item] = updated.splice(from, 1); updated.splice(to, 0, item); return updated; };
 
 const AssetField: React.FC<{ label: string; value: string; onChange: (value: string) => void; uploadMedia: UploadHandler }> = ({ label, value, onChange, uploadMedia }) => <div className="border border-slate-800 p-3"><label className={labelClass}>{label}</label><div className="mt-3 flex items-center gap-3">{value ? <img src={value} alt="" className="h-14 w-20 bg-[#011417] object-contain" /> : <div className="flex h-14 w-20 items-center justify-center bg-[#011417]"><ImageIcon className="h-5 w-5 text-slate-600" /></div>}<label className={`${secondaryClass} cursor-pointer`}>Unggah<input type="file" accept="image/*" className="sr-only" onChange={(event) => { const file = event.target.files?.[0]; if (file) void uploadMedia(file, onChange); event.target.value = ''; }} /></label></div><input aria-label={`URL ${label}`} value={value} onChange={(event) => onChange(event.target.value)} className={inputClass} placeholder="/uploads/..." /></div>;
@@ -296,6 +385,37 @@ const LogoCollectionEditor: React.FC<{ title: string; description: string; items
   </div>
 );
 
-const Overview: React.FC<{ session: OperatorUser; services: number; articles: number; media: number; subscribers: number; allowedTabs: typeof tabDefinitions; onOpen: (tab: TabId) => void }> = ({ session, services, articles, media, subscribers, allowedTabs, onOpen }) => <section className="space-y-7"><PageTitle title={`Halo, ${session.displayName}`} copy="Setiap perubahan yang disimpan dari panel ini ditulis ke server dan dipakai oleh website publik untuk semua pengunjung." /><div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{[{ label: 'Layanan', value: services }, { label: 'Berita', value: articles }, { label: 'Media', value: media }, { label: 'Newsletter', value: subscribers }].map((item) => <div key={item.label} className={panelClass}><p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{item.label}</p><p className="mt-2 text-3xl font-bold text-cyan-300">{item.value}</p></div>)}</div><div className={panelClass}><div className="flex items-center gap-2"><ShieldCheck className="h-5 w-5 text-emerald-300" /><h2 className="font-bold">Akses aktif: {roleLabels[session.role]}</h2></div><div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{allowedTabs.filter((tab) => tab.id !== 'overview').map((tab) => <button key={tab.id} type="button" onClick={() => onOpen(tab.id)} className="flex min-h-12 items-center justify-between border border-slate-800 px-3 text-left text-sm font-semibold hover:border-cyan-700"><span>{tab.label}</span><CheckCircle2 className="h-4 w-4 text-cyan-300" /></button>)}</div></div></section>;
+const Overview: React.FC<{ session: OperatorUser; services: number; articles: number; media: number; subscribers: number; allowedTabs: typeof tabDefinitions; onOpen: (tab: TabId) => void; lastSyncedAt: Date | null; dataState: 'idle' | 'loading' | 'ready' | 'error' }> = ({ session, services, articles, media, subscribers, allowedTabs, onOpen, lastSyncedAt, dataState }) => {
+  const contentRows = [
+    { label: 'Layanan publik', value: services, tab: 'services' as TabId },
+    { label: 'Artikel berita', value: articles, tab: 'news' as TabId },
+    { label: 'Aset media', value: media, tab: 'media' as TabId },
+    { label: 'Pelanggan newsletter', value: subscribers, tab: 'subscribers' as TabId },
+  ].filter((item) => allowedTabs.some((tab) => tab.id === item.tab));
+
+  return <section className="space-y-8">
+    <PageTitle title={`Selamat datang, ${session.displayName}`} copy="Pilih modul berdasarkan pekerjaan yang ingin diselesaikan. Setiap penyimpanan akan dikonfirmasi oleh server sebelum dianggap aktif." />
+    <div className="grid gap-6 xl:grid-cols-[1.35fr_.65fr]">
+      <section className={panelClass} aria-labelledby="workspace-heading">
+        <div className="flex items-start justify-between gap-4"><div><h2 id="workspace-heading" className="text-lg font-bold">Lanjutkan pekerjaan</h2><p className="mt-1 text-sm leading-6 text-slate-400">Modul yang tersedia mengikuti peran {roleLabels[session.role]}.</p></div><ShieldCheck className="h-6 w-6 shrink-0 text-emerald-300" aria-hidden="true" /></div>
+        <div className="mt-6 divide-y divide-cyan-950 border-y border-cyan-950">
+          {allowedTabs.filter((tab) => tab.id !== 'overview').map((tab) => { const Icon = tab.icon; return <button key={tab.id} type="button" onClick={() => onOpen(tab.id)} className="group flex min-h-14 w-full items-center gap-3 px-1 text-left hover:bg-white/[0.025]"><Icon className="h-4 w-4 text-cyan-300" /><span className="flex-1 text-sm font-semibold">{tab.label}</span><ChevronRight className="h-4 w-4 text-slate-600 transition-transform group-hover:translate-x-1 group-hover:text-cyan-300" /></button>; })}
+        </div>
+      </section>
+
+      <aside className="space-y-4">
+        <div className={panelClass}>
+          <div className="flex items-center gap-2"><Server className="h-5 w-5 text-cyan-300" /><h2 className="font-bold">Status server</h2></div>
+          <p className="mt-4 text-sm font-semibold text-white">{dataState === 'loading' ? 'Sinkronisasi berjalan' : dataState === 'error' ? 'Perlu sinkronisasi ulang' : 'Data operator siap'}</p>
+          <p className="mt-1 text-xs leading-5 text-slate-400">{lastSyncedAt ? `Pemeriksaan terakhir ${lastSyncedAt.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}` : 'Belum ada pemeriksaan server pada sesi ini.'}</p>
+        </div>
+        <div className={panelClass}>
+          <h2 className="text-sm font-bold">Isi yang dikelola</h2>
+          <div className="mt-4 divide-y divide-cyan-950">{contentRows.map((item) => <button key={item.label} type="button" onClick={() => onOpen(item.tab)} className="flex min-h-12 w-full items-center justify-between text-left"><span className="text-sm text-slate-300">{item.label}</span><strong className="text-lg text-cyan-300">{item.value}</strong></button>)}</div>
+        </div>
+      </aside>
+    </div>
+  </section>;
+};
 
 export default OperatorAdmin;

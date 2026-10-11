@@ -4,8 +4,8 @@ Website produksi [gaeks.com](https://gaeks.com) untuk layanan freight forwarding
 
 ## Stack
 
-- React 18, TypeScript, dan Vite 5.
-- Tailwind CSS 3.
+- React 18, TypeScript, dan Vite 6.
+- Tailwind CSS 4.
 - CSS transition ringan untuk carousel headline dan perpindahan halaman.
 - Hostinger Node.js Application dengan sumber GitHub branch `main`.
 

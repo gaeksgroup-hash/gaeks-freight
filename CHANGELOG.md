@@ -2,6 +2,23 @@
 
 Perubahan penting pada GAEKS Freight dicatat di dokumen ini. Riwayat commit Git tetap menjadi catatan teknis lengkap.
 
+## 2026-10-11
+
+### Ruang kerja operator
+
+- Mendesain ulang layar masuk dan ruang kerja operator dengan hierarki tugas yang lebih jelas, identitas visual maritim, serta layout yang tetap utuh dari ponsel hingga desktop.
+- Menambahkan state proses masuk, tampil/sembunyi kata sandi, pesan kegagalan inline, status sinkronisasi server, waktu sinkron terakhir, dan kontrol sinkron ulang.
+- Menyimpan modul aktif pada parameter URL agar navigasi operator dapat dipulihkan, dibagikan, dan tetap mengikuti hak akses pengguna.
+- Memusatkan ringkasan kerja pada modul yang dapat ditindaklanjuti, jumlah konten aktual, serta status server tanpa kartu dekoratif berulang.
+- Memperjelas fokus keyboard, label kontrol, target sentuh 44 piksel, respons reduced motion, dan kontras teks WCAG AA.
+
+### Keamanan, indeksasi, dan toolchain
+
+- Memperbarui Vite ke versi 6 dan Tailwind CSS ke versi 4; seluruh dependency lulus `npm audit` tanpa advisory.
+- Menambahkan header HSTS, nosniff, SAMEORIGIN, referrer policy, serta pembatasan kamera, mikrofon, dan geolokasi melalui konfigurasi Apache.
+- Mengganti sitemap berbasis hash dengan route kanonis yang dapat diindeks untuk tracking dan seluruh tujuh halaman layanan.
+- Memverifikasi build TypeScript, halaman publik dan operator pada desktop serta ponsel, tujuh route detail layanan, endpoint baca, proteksi endpoint privat, dan ketiadaan overflow horizontal.
+
 ## 2026-10-04
 
 ### Responsif ponsel dan tablet

@@ -55,3 +55,15 @@ Use direct operational language. Avoid hype, vague superiority claims, fake urge
 - Keep network/client logo sections absent when they have no valid operator data.
 - Show a responsive poster immediately, then request hero video only on desktop after page load during browser idle time. Keep the poster on tablets, phones, data saver, 3G or slower, and reduced motion.
 - Use cache headers for versioned static assets. Cookies are not used as a caching mechanism.
+
+## Operator workspace direction
+
+Reading this as: internal publishing workspace for freight operations staff, in an editorial shipping-manifest visual language, dial ENERGY 1 / RHYTHM 2 / MOTION 1.
+
+- Color: deep maritime teal keeps the operator area distinct from public content; warm off white is reserved for the login task so form controls stay calm and legible.
+- Layout: the login uses an asymmetric identity and task split because brand context and authentication have different jobs; the authenticated workspace uses a stable navigation rail because operators revisit modules frequently.
+- Typography: the existing sans serif stack stays in place for fast scanning and reliable Indonesian text rendering across staff devices.
+- Spacing: dense forms use a compact rhythm, while page headers and module boundaries receive larger separation so long editing sessions remain easy to scan.
+- Panels: flat ruled surfaces organize related settings like a shipping manifest; elevation effects are omitted because hierarchy comes from borders, spacing, and color.
+- Icons: icons remain only where they identify a concrete operator action or module, such as media, users, saving, synchronization, and logout.
+- Motion: animation is limited to active loading indicators and short interaction transitions; routine editing does not need decorative movement.
