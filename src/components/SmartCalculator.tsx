@@ -224,7 +224,7 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
         <header className="border-b border-slate-300 pb-8">
           <div className="max-w-3xl">
             <p className="section-label">Perencanaan kargo</p>
-            <h2 id="calculator-title" className="section-title">Rencanakan rute dan kapasitas dalam satu layar.</h2>
+            <h1 id="calculator-title" className="section-title">Rencanakan rute dan kapasitas dalam satu layar.</h1>
             <p className="section-copy">Pilih moda, cari simpul keberangkatan dan tujuan, lalu hitung dasar kebutuhan kargo sebelum meminta tarif.</p>
             {prefillService && <p className="mt-4 text-sm font-semibold text-cyan-800">Layanan dipilih: {prefillService}</p>}
           </div>

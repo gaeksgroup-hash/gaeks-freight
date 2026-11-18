@@ -1,0 +1,65 @@
+# GAEKS Freight
+
+GAEKS Freight (Global Andalan Ekspress) membantu bisnis merencanakan freight laut dan udara, kepabeanan, pergudangan, trucking, dan project cargo di Indonesia. Jadwal, harga, ruang, serta ketentuan dokumen harus dikonfirmasi untuk setiap pengiriman.
+
+## Halaman utama
+
+- [Layanan](https://gaeks.com/layanan/)
+- [Rute pengiriman](https://gaeks.com/rute-pengiriman/)
+- [Kontak](https://gaeks.com/kontak/)
+
+## Panduan layanan
+
+- [PPJK (Customs Clearance)](https://gaeks.com/layanan/ppjk-customs-clearance/): Layanan PPJK membantu importir dan eksportir menyiapkan serta mengajukan dokumen kepabeanan untuk barang yang masuk atau keluar Indonesia. Ruang kerjanya mencakup pemeriksaan invoice dan packing list, peninjauan HS code, pengecekan ketentuan komoditas, serta koordinasi proses PIB atau PEB. Kebutuhan izin dan waktu penyelesaian ditentukan oleh jenis barang dan hasil pemeriksaan otoritas.
+- [Gudang & PBM (Bongkar Muat)](https://gaeks.com/layanan/pergudangan-stevedoring/): Pergudangan dan pekerjaan bongkar muat membantu menghubungkan kedatangan kargo dengan penyerahan berikutnya. Tim perlu mencocokkan jenis barang, jumlah koli, kebutuhan penanganan, waktu kedatangan, dan tujuan distribusi sebelum memilih pengaturan di terminal atau gudang transit. Ketersediaan ruang, peralatan, serta biaya penanganan dikonfirmasi sesuai lokasi dan jadwal aktual.
+- [Domestic Trucking](https://gaeks.com/layanan/trucking/): Trucking domestik memindahkan kargo dari pelabuhan, bandara, atau gudang ke titik penerima di darat. Pemilihan armada mempertimbangkan dimensi, berat, jumlah koli, akses lokasi, dan target waktu. Untuk rute dengan lebih dari satu titik bongkar, informasi urutan pengiriman perlu diberikan sejak awal agar penawaran dan rencana perjalanan sesuai kebutuhan.
+- [Project Cargo & Heavy Lift](https://gaeks.com/layanan/project-cargo-heavy-lift/): Project cargo menangani pengiriman barang berukuran besar, berat, atau memerlukan rencana angkat dan angkut khusus. Sebelum moda dipilih, dimensi rinci, berat, titik angkat, kemasan, serta kondisi akses di asal dan tujuan harus ditinjau. Rencana akhir dapat melibatkan beberapa moda dan perlu disesuaikan dengan izin, peralatan, serta kondisi lapangan.
+- [LCL (Less than Container Load)](https://gaeks.com/layanan/freight-laut-lcl/): LCL memungkinkan pengiriman laut ketika muatan tidak memerlukan satu kontainer penuh. Barang digabung dengan muatan lain melalui proses konsolidasi, sehingga jadwal cut-off, kemasan, dan penanganan di titik asal maupun tujuan perlu diperhatikan. Untuk memilih LCL atau FCL, bandingkan volume, sifat barang, kebutuhan waktu, dan biaya total sampai lokasi penerima.
+- [FCL (Full Container Load)](https://gaeks.com/layanan/freight-laut-fcl/): FCL memakai satu kontainer untuk pengiriman laut yang memerlukan ruang khusus atau volume lebih besar. Pemilihan ukuran dan tipe kontainer mengikuti dimensi, berat, sifat komoditas, serta cara muat. Sebelum memesan ruang kapal, tentukan pelabuhan asal dan tujuan, Incoterms, kesiapan barang, serta kebutuhan trucking dan pengurusan dokumen di kedua sisi.
+- [Air Shipment Priority](https://gaeks.com/layanan/freight-udara/): Air freight digunakan ketika target waktu, nilai barang, atau kebutuhan penanganan membuat pengiriman udara lebih sesuai. Kapasitas dan dasar tagihan dipengaruhi berat aktual serta berat volumetrik. Untuk menyiapkan penawaran, berikan bandara asal dan tujuan, ukuran tiap koli, berat, jenis komoditas, tanggal siap barang, dan dokumen yang tersedia.
+
+## Data untuk penawaran
+
+Siapkan asal, tujuan, jenis komoditas, berat, volume, kemasan, target waktu, invoice dan packing list bila ada. Informasi ini membantu tim meninjau moda, kepabeanan, dan penanganan.
+
+## FAQ layanan
+
+### PPJK (Customs Clearance)
+- Dokumen apa yang perlu disiapkan untuk customs clearance? Mulailah dengan invoice, packing list, dokumen pengangkutan, dan data komoditas. Dokumen tambahan bergantung pada HS code dan ketentuan barang.
+- Apakah HS code harus sudah tersedia? HS code awal membantu pemeriksaan, tetapi klasifikasi perlu ditinjau terhadap uraian dan spesifikasi barang sebelum pengajuan.
+- Apakah waktu penyelesaian dapat dijamin? Waktu proses bergantung pada kelengkapan dokumen, ketentuan komoditas, respons sistem, dan pemeriksaan otoritas.
+
+### Gudang & PBM (Bongkar Muat)
+- Kapan kargo memerlukan gudang transit? Gudang transit dapat diperlukan bila waktu kedatangan dan jadwal penyerahan tidak sama, atau kargo perlu dikonsolidasikan lebih dahulu.
+- Data apa yang dibutuhkan untuk bongkar muat? Berikan jenis komoditas, jumlah koli, dimensi, berat, kemasan, lokasi, dan perkiraan waktu kedatangan.
+- Apakah penanganan barang khusus bisa diatur? Kebutuhan alat, keamanan, atau kondisi penyimpanan khusus perlu ditinjau bersama sebelum jadwal dan biaya dikonfirmasi.
+
+### Domestic Trucking
+- Bagaimana memilih jenis truk? Jenis armada dipilih dari berat, volume, panjang barang, kebutuhan perlindungan, dan akses kendaraan di lokasi.
+- Apakah pengiriman bisa mencakup beberapa titik? Bisa direncanakan. Cantumkan seluruh alamat dan urutan pengiriman agar rute serta biaya dapat dihitung.
+- Apa yang perlu disiapkan di lokasi bongkar? Pastikan akses kendaraan, jam penerimaan, petugas penerima, dan alat bongkar bila dibutuhkan.
+
+### Project Cargo & Heavy Lift
+- Data awal apa yang paling penting? Siapkan gambar barang, dimensi lengkap, berat kotor, pusat gravitasi bila ada, dan foto lokasi.
+- Apakah satu moda selalu cukup? Tidak selalu. Pilihan laut, darat, atau kombinasi moda ditentukan setelah akses dan kebutuhan penanganan diperiksa.
+- Kapan rencana angkat disusun? Rencana angkat dibuat setelah detail barang, titik angkat, peralatan, dan kondisi lokasi tersedia.
+
+### LCL (Less than Container Load)
+- Apa perbedaan LCL dan FCL? LCL menggabungkan barang dengan muatan lain dalam satu kontainer. FCL menggunakan kontainer untuk satu pengiriman atau pemesan.
+- Bagaimana dasar perhitungan LCL? Penawaran biasanya memerlukan volume dan berat terukur. Komponen biaya akhir bergantung pada rute, penanganan, dan ketentuan layanan.
+- Apa yang perlu diperhatikan pada kemasan? Kemasan perlu melindungi barang selama konsolidasi, pemindahan, dan pembongkaran bersama muatan lain.
+
+### FCL (Full Container Load)
+- Kapan memilih kontainer 20 atau 40 kaki? Pilihan ditentukan oleh volume, berat, dimensi per koli, dan cara penyusunan. Tim perlu memeriksa keduanya sebelum pemesanan.
+- Apakah FCL selalu lebih cepat dari LCL? Waktu total bergantung pada jadwal kapal, proses pelabuhan, dokumen, dan pengiriman darat; FCL tidak otomatis lebih cepat.
+- Data apa yang dibutuhkan untuk penawaran? Berikan asal, tujuan, jenis barang, volume, berat, tanggal siap barang, dan Incoterms bila sudah disepakati.
+
+### Air Shipment Priority
+- Apa itu berat volumetrik udara? Berat volumetrik mengubah ukuran paket menjadi dasar perhitungan ruang. Penawaran umumnya membandingkannya dengan berat aktual.
+- Apakah semua komoditas dapat dikirim lewat udara? Tidak. Jenis barang, pembatasan maskapai, kemasan, dan dokumen harus diperiksa lebih dahulu.
+- Kapan jadwal penerbangan dapat dikonfirmasi? Jadwal dan ruang dikonfirmasi setelah data barang, dokumen, serta kesiapan pengiriman diperiksa.
+
+## Kontak
+
+Email: Sales01@gaeks.com
+WhatsApp: +62 0856-0856-1745

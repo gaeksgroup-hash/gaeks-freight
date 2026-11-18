@@ -1,6 +1,41 @@
 User-agent: *
 Allow: /
-Disallow: /admin
-Disallow: /#admin
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /operator/
+Disallow: /api/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /operator/
+Disallow: /api/
 
 Sitemap: https://gaeks.com/sitemap.xml

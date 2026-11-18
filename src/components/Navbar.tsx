@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ChevronDown, Menu, PhoneCall, X } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { pagePaths } from '../utils/routes';
 
 export interface NavbarProps {
   currentTab?: string;
@@ -82,7 +83,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     <header className="fixed inset-x-0 top-0 z-50 block h-16 border-b border-white/10 bg-[#011c20] text-white">
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-2 px-3 min-[360px]:gap-4 min-[360px]:px-4 sm:px-6 lg:px-8">
         <a
-          href="#home"
+          href="/"
           onClick={(event) => handleNav('home', event)}
           className="inline-flex min-h-11 shrink-0 items-center rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
           aria-label="GAEKS Freight, ke beranda"
@@ -103,7 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {navigation.map(({ page, label }) => (
             <a
               key={page}
-              href={`#${page}`}
+              href={pagePaths[page] || "/"}
               onClick={(event) => handleNav(page, event)}
               aria-current={currentTab === page ? 'page' : undefined}
               className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-2.5 text-[13px] font-semibold transition-colors ${
@@ -150,7 +151,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {navigation.map(({ page, mobileLabel }) => (
                 <a
                   key={page}
-                  href={`#${page}`}
+                  href={pagePaths[page] || "/"}
                   onClick={(event) => handleNav(page, event)}
                   aria-current={currentTab === page ? 'page' : undefined}
                   className={`flex min-h-12 items-center border-l-2 px-4 text-base ${

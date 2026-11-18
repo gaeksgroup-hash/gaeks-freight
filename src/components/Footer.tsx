@@ -3,6 +3,7 @@ import { ArrowRight, Mail, MapPin, PackageSearch, PhoneCall } from 'lucide-react
 import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { SocialLinks } from './SocialLinks';
+import { pagePaths } from '../utils/routes';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
@@ -41,7 +42,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Status pengiriman</p>
             <h2 className="mt-1.5 text-lg font-bold leading-tight text-white sm:text-xl">{siteSettings.footerHeading}</h2>
           </div>
-          <a href="#tracking" onClick={(event) => nav('tracking', event)} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 border border-cyan-300 px-5 text-sm font-bold text-white hover:bg-white/10"><PackageSearch className="h-4 w-4" />Lacak shipment<ArrowRight className="h-4 w-4" /></a>
+          <a href={pagePaths.tracking} onClick={(event) => nav('tracking', event)} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 border border-cyan-300 px-5 text-sm font-bold text-white hover:bg-white/10"><PackageSearch className="h-4 w-4" />Lacak shipment<ArrowRight className="h-4 w-4" /></a>
         </div>
 
         <div className="grid gap-7 py-7 md:grid-cols-[1.15fr_1fr_.85fr] md:gap-8">
@@ -57,7 +58,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           <nav aria-label="Navigasi footer">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">Jelajahi</p>
             <div className="mt-2 grid grid-cols-2 gap-x-5">
-              {navLinks.map(({ page, label }) => <a key={page} href={'#' + page} onClick={(event) => nav(page, event)} className="inline-flex min-h-11 items-center text-sm leading-none hover:text-cyan-300">{label}</a>)}
+              {navLinks.map(({ page, label }) => <a key={page} href={pagePaths[page] || '/'} onClick={(event) => nav(page, event)} className="inline-flex min-h-11 items-center text-sm leading-none hover:text-cyan-300">{label}</a>)}
             </div>
             {siteSettings.socialLinks.length > 0 && <div className="mt-2"><SocialLinks links={siteSettings.socialLinks} tone="dark" /></div>}
           </nav>

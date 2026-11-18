@@ -1,253 +1,135 @@
-// filepath: /src/components/NewsPage.tsx
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { Send, Search, CheckCircle2, ArrowRight, Calendar, Share2, Copy, MessageCircle, Twitter, Linkedin, ArrowLeft, BookOpen, ChevronLeft, ChevronRight, Clock, UserCheck, BookmarkCheck, ChevronDown } from 'lucide-react';
-import { getStoredArticles } from '../utils/newsStorage';
+import { ArrowLeft, ArrowRight, CalendarDays, ChevronDown, Clock3, Mail, Search, Share2 } from 'lucide-react';
 import { ArticleItem, Language } from '../types/freight';
-import { UI_TEXT, getTranslation } from '../utils/translations';
-import { subscribeToNewsletter } from '../services/newsletterApi';
+import { getStoredArticles } from '../utils/newsStorage';
 import { GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { articlePath, articleSlug } from '../utils/articleRoutes';
+import { isPublishedArticle } from '../utils/serviceContent';
+import { subscribeToNewsletter } from '../services/newsletterApi';
+
+const displayDate = (value: string, language: Language) => {
+  const date = new Date(`${value}T12:00:00`);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString(language === 'en' ? 'en-US' : language === 'zh' ? 'zh-CN' : 'id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+};
+const fallbackImage = (article: ArticleItem) => /udara|bandara|air freight|penerbangan/i.test(`${article.title} ${article.category}`)
+  ? '/uploads/1789234609_387712.webp'
+  : /laut|maritim|kapal|pelabuhan|kontainer/i.test(`${article.title} ${article.category}`)
+    ? '/uploads/1789234509_387710.webp'
+    : '/uploads/gaeks-hero-cargo-poster.webp';
+const useFallbackImage = (event: React.SyntheticEvent<HTMLImageElement>, article: ArticleItem) => {
+  const image = event.currentTarget;
+  image.onerror = null;
+  image.src = fallbackImage(article);
+};
+
+const localized = (article: ArticleItem, language: Language) => ({
+  ...article,
+  title: language === 'en' ? article.title_en || article.title : language === 'zh' ? article.title_zh || article.title : article.title,
+  category: language === 'en' ? article.category_en || article.category : language === 'zh' ? article.category_zh || article.category : article.category,
+  excerpt: language === 'en' ? article.excerpt_en || article.excerpt : language === 'zh' ? article.excerpt_zh || article.excerpt : article.excerpt,
+  content: language === 'en' ? article.content_en || article.content : language === 'zh' ? article.content_zh || article.content : article.content,
+});
+
+const ArticleBody: React.FC<{ content: string }> = ({ content }) => <div className="news-prose">
+  {content.split(/\n\s*\n/).filter(Boolean).map((paragraph, index) => {
+    const lines = paragraph.split('\n').filter(Boolean);
+    if (lines.every((line) => /^\d+\.\s/.test(line))) return <ol key={index}>{lines.map((line) => <li key={line}>{line.replace(/^\d+\.\s*/, '')}</li>)}</ol>;
+    if (paragraph.trim().endsWith(':') && paragraph.length < 120) return <h2 key={index}>{paragraph.trim().replace(/:$/, '')}</h2>;
+    return <p key={index}>{paragraph}</p>;
+  })}
+</div>;
 
 export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => void; onSelectArticle?: (id: string) => void; currentLang?: Language }> = ({ activeDetailId, onBackToList, onSelectArticle, currentLang = 'id' }) => {
-  const rawArticles = getStoredArticles();
-  const sortedArticles = [...rawArticles].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime());
-
-  const [articles, setArticles] = useState<ArticleItem[]>(sortedArticles);
+  const [articles, setArticles] = useState<ArticleItem[]>(() => getStoredArticles());
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('Semua');
-  const [emailInput, setEmailInput] = useState('');
-  const [newsletterConsent, setNewsletterConsent] = useState(false);
-  const [newsletterCompany, setNewsletterCompany] = useState('');
-  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [category, setCategory] = useState('Semua');
+  const [sort, setSort] = useState<'latest' | 'oldest' | 'title'>('latest');
+  const [page, setPage] = useState(1);
+  const [email, setEmail] = useState('');
+  const [consent, setConsent] = useState(false);
+  const [company, setCompany] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const state = new URLSearchParams(window.location.search).get('newsletter');
-    if (state === 'confirmed') toast.success('Email terkonfirmasi', { description: 'Anda akan menerima berita baru dari GAEKS.' });
-    if (state === 'unsubscribed') toast.success('Langganan dihentikan', { description: 'Email Anda tidak akan menerima newsletter berikutnya.' });
-    if (state && window.history.replaceState) {
-      window.history.replaceState({}, '', window.location.pathname + window.location.hash);
-    }
+    if (state === 'confirmed') toast.success('Langganan aktif', { description: 'Berita berikutnya akan dikirim ke email Anda.' });
+    if (state === 'unsubscribed') toast.success('Langganan dihentikan');
+    if (state === 'invalid') toast.error('Tautan newsletter tidak berlaku');
+    if (state) window.history.replaceState({}, '', window.location.pathname);
   }, []);
 
   useEffect(() => {
-    const reload = () => setArticles([...getStoredArticles()].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()));
+    const reload = () => setArticles(getStoredArticles());
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
 
-  // Paginasi: 6 artikel per halaman
-  const [currentPageNum, setCurrentPageNum] = useState(1);
-  const articlesPerPage = 6;
+  const published = useMemo(() => articles.filter(isPublishedArticle), [articles]);
+  const categories = useMemo(() => ['Semua', ...new Set(published.map((article) => article.category))], [published]);
+  const filtered = useMemo(() => {
+    const query = searchQuery.trim().toLocaleLowerCase();
+    return published.filter((article) => {
+      const text = localized(article, currentLang);
+      return (category === 'Semua' || article.category === category)
+        && (!query || `${text.title} ${text.excerpt} ${text.category}`.toLocaleLowerCase().includes(query));
+    }).sort((a, b) => sort === 'title'
+      ? localized(a, currentLang).title.localeCompare(localized(b, currentLang).title)
+      : sort === 'oldest' ? a.publishedDate.localeCompare(b.publishedDate) : b.publishedDate.localeCompare(a.publishedDate));
+  }, [published, searchQuery, category, sort, currentLang]);
+  const totalPages = Math.max(1, Math.ceil(filtered.length / 6));
+  const visible = filtered.slice((page - 1) * 6, page * 6);
+  const detailRaw = activeDetailId ? published.find((article) => article.id === activeDetailId || articleSlug(article) === activeDetailId) : undefined;
+  const detail = detailRaw ? localized(detailRaw, currentLang) : undefined;
 
-  const rawDetailArticle = activeDetailId ? articles.find(a => a.id === activeDetailId) : null;
-  const detailArticle = rawDetailArticle ? {
-    ...rawDetailArticle,
-    title: currentLang === 'en' ? rawDetailArticle.title_en || rawDetailArticle.title : currentLang === 'zh' ? rawDetailArticle.title_zh || rawDetailArticle.title : rawDetailArticle.title,
-    category: currentLang === 'en' ? rawDetailArticle.category_en || rawDetailArticle.category : currentLang === 'zh' ? rawDetailArticle.category_zh || rawDetailArticle.category : rawDetailArticle.category,
-    content: currentLang === 'en' ? rawDetailArticle.content_en || rawDetailArticle.content : currentLang === 'zh' ? rawDetailArticle.content_zh || rawDetailArticle.content : rawDetailArticle.content,
-  } : null;
-
-  const categories = ['Semua', 'Regulasi Kepabeanan', 'Operational Freight', 'Rute Maritim', 'Kargo Khusus', 'Project Cargo & Alat Berat'];
-
-  const filtered = articles.filter(a => {
-    const titleText = currentLang === 'en' ? a.title_en || a.title : currentLang === 'zh' ? a.title_zh || a.title : a.title;
-    const excerptText = currentLang === 'en' ? a.excerpt_en || a.excerpt : currentLang === 'zh' ? a.excerpt_zh || a.excerpt : a.excerpt;
-    const matchSearch = titleText.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        a.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                        excerptText.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchCat = selectedCategory === 'Semua' || a.category === selectedCategory;
-    return matchSearch && matchCat;
-  });
-
-  const totalPages = Math.ceil(filtered.length / articlesPerPage) || 1;
-  const currentArticles = filtered.slice((currentPageNum - 1) * articlesPerPage, currentPageNum * articlesPerPage);
-
-  const handleSubscribe = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!emailInput || !newsletterConsent || isSubscribing) return;
-    setIsSubscribing(true);
+  const openArticle = (event: React.MouseEvent, article: ArticleItem) => {
+    if (!onSelectArticle || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    onSelectArticle(article.id);
+  };
+  const submit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    if (!consent || submitting) return;
+    setSubmitting(true);
     try {
-      const message = await subscribeToNewsletter(emailInput, newsletterConsent, newsletterCompany);
+      const message = await subscribeToNewsletter(email, consent, company);
       toast.success('Periksa email Anda', { description: message });
-      setEmailInput('');
-      setNewsletterConsent(false);
+      setEmail(''); setConsent(false);
     } catch (error) {
-      toast.error('Pendaftaran belum berhasil', {
-        description: error instanceof Error ? error.message : 'Coba kembali beberapa saat lagi.'
-      });
-    } finally {
-      setIsSubscribing(false);
-    }
+      toast.error('Pendaftaran belum berhasil', { description: error instanceof Error ? error.message : 'Coba lagi nanti.' });
+    } finally { setSubmitting(false); }
   };
 
-  const handleShare = (platform: 'wa' | 'tw' | 'li' | 'copy', article: ArticleItem) => {
-    const url = window.location.origin + '/#news?id=' + article.id;
-    const text = `${article.title} - Baca artikel regulasi & logistik maritim terpercaya:`;
+  if (detail) return <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
+    <article className="page-shell max-w-5xl py-12 sm:py-16">
+      <button type="button" onClick={onBackToList} className="button-link"><ArrowLeft className="h-4 w-4" />Semua berita</button>
+      <header className="mt-10 max-w-4xl">
+        <p className="section-label">{detail.category} <span className="mx-2 text-slate-400">/</span> {displayDate(detail.publishedDate, currentLang)}</p>
+        <h1 className="mt-5 font-display text-4xl font-bold leading-[1.08] tracking-[-0.04em] sm:text-5xl lg:text-6xl">{detail.title}</h1>
+        <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-600">{detail.excerpt}</p>
+        <div className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-2 border-t border-slate-300 pt-5 text-sm text-slate-500"><span>{detail.author || 'GAEKS Editorial'}</span>{detail.readTime && <span className="inline-flex items-center gap-1.5"><Clock3 className="h-4 w-4" />{detail.readTime}</span>}<button type="button" className="inline-flex items-center gap-1.5 font-semibold text-[#12363a] hover:underline" onClick={async () => { await navigator.clipboard.writeText(window.location.href); toast.success('Tautan artikel disalin'); }}><Share2 className="h-4 w-4" />Bagikan</button></div>
+      </header>
+      {detail.imageUrl && <img src={detail.imageUrl} onError={(event) => useFallbackImage(event, detailRaw!)} alt="" width="1200" height="675" className="mt-9 aspect-[16/9] w-full object-cover" />}
+      <div className="mx-auto mt-10 max-w-3xl"><ArticleBody content={detail.content} />
+        {detail.sources?.length ? <details className="group mt-12 border-y border-slate-300"><summary className="flex min-h-16 items-center justify-between font-bold">Sumber dan rujukan<ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" /></summary><ul className="list-disc space-y-2 pb-5 pl-5 text-sm text-slate-600">{detail.sources.map((source) => <li key={source}>{source}</li>)}</ul></details> : null}
+        <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="button-primary mt-8">Bahas dampaknya pada pengiriman<ArrowRight className="h-4 w-4" /></a>
+      </div>
+    </article>
+  </div>;
 
-    if (platform === 'wa') {
-      window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
-      toast.success('Membuka WhatsApp untuk berbagi');
-    } else if (platform === 'tw') {
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
-    } else if (platform === 'li') {
-      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
-    } else if (platform === 'copy') {
-      navigator.clipboard.writeText(url);
-      toast.success('Tautan Berhasil Disalin!', {
-        description: 'Tautan artikel telah disalin ke papan klip Anda.'
-      });
-    }
-  };
-
-  const renderStructuredContent = (rawText: string) => {
-    const paragraphs = rawText.split('\n\n').filter(p => p.trim().length > 0);
-
-    return paragraphs.map((p, idx) => {
-      if (/^\d+\./m.test(p)) {
-        const lines = p.split('\n').filter(l => l.trim().length > 0);
-        return (
-          <div key={idx} className="space-y-3 my-6">
-            {lines.map((line, lIdx) => {
-              const match = line.match(/^(\d+)\.\s*(.*)/);
-              if (match) {
-                return (
-                  <div key={lIdx} className="flex items-start space-x-3.5 p-4 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:border-cyan-400 hover:shadow-md transition-all duration-200">
-                    <span className="flex-shrink-0 w-7 h-7 rounded-xl bg-gradient-to-tr from-[#012E34] to-cyan-500 text-white font-black text-xs flex items-center justify-center shadow-md shadow-blue-500/20">
-                      {match[1]}
-                    </span>
-                    <div className="text-sm sm:text-base text-slate-800 leading-relaxed font-normal">
-                      {match[2]}
-                    </div>
-                  </div>
-                );
-              }
-              return <p key={lIdx} className="text-base text-slate-700 leading-relaxed">{line}</p>;
-            })}
-          </div>
-        );
-      }
-
-      if (p.endsWith(':') || (p.length < 90 && p.includes(':'))) {
-        return (
-          <div key={idx} className="mt-8 mb-3">
-            <h3 className="text-xl sm:text-2xl font-black text-slate-900 flex items-center space-x-2.5 pb-2 border-b border-slate-200">
-              <span className="w-2.5 h-6 bg-[#012E34] rounded-full inline-block flex-shrink-0" />
-              <span>{p}</span>
-            </h3>
-          </div>
-        );
-      }
-
-      if (idx === 0) {
-        return (
-          <div key={idx} className="bg-cyan-50/70 border-l-4 border-[#012E34] p-6 sm:p-8 rounded-2xl text-slate-800 text-base sm:text-lg leading-relaxed font-medium mb-8 shadow-sm">
-            {p}
-          </div>
-        );
-      }
-
-      return (
-        <p key={idx} className="text-base sm:text-lg text-slate-700 leading-relaxed font-normal mb-6">
-          {p}
-        </p>
-      );
-    });
-  };
-
-  if (detailArticle) {
-    return (
-      <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
-        <article className="mx-auto max-w-3xl px-5 py-12 sm:px-8 sm:py-16">
-          <button type="button" onClick={() => onBackToList?.()} className="button-link"><ArrowLeft className="h-4 w-4" />Kembali ke daftar</button>
-          <header className="mt-7 border-b border-slate-300 pb-8">
-            <p className="section-label">{detailArticle.category}</p>
-            <h1 className="mt-4 font-display text-3xl font-bold leading-tight tracking-[-0.035em] sm:text-4xl">{detailArticle.title}</h1>
-            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
-              <span>{detailArticle.publishedDate}</span>
-              <span>{detailArticle.author}</span>
-              <span>{detailArticle.readTime}</span>
-            </div>
-          </header>
-          <img src={detailArticle.imageUrl} alt="" className="mt-8 aspect-[16/8] w-full object-cover" />
-          <div className="prose prose-slate mt-9 max-w-none">{renderStructuredContent(detailArticle.content)}</div>
-
-          {detailArticle.sources && detailArticle.sources.length > 0 && (
-            <details className="group mt-10 border-y border-slate-300">
-              <summary className="flex min-h-14 items-center justify-between text-sm font-bold">Sumber artikel<ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" /></summary>
-              <ul className="space-y-2 pb-5 text-sm text-slate-600">
-                {detailArticle.sources.map((source, index) => <li key={index}>{source}</li>)}
-              </ul>
-            </details>
-          )}
-
-          <details className="group border-b border-slate-300">
-            <summary className="flex min-h-14 items-center justify-between text-sm font-bold">Bagikan artikel<ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" /></summary>
-            <div className="flex flex-wrap gap-2 pb-5">
-              <button type="button" onClick={() => handleShare('wa', detailArticle)} className="button-secondary">WhatsApp</button>
-              <button type="button" onClick={() => handleShare('li', detailArticle)} className="button-secondary">LinkedIn</button>
-              <button type="button" onClick={() => handleShare('tw', detailArticle)} className="button-secondary">X</button>
-              <button type="button" onClick={() => handleShare('copy', detailArticle)} className="button-secondary">Salin tautan</button>
-            </div>
-          </details>
-          <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="button-primary mt-8">Bahas dampaknya pada pengiriman<ArrowRight className="h-4 w-4" /></a>
-        </article>
-      </main>
-    );
-  }
-
-
-  return (
-    <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
-      <section className="page-shell py-14 sm:py-20">
-        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,.65fr)_minmax(0,1.35fr)] lg:gap-16">
-          <header className="min-w-0">
-            <p className="section-label">Berita dan pembaruan</p>
-            <h1 className="section-title">Informasi yang membantu keputusan pengiriman.</h1>
-            <p className="section-copy">Cari catatan regulasi, rute, dan operasi. Setiap artikel tampil sebagai baris ringkas.</p>
-            <aside aria-labelledby="newsletter-title" className="mt-8 border-l-4 border-cyan-300 bg-[#08383e] p-5 text-white shadow-[0_14px_32px_rgba(8,47,52,0.12)] sm:p-6">
-              <div className="flex items-center gap-3 text-cyan-200"><Send className="h-4 w-4" aria-hidden="true" /><p className="text-[11px] font-bold uppercase tracking-[0.14em]">Briefing logistik GAEKS</p></div>
-              <h2 id="newsletter-title" className="mt-4 text-2xl font-bold leading-tight">Langganan pembaruan</h2><p className="mt-2 text-sm leading-6 text-cyan-50/75">Berita operasional, regulasi, dan rute terbaru saat dipublikasikan.</p>
-                <form onSubmit={handleSubscribe} className="mt-5 space-y-3">
-                  <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-2">
-                  <label className="sr-only" htmlFor="news-email">Email perusahaan</label>
-                  <input id="news-email" type="email" autoComplete="email" required value={emailInput} onChange={(e) => setEmailInput(e.target.value)} placeholder="nama@perusahaan.com" className="min-h-12 min-w-0 rounded-md border border-white/25 bg-white px-3 text-base text-slate-900 placeholder:text-slate-400 focus:border-cyan-300 focus:outline-none" />
-                  <button type="submit" disabled={isSubscribing || !newsletterConsent} aria-label="Daftar newsletter" className="inline-flex min-h-12 min-w-12 items-center justify-center rounded-md bg-cyan-300 px-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200 disabled:cursor-not-allowed disabled:opacity-50"><span className="hidden sm:inline">{isSubscribing ? 'Mengirim' : 'Daftar'}</span><ArrowRight className="h-4 w-4 sm:ml-2" /></button>
-                  </div>
-                  <label className="flex cursor-pointer items-start gap-3 text-xs leading-5 text-cyan-50/75"><input type="checkbox" required checked={newsletterConsent} onChange={(event) => setNewsletterConsent(event.target.checked)} className="mt-1 h-4 w-4 shrink-0 accent-cyan-300" /><span>Saya setuju menerima berita GAEKS melalui email dan dapat berhenti kapan saja.</span></label>
-                  <label className="absolute -left-[10000px]" aria-hidden="true">Perusahaan<input tabIndex={-1} autoComplete="off" value={newsletterCompany} onChange={(event) => setNewsletterCompany(event.target.value)} /></label>
-                </form>
-            </aside>
-          </header>
-
-          <div className="min-w-0">
-            <div className="grid gap-3 border-b border-slate-300 pb-5 sm:grid-cols-[1fr_auto]">
-              <label><span className="sr-only">Cari berita</span><input value={searchQuery} onChange={(e) => { setSearchQuery(e.target.value); setCurrentPageNum(1); }} placeholder="Cari judul atau topik" className="field" /></label>
-              <label><span className="sr-only">Kategori</span><select value={selectedCategory} onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPageNum(1); }} className="field sm:w-56">{categories.map((category) => <option key={category}>{category}</option>)}</select></label>
-            </div>
-            <p className="py-4 text-sm text-slate-500">{filtered.length} artikel ditemukan</p>
-            <div className="border-b border-slate-300">
-              {currentArticles.map((article) => (
-                <button key={article.id} type="button" onClick={() => onSelectArticle?.(article.id)} className="group grid min-h-[108px] w-full grid-cols-[1fr_auto] items-center gap-5 border-t border-slate-300 py-5 text-left">
-                  <span className="min-w-0">
-                    <span className="text-xs font-bold uppercase tracking-wider text-cyan-700">{article.category}</span>
-                    <strong className="mt-2 block text-lg leading-6 text-[#12363a]">{article.title}</strong>
-                    <span className="mt-2 block text-xs text-slate-500">{new Date(article.publishedDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-                  </span>
-                  <ArrowRight className="h-4 w-4 text-slate-400 transition-transform group-hover:translate-x-1" />
-                </button>
-              ))}
-            </div>
-            {filtered.length === 0 && <p className="border-t border-slate-300 py-8 text-sm text-slate-500">Tidak ada artikel yang cocok.</p>}
-            {totalPages > 1 && (
-              <div className="mt-6 flex items-center justify-between">
-                <button type="button" disabled={currentPageNum === 1} onClick={() => setCurrentPageNum((page) => Math.max(1, page - 1))} className="button-secondary disabled:opacity-40">Sebelumnya</button>
-                <span className="text-sm text-slate-500">{currentPageNum} / {totalPages}</span>
-                <button type="button" disabled={currentPageNum === totalPages} onClick={() => setCurrentPageNum((page) => Math.min(totalPages, page + 1))} className="button-secondary disabled:opacity-40">Berikutnya</button>
-              </div>
-            )}
-          </div>
-        </div>
-      </section>
-    </main>
-  );
+  return <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
+    <section className="page-shell news-page py-12 sm:py-20">
+      <header className="news-heading"><div><p className="section-label">GAEKS / Wawasan logistik</p><h1 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.08] tracking-[-0.04em] sm:text-6xl">Berita yang membantu keputusan pengiriman.</h1></div><p className="max-w-sm text-base leading-7 text-slate-600">Pembaruan freight, kepabeanan, dan rute untuk tim operasional yang membutuhkan konteks jelas sebelum bertindak.</p></header>
+      <div className="news-toolbar" role="search"><label className="news-search"><Search className="h-4 w-4 shrink-0 text-slate-500" /><span className="sr-only">Cari berita</span><input type="search" value={searchQuery} onChange={(event) => { setSearchQuery(event.target.value); setPage(1); }} placeholder="Cari judul atau topik" /></label><label className="sr-only" htmlFor="news-category">Kategori</label><select id="news-category" value={category} onChange={(event) => { setCategory(event.target.value); setPage(1); }}>{categories.map((item) => <option key={item} value={item}>{item}</option>)}</select><label className="sr-only" htmlFor="news-sort">Urutkan berita</label><select id="news-sort" value={sort} onChange={(event) => { setSort(event.target.value as typeof sort); setPage(1); }}><option value="latest">Terbaru</option><option value="oldest">Terlama</option><option value="title">Judul A–Z</option></select></div>
+      <p className="mt-4 text-sm text-slate-500" aria-live="polite">{filtered.length} artikel ditemukan</p>
+      {visible.length ? <div className="news-grid">
+        {visible.map((article, index) => { const text = localized(article, currentLang); return <a key={article.id} href={articlePath(article)} onClick={(event) => openArticle(event, article)} className={`news-card ${index === 0 && page === 1 ? 'news-card-featured' : ''}`}>
+          <div className="news-card-media">{article.imageUrl && <img src={article.imageUrl} onError={(event) => useFallbackImage(event, article)} alt="" loading={index === 0 ? 'eager' : 'lazy'} decoding="async" width="800" height="520" />}<span className="news-card-media-arrow" aria-hidden="true"><ArrowRight className="h-5 w-5" /></span></div>
+          <div className="news-card-content"><span className="news-card-kicker">{text.category} <span aria-hidden="true">·</span> {displayDate(article.publishedDate, currentLang)}</span><h2>{text.title}</h2><p>{text.excerpt}</p><span className="news-card-read">Baca analisis <ArrowRight className="h-4 w-4" /></span></div>
+        </a>; })}
+      </div> : <div className="mt-7 border-t border-slate-300 py-12 text-slate-600">Tidak ada artikel yang cocok. Coba kata kunci atau kategori lain.</div>}
+      {totalPages > 1 && <nav aria-label="Halaman berita" className="mt-10 flex items-center justify-between border-t border-slate-300 pt-6"><button type="button" className="button-secondary disabled:opacity-40" disabled={page === 1} onClick={() => setPage((value) => Math.max(1, value - 1))}>Sebelumnya</button><span className="text-sm text-slate-600">{page} / {totalPages}</span><button type="button" className="button-secondary disabled:opacity-40" disabled={page === totalPages} onClick={() => setPage((value) => Math.min(totalPages, value + 1))}>Berikutnya</button></nav>}
+      <aside className="news-subscribe" aria-labelledby="news-subscribe-title"><div><div className="inline-flex items-center gap-2 text-cyan-200"><Mail className="h-5 w-5" /><span className="text-xs font-bold uppercase tracking-[0.16em]">Briefing GAEKS</span></div><h2 id="news-subscribe-title" className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl">Berita penting, langsung ke inbox.</h2><p className="mt-3 max-w-lg text-sm leading-6 text-cyan-50/75">Terima artikel baru dan pembaruan ketika tim GAEKS menerbitkannya. Konfirmasi email diperlukan; tautan berhenti berlangganan tersedia di setiap kiriman.</p></div><form onSubmit={submit} className="news-subscribe-form"><div className="flex flex-col gap-2 sm:flex-row"><label className="sr-only" htmlFor="news-email">Alamat email</label><input id="news-email" type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="nama@perusahaan.com" /><button type="submit" disabled={submitting || !consent} className="button-primary shrink-0 disabled:cursor-not-allowed disabled:opacity-50">{submitting ? 'Mengirim…' : 'Berlangganan'}<ArrowRight className="h-4 w-4" /></button></div><label className="mt-3 flex items-start gap-2 text-xs leading-5 text-cyan-50/75"><input type="checkbox" required checked={consent} onChange={(event) => setConsent(event.target.checked)} className="mt-1 accent-cyan-300" />Saya setuju menerima pembaruan GAEKS melalui email.</label><label className="absolute -left-[10000px]" aria-hidden="true">Perusahaan<input tabIndex={-1} autoComplete="off" value={company} onChange={(event) => setCompany(event.target.value)} /></label></form></aside>
+    </section>
+  </div>;
 };

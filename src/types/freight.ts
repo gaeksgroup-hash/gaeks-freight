@@ -31,6 +31,9 @@ export interface ServiceDetail {
   equipment: string;
   imageUrl: string;
   commodities: string;
+  summary?: string;
+  compare?: [string, string, string][];
+  faq?: [string, string][];
 }
 
 export interface RouteData {
@@ -73,6 +76,8 @@ export interface ArticleItem {
   publishedDate: string;
   readTime?: string;
   sources?: string[];
+  status?: 'draft' | 'published';
+  updatedAt?: string;
 }
 
 export interface NewsletterSubscriber {

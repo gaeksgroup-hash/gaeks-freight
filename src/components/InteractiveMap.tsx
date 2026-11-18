@@ -423,8 +423,8 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <header className="min-w-0">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Rute dan jadwal</p>
-            <h2 id="network-title" className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Cari koridor pengiriman tanpa membuka tabel yang padat.</h2>
-            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">Saring berdasarkan moda, wilayah, atau titik asal. Buka satu rute untuk melihat carrier dan perkiraan waktu.</p>
+            <h1 id="network-title" className="mt-3 font-display text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Cari koridor pengiriman tanpa membuka tabel yang padat.</h1>
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300">Rute pengiriman laut dan udara dipilih dari asal, tujuan, sifat barang, dan target waktu. Daftar ini membantu tim pengadaan membandingkan koridor serta carrier rujukan sebelum meminta penawaran. Waktu tempuh, jadwal keberangkatan, kapasitas, dan dokumen yang diperlukan harus diperiksa untuk setiap shipment karena dapat berubah menurut moda, transit, dan ketentuan komoditas.</p>
           </header>
 
           <div className="min-w-0">
@@ -482,6 +482,11 @@ Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
             <p className="mt-5 text-xs leading-5 text-slate-400">Carrier dan waktu tempuh bersifat rujukan. Jadwal serta ketersediaan ruang perlu dikonfirmasi saat pemesanan.</p>
           </div>
         </div>
+        <section aria-labelledby="route-faq-title" className="mt-16 max-w-4xl border-t border-white/25 pt-8"><h2 id="route-faq-title" className="font-display text-2xl font-bold">Pertanyaan tentang rute</h2><div className="mt-5 border-t border-white/15">{[
+          ['Apakah waktu tempuh di halaman ini sudah pasti?', 'Belum. Waktu tempuh adalah rujukan dan perlu dikonfirmasi bersama jadwal, transit, dan ketersediaan ruang saat pemesanan.'],
+          ['Data apa yang diperlukan untuk meminta rute?', 'Siapkan titik asal dan tujuan, komoditas, berat, volume, kesiapan barang, serta target waktu tiba.'],
+          ['Kapan memilih laut atau udara?', 'Bandingkan volume, nilai barang, target waktu, penanganan, serta biaya total sampai titik penerima.']
+        ].map(([q, a]) => <details key={q} className="group border-b border-white/15"><summary className="flex min-h-14 cursor-pointer items-center justify-between gap-4 py-3 font-semibold">{q}<ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" /></summary><p className="max-w-3xl pb-5 text-sm leading-6 text-slate-300">{a}</p></details>)}</div></section>
       </div>
     </section>
   );

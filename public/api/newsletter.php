@@ -5,7 +5,7 @@ require_once __DIR__ . '/_bootstrap.php';
 
 function newsletter_redirect(string $state): void
 {
-    header('Location: ' . GAEKS_SITE_URL . '/?newsletter=' . rawurlencode($state) . '#news', true, 303);
+    header('Location: ' . GAEKS_SITE_URL . '/berita/?newsletter=' . rawurlencode($state), true, 303);
     exit;
 }
 
@@ -29,6 +29,13 @@ if (in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'], true) && isset($_GET['
             newsletter_redirect('confirmed');
         }
         if ($action === 'unsubscribe' && hash_equals((string) ($subscriber['unsubscribeToken'] ?? ''), $token)) {
+            if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+                header('Content-Type: text/html; charset=UTF-8');
+                header('Cache-Control: no-store');
+                $actionUrl = htmlspecialchars(gaeks_token_url('unsubscribe', $token), ENT_QUOTES, 'UTF-8');
+                echo '<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Berhenti berlangganan | GAEKS</title></head><body style="font-family:Arial,sans-serif;max-width:520px;margin:12vh auto;padding:24px;color:#12363a"><h1>Berhenti berlangganan?</h1><p>Konfirmasi untuk menghentikan email pembaruan GAEKS.</p><form method="post" action="' . $actionUrl . '"><button style="padding:14px 20px;background:#08383e;color:white;border:0;cursor:pointer">Hentikan langganan</button></form></body></html>';
+                exit;
+            }
             $subscriber['status'] = 'unsubscribed';
             $subscriber['unsubscribedAt'] = gmdate('c');
             gaeks_save_subscribers($subscribers);
@@ -54,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         'smtpConfigured' => $smtpConfig !== null,
         'transport' => $smtpConfig !== null ? 'smtp' : 'php_mail',
         'subscribers' => $subscribers,
+        'queued' => count(gaeks_read_json_file(gaeks_private_dir() . '/newsletter_queue.json', [])),
     ]);
 }
 

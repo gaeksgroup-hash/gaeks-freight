@@ -1,9 +1,20 @@
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  # Fresh CMS articles and sitemap are rendered from server content for crawlers.
+  RewriteRule ^sitemap\.xml$ api/sitemap.php [L]
+  RewriteRule ^berita/([^/]+)/?$ api/article.php?slug=$1 [L,QSA]
+  RewriteRule ^layanan/([^/]+)/?$ api/service.php?slug=$1 [L,QSA]
+
+  # Preserve generated HTML for public routes and the existing backend API.
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
   # Serve the React app for routes handled in src/App.tsx.
   RewriteRule ^operator/?$ index.html [L]
   RewriteRule ^tracking/?$ index.html [L]
+  RewriteRule ^(layanan|rute-pengiriman|kalkulator|berita|kontak)/?$ index.html [L]
   RewriteRule ^layanan/[^/]+/?$ index.html [L]
 </IfModule>
 
@@ -14,7 +25,7 @@
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
 
-  <FilesMatch "\.(?:js|css|svg|png|jpg|jpeg|gif|webp|mp4|webm|woff2)$">
+  <FilesMatch "\.(?:js|css|svg|png|jpg|jpeg|gif|webp|avif|mp4|webm|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
   <Files "index.html">

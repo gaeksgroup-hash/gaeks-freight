@@ -15,17 +15,20 @@ const copy = {
     eyebrow: 'Freight forwarding dan kepabeanan', title: 'Kargo bergerak dengan rencana yang jelas.',
     body: 'GAEKS mengatur freight laut dan udara, kepabeanan, serta pengiriman darat melalui satu tim operasional.',
     primary: 'Minta estimasi', secondary: 'Lihat layanan', detail: 'Lihat detail', featured: 'Layanan pilihan',
+    trackingTitle: 'Shipment Track', trackingDescription: 'Status & milestone kargo',
     utilities: [['Lacak shipment', 'AWB, B/L, GJO, atau kontainer', 'tracking'], ['Hitung kebutuhan kargo', 'CBM dan berat volumetrik', 'calculator'], ['Cari rute pengiriman', 'Jadwal laut dan udara', 'network']]
   },
   en: {
     eyebrow: 'Freight forwarding and customs', title: 'Cargo moves better with a clear plan.',
     body: 'GAEKS coordinates ocean and air freight, customs clearance, and inland delivery through one operations team.',
     primary: 'Request an estimate', secondary: 'View services', detail: 'View details', featured: 'Selected service',
+    trackingTitle: 'Shipment Track', trackingDescription: 'Cargo status & milestones',
     utilities: [['Track a shipment', 'AWB, B/L, GJO, or container', 'tracking'], ['Calculate cargo', 'CBM and volumetric weight', 'calculator'], ['Find a route', 'Ocean and air schedules', 'network']]
   },
   zh: {
     eyebrow: '货运代理与清关服务', title: '清晰规划，让货物高效流转。', body: 'GAEKS 通过一个运营团队协调海运、空运、清关和陆路配送。',
     primary: '获取估算', secondary: '查看服务', detail: '查看详情', featured: '精选服务',
+    trackingTitle: '查询货件', trackingDescription: '货物状态与运输节点',
     utilities: [['查询货件', '空运单、提单、工单或集装箱', 'tracking'], ['计算货物数据', '体积与体积重量', 'calculator'], ['查找运输路线', '海运及空运班次', 'network']]
   }
 } as const;
@@ -79,7 +82,17 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{text.eyebrow}</p>
             <h1 id="hero-title" className="mt-5 max-w-3xl break-words font-display text-3xl font-bold leading-[1.04] tracking-[-0.04em] text-white min-[360px]:text-4xl sm:text-5xl lg:text-6xl">{text.title}</h1>
             <p className="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">{text.body}</p>
-            <div className="mt-8 flex flex-wrap items-center gap-4"><button type="button" onClick={() => onNavigate?.('calculator')} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200">{text.primary}<ArrowRight className="h-4 w-4" /></button><button type="button" onClick={() => onNavigate?.('services')} className="inline-flex min-h-11 items-center gap-2 px-1 text-sm font-bold text-white underline-offset-4 hover:underline">{text.secondary}<ArrowRight className="h-4 w-4" /></button></div>
+            <div className="mt-7">
+              <a href="/tracking/" onClick={(event) => { if (onNavigate) { event.preventDefault(); onNavigate('tracking'); } }} className="hero-track-cta group" aria-label={`${text.trackingTitle}: ${text.trackingDescription}`}>
+                <span className="hero-track-icon" aria-hidden="true"><PackageSearch className="h-5 w-5" /></span>
+                <span className="min-w-0 text-left"><strong className="block text-sm leading-tight">{text.trackingTitle}</strong><span className="mt-0.5 block text-[11px] font-medium text-cyan-100/75">{text.trackingDescription}</span></span>
+                <ArrowRight className="hero-track-arrow ml-1 h-4 w-4 shrink-0 text-cyan-200" aria-hidden="true" />
+              </a>
+            </div>
+            <div className="mt-5 flex flex-wrap items-center gap-4">
+              <button type="button" onClick={() => onNavigate?.('calculator')} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200">{text.primary}<ArrowRight className="h-4 w-4" /></button>
+              <button type="button" onClick={() => onNavigate?.('services')} className="inline-flex min-h-11 items-center gap-2 px-1 text-sm font-bold text-white underline-offset-4 hover:underline">{text.secondary}<ArrowRight className="h-4 w-4" /></button>
+            </div>
           </div>
           <HeroServiceHeadline currentLang={currentLang} onOpenService={onOpenService} detailLabel={text.detail} eyebrow={text.featured} />
         </div>

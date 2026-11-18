@@ -8,6 +8,7 @@ interface NewsletterResponse {
   smtpConfigured?: boolean;
   transport?: 'smtp' | 'php_mail';
   subscribers?: NewsletterSubscriber[];
+  queued?: number;
 }
 
 export async function subscribeToNewsletter(email: string, consent: boolean, company = ''): Promise<string> {
@@ -29,6 +30,7 @@ export async function fetchNewsletterSubscribers(): Promise<{
   mailAvailable: boolean;
   smtpConfigured: boolean;
   transport: 'smtp' | 'php_mail';
+  queued: number;
 }> {
   const response = await fetch('/api/newsletter.php', { credentials: 'same-origin', cache: 'no-store' });
   const result = await response.json() as NewsletterResponse;
@@ -41,5 +43,6 @@ export async function fetchNewsletterSubscribers(): Promise<{
     mailAvailable: Boolean(result.mailAvailable),
     smtpConfigured: Boolean(result.smtpConfigured),
     transport: result.transport || 'php_mail',
+    queued: result.queued || 0,
   };
 }

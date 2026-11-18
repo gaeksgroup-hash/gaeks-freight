@@ -145,7 +145,8 @@ export const ServicesCarousel: React.FC<{
   onSelectService: (serviceName: string) => void;
   onOpenService?: (serviceId: string) => void;
   currentLang?: Language;
-}> = ({ onSelectService, onOpenService, currentLang = 'id' }) => {
+  standalone?: boolean;
+}> = ({ onSelectService, onOpenService, currentLang = 'id', standalone = false }) => {
   const [servicesList, setServicesList] = useState<ServiceDetail[]>(getStoredServices());
 
   useEffect(() => {
@@ -167,7 +168,9 @@ export const ServicesCarousel: React.FC<{
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <header className="min-w-0">
             <p className="section-label">Layanan</p>
-            <h2 id="services-title" className="section-title">Pilih bagian perjalanan kargo yang perlu kami tangani.</h2>
+            {standalone
+              ? <h1 id="services-title" className="section-title">Pilih bagian perjalanan kargo yang perlu kami tangani.</h1>
+              : <h2 id="services-title" className="section-title">Pilih bagian perjalanan kargo yang perlu kami tangani.</h2>}
             <p className="section-copy">Setiap layanan diringkas dalam satu baris. Buka detailnya hanya saat dibutuhkan.</p>
             <p className="mt-8 text-sm font-semibold text-slate-500">{servicesList.length} layanan tersedia</p>
           </header>

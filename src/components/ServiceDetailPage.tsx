@@ -4,6 +4,7 @@ import { Language, ServiceDetail } from '../types/freight';
 import { GAEKS_UPDATE_EVENT, getStoredServices } from '../utils/adminStorage';
 import { DETAILED_SERVICES } from './ServicesCarousel';
 import { ServiceTitle } from './ServiceTitle';
+import { serviceContent } from '../utils/serviceContent';
 
 interface ServiceDetailPageProps {
   slug: string;
@@ -34,9 +35,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
   }, []);
   const service = services.find((item) => slugFor(item) === slug) || DETAILED_SERVICES.find((item) => slugFor(item) === slug) || DETAILED_SERVICES[0];
   const content = localize(service, currentLang);
+  const knowledge = serviceContent(service);
 
   return (
-    <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
+    <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
       <section className="page-shell py-10 sm:py-14">
         <button type="button" onClick={onBack} className="button-link"><ArrowLeft className="h-4 w-4" />Semua layanan</button>
         <div className="mt-7 grid overflow-hidden border border-slate-200 bg-white lg:grid-cols-2">
@@ -44,10 +46,10 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
             <p className="section-label">{content.category}</p>
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl"><ServiceTitle title={content.title} /></h1>
             <p className="mt-5 text-lg font-semibold text-cyan-800">{content.tagline}</p>
-            <p className="mt-5 text-base leading-7 text-slate-600">{content.description}</p>
+            <p className="mt-5 text-base leading-7 text-slate-600">{currentLang === 'id' ? knowledge.summary : content.description}</p>
             <button type="button" onClick={() => onQuote(content.title)} className="button-primary mt-8">Minta estimasi<ArrowRight className="h-4 w-4" /></button>
           </div>
-          <img src={service.imageUrl} alt="" className="min-h-[280px] h-full w-full object-cover" />
+          <img src={service.imageUrl} alt="" width="960" height="640" loading="eager" decoding="async" className="min-h-[280px] h-full w-full object-cover" />
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.2fr_.8fr]">
@@ -77,7 +79,17 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
             </ol>
           </aside>
         </div>
+
+        {knowledge.compare.length > 0 && <section aria-labelledby="comparison-title" className="mt-12 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 id="comparison-title" className="font-display text-2xl font-bold tracking-tight">Perbandingan pilihan</h2>
+          <p className="mt-2 text-sm leading-6 text-slate-600">Waktu dan biaya akhir dikonfirmasi setelah detail kargo serta rute diperiksa.</p>
+          <div className="mt-6 overflow-x-auto"><table className="w-full min-w-[620px] border-collapse text-left text-sm"><caption className="sr-only">Pilihan untuk {content.title}</caption><thead><tr className="border-b border-slate-200 text-[#12363a]"><th scope="col" className="px-3 py-3">Pilihan</th><th scope="col" className="px-3 py-3">Sesuai untuk</th><th scope="col" className="px-3 py-3">Data awal</th></tr></thead><tbody>{knowledge.compare.map(([name, use, data]) => <tr key={name} className="border-b border-slate-100"><th scope="row" className="px-3 py-4 font-semibold">{name}</th><td className="px-3 py-4 text-slate-600">{use}</td><td className="px-3 py-4 text-slate-600">{data}</td></tr>)}</tbody></table></div>
+        </section>}
+        {knowledge.faq.length > 0 && <section aria-labelledby="faq-title" className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8">
+          <h2 id="faq-title" className="font-display text-2xl font-bold tracking-tight">FAQ teknis logistik</h2>
+          <div className="mt-5 border-t border-slate-200">{knowledge.faq.map(([question, answer]) => <details key={question} className="group border-b border-slate-200"><summary className="flex min-h-16 cursor-pointer items-center justify-between gap-4 py-3 font-semibold">{question}<ChevronDown className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" /></summary><p className="max-w-3xl pb-5 text-sm leading-6 text-slate-600">{answer}</p></details>)}</div>
+        </section>}
       </section>
-    </main>
+    </div>
   );
 };

@@ -3,6 +3,7 @@ import { ArrowRight, ChevronDown } from 'lucide-react';
 import { getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
 import { GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { isPublishedArticle } from '../utils/serviceContent';
 
 interface HomeEditorialProps {
   currentLang?: Language;
@@ -23,7 +24,7 @@ const localize = (article: ArticleItem, language: Language) => ({
 });
 
 export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id', onNavigate, onSelectArticle }) => {
-  const latestArticles = () => [...getStoredArticles()].sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()).slice(0, 3);
+  const latestArticles = () => getStoredArticles().filter(isPublishedArticle).sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()).slice(0, 3);
   const [articles, setArticles] = React.useState(latestArticles);
 
   React.useEffect(() => {

@@ -53,7 +53,7 @@ export const ShipmentTracking: React.FC = () => {
   const hasResult = result && (Object.keys(shipment).length > 0 || events.length > 0);
 
   return (
-    <main className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
+    <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
       <section className="page-shell py-14 sm:py-20">
         <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)] lg:gap-16">
           <header className="min-w-0">
@@ -119,6 +119,6 @@ export const ShipmentTracking: React.FC = () => {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 };

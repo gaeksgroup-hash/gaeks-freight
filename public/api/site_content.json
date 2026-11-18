@@ -49,7 +49,34 @@
             ],
             "equipment": "Sistem Terintegrasi Ceisa 4.0 Bea Cukai",
             "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
-            "commodities": "Komoditas industri, bahan baku, tekstil, mesin, barang umum (dapat dikonsultasikan)"
+            "commodities": "Komoditas industri, bahan baku, tekstil, mesin, barang umum (dapat dikonsultasikan)",
+            "summary": "Layanan PPJK membantu importir dan eksportir menyiapkan serta mengajukan dokumen kepabeanan untuk barang yang masuk atau keluar Indonesia. Ruang kerjanya mencakup pemeriksaan invoice dan packing list, peninjauan HS code, pengecekan ketentuan komoditas, serta koordinasi proses PIB atau PEB. Kebutuhan izin dan waktu penyelesaian ditentukan oleh jenis barang dan hasil pemeriksaan otoritas.",
+            "compare": [
+                [
+                    "Impor",
+                    "Barang masuk ke Indonesia",
+                    "Invoice, packing list, HS code, dokumen pengangkutan"
+                ],
+                [
+                    "Ekspor",
+                    "Barang keluar dari Indonesia",
+                    "Invoice, packing list, data penerima, ketentuan komoditas"
+                ]
+            ],
+            "faq": [
+                [
+                    "Dokumen apa yang perlu disiapkan untuk customs clearance?",
+                    "Mulailah dengan invoice, packing list, dokumen pengangkutan, dan data komoditas. Dokumen tambahan bergantung pada HS code dan ketentuan barang."
+                ],
+                [
+                    "Apakah HS code harus sudah tersedia?",
+                    "HS code awal membantu pemeriksaan, tetapi klasifikasi perlu ditinjau terhadap uraian dan spesifikasi barang sebelum pengajuan."
+                ],
+                [
+                    "Apakah waktu penyelesaian dapat dijamin?",
+                    "Waktu proses bergantung pada kelengkapan dokumen, ketentuan komoditas, respons sistem, dan pemeriksaan otoritas."
+                ]
+            ]
         },
         {
             "id": "gudang-pbm",
@@ -72,7 +99,34 @@
             ],
             "equipment": "Gudang Kawasan Pabean & Non-Pabean",
             "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
-            "commodities": "Curah kering, kargo palet, semen kemasan, bahan pangan industri"
+            "commodities": "Curah kering, kargo palet, semen kemasan, bahan pangan industri",
+            "summary": "Pergudangan dan pekerjaan bongkar muat membantu menghubungkan kedatangan kargo dengan penyerahan berikutnya. Tim perlu mencocokkan jenis barang, jumlah koli, kebutuhan penanganan, waktu kedatangan, dan tujuan distribusi sebelum memilih pengaturan di terminal atau gudang transit. Ketersediaan ruang, peralatan, serta biaya penanganan dikonfirmasi sesuai lokasi dan jadwal aktual.",
+            "compare": [
+                [
+                    "Bongkar muat",
+                    "Perpindahan kargo di area pelabuhan",
+                    "Jenis barang, berat, dimensi, dan jadwal kapal"
+                ],
+                [
+                    "Gudang transit",
+                    "Penyimpanan sementara sebelum distribusi",
+                    "Jumlah koli, lama simpan, dan instruksi serah terima"
+                ]
+            ],
+            "faq": [
+                [
+                    "Kapan kargo memerlukan gudang transit?",
+                    "Gudang transit dapat diperlukan bila waktu kedatangan dan jadwal penyerahan tidak sama, atau kargo perlu dikonsolidasikan lebih dahulu."
+                ],
+                [
+                    "Data apa yang dibutuhkan untuk bongkar muat?",
+                    "Berikan jenis komoditas, jumlah koli, dimensi, berat, kemasan, lokasi, dan perkiraan waktu kedatangan."
+                ],
+                [
+                    "Apakah penanganan barang khusus bisa diatur?",
+                    "Kebutuhan alat, keamanan, atau kondisi penyimpanan khusus perlu ditinjau bersama sebelum jadwal dan biaya dikonfirmasi."
+                ]
+            ]
         },
         {
             "id": "domestic-truck",
@@ -95,7 +149,34 @@
             ],
             "equipment": "100+ Unit Armada Siap Jalan",
             "imageUrl": "/uploads/1789232112_387700.webp",
-            "commodities": "Kargo industri, consumer goods, semen, bahan bangunan, suku cadang"
+            "commodities": "Kargo industri, consumer goods, semen, bahan bangunan, suku cadang",
+            "summary": "Trucking domestik memindahkan kargo dari pelabuhan, bandara, atau gudang ke titik penerima di darat. Pemilihan armada mempertimbangkan dimensi, berat, jumlah koli, akses lokasi, dan target waktu. Untuk rute dengan lebih dari satu titik bongkar, informasi urutan pengiriman perlu diberikan sejak awal agar penawaran dan rencana perjalanan sesuai kebutuhan.",
+            "compare": [
+                [
+                    "Satu tujuan",
+                    "Pengiriman langsung ke satu lokasi",
+                    "Alamat, akses kendaraan, volume, dan waktu penerimaan"
+                ],
+                [
+                    "Multi-drop",
+                    "Pengiriman ke beberapa lokasi",
+                    "Urutan titik bongkar, volume per titik, dan jam operasional"
+                ]
+            ],
+            "faq": [
+                [
+                    "Bagaimana memilih jenis truk?",
+                    "Jenis armada dipilih dari berat, volume, panjang barang, kebutuhan perlindungan, dan akses kendaraan di lokasi."
+                ],
+                [
+                    "Apakah pengiriman bisa mencakup beberapa titik?",
+                    "Bisa direncanakan. Cantumkan seluruh alamat dan urutan pengiriman agar rute serta biaya dapat dihitung."
+                ],
+                [
+                    "Apa yang perlu disiapkan di lokasi bongkar?",
+                    "Pastikan akses kendaraan, jam penerimaan, petugas penerima, dan alat bongkar bila dibutuhkan."
+                ]
+            ]
         },
         {
             "id": "project-cargo",
@@ -118,7 +199,34 @@
             ],
             "equipment": "Multi-Axle Modular Hydraulic Trailer",
             "imageUrl": "/uploads/1789234361_387709.webp",
-            "commodities": "Dump truck tambang, excavator, mesin pabrik, turbin pembangkit, tangki industri, baja"
+            "commodities": "Dump truck tambang, excavator, mesin pabrik, turbin pembangkit, tangki industri, baja",
+            "summary": "Project cargo menangani pengiriman barang berukuran besar, berat, atau memerlukan rencana angkat dan angkut khusus. Sebelum moda dipilih, dimensi rinci, berat, titik angkat, kemasan, serta kondisi akses di asal dan tujuan harus ditinjau. Rencana akhir dapat melibatkan beberapa moda dan perlu disesuaikan dengan izin, peralatan, serta kondisi lapangan.",
+            "compare": [
+                [
+                    "Barang berdimensi besar",
+                    "Ukuran melampaui ruang kargo standar",
+                    "Gambar dimensi, berat, pusat gravitasi, dan kemasan"
+                ],
+                [
+                    "Barang berat",
+                    "Memerlukan alat angkat atau armada khusus",
+                    "Titik angkat, akses lokasi, dan rencana bongkar"
+                ]
+            ],
+            "faq": [
+                [
+                    "Data awal apa yang paling penting?",
+                    "Siapkan gambar barang, dimensi lengkap, berat kotor, pusat gravitasi bila ada, dan foto lokasi."
+                ],
+                [
+                    "Apakah satu moda selalu cukup?",
+                    "Tidak selalu. Pilihan laut, darat, atau kombinasi moda ditentukan setelah akses dan kebutuhan penanganan diperiksa."
+                ],
+                [
+                    "Kapan rencana angkat disusun?",
+                    "Rencana angkat dibuat setelah detail barang, titik angkat, peralatan, dan kondisi lokasi tersedia."
+                ]
+            ]
         },
         {
             "id": "lcl",
@@ -141,7 +249,34 @@
             ],
             "equipment": "Weekly Dedicated Consolidation Box",
             "imageUrl": "/uploads/1789234769_387713.webp",
-            "commodities": "Barang retail, palet kemasan kayu, spare parts, sampel bahan, perlengkapan bisnis"
+            "commodities": "Barang retail, palet kemasan kayu, spare parts, sampel bahan, perlengkapan bisnis",
+            "summary": "LCL memungkinkan pengiriman laut ketika muatan tidak memerlukan satu kontainer penuh. Barang digabung dengan muatan lain melalui proses konsolidasi, sehingga jadwal cut-off, kemasan, dan penanganan di titik asal maupun tujuan perlu diperhatikan. Untuk memilih LCL atau FCL, bandingkan volume, sifat barang, kebutuhan waktu, dan biaya total sampai lokasi penerima.",
+            "compare": [
+                [
+                    "LCL",
+                    "Volume belum memerlukan kontainer eksklusif",
+                    "CBM, berat, jenis kemasan, dan jadwal siap barang"
+                ],
+                [
+                    "FCL",
+                    "Butuh ruang kontainer khusus",
+                    "Jenis kontainer, volume, berat, dan lokasi stuffing"
+                ]
+            ],
+            "faq": [
+                [
+                    "Apa perbedaan LCL dan FCL?",
+                    "LCL menggabungkan barang dengan muatan lain dalam satu kontainer. FCL menggunakan kontainer untuk satu pengiriman atau pemesan."
+                ],
+                [
+                    "Bagaimana dasar perhitungan LCL?",
+                    "Penawaran biasanya memerlukan volume dan berat terukur. Komponen biaya akhir bergantung pada rute, penanganan, dan ketentuan layanan."
+                ],
+                [
+                    "Apa yang perlu diperhatikan pada kemasan?",
+                    "Kemasan perlu melindungi barang selama konsolidasi, pemindahan, dan pembongkaran bersama muatan lain."
+                ]
+            ]
         },
         {
             "id": "fcl",
@@ -164,7 +299,34 @@
             ],
             "equipment": "Kontainer 20ft, 40ft GP, 40ft HC, Reefer",
             "imageUrl": "/uploads/1789234509_387710.webp",
-            "commodities": "Manufaktur massal, bahan baku kimia, resin, komoditas ekspor"
+            "commodities": "Manufaktur massal, bahan baku kimia, resin, komoditas ekspor",
+            "summary": "FCL memakai satu kontainer untuk pengiriman laut yang memerlukan ruang khusus atau volume lebih besar. Pemilihan ukuran dan tipe kontainer mengikuti dimensi, berat, sifat komoditas, serta cara muat. Sebelum memesan ruang kapal, tentukan pelabuhan asal dan tujuan, Incoterms, kesiapan barang, serta kebutuhan trucking dan pengurusan dokumen di kedua sisi.",
+            "compare": [
+                [
+                    "20 kaki",
+                    "Muatan dengan kebutuhan ruang lebih ringkas",
+                    "Berat total, dimensi, dan pola susun barang"
+                ],
+                [
+                    "40 kaki",
+                    "Muatan yang membutuhkan ruang lebih panjang",
+                    "Volume, dimensi, berat, dan tipe kontainer"
+                ]
+            ],
+            "faq": [
+                [
+                    "Kapan memilih kontainer 20 atau 40 kaki?",
+                    "Pilihan ditentukan oleh volume, berat, dimensi per koli, dan cara penyusunan. Tim perlu memeriksa keduanya sebelum pemesanan."
+                ],
+                [
+                    "Apakah FCL selalu lebih cepat dari LCL?",
+                    "Waktu total bergantung pada jadwal kapal, proses pelabuhan, dokumen, dan pengiriman darat; FCL tidak otomatis lebih cepat."
+                ],
+                [
+                    "Data apa yang dibutuhkan untuk penawaran?",
+                    "Berikan asal, tujuan, jenis barang, volume, berat, tanggal siap barang, dan Incoterms bila sudah disepakati."
+                ]
+            ]
         },
         {
             "id": "air-shipment",
@@ -187,7 +349,34 @@
             ],
             "equipment": "Direct Space Contract Airline Partner",
             "imageUrl": "/uploads/1789234609_387712.webp",
-            "commodities": "Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi"
+            "commodities": "Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi",
+            "summary": "Air freight digunakan ketika target waktu, nilai barang, atau kebutuhan penanganan membuat pengiriman udara lebih sesuai. Kapasitas dan dasar tagihan dipengaruhi berat aktual serta berat volumetrik. Untuk menyiapkan penawaran, berikan bandara asal dan tujuan, ukuran tiap koli, berat, jenis komoditas, tanggal siap barang, dan dokumen yang tersedia.",
+            "compare": [
+                [
+                    "Kargo reguler",
+                    "Pengiriman dengan jadwal yang dapat direncanakan",
+                    "Bandara, dimensi, berat, dan tanggal siap"
+                ],
+                [
+                    "Kargo mendesak",
+                    "Pengiriman dengan batas waktu lebih ketat",
+                    "Batas waktu, kesiapan dokumen, dan opsi penerbangan"
+                ]
+            ],
+            "faq": [
+                [
+                    "Apa itu berat volumetrik udara?",
+                    "Berat volumetrik mengubah ukuran paket menjadi dasar perhitungan ruang. Penawaran umumnya membandingkannya dengan berat aktual."
+                ],
+                [
+                    "Apakah semua komoditas dapat dikirim lewat udara?",
+                    "Tidak. Jenis barang, pembatasan maskapai, kemasan, dan dokumen harus diperiksa lebih dahulu."
+                ],
+                [
+                    "Kapan jadwal penerbangan dapat dikonfirmasi?",
+                    "Jadwal dan ruang dikonfirmasi setelah data barang, dokumen, serta kesiapan pengiriman diperiksa."
+                ]
+            ]
         }
     ],
     "articles": [
@@ -753,10 +942,10 @@
         "socialLinks": []
     },
     "seo": {
-        "siteTitle": "GAEKS | Freight Forwarding & Customs Clearance Indonesia",
+        "siteTitle": "GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia",
         "metaDescription": "Layanan freight forwarding, customs clearance, ocean freight, air freight, dan trucking untuk kebutuhan kargo bisnis.",
         "keywords": "freight forwarding, customs clearance, PPJK, ocean freight, air freight, trucking Indonesia",
-        "ogTitle": "GAEKS | Global Andalan Ekspress",
+        "ogTitle": "GAEKS Freight | Global Andalan Ekspress",
         "ogDescription": "Koordinasi freight dan kepabeanan untuk kargo bisnis.",
         "ogImageUrl": "/logos/gaek-full.png?v=7",
         "robotsIndex": true

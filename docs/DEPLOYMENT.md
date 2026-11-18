@@ -43,6 +43,9 @@ npm run build
 - Halaman utama mengembalikan HTTP 200 dan memuat konten GAEKS.
 - `/layanan/ppjk-customs-clearance` mengembalikan aplikasi, bukan 404.
 - `/api/site_content.json` mengembalikan JSON.
+- `/api/sync.php` mengembalikan JSON; `POST` tanpa sesi operator ditolak 401.
+- `/berita/<slug>/` dan `/layanan/<slug>/` mengembalikan HTML dari PHP dengan canonical serta JSON-LD sesuai konten CMS.
+- `/sitemap.xml` mencantumkan artikel terbit dari CMS.
 - Navbar desktop tidak bertabrakan pada lebar 1024 piksel.
 - Menu ponsel tidak menimbulkan overflow horizontal.
 - Tautan WhatsApp menggunakan awalan negara `62`.
@@ -62,4 +65,6 @@ Revert menjaga riwayat perubahan dan kembali memicu build otomatis Hostinger.
 
 - Jangan menjalankan script `rebuild_*.cjs`, `update_*.cjs`, atau `build_all_gaeks.cjs` sebagai prosedur deployment. File tersebut adalah tooling historis.
 - Jangan mengaktifkan kembali endpoint POST legacy tanpa autentikasi dan otorisasi server.
+- Pastikan file PHP di `dist/api/` dieksekusi oleh PHP dan aturan rewrite dari `.htaccess` aktif. Vite preview lokal tidak mengeksekusi PHP.
+- Atur SMTP serta cron pengiriman newsletter menurut [SMTP_SETUP.md](./SMTP_SETUP.md); kredensial dan token tidak disimpan di Git.
 - `dist/` adalah hasil build lokal dan tidak disimpan di Git.

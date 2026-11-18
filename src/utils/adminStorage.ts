@@ -119,10 +119,10 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   socialLinks: [],
 };
 export const DEFAULT_SEO: SeoSettings = {
-  siteTitle: 'GAEKS | Freight Forwarding & Customs Clearance Indonesia',
+  siteTitle: 'GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia',
   metaDescription: 'Layanan freight forwarding, customs clearance, ocean freight, air freight, dan trucking untuk kebutuhan kargo bisnis.',
   keywords: 'freight forwarding, customs clearance, PPJK, ocean freight, air freight, trucking Indonesia',
-  ogTitle: 'GAEKS | Global Andalan Ekspress',
+  ogTitle: 'GAEKS Freight | Global Andalan Ekspress',
   ogDescription: 'Koordinasi freight dan kepabeanan untuk kargo bisnis.',
   ogImageUrl: '/logos/gaek-full.png?v=7', robotsIndex: true,
 };
@@ -161,7 +161,7 @@ export async function syncFromServer(): Promise<boolean> {
   } catch { return false; }
 }
 
-export interface ServerSaveResult { success: boolean; message: string; newsletter?: { articles: number; sent: number; failed: number }; }
+export interface ServerSaveResult { success: boolean; message: string; newsletter?: { articles: number; sent: number; failed: number; queued: number }; }
 export async function saveSectionToServer(section: 'branding' | 'hero' | 'siteSettings' | 'services' | 'articles' | 'seo', payload: unknown): Promise<ServerSaveResult> {
   try {
     const response = await operatorFetch('/api/sync.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ section, payload }) });

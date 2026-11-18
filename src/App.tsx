@@ -8,8 +8,12 @@ import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
 import { HomeClients, HomeNetworks } from './components/HomePartners';
 import { Language } from './types/freight';
-import { getStoredBranding, getStoredSeo, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
+import { getStoredBranding, getStoredSeo, getStoredServices, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
+import { pagePaths, servicePath } from './utils/routes';
+import { isPublishedArticle, serviceContent } from './utils/serviceContent';
+import { getStoredArticles } from './utils/newsStorage';
+import { articlePath, articleSlug } from './utils/articleRoutes';
 
 const SmartCalculator = React.lazy(() => import('./components/SmartCalculator').then((module) => ({ default: module.SmartCalculator })));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').then((module) => ({ default: module.InteractiveMap })));
@@ -23,14 +27,34 @@ const PageFallback = () => <div className="min-h-[60vh] bg-[#f4f5f1] pt-32 text-
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>(() => getPreferredLanguage());
-  const [activeArticleId, setActiveArticleId] = useState<string>('');
+  const [activeArticleId, setActiveArticleId] = useState<string>(() => window.location.pathname.match(/^\/berita\/([^/]+)\/?$/)?.[1] || '');
   const getServiceSlug = () => {
     const path = window.location.pathname.toLowerCase();
     const hash = window.location.hash.toLowerCase();
-    if (path.startsWith('/layanan/')) return path.substring('/layanan/'.length);
+    if (path.startsWith('/layanan/')) return path.substring('/layanan/'.length).replace(/\/$/, '');
     if (hash.startsWith('#service=')) return hash.substring('#service='.length);
     return '';
   };
+
+  const getInitialPage = () => {
+    const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+    const hash = window.location.hash.replace('#', '').toLowerCase();
+    if (path === 'operator' || hash === 'operator' || hash === 'admin') {
+      return 'operator';
+    }
+    if (getServiceSlug()) return 'service';
+    if (path.startsWith('berita/')) return 'news';
+    if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
+      return hash;
+    }
+    const paths: Record<string, string> = { layanan: 'services', tracking: 'tracking', 'rute-pengiriman': 'network', kalkulator: 'calculator', berita: 'news', kontak: 'contact' };
+    if (paths[path]) return paths[path];
+    return 'home';
+  };
+
+  const [currentPage, setCurrentPage] = useState<string>(getInitialPage());
+  const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string>('');
+  const [activeServiceSlug, setActiveServiceSlug] = useState<string>(getServiceSlug());
 
   // Sinkronisasi server Hostinger otomatis pada saat dibuka, polling berkala, dan saat tab aktif
   useEffect(() => {
@@ -65,7 +89,20 @@ export const App: React.FC = () => {
     const applyMetadata = () => {
       const seo = getStoredSeo();
       const branding = getStoredBranding();
-      document.title = seo.siteTitle;
+      const detailService = currentPage === 'service' ? getStoredServices().find((item) => servicePath(item.id).includes(`/${activeServiceSlug}/`)) : undefined;
+      const routeTitles: Record<string, string> = { services: 'Layanan Freight & Logistik', network: 'Rute Pengiriman', calculator: 'Kalkulator Kargo', tracking: 'Lacak Pengiriman', news: 'Berita Logistik', contact: 'Kontak & Permintaan Penawaran' };
+      const routeDescriptions: Record<string, string> = {
+        services: 'Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.',
+        network: 'Jelajahi koridor laut dan udara. Jadwal, kapasitas, dan waktu tempuh dikonfirmasi saat pemesanan.',
+        calculator: 'Rencanakan kebutuhan kapasitas dan moda pengiriman sebelum meminta penawaran freight.',
+        tracking: 'Periksa status shipment GAEKS menggunakan nomor pengiriman.',
+        news: 'Baca pembaruan terkait logistik, rute, dan kepabeanan dari GAEKS.',
+        contact: 'Hubungi tim GAEKS untuk mendiskusikan rute, kargo, dokumen, dan kebutuhan penawaran.'
+      };
+      const knowledge = detailService ? serviceContent(detailService) : undefined;
+      const detailArticle = currentPage === 'news' && activeArticleId ? getStoredArticles().find((article) => isPublishedArticle(article) && (article.id === activeArticleId || articleSlug(article) === activeArticleId)) : undefined;
+      const description = detailArticle?.excerpt || knowledge?.summary || routeDescriptions[currentPage] || seo.metaDescription;
+      document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? `${detailService.title} | GAEKS Freight` : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
       const setMeta = (selector: string, attribute: string, value: string) => {
         let element = document.querySelector(selector) as HTMLMetaElement | null;
         if (!element) {
@@ -76,12 +113,51 @@ export const App: React.FC = () => {
         }
         element.setAttribute(attribute, value);
       };
-      setMeta('meta[name="description"]', 'content', seo.metaDescription);
+      setMeta('meta[name="description"]', 'content', description);
       setMeta('meta[name="keywords"]', 'content', seo.keywords);
-      setMeta('meta[name="robots"]', 'content', seo.robotsIndex ? 'index, follow' : 'noindex, nofollow');
-      setMeta('meta[property="og:title"]', 'content', seo.ogTitle);
-      setMeta('meta[property="og:description"]', 'content', seo.ogDescription);
-      setMeta('meta[property="og:image"]', 'content', seo.ogImageUrl);
+      setMeta('meta[name="robots"]', 'content', currentPage === 'operator' || !seo.robotsIndex ? 'noindex, nofollow' : 'index, follow');
+      setMeta('meta[property="og:title"]', 'content', document.title);
+      setMeta('meta[property="og:description"]', 'content', description);
+      setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl, 'https://gaeks.com').href);
+      let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
+      if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
+      canonical.href = `https://gaeks.com${detailArticle ? articlePath(detailArticle) : window.location.pathname}`;
+      setMeta('meta[property="og:url"]', 'content', canonical.href);
+      const orgId = 'https://gaeks.com/#organization';
+      const graph: Record<string, unknown>[] = [
+        { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: 'https://gaeks.com', logo: 'https://gaeks.com/logos/gaek-symbol.png', email: branding.salesEmail, telephone: branding.whatsappDisplay },
+        { '@type': 'LocalBusiness', '@id': 'https://gaeks.com/#local-business', name: 'GAEKS Freight', url: 'https://gaeks.com', parentOrganization: { '@id': orgId }, address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' } },
+        { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
+      ];
+      if (currentPage === 'home') graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
+      if (detailService && knowledge) {
+        graph.push({ '@type': 'Service', name: detailService.title, serviceType: detailService.category, description: knowledge.summary, provider: { '@id': orgId }, areaServed: { '@type': 'Country', name: 'Indonesia' }, url: canonical.href });
+        graph.push({ '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://gaeks.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Layanan', item: 'https://gaeks.com/layanan/' },
+          { '@type': 'ListItem', position: 3, name: detailService.title, item: canonical.href }
+        ] });
+        graph.push({ '@type': 'FAQPage', mainEntity: knowledge.faq.map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
+      }
+      if (detailArticle) {
+        graph.push({ '@type': 'NewsArticle', headline: detailArticle.title, description: detailArticle.excerpt, datePublished: detailArticle.publishedDate, dateModified: detailArticle.updatedAt || detailArticle.publishedDate, image: new URL(detailArticle.imageUrl, 'https://gaeks.com').href, author: { '@type': 'Organization', name: detailArticle.author || 'GAEKS Editorial' }, publisher: { '@id': orgId }, mainEntityOfPage: canonical.href });
+        graph.push({ '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://gaeks.com/' },
+          { '@type': 'ListItem', position: 2, name: 'Berita', item: 'https://gaeks.com/berita/' },
+          { '@type': 'ListItem', position: 3, name: detailArticle.title, item: canonical.href }
+        ] });
+      }
+      if (currentPage === 'network') {
+        const routeFaq = [
+          ['Apakah waktu tempuh di halaman ini sudah pasti?', 'Belum. Waktu tempuh adalah rujukan dan perlu dikonfirmasi bersama jadwal, transit, dan ketersediaan ruang saat pemesanan.'],
+          ['Data apa yang diperlukan untuk meminta rute?', 'Siapkan titik asal dan tujuan, komoditas, berat, volume, kesiapan barang, serta target waktu tiba.'],
+          ['Kapan memilih laut atau udara?', 'Bandingkan volume, nilai barang, target waktu, penanganan, serta biaya total sampai titik penerima.']
+        ];
+        graph.push({ '@type': 'FAQPage', mainEntity: routeFaq.map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
+      }
+      let structuredData = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement | null;
+      if (!structuredData) { structuredData = document.createElement('script'); structuredData.type = 'application/ld+json'; document.head.appendChild(structuredData); }
+      structuredData.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
       let icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
       if (!icon) { icon = document.createElement('link'); icon.rel = 'icon'; document.head.appendChild(icon); }
       icon.href = branding.faviconUrl;
@@ -89,42 +165,27 @@ export const App: React.FC = () => {
     applyMetadata();
     window.addEventListener(GAEKS_UPDATE_EVENT, applyMetadata);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, applyMetadata);
-  }, []);
-
-  const getInitialPage = () => {
-    const path = window.location.pathname.replace('/', '').toLowerCase();
-    const hash = window.location.hash.replace('#', '').toLowerCase();
-    if (path === 'operator' || hash === 'operator' || hash === 'admin') {
-      return 'operator';
-    }
-    if (getServiceSlug()) return 'service';
-    if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
-      return hash;
-    }
-    if (path === 'tracking') return 'tracking';
-    return 'home';
-  };
-
-  const [currentPage, setCurrentPage] = useState<string>(getInitialPage());
-  const [selectedServiceForQuote, setSelectedServiceForQuote] = useState<string>('');
-  const [activeServiceSlug, setActiveServiceSlug] = useState<string>(getServiceSlug());
+  }, [currentPage, activeServiceSlug, activeArticleId]);
 
   useEffect(() => {
     const handleHashChange = () => {
       const fullHash = window.location.hash.replace('#', '').toLowerCase();
-      const path = window.location.pathname.replace('/', '').toLowerCase();
+      const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
       
       if (path === 'operator' || fullHash === 'operator' || fullHash === 'admin') {
         setCurrentPage('operator');
-      } else if (fullHash.startsWith('service=') || path.startsWith('/layanan/')) {
+      } else if (fullHash.startsWith('service=') || path.startsWith('layanan/')) {
         setActiveServiceSlug(getServiceSlug());
         setCurrentPage('service');
       } else if (fullHash.startsWith('news?id=')) {
         const articleId = fullHash.includes('id=') ? fullHash.substring(fullHash.indexOf('id=') + 3) : '';
         setActiveArticleId(articleId);
         setCurrentPage('news');
-      } else if (path === 'tracking' && !fullHash) {
-        setCurrentPage('tracking');
+      } else if (path.startsWith('berita/')) {
+        setActiveArticleId(path.substring('berita/'.length));
+        setCurrentPage('news');
+      } else if (!fullHash && Object.entries(pagePaths).some(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)) {
+        setCurrentPage(Object.entries(pagePaths).find(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)?.[0] || 'home');
       } else if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
         setActiveServiceSlug('');
@@ -135,15 +196,14 @@ export const App: React.FC = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    if (window.location.hash) handleHashChange();
     window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('popstate', handleHashChange);
+    return () => { window.removeEventListener('hashchange', handleHashChange); window.removeEventListener('popstate', handleHashChange); };
   }, []);
 
   const navigateTo = (page: string) => {
-    if (window.location.pathname !== '/') {
-      window.history.pushState({}, '', '/');
-    }
-    window.location.hash = page;
+    window.history.pushState({}, '', pagePaths[page] || '/');
     setActiveArticleId('');
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -156,14 +216,16 @@ export const App: React.FC = () => {
 
   const handleOpenService = (serviceId: string) => {
     setActiveServiceSlug(serviceId);
-    window.location.hash = 'service=' + serviceId;
+    window.history.pushState({}, '', servicePath(serviceId));
     setCurrentPage('service');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleOpenArticleDetail = (articleId: string) => {
     setActiveArticleId(articleId);
-    window.location.hash = 'news?id=' + articleId;
+    const article = getStoredArticles().find((item) => item.id === articleId);
+    window.history.pushState({}, '', article ? articlePath(article) : pagePaths.news);
+    setCurrentPage('news');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -234,6 +296,7 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[#f4f5f1] text-[#12363a] font-sans">
       <Toaster position="bottom-right" richColors closeButton />
+      {!isOperatorPage && <a href="#public-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-20 focus:z-[70] focus:bg-white focus:px-4 focus:py-3">Lewati navigasi</a>}
 
       {!isOperatorPage && (
         <Navbar 
@@ -253,7 +316,7 @@ export const App: React.FC = () => {
 
         {currentPage === 'services' && (
           <div className="pt-24">
-            <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
+            <ServicesCarousel standalone onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
           </div>
         )}
 
@@ -282,6 +345,7 @@ export const App: React.FC = () => {
             activeDetailId={activeArticleId} 
             onBackToList={() => navigateTo('news')}
             onSelectArticle={handleOpenArticleDetail}
+            currentLang={currentLang}
           />
         )}
 

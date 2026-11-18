@@ -444,37 +444,79 @@ function gaeks_newsletter_template(string $eyebrow, string $title, string $body,
 
 function gaeks_broadcast_article(array $article): array
 {
-    $subscribers = gaeks_subscribers();
+    $lock = @fopen(gaeks_private_dir() . '/newsletter_queue.lock', 'c');
+    if ($lock === false || !flock($lock, LOCK_EX)) {
+        if ($lock !== false) fclose($lock);
+        return ['sent' => 0, 'failed' => 1, 'queued' => 0];
+    }
+    $queuePath = gaeks_private_dir() . '/newsletter_queue.json';
+    $queue = gaeks_read_json_file($queuePath, []);
+    $ledger = gaeks_read_json_file(gaeks_private_dir() . '/newsletter_sent.json', []);
+    $version = hash('sha256', json_encode([
+        $article['title'] ?? '', $article['excerpt'] ?? '', $article['content'] ?? '',
+        $article['category'] ?? '', $article['imageUrl'] ?? '', $article['publishedDate'] ?? '',
+    ], JSON_UNESCAPED_UNICODE));
+    foreach (gaeks_subscribers() as $subscriber) {
+        if (($subscriber['status'] ?? '') !== 'active' || empty($subscriber['email']) || empty($subscriber['unsubscribeToken'])) continue;
+        $key = hash('sha256', (string) ($article['id'] ?? '') . $version . strtolower((string) $subscriber['email']));
+        if (isset($queue[$key]) || isset($ledger[$key])) continue;
+        $queue[$key] = ['article' => $article, 'email' => (string) $subscriber['email'], 'token' => (string) $subscriber['unsubscribeToken'], 'attempts' => 0, 'nextAttempt' => 0];
+    }
+    $saved = gaeks_write_json_file($queuePath, $queue);
+    flock($lock, LOCK_UN);
+    fclose($lock);
+    if (!$saved) return ['sent' => 0, 'failed' => 1, 'queued' => count($queue)];
+    $delivery = gaeks_process_newsletter_queue(10);
+    return ['sent' => $delivery['sent'], 'failed' => $delivery['failed'], 'queued' => max(0, count(gaeks_read_json_file($queuePath, [])))];
+}
+
+function gaeks_process_newsletter_queue(int $limit = 10): array
+{
+    $lock = @fopen(gaeks_private_dir() . '/newsletter_queue.lock', 'c');
+    if ($lock === false || !flock($lock, LOCK_EX | LOCK_NB)) {
+        if ($lock !== false) fclose($lock);
+        return ['sent' => 0, 'failed' => 0, 'queued' => count(gaeks_read_json_file(gaeks_private_dir() . '/newsletter_queue.json', []))];
+    }
+    $queuePath = gaeks_private_dir() . '/newsletter_queue.json';
+    $ledgerPath = gaeks_private_dir() . '/newsletter_sent.json';
+    $queue = gaeks_read_json_file($queuePath, []);
+    $ledger = gaeks_read_json_file($ledgerPath, []);
+    $active = [];
+    foreach (gaeks_subscribers() as $subscriber) {
+        if (($subscriber['status'] ?? '') === 'active') $active[strtolower((string) ($subscriber['email'] ?? ''))] = (string) ($subscriber['unsubscribeToken'] ?? '');
+    }
     $sent = 0;
     $failed = 0;
-    $title = trim((string) ($article['title'] ?? 'Pembaruan GAEKS'));
-    $excerpt = trim((string) ($article['excerpt'] ?? 'Baca pembaruan operasional terbaru dari GAEKS.'));
-    $articleId = rawurlencode((string) ($article['id'] ?? ''));
-    $articleUrl = GAEKS_SITE_URL . '/#news?id=' . $articleId;
-
-    foreach ($subscribers as $subscriber) {
-        if (($subscriber['status'] ?? '') !== 'active' || empty($subscriber['email']) || empty($subscriber['unsubscribeToken'])) {
+    $processed = 0;
+    foreach ($queue as $key => $job) {
+        if ($processed >= $limit) break;
+        $email = strtolower((string) ($job['email'] ?? ''));
+        if (!isset($active[$email]) || !hash_equals($active[$email], (string) ($job['token'] ?? ''))) {
+            unset($queue[$key]);
+            gaeks_write_json_file($queuePath, $queue);
             continue;
         }
-        $unsubscribeUrl = gaeks_token_url('unsubscribe', (string) $subscriber['unsubscribeToken']);
-        $html = gaeks_newsletter_template('Berita terbaru', $title, $excerpt, 'Baca artikel', $articleUrl, $unsubscribeUrl);
-        if (gaeks_send_html_mail((string) $subscriber['email'], $title . ' | GAEKS News', $html, $unsubscribeUrl)) {
+        if ((int) ($job['nextAttempt'] ?? 0) > time()) continue;
+        $processed++;
+        $article = $job['article'] ?? [];
+        $title = trim((string) ($article['title'] ?? 'Pembaruan GAEKS'));
+        $excerpt = trim((string) ($article['excerpt'] ?? 'Baca pembaruan terbaru dari GAEKS.'));
+        $url = function_exists('gaeks_article_url') ? gaeks_article_url($article) : GAEKS_SITE_URL . '/berita/';
+        $unsubscribe = gaeks_token_url('unsubscribe', (string) $job['token']);
+        $html = gaeks_newsletter_template('Berita terbaru', $title, $excerpt, 'Baca artikel', $url, $unsubscribe);
+        if (gaeks_send_html_mail($email, $title . ' | GAEKS News', $html, $unsubscribe)) {
+            unset($queue[$key]);
+            $ledger[$key] = gmdate('c');
+            gaeks_write_json_file($ledgerPath, $ledger);
             $sent++;
         } else {
+            $queue[$key]['attempts'] = (int) ($job['attempts'] ?? 0) + 1;
+            $queue[$key]['nextAttempt'] = time() + min(3600, 60 * (2 ** min(6, $queue[$key]['attempts'])));
             $failed++;
         }
+        gaeks_write_json_file($queuePath, $queue);
     }
-
-    $logPath = gaeks_private_dir() . '/newsletter_delivery.json';
-    $log = gaeks_read_json_file($logPath, []);
-    array_unshift($log, [
-        'articleId' => (string) ($article['id'] ?? ''),
-        'title' => $title,
-        'sent' => $sent,
-        'failed' => $failed,
-        'createdAt' => gmdate('c'),
-    ]);
-    gaeks_write_json_file($logPath, array_slice($log, 0, 100));
-
-    return ['sent' => $sent, 'failed' => $failed];
+    flock($lock, LOCK_UN);
+    fclose($lock);
+    return ['sent' => $sent, 'failed' => $failed, 'queued' => count($queue)];
 }
