@@ -68,11 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!is_array($article) || empty($article['id']) || ($article['status'] ?? 'published') !== 'published'
                 || (string) ($article['publishedDate'] ?? '') > gmdate('Y-m-d')) continue;
             $previous = $currentById[(string) $article['id']] ?? null;
-            $fields = ['title', 'excerpt', 'content', 'category', 'imageUrl', 'publishedDate'];
-            $fingerprint = static function (array $item) use ($fields): string {
-                return hash('sha256', json_encode(array_map(static fn(string $field) => $item[$field] ?? '', $fields), JSON_UNESCAPED_UNICODE));
-            };
-            if ($previous === null || ($previous['status'] ?? 'published') !== 'published' || $fingerprint($previous) !== $fingerprint($article)) {
+            if ($previous === null || ($previous['status'] ?? 'published') !== 'published' || gaeks_article_digest($previous) !== gaeks_article_digest($article)) {
                 $changedArticles[] = $article;
             }
         }

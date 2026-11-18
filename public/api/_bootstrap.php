@@ -442,6 +442,13 @@ function gaeks_newsletter_template(string $eyebrow, string $title, string $body,
         . $footer . '</td></tr></table></td></tr></table></body></html>';
 }
 
+function gaeks_article_digest(array $article): string
+{
+    unset($article['updatedAt'], $article['slug']);
+    ksort($article);
+    return hash('sha256', (string) json_encode($article, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+}
+
 function gaeks_broadcast_article(array $article): array
 {
     $lock = @fopen(gaeks_private_dir() . '/newsletter_queue.lock', 'c');
@@ -452,10 +459,7 @@ function gaeks_broadcast_article(array $article): array
     $queuePath = gaeks_private_dir() . '/newsletter_queue.json';
     $queue = gaeks_read_json_file($queuePath, []);
     $ledger = gaeks_read_json_file(gaeks_private_dir() . '/newsletter_sent.json', []);
-    $version = hash('sha256', json_encode([
-        $article['title'] ?? '', $article['excerpt'] ?? '', $article['content'] ?? '',
-        $article['category'] ?? '', $article['imageUrl'] ?? '', $article['publishedDate'] ?? '',
-    ], JSON_UNESCAPED_UNICODE));
+    $version = gaeks_article_digest($article);
     foreach (gaeks_subscribers() as $subscriber) {
         if (($subscriber['status'] ?? '') !== 'active' || empty($subscriber['email']) || empty($subscriber['unsubscribeToken'])) continue;
         $key = hash('sha256', (string) ($article['id'] ?? '') . $version . strtolower((string) $subscriber['email']));
