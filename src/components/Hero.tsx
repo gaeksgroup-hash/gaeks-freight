@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Calculator, PackageSearch, Route } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredHero, getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
@@ -40,11 +40,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
   const [heroSettings, setHeroSettings] = useState(getStoredHero());
   const [loadVideo, setLoadVideo] = useState(false);
   const [videoVisible, setVideoVisible] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
   const baseText = copy[currentLang];
   const text = currentLang === 'id' ? { ...baseText, eyebrow: heroSettings.eyebrow, title: `${heroSettings.titlePrefix}${heroSettings.titleHighlight}${heroSettings.titleSuffix}`, body: heroSettings.caption, primary: heroSettings.primaryLabel, secondary: heroSettings.secondaryLabel } : baseText;
   const firstService = getStoredServices()[0];
   const posterUrl = heroSettings.imageUrl || firstService?.imageUrl;
   const posterSrcSet = posterUrl?.includes('images.unsplash.com') ? [720, 1280, 1920].map((width) => `${imageVariant(posterUrl, width)} ${width}w`).join(', ') : undefined;
+  const mobileVideoUrl = heroSettings.videoUrl === '/uploads/gaeks-hero-cargo-optimized.webm' ? '/uploads/gaeks-hero-cargo-mobile.webm' : null;
+  const videoType = /\.mp4(?:\?|$)/i.test(heroSettings.videoUrl) ? 'video/mp4' : 'video/webm';
 
   useEffect(() => {
     const reload = () => { setHeroSettings(getStoredHero()); setLoadVideo(false); setVideoVisible(false); };
@@ -54,28 +57,30 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
 
   useEffect(() => {
     if (heroSettings.bgType !== 'video' || !heroSettings.videoUrl || heroSettings.videoLoadMode === 'poster-only' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    if (heroSettings.videoLoadMode === 'adaptive' && window.matchMedia('(max-width: 1023px)').matches) return;
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-    if (connection?.saveData || connection?.effectiveType === 'slow-2g' || connection?.effectiveType === '2g' || connection?.effectiveType === '3g') return;
-    let idleId = 0;
-    let fallbackTimer = 0;
-    let started = false;
-    const startVideo = () => { if (!started) { started = true; setLoadVideo(true); } };
-    const timer = setTimeout(() => {
-      const idleWindow = window as Window & { requestIdleCallback?: (callback: IdleRequestCallback, options?: IdleRequestOptions) => number };
-      if (typeof idleWindow.requestIdleCallback === 'function') {
-        idleId = idleWindow.requestIdleCallback(startVideo, { timeout: 2000 });
-        fallbackTimer = setTimeout(startVideo, 2200);
-      } else startVideo();
-    }, Math.max(0, Math.min(10000, Number(heroSettings.videoLoadDelayMs) || 0)));
-    return () => { if (idleId) window.cancelIdleCallback(idleId); window.clearTimeout(timer); if (fallbackTimer) window.clearTimeout(fallbackTimer); };
-  }, [heroSettings.bgType, heroSettings.videoLoadDelayMs, heroSettings.videoLoadMode, heroSettings.videoUrl]);
+    if (connection?.saveData) return;
+    if (heroSettings.videoLoadMode === 'adaptive' && ['slow-2g', '2g', '3g'].includes(connection?.effectiveType || '')) return;
+    const frame = window.requestAnimationFrame(() => setLoadVideo(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [heroSettings.bgType, heroSettings.videoLoadMode, heroSettings.videoUrl]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!loadVideo || !video) return;
+    const syncPlayback = () => {
+      if (document.hidden) video.pause();
+      else void video.play().catch(() => setVideoVisible(false));
+    };
+    syncPlayback();
+    document.addEventListener('visibilitychange', syncPlayback);
+    return () => document.removeEventListener('visibilitychange', syncPlayback);
+  }, [loadVideo, heroSettings.videoUrl]);
 
   return (
     <section id="home" aria-labelledby="hero-title" className="border-b border-slate-200 bg-[#062d32] pt-16 text-white">
       <div className="relative isolate overflow-hidden">
-        {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" className="absolute inset-0 -z-30 h-full w-full object-cover" />}
-        {heroSettings.bgType === 'video' && loadVideo && heroSettings.videoUrl && <video key={heroSettings.videoUrl} className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${videoVisible ? 'opacity-100' : 'opacity-0'}`} autoPlay muted loop playsInline preload="none" poster={posterUrl} aria-hidden="true" onCanPlay={() => setVideoVisible(true)}><source src={heroSettings.videoUrl} /></video>}
+        {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" className={`absolute inset-0 -z-30 h-full w-full object-cover ${heroSettings.bgType === 'video' ? `hero-poster-motion ${videoVisible ? 'hero-poster-paused' : ''}` : ''}`} />}
+        {heroSettings.bgType === 'video' && loadVideo && heroSettings.videoUrl && <video ref={videoRef} key={heroSettings.videoUrl} className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${videoVisible ? 'opacity-100' : 'opacity-0'}`} autoPlay muted loop playsInline preload="auto" poster={posterUrl} aria-hidden="true" onPlaying={() => setVideoVisible(true)} onError={() => setVideoVisible(false)}>{mobileVideoUrl && <source src={mobileVideoUrl} type="video/webm" media="(max-width: 767px)" />}<source src={heroSettings.videoUrl} type={videoType} /></video>}
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.96)_0%,rgba(3,29,33,.82)_55%,rgba(3,29,33,.58)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(3,29,33,.93)_0%,rgba(3,29,33,.78)_58%,rgba(3,29,33,.9)_100%)]" />
         <div className="page-shell grid min-h-[600px] min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-16">
           <div className="min-w-0 flex flex-col justify-center py-14 sm:py-20 lg:py-24">

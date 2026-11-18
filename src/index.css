@@ -126,6 +126,13 @@ button, summary { cursor: pointer; }
 details > summary { list-style: none; }
 details > summary::-webkit-details-marker { display: none; }
 
+.hero-poster-motion { animation: hero-poster-drift 9s ease-in-out infinite alternate; }
+.hero-poster-paused { animation-play-state: paused; }
+@keyframes hero-poster-drift {
+  from { transform: scale(1.04) translateX(-.6%); }
+  to { transform: scale(1.08) translateX(.6%); }
+}
+
 .hero-track-cta {
   position: relative;
   isolation: isolate;
