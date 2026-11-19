@@ -285,7 +285,7 @@ export const App: React.FC = () => {
   };
 
   useEffect(() => {
-    if (isOperatorPage || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (isOperatorPage || typeof IntersectionObserver === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const root = document.getElementById('public-content');
     if (!root) return;
     const observer = new IntersectionObserver((entries) => {
@@ -296,7 +296,7 @@ export const App: React.FC = () => {
         }
       });
     }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
-    const register = () => root.querySelectorAll('section:not(.scroll-reveal)').forEach((section) => {
+    const register = () => root.querySelectorAll('section:not(.scroll-reveal):not([data-reveal="custom"])').forEach((section) => {
       section.classList.add('scroll-reveal');
       if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
         section.classList.add('scroll-reveal-visible');

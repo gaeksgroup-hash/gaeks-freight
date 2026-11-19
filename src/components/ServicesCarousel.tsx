@@ -183,8 +183,8 @@ export const ServicesCarousel: React.FC<{
             <p className="section-label">Layanan</p>
             {standalone
               ? <h1 id="services-title" className="section-title">Pilih bagian perjalanan kargo yang perlu kami tangani.</h1>
-              : <h2 id="services-title" className="section-title">Pilih bagian perjalanan kargo yang perlu kami tangani.</h2>}
-            <p className="section-copy">Setiap layanan diringkas dalam satu baris. Buka detailnya hanya saat dibutuhkan.</p>
+              : <h2 id="services-title" className="section-title">Layanan freight forwarding dan kepabeanan.</h2>}
+            <p className="section-copy">{standalone ? 'Setiap layanan diringkas dalam satu baris. Buka detailnya hanya saat dibutuhkan.' : 'Pengiriman laut, udara, dan darat, serta dukungan kepabeanan dan pergudangan sesuai kebutuhan kargo.'}</p>
             <p className="mt-8 text-sm font-semibold text-slate-500">{servicesList.length} layanan tersedia</p>
           </header>
 

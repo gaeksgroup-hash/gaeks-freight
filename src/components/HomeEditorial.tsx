@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, ClipboardCheck, MessageSquare, Package, CheckCircle2 } from 'lucide-react';
 import { getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
 import { GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
@@ -12,11 +12,11 @@ interface HomeEditorialProps {
 }
 
 const steps = [
-  ['01', 'Pahami kebutuhan', 'Komoditas, volume, Incoterms, asal, dan tujuan dipetakan sebelum moda dipilih.'],
-  ['02', 'Periksa kepatuhan', 'Dokumen, HS code, pembatasan, dan kebutuhan PPJK ditinjau sebelum pengapalan.'],
-  ['03', 'Atur pergerakan', 'Booking, konsolidasi, trucking, dan milestone dikelola dalam satu alur.'],
-  ['04', 'Selesaikan serah terima', 'Status, dokumen, dan tindakan berikutnya diteruskan saat kargo tiba.']
-];
+  { number: '01', title: 'Pahami Kebutuhan', description: 'Komoditas, volume, Incoterms, asal, dan tujuan ditinjau untuk menentukan kebutuhan pengiriman.', Icon: MessageSquare },
+  { number: '02', title: 'Periksa Kepatuhan', description: 'Dokumen, HS code, dan ketentuan kepabeanan diperiksa sesuai kebutuhan kargo.', Icon: ClipboardCheck },
+  { number: '03', title: 'Atur Pergerakan', description: 'Koordinasi booking, konsolidasi, dan transportasi dilakukan sesuai rencana pengiriman.', Icon: Package },
+  { number: '04', title: 'Selesaikan Serah Terima', description: 'Status pengiriman dan dokumen terkait dikoordinasikan hingga proses serah terima.', Icon: CheckCircle2 }
+] as const;
 
 const localize = (article: ArticleItem, language: Language) => ({
   title: language === 'en' ? article.title_en || article.title : language === 'zh' ? article.title_zh || article.title : article.title,
@@ -26,6 +26,38 @@ const localize = (article: ArticleItem, language: Language) => ({
 export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id', onNavigate, onSelectArticle }) => {
   const latestArticles = () => getStoredArticles().filter(isPublishedArticle).sort((a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime()).slice(0, 3);
   const [articles, setArticles] = React.useState(latestArticles);
+  const [activeStep, setActiveStep] = React.useState<string | null>(null);
+  const [reveal, setReveal] = React.useState<'static' | 'pending' | 'visible'>('static');
+  const processRef = React.useRef<HTMLDivElement>(null);
+  const processId = React.useId();
+
+  React.useEffect(() => {
+    const element = processRef.current;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    // Content is visible by default, including when observation is unavailable.
+    if (!element || motion.matches || typeof IntersectionObserver === 'undefined') return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if (entries.some((entry) => entry.isIntersecting)) {
+        setReveal('visible');
+        observer.disconnect();
+      }
+    }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+
+    setReveal('pending');
+    observer.observe(element);
+    const onMotionChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        setReveal('static');
+        observer.disconnect();
+      }
+    };
+    motion.addEventListener('change', onMotionChange);
+    return () => {
+      observer.disconnect();
+      motion.removeEventListener('change', onMotionChange);
+    };
+  }, []);
 
   React.useEffect(() => {
     const reload = () => setArticles(latestArticles());
@@ -34,29 +66,44 @@ export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id'
   }, []);
 
   return (
-    <section aria-labelledby="process-title" className="section-block bg-[#f4f5f1]">
+    <section aria-labelledby="process-title" data-reveal="custom" className="section-block bg-[#f4f5f1]">
       <div className="page-shell grid min-w-0 grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-2 lg:gap-20">
-        <div>
-          <p className="section-label">Cara kerja</p>
-          <h2 id="process-title" className="section-title">Empat tahap, satu jalur koordinasi.</h2>
-          <div className="mt-8 border-b border-slate-300">
-            {steps.map(([number, title, description]) => (
-              <details key={number} className="group border-t border-slate-300">
-                <summary className="flex min-h-[70px] items-center gap-4 py-3">
-                  <span className="font-mono text-xs text-cyan-700">{number}</span>
-                  <strong className="flex-1 text-sm text-[#12363a]">{title}</strong>
-                  <ChevronDown className="h-4 w-4 text-slate-400 transition-transform group-open:rotate-180" />
-                </summary>
-                <p className="pb-6 pl-9 text-sm leading-6 text-slate-600">{description}</p>
-              </details>
-            ))}
-          </div>
-          <button type="button" onClick={() => onNavigate('contact')} className="button-primary mt-7">Mulai konsultasi<ArrowRight className="h-4 w-4" /></button>
+        <div ref={processRef} className="shipping-process min-w-0" data-reveal={reveal} onFocusCapture={() => setReveal((current) => current === 'pending' ? 'visible' : current)}>
+          <header className="shipping-process-heading">
+            <p className="section-label">ALUR PENGIRIMAN</p>
+            <h2 id="process-title" className="section-title">Alur Pengiriman Bersama GAEKS</h2>
+            <p className="section-copy max-w-lg">Dari konsultasi kebutuhan logistik hingga barang tiba di tujuan, setiap tahapan dikoordinasikan oleh tim GAEKS Freight.</p>
+          </header>
+          <ol className="shipping-timeline" aria-label="Tahapan pengiriman">
+            {steps.map(({ number, title, description, Icon }, index) => {
+              const expanded = activeStep === number;
+              const triggerId = `${processId}-trigger-${number}`;
+              const panelId = `${processId}-panel-${number}`;
+              return (
+                <li key={number} className="shipping-step" data-active={expanded} style={{ '--step-index': index } as React.CSSProperties}>
+                  <span className="shipping-step-number" aria-hidden="true">{number}</span>
+                  <div className="shipping-step-card">
+                    <h3>
+                      <button id={triggerId} type="button" className="shipping-step-trigger" aria-expanded={expanded} aria-controls={panelId} onClick={() => setActiveStep(expanded ? null : number)}>
+                        <Icon className="shipping-step-icon" aria-hidden="true" />
+                        <span className="min-w-0 flex-1"><span className="sr-only">{number} — </span>{title}</span>
+                        <ChevronDown className="shipping-step-chevron" aria-hidden="true" />
+                      </button>
+                    </h3>
+                    <div id={panelId} role="region" aria-labelledby={triggerId} aria-hidden={!expanded} className="shipping-step-panel">
+                      <div className="shipping-step-panel-inner"><p>{description}</p></div>
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+          <button type="button" onClick={() => onNavigate('contact')} className="button-primary mt-7">Mulai konsultasi<ArrowRight className="h-4 w-4" aria-hidden="true" /></button>
         </div>
 
         <div>
           <p className="section-label">Pembaruan</p>
-          <h2 className="section-title">Catatan untuk keputusan pengiriman.</h2>
+          <h2 className="section-title">Berita dan informasi logistik.</h2>
           <div className="mt-8 border-b border-slate-300">
             {articles.map((article) => {
               const item = localize(article, currentLang);
