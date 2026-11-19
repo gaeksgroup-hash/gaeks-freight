@@ -136,11 +136,29 @@ $faqHtml = '';
 foreach ($page['faqs'] as [$question, $answer]) {
     $faqHtml .= '<h3>' . $escape($question) . '</h3><p>' . $escape($answer) . '</p>';
 }
-$content = '<main><article><h1>' . $escape($title) . '</h1><p>' . $escape($intro) . '</p>'
-    . '<h2>Informasi untuk meminta penawaran</h2><ul>' . $list . '</ul>'
-    . '<h2>Pertanyaan umum</h2>' . $faqHtml
-    . '<p>Isi formulir saat halaman selesai dimuat. Pesan WhatsApp baru terkirim setelah Anda menekan Send.</p>'
-    . '</article></main>';
+$presentation = [
+    'freight-laut-fcl' => ['PENGIRIMAN PETI KEMAS PENUH', 'Satu brief untuk membahas kebutuhan kontainer, rute, dan titik serah.'],
+    'freight-udara' => ['PENGIRIMAN KARGO UDARA', 'Data berat dan dimensi yang jelas membantu peninjauan kargo udara.'],
+    'ppjk-customs-clearance' => ['PENGURUSAN KEPABEANAN', 'Mulai dari komoditas dan dokumen, lalu tentukan proses pabean yang relevan.'],
+    'undername-impor-pi' => ['IMPORTASI DAN PERIZINAN', 'Jelaskan barang dan pihak importir sebelum menentukan langkah perizinan.'],
+];
+[$eyebrow, $brief] = $presentation[$slug];
+$heroImage = $plain($managed['imageUrl'] ?? '') ?: '/uploads/gaeks-hero-cargo-poster.webp';
+$contactService = ['freight-laut-fcl' => 'fcl', 'freight-udara' => 'air', 'ppjk-customs-clearance' => 'ppjk', 'undername-impor-pi' => 'undername'][$slug];
+$content = '<main class="min-h-screen bg-[#f3f4ef] pt-16 text-[#12363a]">'
+    . '<section class="relative isolate overflow-hidden bg-[#062b30] text-white"><div class="absolute inset-0 -z-10 overflow-hidden">'
+    . '<img src="' . $escape($heroImage) . '" alt="" class="h-full w-full object-cover opacity-30">'
+    . '<div class="absolute inset-0 bg-gradient-to-r from-[#062b30] via-[#062b30]/90 to-[#062b30]/55"></div></div>'
+    . '<div class="page-shell relative py-9 pb-16 sm:py-14 lg:py-20"><a href="/layanan/" class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-cyan-200">← Semua layanan</a>'
+    . '<div class="mt-8 grid items-end gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,.55fr)] lg:gap-16"><div>'
+    . '<p class="inline-flex border-l-2 border-cyan-300 pl-3 text-xs font-bold uppercase tracking-[.24em] text-cyan-200">' . $escape($eyebrow) . '</p>'
+    . '<h1 class="mt-5 max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-[-.055em] sm:text-6xl lg:text-7xl">' . $escape($title) . '</h1>'
+    . '<p class="mt-6 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg sm:leading-8">' . $escape($intro) . '</p>'
+    . '<a href="/kontak/?service=' . $contactService . '" class="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-cyan-300 px-6 text-sm font-bold text-[#062b30]">Minta penawaran via WhatsApp →</a></div>'
+    . '<aside class="border-t border-white/40 bg-[#0a383d]/80 p-6 backdrop-blur-sm sm:p-7 lg:border-l lg:border-t-0"><p class="text-xs font-bold uppercase tracking-[.2em] text-cyan-200">Sebelum meminta penawaran</p>'
+    . '<p class="mt-4 text-xl font-semibold leading-7">' . $escape($brief) . '</p></aside></div></div></section>'
+    . '<section class="page-shell py-14 sm:py-20"><h2 class="text-3xl font-bold">Ruang lingkup pembicaraan</h2><ul class="mt-7 border-t border-slate-300">' . $list . '</ul></section>'
+    . '<section class="page-shell pb-20"><h2 class="text-3xl font-bold">Pertanyaan umum</h2>' . $faqHtml . '</section></main>';
 $html = preg_replace_callback('~<div id="root">.*?</div>~s', static fn () => '<div id="root">' . $content . '</div>', $html, 1) ?? $html;
 
 header('Content-Type: text/html; charset=UTF-8');

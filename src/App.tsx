@@ -10,7 +10,7 @@ import { HomeClients, HomeNetworks } from './components/HomePartners';
 import { Language } from './types/freight';
 import { getStoredBranding, getStoredSeo, getStoredServices, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
-import { pagePaths, servicePath } from './utils/routes';
+import { matchesServiceRoute, pagePaths, servicePath, serviceSlug } from './utils/routes';
 import { isPublishedArticle, serviceContent } from './utils/serviceContent';
 import { getStoredArticles } from './utils/newsStorage';
 import { articlePath, articleSlug } from './utils/articleRoutes';
@@ -91,7 +91,7 @@ export const App: React.FC = () => {
     const applyMetadata = () => {
       const seo = getStoredSeo();
       const branding = getStoredBranding();
-      const detailService = currentPage === 'service' ? getStoredServices().find((item) => servicePath(item.id).includes(`/${activeServiceSlug}/`)) : undefined;
+      const detailService = currentPage === 'service' ? getStoredServices().find((item) => matchesServiceRoute(item.id, activeServiceSlug)) : undefined;
       const routeTitles: Record<string, string> = { services: 'Layanan Freight & Logistik', network: 'Rute Pengiriman', calculator: 'Kalkulator Kargo', tracking: 'Lacak Pengiriman', news: 'Berita Logistik', contact: 'Kontak & Permintaan Penawaran' };
       const routeDescriptions: Record<string, string> = {
         services: 'Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.',
@@ -188,6 +188,7 @@ export const App: React.FC = () => {
         setActiveArticleId(path.substring('berita/'.length));
         setCurrentPage('news');
       } else if (!fullHash && Object.entries(pagePaths).some(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)) {
+        setActiveServiceSlug('');
         setCurrentPage(Object.entries(pagePaths).find(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)?.[0] || 'home');
       } else if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
@@ -220,6 +221,7 @@ export const App: React.FC = () => {
     }
     window.history.pushState({}, '', target.pathname + target.search);
     setActiveArticleId('');
+    setActiveServiceSlug('');
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -230,7 +232,7 @@ export const App: React.FC = () => {
   };
 
   const handleOpenService = (serviceId: string) => {
-    setActiveServiceSlug(serviceId);
+    setActiveServiceSlug(serviceSlug(serviceId));
     window.history.pushState({}, '', servicePath(serviceId));
     setCurrentPage('service');
     window.scrollTo({ top: 0, behavior: 'smooth' });

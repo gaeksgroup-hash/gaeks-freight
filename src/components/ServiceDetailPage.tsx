@@ -6,6 +6,7 @@ import { DETAILED_SERVICES } from './ServicesCarousel';
 import { ServiceTitle } from './ServiceTitle';
 import { serviceContent } from '../utils/serviceContent';
 import { AdLandingPage } from './AdLandingPage';
+import { matchesServiceRoute } from '../utils/routes';
 
 interface ServiceDetailPageProps {
   slug: string;
@@ -14,12 +15,6 @@ interface ServiceDetailPageProps {
   onQuote: (serviceName: string) => void;
 }
 
-const aliases: Record<string, string> = {
-  ppjk: 'ppjk-customs-clearance', 'gudang-pbm': 'pergudangan-stevedoring',
-  'domestic-truck': 'trucking', 'project-cargo': 'project-cargo-heavy-lift',
-  lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara', 'undername-impor': 'undername-impor-pi'
-};
-const slugFor = (service: ServiceDetail) => aliases[service.id] || service.id;
 const localize = (service: ServiceDetail, language: Language) => ({
   title: language === 'en' ? service.title_en || service.title : language === 'zh' ? service.title_zh || service.title : service.title,
   category: language === 'en' ? service.category_en || service.category : language === 'zh' ? service.category_zh || service.category : service.category,
@@ -34,7 +29,8 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
-  const service = services.find((item) => slugFor(item) === slug) || DETAILED_SERVICES.find((item) => slugFor(item) === slug) || DETAILED_SERVICES[0];
+  const service = services.find((item) => matchesServiceRoute(item.id, slug)) || DETAILED_SERVICES.find((item) => matchesServiceRoute(item.id, slug));
+  if (!service) return <main className="min-h-screen bg-[#f4f5f1] px-6 pt-32 text-center text-[#12363a]"><h1 className="font-display text-3xl font-bold">Layanan tidak ditemukan</h1><p className="mt-3 text-slate-600">Periksa alamat halaman atau pilih layanan dari daftar.</p><button type="button" onClick={onBack} className="button-primary mt-7">Lihat semua layanan</button></main>;
   const content = localize(service, currentLang);
   const knowledge = serviceContent(service);
   const adType = service.id === 'fcl' ? 'fcl' : service.id === 'air-shipment' ? 'air' : service.id === 'ppjk' ? 'ppjk' : service.id === 'undername-impor' ? 'undername' : null;
@@ -44,15 +40,15 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
     <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
       <section className="page-shell py-10 sm:py-14">
         <button type="button" onClick={onBack} className="button-link"><ArrowLeft className="h-4 w-4" />Semua layanan</button>
-        <div className="mt-7 grid overflow-hidden border border-slate-200 bg-white lg:grid-cols-2">
-          <div className="p-6 sm:p-10 lg:p-12">
+        <div className="mt-7 grid min-w-0 grid-cols-[minmax(0,1fr)] overflow-hidden border border-slate-200 bg-white lg:grid-cols-2">
+          <div className="min-w-0 p-6 sm:p-10 lg:p-12">
             <p className="section-label">{content.category}</p>
             <h1 className="mt-4 font-display text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl"><ServiceTitle title={content.title} /></h1>
             <p className="mt-5 text-lg font-semibold text-cyan-800">{content.tagline}</p>
             <p className="mt-5 text-base leading-7 text-slate-600">{currentLang === 'id' ? knowledge.summary : content.description}</p>
             <button type="button" onClick={() => onQuote(content.title)} className="button-primary mt-8">Minta estimasi<ArrowRight className="h-4 w-4" /></button>
           </div>
-          <img src={service.imageUrl} alt="" width="960" height="640" loading="eager" decoding="async" className="min-h-[280px] h-full w-full object-cover" />
+          <img src={service.imageUrl} alt="" width="960" height="640" loading="eager" decoding="async" onError={(event) => { const image = event.currentTarget; image.onerror = null; image.src = '/uploads/gaeks-hero-cargo-poster.webp'; }} className="min-h-[280px] h-full w-full object-cover" />
         </div>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1.2fr_.8fr]">

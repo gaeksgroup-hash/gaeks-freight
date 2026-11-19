@@ -24,6 +24,12 @@ const slugs = {
   'domestic-truck': 'trucking', 'project-cargo': 'project-cargo-heavy-lift',
   lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara', 'undername-impor': 'undername-impor-pi'
 };
+const adPresentations = {
+  fcl: ['PENGIRIMAN PETI KEMAS PENUH', 'Satu brief untuk membahas kebutuhan kontainer, rute, dan titik serah.', 'fcl'],
+  'air-shipment': ['PENGIRIMAN KARGO UDARA', 'Data berat dan dimensi yang jelas membantu peninjauan kargo udara.', 'air'],
+  ppjk: ['PENGURUSAN KEPABEANAN', 'Mulai dari komoditas dan dokumen, lalu tentukan proses pabean yang relevan.', 'ppjk'],
+  'undername-impor': ['IMPORTASI DAN PERIZINAN', 'Jelaskan barang dan pihak importir sebelum menentukan langkah perizinan.', 'undername']
+};
 const orgId = `${baseUrl}/#organization`;
 const organization = { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: baseUrl, logo: `${baseUrl}/logos/gaek-symbol.png`, email: content.branding.salesEmail, telephone: content.branding.whatsappDisplay };
 const localBusiness = { '@type': 'LocalBusiness', '@id': `${baseUrl}/#local-business`, name: 'GAEKS Freight', url: baseUrl, parentOrganization: { '@id': orgId }, address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' }, areaServed: { '@type': 'Country', name: 'Indonesia' } };
@@ -44,7 +50,7 @@ const faqSchema = (faq) => ({ '@type': 'FAQPage', mainEntity: faq.map(([name, an
 for (const service of content.services) {
   const path = `/layanan/${slugs[service.id] || service.id}/`;
   const info = serviceInfo(service);
-  routes.push({ path, title: `${service.title} | GAEKS Freight`, description: info.summary, heading: service.title, body: info.summary, service, info });
+  routes.push({ path, title: `${service.landingTitle || service.title} | GAEKS Freight`, description: service.landingDescription || info.summary, heading: service.landingTitle || service.title, body: service.landingDescription || info.summary, service, info });
 }
 
 for (const route of routes) {
@@ -68,7 +74,13 @@ for (const route of routes) {
   const table = route.info?.compare.length ? `<section><h2>Perbandingan pilihan</h2><table><thead><tr><th>Pilihan</th><th>Paling sesuai untuk</th><th>Data awal</th></tr></thead><tbody>${route.info.compare.map(([name, use, data]) => `<tr><th>${escapeHtml(name)}</th><td>${escapeHtml(use)}</td><td>${escapeHtml(data)}</td></tr>`).join('')}</tbody></table></section>` : '';
   const faq = route.info?.faq || (route.path === '/rute-pengiriman/' ? routeFaq : []);
   const faqHtml = faq.length ? `<section><h2>Pertanyaan teknis</h2>${faq.map(([q, a]) => `<article><h3>${escapeHtml(q)}</h3><p>${escapeHtml(a)}</p></article>`).join('')}</section>` : '';
-  const fallback = `<div id="root"><main style="max-width:1120px;margin:0 auto;padding:8rem 1.5rem 4rem;color:#12363a;font-family:Inter,ui-sans-serif,system-ui,sans-serif"><h1 style="font-size:clamp(2.25rem,5vw,4rem);line-height:1.05;max-width:900px">${escapeHtml(route.heading)}</h1><p style="font-size:1.125rem;line-height:1.7;max-width:720px">${escapeHtml(route.body)}</p>${serviceLinks}${table}${faqHtml}<p><a href="/kontak/">Minta penawaran</a></p></main></div>`;
+  const ad = route.service && adPresentations[route.service.id];
+  const initial = ad
+    ? `<main class="min-h-screen bg-[#f3f4ef] pt-16 text-[#12363a]"><section class="relative isolate overflow-hidden bg-[#062b30] text-white"><div class="absolute inset-0 -z-10 overflow-hidden"><img src="${escapeHtml(route.service.imageUrl)}" alt="" class="h-full w-full object-cover opacity-30"><div class="absolute inset-0 bg-gradient-to-r from-[#062b30] via-[#062b30]/90 to-[#062b30]/55"></div></div><div class="page-shell relative py-9 pb-16 sm:py-14 lg:py-20"><a href="/layanan/" class="inline-flex min-h-11 items-center gap-2 text-sm font-semibold text-cyan-200">← Semua layanan</a><div class="mt-8 grid items-end gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(280px,.55fr)] lg:gap-16"><div><p class="inline-flex border-l-2 border-cyan-300 pl-3 text-xs font-bold uppercase tracking-[.24em] text-cyan-200">${escapeHtml(ad[0])}</p><h1 class="mt-5 max-w-4xl font-display text-5xl font-bold leading-[1.05] tracking-[-.055em] sm:text-6xl lg:text-7xl">${escapeHtml(route.heading)}</h1><p class="mt-6 max-w-2xl text-base leading-7 text-slate-200 sm:text-lg sm:leading-8">${escapeHtml(route.body)}</p><a href="/kontak/?service=${ad[2]}" class="mt-8 inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-cyan-300 px-6 text-sm font-bold text-[#062b30]">Minta penawaran via WhatsApp →</a></div><aside class="border-t border-white/40 bg-[#0a383d]/80 p-6 backdrop-blur-sm sm:p-7 lg:border-l lg:border-t-0"><p class="text-xs font-bold uppercase tracking-[.2em] text-cyan-200">Sebelum meminta penawaran</p><p class="mt-4 text-xl font-semibold leading-7">${escapeHtml(ad[1])}</p></aside></div></div></section></main>`
+    : route.service
+      ? `<div class="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]"><section class="page-shell py-10 sm:py-14"><a href="/layanan/" class="button-link">← Semua layanan</a><div class="mt-7 grid min-w-0 grid-cols-[minmax(0,1fr)] overflow-hidden border border-slate-200 bg-white lg:grid-cols-2"><div class="min-w-0 p-6 sm:p-10 lg:p-12"><p class="section-label">${escapeHtml(route.service.category)}</p><h1 class="mt-4 font-display text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl">${escapeHtml(route.heading)}</h1><p class="mt-5 text-lg font-semibold text-cyan-800">${escapeHtml(route.service.tagline)}</p><p class="mt-5 text-base leading-7 text-slate-600">${escapeHtml(route.body)}</p><a class="button-primary mt-8" href="/kontak/">Minta estimasi →</a></div><img src="${escapeHtml(route.service.imageUrl)}" alt="" width="960" height="640" class="min-h-[280px] h-full w-full object-cover"></div>${table}${faqHtml}</section></div>`
+      : `<main style="max-width:1120px;margin:0 auto;padding:8rem 1.5rem 4rem;color:#12363a;font-family:Inter,ui-sans-serif,system-ui,sans-serif"><h1 style="font-size:clamp(2.25rem,5vw,4rem);line-height:1.05;max-width:900px">${escapeHtml(route.heading)}</h1><p style="font-size:1.125rem;line-height:1.7;max-width:720px">${escapeHtml(route.body)}</p>${serviceLinks}${table}${faqHtml}<p><a href="/kontak/">Minta penawaran</a></p></main>`;
+  const fallback = `<div id="root">${initial}</div>`;
   html = html.replace('<div id="root"></div>', fallback);
   const dir = join('dist', route.path);
   await mkdir(dir, { recursive: true });

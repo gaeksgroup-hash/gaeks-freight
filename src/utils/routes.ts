@@ -9,4 +9,6 @@ export const serviceSlugs: Record<string, string> = {
   lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara', 'undername-impor': 'undername-impor-pi'
 };
 
-export const servicePath = (id: string) => `/layanan/${serviceSlugs[id] || id}/`;
+export const serviceSlug = (id: string) => serviceSlugs[id] || id;
+export const servicePath = (id: string) => `/layanan/${serviceSlug(id)}/`;
+export const matchesServiceRoute = (id: string, route: string) => id === route || serviceSlug(id) === route;

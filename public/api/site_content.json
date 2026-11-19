@@ -76,7 +76,9 @@
                     "Apakah waktu penyelesaian dapat dijamin?",
                     "Waktu proses bergantung pada kelengkapan dokumen, ketentuan komoditas, respons sistem, dan pemeriksaan otoritas."
                 ]
-            ]
+            ],
+            "landingTitle": "PPJK / Customs Clearance",
+            "landingDescription": "Konsultasikan dokumen kepabeanan impor atau ekspor, klasifikasi HS, serta persyaratan yang mungkin berlaku untuk komoditas Anda. Kebutuhan PI atau Lartas diperiksa sesuai kasus."
         },
         {
             "id": "gudang-pbm",
@@ -326,7 +328,9 @@
                     "Data apa yang dibutuhkan untuk penawaran?",
                     "Berikan asal, tujuan, jenis barang, volume, berat, tanggal siap barang, dan Incoterms bila sudah disepakati."
                 ]
-            ]
+            ],
+            "landingTitle": "Freight Laut FCL",
+            "landingDescription": "Diskusikan rute impor atau ekspor peti kemas penuh, jenis kontainer, komoditas, dan kesiapan muat. Tim meninjau pilihan pengiriman berdasarkan detail Anda."
         },
         {
             "id": "air-shipment",
@@ -376,7 +380,9 @@
                     "Kapan jadwal penerbangan dapat dikonfirmasi?",
                     "Jadwal dan ruang dikonfirmasi setelah data barang, dokumen, serta kesiapan pengiriman diperiksa."
                 ]
-            ]
+            ],
+            "landingTitle": "Air Freight",
+            "landingDescription": "Konsultasikan pengiriman kargo udara dengan asal, tujuan, berat, dimensi, dan komoditas. Pilihan layanan dan jadwal ditinjau setelah data awal diterima."
         },
         {
             "id": "undername-impor",

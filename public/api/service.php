@@ -59,18 +59,32 @@ $head = '<meta name="description" content="' . $escape($summary) . '"><link rel=
     . '<meta property="og:title" content="' . $escape($title) . '"><meta property="og:description" content="' . $escape($summary) . '">'
     . '<script type="application/ld+json">' . str_replace('<', '\\u003c', (string) json_encode(['@context' => 'https://schema.org', '@graph' => $graph], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)) . '</script>';
 $template = str_replace('</head>', $head . "\n</head>", $template);
-$body = '<main style="max-width:960px;margin:0 auto;padding:8rem 1.5rem 4rem;color:#12363a;font-family:Arial,sans-serif"><h1>' . $escape($title) . '</h1><p>' . $escape($summary) . '</p>';
+$body = '<div class="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]"><section class="page-shell py-10 sm:py-14">'
+    . '<a href="/layanan/" class="button-link">← Semua layanan</a>'
+    . '<div class="mt-7 grid min-w-0 grid-cols-[minmax(0,1fr)] overflow-hidden border border-slate-200 bg-white lg:grid-cols-2"><div class="min-w-0 p-6 sm:p-10 lg:p-12">'
+    . '<p class="section-label">' . $escape($service['category'] ?? '') . '</p>'
+    . '<h1 class="mt-4 font-display text-4xl font-bold leading-tight tracking-[-0.04em] sm:text-5xl">' . $escape($title) . '</h1>'
+    . '<p class="mt-5 text-lg font-semibold text-cyan-800">' . $escape($service['tagline'] ?? '') . '</p>'
+    . '<p class="mt-5 text-base leading-7 text-slate-600">' . $escape($summary) . '</p>'
+    . '<a class="button-primary mt-8" href="/kontak/">Minta estimasi →</a></div>'
+    . '<img src="' . $escape($service['imageUrl'] ?? '') . '" alt="" width="960" height="640" class="min-h-[280px] h-full w-full object-cover"></div>';
+$features = array_values(array_filter($service['features'] ?? [], 'is_string'));
+if ($features !== []) {
+    $body .= '<section class="mt-8 border-b border-slate-300"><h2 class="border-t border-slate-300 py-5 font-bold">Ruang lingkup</h2><ul class="grid gap-3 pb-7 sm:grid-cols-2">';
+    foreach ($features as $feature) $body .= '<li class="text-sm leading-6 text-slate-600">✓ ' . $escape($feature) . '</li>';
+    $body .= '</ul></section>';
+}
 if ($compare !== []) {
-    $body .= '<section><h2>Perbandingan pilihan</h2><table><thead><tr><th>Pilihan</th><th>Sesuai untuk</th><th>Data awal</th></tr></thead><tbody>';
-    foreach ($compare as $row) $body .= '<tr><th>' . $escape($row[0]) . '</th><td>' . $escape($row[1]) . '</td><td>' . $escape($row[2]) . '</td></tr>';
-    $body .= '</tbody></table></section>';
+    $body .= '<section class="mt-12 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8"><h2 class="font-display text-2xl font-bold tracking-tight">Perbandingan pilihan</h2><div class="mt-6 overflow-x-auto"><table class="w-full min-w-[620px] border-collapse text-left text-sm"><thead><tr><th>Pilihan</th><th>Sesuai untuk</th><th>Data awal</th></tr></thead><tbody>';
+    foreach ($compare as $row) $body .= '<tr class="border-b border-slate-100"><th class="px-3 py-4 font-semibold">' . $escape($row[0]) . '</th><td class="px-3 py-4">' . $escape($row[1]) . '</td><td class="px-3 py-4">' . $escape($row[2]) . '</td></tr>';
+    $body .= '</tbody></table></div></section>';
 }
 if ($faq !== []) {
-    $body .= '<section><h2>FAQ teknis logistik</h2>';
-    foreach ($faq as $row) $body .= '<article><h3>' . $escape($row[0]) . '</h3><p>' . $escape($row[1]) . '</p></article>';
-    $body .= '</section>';
+    $body .= '<section class="mt-8 rounded-2xl border border-slate-200 bg-white p-6 sm:p-8"><h2 class="font-display text-2xl font-bold tracking-tight">FAQ teknis logistik</h2><div class="mt-5 border-t border-slate-200">';
+    foreach ($faq as $row) $body .= '<article class="border-b border-slate-200 py-4"><h3 class="font-semibold">' . $escape($row[0]) . '</h3><p class="mt-2 text-sm leading-6 text-slate-600">' . $escape($row[1]) . '</p></article>';
+    $body .= '</div></section>';
 }
-$body .= '<p><a href="/kontak/">Minta penawaran</a></p></main>';
+$body .= '</section></div>';
 $template = preg_replace_callback('/<div id="root">.*?<\/div>/s', static fn(): string => '<div id="root">' . $body . '</div>', $template, 1);
 header('Content-Type: text/html; charset=UTF-8');
 header('Cache-Control: public, max-age=300');
