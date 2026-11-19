@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, Menu, PhoneCall, X } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { DEFAULT_BRANDING, getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { pagePaths } from '../utils/routes';
 import { currentQuoteService, measureContactClick, whatsappDigits } from '../utils/quoteFlow';
 
@@ -19,11 +19,11 @@ const languageOptions: Array<{ value: Language; label: string; flagSrc: string }
   { value: 'zh', label: '中文', flagSrc: '/flags/cn.svg' }
 ];
 
-const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Language) => void; align?: 'left' | 'right' }> = ({ currentLang, onSelect, align = 'right' }) => {
+const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Language) => void; align?: 'left' | 'right'; light?: boolean }> = ({ currentLang, onSelect, align = 'right', light = false }) => {
   const detailsRef = React.useRef<HTMLDetailsElement>(null);
   const current = languageOptions.find((option) => option.value === currentLang) || languageOptions[0];
   return <details ref={detailsRef} className="group relative">
-    <summary aria-label={`Bahasa aktif: ${current.label}`} title={current.label} className="flex min-h-11 min-w-14 cursor-pointer list-none items-center justify-center gap-1 rounded-full border border-white/20 px-2 text-xl transition-colors hover:border-cyan-300 hover:bg-white/5 [&::-webkit-details-marker]:hidden">
+    <summary aria-label={`Bahasa aktif: ${current.label}`} title={current.label} className={`flex min-h-11 min-w-14 cursor-pointer list-none items-center justify-center gap-1 rounded-full border px-2 text-xl transition-colors [&::-webkit-details-marker]:hidden ${light ? 'border-slate-300 hover:border-cyan-700 hover:bg-slate-50' : 'border-white/20 hover:border-cyan-300 hover:bg-white/5'}`}>
       <img src={current.flagSrc} alt="" width="24" height="18" className="h-[18px] w-6 rounded-[2px] object-cover shadow-sm" /><ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
     </summary>
     <div className={`absolute top-[calc(100%+.5rem)] z-50 flex gap-1 rounded-xl border border-white/15 bg-[#082f34] p-1.5 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}>
@@ -74,9 +74,16 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const whatsAppUrl = `https://wa.me/${whatsappDigits(brandData.whatsappNumber)}`;
   const navigation = siteSettings.navigation.filter((item) => item.visible);
+  const trackingPage = currentTab === 'tracking';
+  const configuredLogo = brandData.navbarLogoUrl || brandData.symbolLogoUrl;
+  const useTrackingLogo = trackingPage && configuredLogo === DEFAULT_BRANDING.navbarLogoUrl;
+  const navigationClass = (page: string) => {
+    if (trackingPage) return currentTab === page ? 'border-cyan-500 text-[#012e34]' : 'border-transparent text-slate-600 hover:text-[#012e34]';
+    return currentTab === page ? 'border-cyan-400 text-white' : 'border-transparent text-slate-300 hover:text-white';
+  };
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 block h-16 border-b border-white/10 bg-[#011c20] text-white">
+    <header className={`fixed inset-x-0 top-0 z-50 block h-16 border-b ${trackingPage ? 'border-slate-200 bg-white text-[#012e34]' : 'border-white/10 bg-[#011c20] text-white'}`}>
       <div className="mx-auto flex h-full w-full max-w-7xl items-center justify-between gap-2 px-3 min-[360px]:gap-4 min-[360px]:px-4 sm:px-6 lg:px-8">
         <a
           href="/"
@@ -85,14 +92,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label="GAEKS Freight, ke beranda"
         >
           <img
-            src={brandData.navbarLogoUrl || brandData.symbolLogoUrl}
+            src={useTrackingLogo ? '/logos/gaeks-tracking-official.webp' : configuredLogo}
             onError={(event) => {
               const target = event.currentTarget;
               target.onerror = null;
               target.src = '/logos/gaek-symbol.svg';
             }}
             alt="GAEKS"
-            className="h-9 max-w-[112px] w-auto object-contain brightness-0 invert sm:max-w-[148px]"
+            width={useTrackingLogo ? 640 : undefined}
+            height={useTrackingLogo ? 180 : undefined}
+            className={`h-9 w-auto object-contain ${trackingPage ? 'max-w-[128px] sm:max-w-[148px]' : 'max-w-[112px] brightness-0 invert sm:max-w-[148px]'}`}
           />
         </a>
 
@@ -103,11 +112,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               href={pagePaths[page] || "/"}
               onClick={(event) => handleNav(page, event)}
               aria-current={currentTab === page ? 'page' : undefined}
-              className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-2.5 text-[13px] font-semibold transition-colors ${
-                currentTab === page
-                  ? 'border-cyan-400 text-white'
-                  : 'border-transparent text-slate-300 hover:text-white'
-              }`}
+              className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-2.5 text-[13px] font-semibold transition-colors ${navigationClass(page)}`}
             >
               {label}
             </a>
@@ -115,7 +120,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 xl:flex">
-          <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} />
+          <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} light={trackingPage} />
           <a
             href={whatsAppUrl}
                 onClick={() => measureContactClick('whatsapp', currentQuoteService())}
@@ -134,7 +139,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           aria-label={mobileMenuOpen ? 'Tutup menu' : 'Buka menu'}
           aria-controls="mobile-navigation"
           aria-expanded={mobileMenuOpen}
-          className="inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border border-white/20 px-3 text-sm font-semibold xl:hidden"
+          className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center gap-2 rounded-full border px-3 text-sm font-semibold xl:hidden ${trackingPage ? 'border-slate-300' : 'border-white/20'}`}
         >
           <span>Menu</span>
           {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
@@ -142,7 +147,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-[#011c20] px-4 pb-5 shadow-lg xl:hidden">
+        <div id="mobile-navigation" className="max-h-[calc(100dvh-4rem)] overflow-y-auto border-t border-white/10 bg-[#011c20] px-4 pb-5 text-white shadow-lg xl:hidden">
           <nav aria-label="Navigasi seluler" className="mx-auto max-w-7xl">
             <div className="py-2">
               {navigation.map(({ page, mobileLabel }) => (

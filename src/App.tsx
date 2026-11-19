@@ -25,7 +25,7 @@ const ContactPage = React.lazy(() => import('./components/ContactPage').then((mo
 const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })));
 const ShipmentTracking = React.lazy(() => import('./components/ShipmentTracking').then((module) => ({ default: module.ShipmentTracking })));
 
-const PageFallback = () => <div className="min-h-[60vh] bg-[#f4f5f1] pt-32 text-center text-sm text-slate-500">Memuat halaman…</div>;
+const PageFallback = ({ tracking = false }: { tracking?: boolean }) => <div className={`${tracking ? 'min-h-[736px] bg-[#f8fafc] sm:min-h-[660px]' : 'min-h-[60vh] bg-[#f4f5f1]'} pt-32 text-center text-sm text-slate-500`}>Memuat halaman…</div>;
 
 export const App: React.FC = () => {
   const [currentLang, setCurrentLang] = useState<Language>(() => getPreferredLanguage());
@@ -326,7 +326,7 @@ export const App: React.FC = () => {
 
       <main id="public-content" className="flex-grow">
         <div key={currentPage} className="page-transition">
-        <Suspense fallback={<PageFallback />}>
+        <Suspense fallback={<PageFallback tracking={currentPage === 'tracking'} />}>
         {currentPage === 'operator' && (
           <OperatorAdmin onNavigate={navigateTo} />
         )}

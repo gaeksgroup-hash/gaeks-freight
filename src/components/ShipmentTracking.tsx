@@ -1,41 +1,21 @@
 import React, { useMemo, useState } from 'react';
-import { Check, Circle, Loader2, PackageSearch } from 'lucide-react';
+import { ArrowRight, Check, Loader2, Package, PackageSearch, Search } from 'lucide-react';
 import { ShipmentTrackingError, TrackingApiResponse, trackShipment } from '../services/trackingApi';
-
-type DataRecord = Record<string, unknown>;
-
-const record = (value: unknown): DataRecord => value && typeof value === 'object' && !Array.isArray(value) ? value as DataRecord : {};
-const list = (value: unknown): unknown[] => Array.isArray(value) ? value : [];
-const read = (source: DataRecord, keys: string[], fallback = 'Belum tersedia') => {
-  for (const key of keys) {
-    const value = source[key];
-    if (typeof value === 'string' || typeof value === 'number') return String(value);
-  }
-  return fallback;
-};
-const dateText = (value: unknown) => {
-  if (typeof value !== 'string' || !value) return '';
-  const date = new Date(value);
-  return Number.isNaN(date.getTime()) ? value : date.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
-};
+import { getTrackingView, trackingDateText } from '../utils/trackingView';
+import './ShipmentTracking.css';
 
 export const ShipmentTracking: React.FC = () => {
   const [query, setQuery] = useState('');
+  const [submittedQuery, setSubmittedQuery] = useState('');
   const [result, setResult] = useState<TrackingApiResponse | null>(null);
   const [error, setError] = useState<ShipmentTrackingError | null>(null);
   const [loading, setLoading] = useState(false);
-
-  const view = useMemo(() => {
-    const root = record(result);
-    const data = record(root.data);
-    const shipment = record(data.shipment || data.tracking || root.shipment || root.tracking || data);
-    const milestones = list(data.milestones || shipment.milestones || root.milestones).map(record);
-    const timeline = list(data.timeline || shipment.timeline || root.timeline).map(record);
-    return { shipment, milestones, timeline };
-  }, [result]);
+  const view = useMemo(() => getTrackingView(result), [result]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (loading) return;
+    setSubmittedQuery(query.trim());
     setLoading(true);
     setError(null);
     setResult(null);
@@ -48,77 +28,125 @@ export const ShipmentTracking: React.FC = () => {
     }
   };
 
-  const shipment = view.shipment;
-  const events = view.milestones.length ? view.milestones : view.timeline;
-  const hasResult = result && (Object.keys(shipment).length > 0 || events.length > 0);
-
   return (
-    <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">
-      <section className="page-shell py-14 sm:py-20">
-        <div className="grid min-w-0 grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,.7fr)_minmax(0,1.3fr)] lg:gap-16">
-          <header className="min-w-0">
-            <p className="section-label">Shipment tracking</p>
-            <h1 className="section-title">Satu pencarian untuk beberapa nomor pengiriman.</h1>
-            <p className="section-copy">Masukkan nomor HAWB, B/L, atau kontainer untuk melihat milestone pengiriman.</p>
-          </header>
-
-          <div className="min-w-0">
-            <form onSubmit={submit} className="border border-slate-200 bg-white p-5 sm:p-7">
-              <label htmlFor="shipment-reference" className="text-sm font-bold text-[#12363a]">Nomor shipment</label>
-              <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-                <input id="shipment-reference" value={query} onChange={(event) => setQuery(event.target.value)} autoComplete="off" spellCheck={false} placeholder="HAWB, B/L, atau nomor kontainer" className="field flex-1 font-mono uppercase" />
-                <button type="submit" disabled={loading || !query.trim()} className="button-primary min-w-36 disabled:cursor-not-allowed disabled:opacity-50">
-                  {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <PackageSearch className="h-4 w-4" />}
-                  {loading ? 'Mencari' : 'Lacak'}
-                </button>
-              </div>
-            </form>
-
-            {error && (
-              <div role="alert" className="mt-5 border-l-4 border-amber-500 bg-white p-5">
-                <p className="font-bold text-[#12363a]">{error.code === 'SHIPMENT_NOT_FOUND' ? 'Shipment belum ditemukan' : 'Pencarian belum berhasil'}</p>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{error.message}</p>
-              </div>
-            )}
-
-            {hasResult && (
-              <section aria-live="polite" className="mt-5 border border-slate-200 bg-white">
-                <div className="border-b border-slate-200 bg-[#0b3438] p-5 text-white sm:p-7">
-                  <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-300">Status terkini</p>
-                  <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-                    <h2 className="text-2xl font-bold">{read(shipment, ['statusLabel', 'status', 'currentStatus'], 'Perjalanan shipment')}</h2>
-                    <span className="break-all font-mono text-sm text-slate-300">{read(shipment, ['trackingNumber', 'referenceNumber', 'jobOrderNumber', 'jobOrderNo', 'number'], result?.query || query)}</span>
-                  </div>
-                </div>
-
-                {events.length > 0 && (
-                  <div className="p-5 sm:p-7">
-                    <h3 className="font-bold">Milestone</h3>
-                    <ol className="mt-5 border-l border-slate-300 pl-5">
-                      {events.map((item, index) => {
-                        const completed = Boolean(item.isCompleted || item.completed || item.status === 'COMPLETED');
-                        const current = Boolean(item.isCurrent || item.current || item.status === 'CURRENT');
-                        return (
-                          <li key={read(item, ['id'], String(index))} className="relative pb-6 last:pb-0">
-                            <span className="absolute -left-[29px] top-0 flex h-4 w-4 items-center justify-center rounded-full bg-white">
-                              {completed ? <Check className="h-4 w-4 text-cyan-700" /> : <Circle className={current ? 'h-3 w-3 fill-cyan-600 text-cyan-600' : 'h-3 w-3 text-slate-300'} />}
-                            </span>
-                            <p className="text-sm font-bold">{read(item, ['label', 'title', 'name', 'event', 'status'])}</p>
-                            <p className="mt-1 text-xs text-slate-500">{dateText(item.date || item.timestamp || item.occurredAt || item.completedAt)}</p>
-                            {read(item, ['note', 'description', 'remarks'], '') && <p className="mt-2 text-sm leading-6 text-slate-600">{read(item, ['note', 'description', 'remarks'], '')}</p>}
-                          </li>
-                        );
-                      })}
-                    </ol>
-                  </div>
-                )}
-              </section>
-            )}
-
-            {result && !hasResult && !error && <p className="mt-5 border-t border-slate-300 py-5 text-sm text-slate-600">Belum ada milestone untuk nomor ini.</p>}
+    <div className="shipment-tracking">
+      <header className="tracking-hero">
+        <div className="tracking-hero__visual" aria-hidden="true">
+          <img src="/tracking/approved-maritime-illustration.webp" alt="" width="398" height="233" decoding="async" />
+        </div>
+        <div className="page-shell tracking-hero__inner">
+          <div className="tracking-hero__copy">
+            <p className="tracking-eyebrow">ERP System Integrated Report</p>
+            <h1>Shipment Tracking</h1>
+            <p className="tracking-hero__description">Masukkan nomor HAWB, B/L, atau kontainer untuk melihat milestone pengiriman.</p>
           </div>
         </div>
-      </section>
+      </header>
+
+      <div className="page-shell tracking-content">
+        <div className="tracking-search-wrap">
+          <form onSubmit={submit} className="tracking-search" aria-label="Lacak shipment" aria-busy={loading}>
+            <label htmlFor="shipment-reference" className="sr-only">Nomor shipment</label>
+            <div className="tracking-search__controls">
+              <div className="tracking-search__field">
+                <Search size={20} aria-hidden="true" />
+                <input
+                  id="shipment-reference"
+                  name="shipment-reference"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  autoComplete="off"
+                  spellCheck={false}
+                  required
+                  readOnly={loading}
+                  aria-describedby="shipment-reference-help"
+                  aria-invalid={error?.status === 400 || undefined}
+                  placeholder="HAWB, B/L, atau nomor kontainer"
+                />
+              </div>
+              <button type="submit" disabled={loading || !query.trim()}>
+                <span>{loading ? 'Mencari' : 'Lacak shipment'}</span>
+                {loading ? <Loader2 size={18} className="tracking-spinner" aria-hidden="true" /> : <ArrowRight size={18} aria-hidden="true" />}
+              </button>
+            </div>
+          </form>
+          <p id="shipment-reference-help">Referensi AWB/HAWB, B/L/HBL, GJO, kontainer, atau dokumen.</p>
+        </div>
+
+        <div className="tracking-announcement sr-only" role="status" aria-live="polite" aria-atomic="true">
+          {loading ? 'Sedang mencari shipment.' : result ? view.hasResult ? `Hasil shipment ditemukan. ${view.status}. ${view.events.length} milestone tersedia.` : 'Belum ada milestone untuk nomor ini.' : ''}
+        </div>
+
+        {loading && <p className="tracking-search-status" aria-hidden="true">Mengambil data shipment…</p>}
+
+        {error && (
+          <div role="alert" className="tracking-feedback">
+            <p className="tracking-feedback__title">{error.code === 'SHIPMENT_NOT_FOUND' ? 'Shipment belum ditemukan' : 'Pencarian belum berhasil'}</p>
+            <p>{error.message}</p>
+            {error.requestId && <p className="tracking-request-id">ID permintaan: <span className="notranslate" translate="no">{error.requestId}</span></p>}
+          </div>
+        )}
+
+        {result && view.hasResult && (
+          <section className="tracking-result" data-reveal="custom" aria-labelledby="tracking-result-reference">
+            <div className="tracking-result__summary">
+              <div className="tracking-result__identity">
+                <span className="tracking-result__icon" aria-hidden="true"><PackageSearch size={25} strokeWidth={1.7} /></span>
+                <div className="tracking-result__reference">
+                  <p className="tracking-label">Nomor shipment</p>
+                  <h2 id="tracking-result-reference" className="notranslate" translate="no">{view.reference || (typeof result.query === 'string' && result.query.trim()) || submittedQuery}</h2>
+                </div>
+              </div>
+              {view.status && <div className="tracking-result__status">
+                <p className="tracking-label">Status terkini</p>
+                <p className="tracking-status-label">{view.status}</p>
+              </div>}
+            </div>
+
+            {view.events.length > 0 ? (
+              <div className="tracking-milestones">
+                <div className="tracking-milestones__heading">
+                  <h3 id="tracking-milestones-title">Milestone pengiriman</h3>
+                  <ul className="tracking-legend" aria-label="Keterangan milestone">
+                    <li><span className="tracking-legend__dot is-completed" />Selesai</li>
+                    <li><span className="tracking-legend__dot is-current" />Terkini</li>
+                    <li><span className="tracking-legend__dot" />Lainnya</li>
+                  </ul>
+                </div>
+                <ol className="tracking-timeline" aria-labelledby="tracking-milestones-title" tabIndex={0}>
+                  {view.events.map((item) => (
+                    <li key={item.key} className={`tracking-milestone is-${item.state}`} aria-current={item.state === 'current' ? 'step' : undefined}>
+                      <div className="tracking-milestone__track" aria-hidden="true">
+                        <span className="tracking-milestone__node">
+                          {item.state === 'completed' ? <Check size={19} strokeWidth={2.5} /> : item.state === 'current' ? <Package size={19} strokeWidth={1.8} /> : <span className="tracking-milestone__dot" />}
+                        </span>
+                      </div>
+                      <div className="tracking-milestone__body">
+                        {item.state !== 'neutral' && <span className="tracking-milestone__state">{item.state === 'current' ? 'Terkini' : 'Selesai'}</span>}
+                        {item.label && <h4>{item.label}</h4>}
+                        {item.date && <p className="tracking-milestone__date">{trackingDateText(item.date)}</p>}
+                        {item.description && <p className="tracking-milestone__description">{item.description}</p>}
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ) : <p className="tracking-result__empty">Belum ada milestone untuk nomor ini.</p>}
+          </section>
+        )}
+
+        {result && !view.hasResult && !error && <p role="status" className="tracking-feedback">Belum ada milestone untuk nomor ini.</p>}
+
+        {!result && !error && !loading && (
+          <div className="tracking-guidance">
+            <PackageSearch size={28} strokeWidth={1.5} aria-hidden="true" />
+            <div>
+              <h2>Satu pencarian untuk beberapa nomor pengiriman.</h2>
+              <p>Gunakan nomor referensi yang tercantum pada dokumen shipment Anda.</p>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
