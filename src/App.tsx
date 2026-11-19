@@ -14,6 +14,8 @@ import { pagePaths, servicePath } from './utils/routes';
 import { isPublishedArticle, serviceContent } from './utils/serviceContent';
 import { getStoredArticles } from './utils/newsStorage';
 import { articlePath, articleSlug } from './utils/articleRoutes';
+import { quoteContext } from './utils/quoteFlow';
+import { adLanding } from './data/adLanding';
 
 const SmartCalculator = React.lazy(() => import('./components/SmartCalculator').then((module) => ({ default: module.SmartCalculator })));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').then((module) => ({ default: module.InteractiveMap })));
@@ -100,9 +102,10 @@ export const App: React.FC = () => {
         contact: 'Hubungi tim GAEKS untuk mendiskusikan rute, kargo, dokumen, dan kebutuhan penawaran.'
       };
       const knowledge = detailService ? serviceContent(detailService) : undefined;
+      const adType = detailService?.id === 'fcl' ? 'fcl' : detailService?.id === 'air-shipment' ? 'air' : detailService?.id === 'ppjk' ? 'ppjk' : detailService?.id === 'undername-impor' ? 'undername' : null;
       const detailArticle = currentPage === 'news' && activeArticleId ? getStoredArticles().find((article) => isPublishedArticle(article) && (article.id === activeArticleId || articleSlug(article) === activeArticleId)) : undefined;
-      const description = detailArticle?.excerpt || knowledge?.summary || routeDescriptions[currentPage] || seo.metaDescription;
-      document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? `${detailService.title} | GAEKS Freight` : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
+      const description = detailArticle?.excerpt || (adType ? detailService?.landingDescription || adLanding[adType].intro : knowledge?.summary) || routeDescriptions[currentPage] || seo.metaDescription;
+      document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? `${adType ? detailService.landingTitle || adLanding[adType].title : detailService.title} | GAEKS Freight` : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
       const setMeta = (selector: string, attribute: string, value: string) => {
         let element = document.querySelector(selector) as HTMLMetaElement | null;
         if (!element) {
@@ -131,13 +134,13 @@ export const App: React.FC = () => {
       ];
       if (currentPage === 'home') graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
       if (detailService && knowledge) {
-        graph.push({ '@type': 'Service', name: detailService.title, serviceType: detailService.category, description: knowledge.summary, provider: { '@id': orgId }, areaServed: { '@type': 'Country', name: 'Indonesia' }, url: canonical.href });
+        graph.push({ '@type': 'Service', name: detailService.title, serviceType: detailService.category, description, provider: { '@id': orgId }, areaServed: { '@type': 'Country', name: 'Indonesia' }, url: canonical.href });
         graph.push({ '@type': 'BreadcrumbList', itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://gaeks.com/' },
           { '@type': 'ListItem', position: 2, name: 'Layanan', item: 'https://gaeks.com/layanan/' },
           { '@type': 'ListItem', position: 3, name: detailService.title, item: canonical.href }
         ] });
-        graph.push({ '@type': 'FAQPage', mainEntity: knowledge.faq.map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
+        graph.push({ '@type': 'FAQPage', mainEntity: (adType ? adLanding[adType].faqs.map(({ question, answer }) => [question, answer] as [string, string]) : knowledge.faq).map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
       }
       if (detailArticle) {
         graph.push({ '@type': 'NewsArticle', headline: detailArticle.title, description: detailArticle.excerpt, datePublished: detailArticle.publishedDate, dateModified: detailArticle.updatedAt || detailArticle.publishedDate, image: new URL(detailArticle.imageUrl, 'https://gaeks.com').href, author: { '@type': 'Organization', name: detailArticle.author || 'GAEKS Editorial' }, publisher: { '@id': orgId }, mainEntityOfPage: canonical.href });
@@ -203,7 +206,19 @@ export const App: React.FC = () => {
   }, []);
 
   const navigateTo = (page: string) => {
-    window.history.pushState({}, '', pagePaths[page] || '/');
+    const target = new URL(pagePaths[page] || '/', window.location.origin);
+    if (page === 'contact' && activeServiceSlug) {
+      const selected = activeServiceSlug === 'fcl' || activeServiceSlug === 'freight-laut-fcl' ? 'fcl' : activeServiceSlug === 'air-shipment' || activeServiceSlug === 'freight-udara' ? 'air' : activeServiceSlug === 'ppjk' || activeServiceSlug === 'ppjk-customs-clearance' ? 'ppjk' : activeServiceSlug === 'undername-impor' || activeServiceSlug === 'undername-impor-pi' ? 'undername' : '';
+      if (selected) {
+        const context = quoteContext(selected);
+        target.searchParams.set('service', selected);
+        target.searchParams.set('direction', selected === 'undername' ? 'impor' : context.direction);
+        if (context.city) target.searchParams.set('city', context.city);
+        const incoming = new URLSearchParams(window.location.search);
+        for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) { const value = incoming.get(key); if (value && value.length <= 200) target.searchParams.set(key, value); }
+      }
+    }
+    window.history.pushState({}, '', target.pathname + target.search);
     setActiveArticleId('');
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });

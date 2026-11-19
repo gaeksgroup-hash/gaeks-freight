@@ -137,6 +137,19 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     equipment: 'Direct Space Contract Airline Partner',
     imageUrl: 'https://images.unsplash.com/photo-1583416750470-965b2707b355?auto=format&fit=crop&w=1200&q=80',
     commodities: 'Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi'
+  },
+  {
+    id: 'undername-impor',
+    title: 'Undername Impor & Persetujuan Impor (PI)',
+    category: 'Importasi dan perizinan',
+    tagline: 'Bahas kebutuhan undername dan PI berdasarkan komoditas serta dokumen impor.',
+    description: 'GAEKS menyediakan jasa undername impor dan pendampingan pengurusan Persetujuan Impor (PI). Kebutuhan PI dan kelayakan proses ditinjau berdasarkan HS code, spesifikasi barang, serta ketentuan yang berlaku.',
+    landingTitle: 'Undername Impor & Persetujuan Impor',
+    landingDescription: 'Dua kebutuhan yang sering bertemu dalam satu shipment: penggunaan entitas importir dan pemeriksaan izin PI. Jelaskan barang serta dokumen Anda agar tim dapat meninjau langkah yang relevan.',
+    features: ['Konsultasi skema undername impor', 'Pemeriksaan kebutuhan Persetujuan Impor', 'Peninjauan dokumen dan HS code'],
+    equipment: 'Peninjauan dokumen impor sesuai kebutuhan komoditas',
+    imageUrl: '/uploads/gaeks-hero-cargo-poster.webp',
+    commodities: 'Kebutuhan impor yang dapat ditinjau berdasarkan jenis barang dan peraturan',
   }
 ];
 

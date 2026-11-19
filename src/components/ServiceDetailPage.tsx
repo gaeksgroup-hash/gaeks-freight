@@ -5,6 +5,7 @@ import { GAEKS_UPDATE_EVENT, getStoredServices } from '../utils/adminStorage';
 import { DETAILED_SERVICES } from './ServicesCarousel';
 import { ServiceTitle } from './ServiceTitle';
 import { serviceContent } from '../utils/serviceContent';
+import { AdLandingPage } from './AdLandingPage';
 
 interface ServiceDetailPageProps {
   slug: string;
@@ -16,7 +17,7 @@ interface ServiceDetailPageProps {
 const aliases: Record<string, string> = {
   ppjk: 'ppjk-customs-clearance', 'gudang-pbm': 'pergudangan-stevedoring',
   'domestic-truck': 'trucking', 'project-cargo': 'project-cargo-heavy-lift',
-  lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara'
+  lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara', 'undername-impor': 'undername-impor-pi'
 };
 const slugFor = (service: ServiceDetail) => aliases[service.id] || service.id;
 const localize = (service: ServiceDetail, language: Language) => ({
@@ -36,6 +37,8 @@ export const ServiceDetailPage: React.FC<ServiceDetailPageProps> = ({ slug, curr
   const service = services.find((item) => slugFor(item) === slug) || DETAILED_SERVICES.find((item) => slugFor(item) === slug) || DETAILED_SERVICES[0];
   const content = localize(service, currentLang);
   const knowledge = serviceContent(service);
+  const adType = service.id === 'fcl' ? 'fcl' : service.id === 'air-shipment' ? 'air' : service.id === 'ppjk' ? 'ppjk' : service.id === 'undername-impor' ? 'undername' : null;
+  if (adType) return <AdLandingPage service={service} type={adType} onBack={onBack} onCalculator={() => onQuote(service.title)} />;
 
   return (
     <div className="min-h-screen bg-[#f4f5f1] pt-16 text-[#12363a]">

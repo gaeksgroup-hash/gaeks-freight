@@ -377,6 +377,50 @@
                     "Jadwal dan ruang dikonfirmasi setelah data barang, dokumen, serta kesiapan pengiriman diperiksa."
                 ]
             ]
+        },
+        {
+            "id": "undername-impor",
+            "title": "Undername Impor & Persetujuan Impor (PI)",
+            "category": "Importasi dan perizinan",
+            "tagline": "Bahas kebutuhan undername dan PI berdasarkan komoditas serta dokumen impor.",
+            "description": "GAEKS menyediakan jasa undername impor dan pendampingan pengurusan Persetujuan Impor (PI). Kebutuhan PI dan kelayakan proses ditinjau berdasarkan HS code, spesifikasi barang, serta ketentuan yang berlaku.",
+            "landingTitle": "Undername Impor & Persetujuan Impor",
+            "landingDescription": "Dua kebutuhan yang sering bertemu dalam satu shipment: penggunaan entitas importir dan pemeriksaan izin PI. Jelaskan barang serta dokumen Anda agar tim dapat meninjau langkah yang relevan.",
+            "features": [
+                "Konsultasi skema undername impor",
+                "Pemeriksaan kebutuhan Persetujuan Impor",
+                "Peninjauan dokumen dan HS code"
+            ],
+            "equipment": "Peninjauan dokumen impor sesuai kebutuhan komoditas",
+            "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
+            "commodities": "Kebutuhan impor yang dapat ditinjau berdasarkan jenis barang dan peraturan",
+            "summary": "Undername impor membantu meninjau skema penggunaan entitas importir sesuai dokumen transaksi. Persetujuan Impor (PI) adalah izin yang diperlukan untuk barang tertentu menurut ketentuan yang berlaku. GAEKS membahas kebutuhan keduanya berdasarkan HS code, spesifikasi barang, asal, tujuan, dan kesiapan dokumen sebelum menyusun langkah layanan.",
+            "compare": [
+                [
+                    "Undername impor",
+                    "Skema importasi perlu ditinjau",
+                    "Pihak importir, invoice, dan dokumen transaksi"
+                ],
+                [
+                    "Persetujuan Impor (PI)",
+                    "Barang berpotensi memerlukan izin",
+                    "HS code, spesifikasi, dan ketentuan terbaru"
+                ]
+            ],
+            "faq": [
+                [
+                    "Apakah undername impor sama dengan PI?",
+                    "Tidak. Undername berkaitan dengan skema importir, sedangkan PI adalah izin impor untuk barang tertentu."
+                ],
+                [
+                    "Apakah semua barang memerlukan PI?",
+                    "Tidak. Kewajiban PI bergantung pada klasifikasi, spesifikasi, dan ketentuan yang berlaku."
+                ],
+                [
+                    "Apakah status Ready menjamin izin terbit?",
+                    "Tidak. Status Ready menunjukkan kesiapan layanan yang diverifikasi GAEKS, bukan persetujuan dari otoritas."
+                ]
+            ]
         }
     ],
     "articles": [

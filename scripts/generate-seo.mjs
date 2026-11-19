@@ -22,7 +22,7 @@ const routes = [
 const slugs = {
   ppjk: 'ppjk-customs-clearance', 'gudang-pbm': 'pergudangan-stevedoring',
   'domestic-truck': 'trucking', 'project-cargo': 'project-cargo-heavy-lift',
-  lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara'
+  lcl: 'freight-laut-lcl', fcl: 'freight-laut-fcl', 'air-shipment': 'freight-udara', 'undername-impor': 'undername-impor-pi'
 };
 const orgId = `${baseUrl}/#organization`;
 const organization = { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: baseUrl, logo: `${baseUrl}/logos/gaek-symbol.png`, email: content.branding.salesEmail, telephone: content.branding.whatsappDisplay };

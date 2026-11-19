@@ -4,6 +4,10 @@ declare(strict_types=1);
 require_once __DIR__ . '/_bootstrap.php';
 
 $slug = (string) ($_GET['slug'] ?? '');
+if (in_array($slug, ['freight-laut-fcl', 'freight-udara', 'ppjk-customs-clearance', 'undername-impor-pi'], true)) {
+    require dirname(__DIR__) . '/landing.php';
+    exit;
+}
 $aliases = ['ppjk' => 'ppjk-customs-clearance', 'gudang-pbm' => 'pergudangan-stevedoring', 'domestic-truck' => 'trucking', 'project-cargo' => 'project-cargo-heavy-lift', 'lcl' => 'freight-laut-lcl', 'fcl' => 'freight-laut-fcl', 'air-shipment' => 'freight-udara'];
 gaeks_seed_private_json(gaeks_content_file(), __DIR__ . '/site_content.json');
 $content = gaeks_read_json_file(gaeks_content_file(), []);

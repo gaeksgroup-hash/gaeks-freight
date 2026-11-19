@@ -4,16 +4,12 @@ import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { SocialLinks } from './SocialLinks';
 import { pagePaths } from '../utils/routes';
+import { currentQuoteService, measureContactClick, whatsappDigits } from '../utils/quoteFlow';
 
 export interface FooterProps {
   onNavigate?: (page: string) => void;
   currentLang?: Language;
 }
-
-const whatsAppNumber = (value: string) => {
-  const digits = value.replace(/\D/g, '');
-  return digits.startsWith('0') ? '62' + digits.slice(1) : digits;
-};
 
 export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   const [brandData, setBrandData] = React.useState(getStoredBranding());
@@ -50,8 +46,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <img src={brandData.footerLogoUrl || brandData.symbolLogoUrl} alt="GAEKS" className="h-7 w-auto brightness-0 invert" />
             <p className="mt-3 max-w-sm text-sm leading-5 text-slate-400">{siteSettings.footerTagline}</p>
             <div className="mt-3 flex flex-wrap gap-x-5 text-sm">
-              <a href={'https://wa.me/' + whatsAppNumber(brandData.whatsappNumber || '6285608561745')} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><PhoneCall className="h-4 w-4 text-cyan-300" />{brandData.whatsappDisplay || '+62 856 0856 1745'}</a>
-              <a href={'mailto:' + (brandData.salesEmail || 'Sales01@gaeks.com')} className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><Mail className="h-4 w-4 text-cyan-300" />{brandData.salesEmail || 'Sales01@gaeks.com'}</a>
+              <a href={'https://wa.me/' + whatsappDigits(brandData.whatsappNumber)} target="_blank" rel="noopener noreferrer" onClick={() => measureContactClick('whatsapp', currentQuoteService())} className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><PhoneCall className="h-4 w-4 text-cyan-300" />{brandData.whatsappDisplay}</a>
+              <a href={'mailto:' + brandData.salesEmail} onClick={() => measureContactClick('email', currentQuoteService())} className="inline-flex min-h-11 items-center gap-2 hover:text-cyan-300"><Mail className="h-4 w-4 text-cyan-300" />{brandData.salesEmail}</a>
             </div>
           </div>
 

@@ -14,6 +14,8 @@ export interface PortEntry {
 }
 
 export interface ServiceDetail {
+  landingTitle?: string;
+  landingDescription?: string;
   id: string;
   title: string;
   title_en?: string;

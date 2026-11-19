@@ -17,6 +17,7 @@ GAEKS Freight (Global Andalan Ekspress) membantu bisnis merencanakan freight lau
 - [LCL (Less than Container Load)](https://gaeks.com/layanan/freight-laut-lcl/): LCL memungkinkan pengiriman laut ketika muatan tidak memerlukan satu kontainer penuh. Barang digabung dengan muatan lain melalui proses konsolidasi, sehingga jadwal cut-off, kemasan, dan penanganan di titik asal maupun tujuan perlu diperhatikan. Untuk memilih LCL atau FCL, bandingkan volume, sifat barang, kebutuhan waktu, dan biaya total sampai lokasi penerima.
 - [FCL (Full Container Load)](https://gaeks.com/layanan/freight-laut-fcl/): FCL memakai satu kontainer untuk pengiriman laut yang memerlukan ruang khusus atau volume lebih besar. Pemilihan ukuran dan tipe kontainer mengikuti dimensi, berat, sifat komoditas, serta cara muat. Sebelum memesan ruang kapal, tentukan pelabuhan asal dan tujuan, Incoterms, kesiapan barang, serta kebutuhan trucking dan pengurusan dokumen di kedua sisi.
 - [Air Shipment Priority](https://gaeks.com/layanan/freight-udara/): Air freight digunakan ketika target waktu, nilai barang, atau kebutuhan penanganan membuat pengiriman udara lebih sesuai. Kapasitas dan dasar tagihan dipengaruhi berat aktual serta berat volumetrik. Untuk menyiapkan penawaran, berikan bandara asal dan tujuan, ukuran tiap koli, berat, jenis komoditas, tanggal siap barang, dan dokumen yang tersedia.
+- [Undername Impor & Persetujuan Impor (PI)](https://gaeks.com/layanan/undername-impor-pi/): Undername impor membantu meninjau skema penggunaan entitas importir sesuai dokumen transaksi. Persetujuan Impor (PI) adalah izin yang diperlukan untuk barang tertentu menurut ketentuan yang berlaku. GAEKS membahas kebutuhan keduanya berdasarkan HS code, spesifikasi barang, asal, tujuan, dan kesiapan dokumen sebelum menyusun langkah layanan.
 
 ## Data untuk penawaran
 
@@ -58,6 +59,11 @@ Siapkan asal, tujuan, jenis komoditas, berat, volume, kemasan, target waktu, inv
 - Apa itu berat volumetrik udara? Berat volumetrik mengubah ukuran paket menjadi dasar perhitungan ruang. Penawaran umumnya membandingkannya dengan berat aktual.
 - Apakah semua komoditas dapat dikirim lewat udara? Tidak. Jenis barang, pembatasan maskapai, kemasan, dan dokumen harus diperiksa lebih dahulu.
 - Kapan jadwal penerbangan dapat dikonfirmasi? Jadwal dan ruang dikonfirmasi setelah data barang, dokumen, serta kesiapan pengiriman diperiksa.
+
+### Undername Impor & Persetujuan Impor (PI)
+- Apakah undername impor sama dengan PI? Tidak. Undername berkaitan dengan skema importir, sedangkan PI adalah izin impor untuk barang tertentu.
+- Apakah semua barang memerlukan PI? Tidak. Kewajiban PI bergantung pada klasifikasi, spesifikasi, dan ketentuan yang berlaku.
+- Apakah status Ready menjamin izin terbit? Tidak. Status Ready menunjukkan kesiapan layanan yang diverifikasi GAEKS, bukan persetujuan dari otoritas.
 
 ## Kontak
 

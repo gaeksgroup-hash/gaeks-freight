@@ -3,6 +3,7 @@ import { ChevronDown, Menu, PhoneCall, X } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { pagePaths } from '../utils/routes';
+import { currentQuoteService, measureContactClick, whatsappDigits } from '../utils/quoteFlow';
 
 export interface NavbarProps {
   currentTab?: string;
@@ -29,11 +30,6 @@ const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Langu
       {languageOptions.map((option) => <button key={option.value} type="button" aria-label={option.label} title={option.label} aria-current={currentLang === option.value ? 'true' : undefined} onClick={() => { onSelect(option.value); detailsRef.current?.removeAttribute('open'); }} className={`flex h-11 w-12 items-center justify-center rounded-lg transition-colors ${currentLang === option.value ? 'bg-cyan-400/20 ring-1 ring-cyan-300/60' : 'hover:bg-white/10'}`}><img src={option.flagSrc} alt="" width="28" height="21" className="h-[21px] w-7 rounded-[2px] object-cover shadow-sm" /></button>)}
     </div>
   </details>;
-};
-
-const getWhatsAppNumber = (value: string) => {
-  const digits = value.replace(/\D/g, '');
-  return digits.startsWith('0') ? `62${digits.slice(1)}` : digits || '6285608561745';
 };
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -76,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(false);
   };
 
-  const whatsAppUrl = `https://wa.me/${getWhatsAppNumber(brandData.whatsappNumber || '')}`;
+  const whatsAppUrl = `https://wa.me/${whatsappDigits(brandData.whatsappNumber)}`;
   const navigation = siteSettings.navigation.filter((item) => item.visible);
 
   return (
@@ -122,6 +118,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} />
           <a
             href={whatsAppUrl}
+                onClick={() => measureContactClick('whatsapp', currentQuoteService())}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center gap-2 rounded-full bg-cyan-400 px-4 text-sm font-bold text-[#011417] transition-colors hover:bg-cyan-300"
@@ -169,6 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} align="left" />
               <a
                 href={whatsAppUrl}
+                onClick={() => measureContactClick('whatsapp', currentQuoteService())}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-cyan-400 px-4 text-sm font-semibold text-[#011417] sm:ml-auto sm:w-auto"

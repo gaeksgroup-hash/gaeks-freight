@@ -1,9 +1,11 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRightLeft, ChevronDown, Mail, MessageCircle, Plane, Ship, Truck } from 'lucide-react';
 import { LocationAutocomplete, LocationOption } from './LocationAutocomplete';
 import { STANDARD_AIRPORTS, STANDARD_SEAPORTS, formatTransportLocation } from '../data/transportLocations';
 import { INDONESIA_CITIES } from '../data/indonesiaCities';
 import { ShippingMode, Language } from '../types/freight';
+import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { measureContactClick, whatsappDigits } from '../utils/quoteFlow';
 
 interface SmartCalculatorProps {
   prefillService?: string;
@@ -110,6 +112,12 @@ const initialModeFromService = (service?: string): ShippingMode => {
 };
 
 export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService }) => {
+  const [branding, setBranding] = useState(getStoredBranding);
+  useEffect(() => {
+    const reload = () => setBranding(getStoredBranding());
+    window.addEventListener(GAEKS_UPDATE_EVENT, reload);
+    return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
+  }, []);
   const [shippingMode, setShippingMode] = useState<ShippingMode>(() => initialModeFromService(prefillService));
   const [routes, setRoutes] = useState(DEFAULT_ROUTES);
   const [selectedIncoterm, setSelectedIncoterm] = useState('FOB');
@@ -209,13 +217,15 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
 
   const handleSendWhatsApp = () => {
     const text = `Halo GAEKS, saya ingin konsultasi tarif kargo:\n\n${inquiryLines.map((line) => `- ${line}`).join('\n')}\n\nMohon informasi tarif dan jadwal yang tersedia. Terima kasih.`;
-    window.open(`https://wa.me/6285608561745?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/${whatsappDigits(branding.whatsappNumber)}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    measureContactClick('whatsapp', shippingMode === 'air' ? 'air' : shippingMode === 'ocean' ? 'fcl' : 'other');
   };
 
   const handleSendEmail = () => {
     const subject = `Inquiry ${mode.shortLabel}: ${route.origin} ke ${route.destination}`;
     const body = `Halo Tim Komersial GAEKS,\n\nMohon informasi tarif untuk data berikut:\n${inquiryLines.map((line) => `- ${line}`).join('\n')}\n\nTerima kasih.`;
-    window.location.href = `mailto:Sales01@gaeks.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${branding.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    measureContactClick('email', shippingMode === 'air' ? 'air' : shippingMode === 'ocean' ? 'fcl' : 'other');
   };
 
   return (

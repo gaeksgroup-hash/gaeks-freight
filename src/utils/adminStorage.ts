@@ -195,7 +195,13 @@ export const saveStoredSiteSettings = (data: SiteSettings) => writeObject(STORAG
 export const getStoredSeo = () => readObject(STORAGE_KEY_SEO, DEFAULT_SEO);
 export const saveStoredSeo = (data: SeoSettings) => writeObject(STORAGE_KEY_SEO, data);
 export function getStoredServices(): ServiceDetail[] {
-  try { const raw = localStorage.getItem(STORAGE_KEY_SERVICES); if (!raw) return DETAILED_SERVICES; const parsed = JSON.parse(raw); return Array.isArray(parsed) ? parsed : DETAILED_SERVICES; } catch { return DETAILED_SERVICES; }
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_SERVICES);
+    const parsed = raw ? JSON.parse(raw) : DETAILED_SERVICES;
+    if (!Array.isArray(parsed)) return DETAILED_SERVICES;
+    // Existing production CMS content predates this confirmed service.
+    return parsed.some((item) => item.id === 'undername-impor') ? parsed : [...parsed, DETAILED_SERVICES.find((item) => item.id === 'undername-impor')!];
+  } catch { return DETAILED_SERVICES; }
 }
 export function saveStoredServices(services: ServiceDetail[]): void { localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(services)); notifyLocalUpdate(); }
 

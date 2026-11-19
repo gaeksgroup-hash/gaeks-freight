@@ -1,0 +1,45 @@
+{
+  "updatedAt": null,
+  "items": [
+    {
+      "id": "pi-seed-72083990",
+      "hsCode": "7208.39.90",
+      "commodity": "Produk baja canai panas — subpos lain-lain",
+      "status": "to_be_confirmed",
+      "sourceLabel": "Permendag 22/2025, Lampiran I",
+      "sourceUrl": "https://jdih.kemendag.go.id/pdf/Regulasi/0/Permendag%20Nomor%2022%20Tahun%202025%20tentang%20Kebijakan%20dan%20Pengaturan%20Impor%20Barang%20Industri%20Tertentu.pdf",
+      "verifiedAt": null,
+      "note": "Indikasi PI pada rujukan 2025; periksa ketentuan terbaru dan spesifikasi barang."
+    },
+    {
+      "id": "pi-seed-72084000",
+      "hsCode": "7208.40.00",
+      "commodity": "Produk baja canai panas dengan pola relief",
+      "status": "to_be_confirmed",
+      "sourceLabel": "Permendag 22/2025, Lampiran I",
+      "sourceUrl": "https://jdih.kemendag.go.id/pdf/Regulasi/0/Permendag%20Nomor%2022%20Tahun%202025%20tentang%20Kebijakan%20dan%20Pengaturan%20Impor%20Barang%20Industri%20Tertentu.pdf",
+      "verifiedAt": null,
+      "note": "Indikasi PI pada rujukan 2025; periksa ketentuan terbaru dan spesifikasi barang."
+    },
+    {
+      "id": "pi-seed-72085100",
+      "hsCode": "7208.51.00",
+      "commodity": "Produk baja canai panas, ketebalan melebihi 10 mm",
+      "status": "to_be_confirmed",
+      "sourceLabel": "Permendag 22/2025, Lampiran I",
+      "sourceUrl": "https://jdih.kemendag.go.id/pdf/Regulasi/0/Permendag%20Nomor%2022%20Tahun%202025%20tentang%20Kebijakan%20dan%20Pengaturan%20Impor%20Barang%20Industri%20Tertentu.pdf",
+      "verifiedAt": null,
+      "note": "Indikasi PI pada rujukan 2025; periksa ketentuan terbaru dan spesifikasi barang."
+    },
+    {
+      "id": "pi-seed-73072910",
+      "hsCode": "7307.29.10",
+      "commodity": "Sambungan pipa baja, diameter dalam kurang dari 15 cm",
+      "status": "to_be_confirmed",
+      "sourceLabel": "Permendag 22/2025, Lampiran I",
+      "sourceUrl": "https://jdih.kemendag.go.id/pdf/Regulasi/0/Permendag%20Nomor%2022%20Tahun%202025%20tentang%20Kebijakan%20dan%20Pengaturan%20Impor%20Barang%20Industri%20Tertentu.pdf",
+      "verifiedAt": null,
+      "note": "Indikasi PI pada rujukan 2025; periksa ketentuan terbaru dan spesifikasi barang."
+    }
+  ]
+}
