@@ -8,6 +8,10 @@
   },
   "scripts": {
     "dev": "vite",
+    "demo": "node scripts/demo-local.mjs",
+    "demo:preview": "node scripts/demo-local.mjs --preview",
+    "demo:sync": "node scripts/sync-local-content.mjs",
+    "demo:setup": "powershell -ExecutionPolicy Bypass -File scripts/install-local-php.ps1",
     "build": "tsc && vite build && node scripts/generate-seo.mjs",
     "preview": "vite preview"
   },

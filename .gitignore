@@ -8,6 +8,7 @@ dist/
 
 # Local uploads and generated runtime data
 public/api/*.local.json
+gaeks-private/
 
 # Editor and operating-system files
 .vscode/

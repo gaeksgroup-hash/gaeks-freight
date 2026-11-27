@@ -25,6 +25,30 @@ npm run preview
 
 Hasil build berada di `dist/`.
 
+### Demo lokal dengan API PHP
+
+Situs produksi memakai PHP 8.3 untuk API operator dan konten. Pada Windows, jalankan:
+
+```bash
+npm ci
+npm run demo:setup
+npm run demo:sync
+npm run demo
+```
+
+Buka `http://127.0.0.1:5173/`. Perintah `demo` menyalakan Vite dan PHP lokal; tekan Ctrl+C untuk menghentikan keduanya. `demo:setup` mengunduh PHP 8.3.37 ke `%LOCALAPPDATA%\GaeksFreight` dan memasang Visual C++ Redistributable x64 bila diperlukan. Untuk memakai PHP lain, set `GAEKS_PHP` ke path executable PHP sebelum menjalankan demo.
+
+`demo:sync` menyalin konten dan media yang terbuka untuk publik dari situs aktif ke penyimpanan lokal `gaeks-private/`. Folder tersebut diabaikan Git. Jalankan ulang hanya saat ingin menyegarkan data demo, karena konten lokal akan terganti. API demo memakai penyimpanan lokal dan tidak mengirim email newsletter. Shipment Tracking tetap membaca endpoint publik ERP.
+
+Untuk memeriksa hasil build bersama API PHP dan routing SEO lokal:
+
+```bash
+npm run build
+npm run demo:preview
+```
+
+Buka `http://127.0.0.1:4173/`. Server PHP bawaan hanya untuk penggunaan lokal. [Dokumentasi PHP](https://www.php.net/manual/en/features.commandline.webserver.php) menjelaskan batasan server tersebut.
+
 ## Struktur utama
 
 - `src/components/`: halaman dan komponen antarmuka.

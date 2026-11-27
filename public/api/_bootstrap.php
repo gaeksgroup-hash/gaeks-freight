@@ -8,6 +8,12 @@ const GAEKS_OPERATOR_ITERATIONS = 210000;
 const GAEKS_NEWS_FROM = 'news@gaeks.com';
 const GAEKS_SITE_URL = 'https://gaeks.com';
 
+function gaeks_local_demo(): bool
+{
+    return getenv('GAEKS_LOCAL_DEMO') === '1'
+        && preg_match('/^(?:127\\.0\\.0\\.1|localhost)(?::\\d+)?$/', $_SERVER['HTTP_HOST'] ?? '') === 1;
+}
+
 function gaeks_json(array $payload, int $status = 200): void
 {
     http_response_code($status);
@@ -28,7 +34,7 @@ function gaeks_start_session(): void
     session_set_cookie_params([
         'lifetime' => 0,
         'path' => '/',
-        'secure' => true,
+        'secure' => !gaeks_local_demo(),
         'httponly' => true,
         'samesite' => 'Strict',
     ]);
@@ -400,6 +406,9 @@ function gaeks_send_via_smtp(array $config, string $to, string $subject, string 
 
 function gaeks_send_html_mail(string $to, string $subject, string $html, ?string $unsubscribeUrl = null): bool
 {
+    if (gaeks_local_demo()) {
+        return false;
+    }
     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
         return false;
     }

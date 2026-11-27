@@ -5,6 +5,11 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: '/',
   plugins: [react()],
+  server: process.env.GAEKS_LOCAL_PHP_URL ? {
+    proxy: {
+      '/api': process.env.GAEKS_LOCAL_PHP_URL,
+    },
+  } : undefined,
   build: {
     outDir: 'dist',
     sourcemap: false,
