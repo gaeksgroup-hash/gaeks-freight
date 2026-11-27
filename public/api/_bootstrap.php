@@ -545,4 +545,39 @@ function gaeks_process_newsletter_queue(int $limit = 10): array
     return ['sent' => $sent, 'failed' => $failed, 'queued' => count($queue)];
 }
 
+function gaeks_resolve_public_url(string $url): string
+{
+    $trimmed = trim($url);
+    if ($trimmed === '') {
+        return GAEKS_SITE_URL . '/logos/gaek-symbol.png';
+    }
+    if (preg_match('#^https?://#i', $trimmed)) {
+        return $trimmed;
+    }
+    return GAEKS_SITE_URL . (str_starts_with($trimmed, '/') ? $trimmed : '/' . $trimmed);
+}
+
+function gaeks_favicon_mime(string $url): ?string
+{
+    $path = strtolower((string) parse_url($url, PHP_URL_PATH));
+    if (str_ends_with($path, '.svg')) return 'image/svg+xml';
+    if (str_ends_with($path, '.png')) return 'image/png';
+    if (str_ends_with($path, '.webp')) return 'image/webp';
+    if (str_ends_with($path, '.ico')) return 'image/x-icon';
+    if (str_ends_with($path, '.gif')) return 'image/gif';
+    if (str_ends_with($path, '.jpg') || str_ends_with($path, '.jpeg')) return 'image/jpeg';
+    return null;
+}
+
+function gaeks_head_favicon_tags(array $content, callable $escape): string
+{
+    $faviconUrl = trim((string) ($content['branding']['faviconUrl'] ?? '')) ?: '/favicon.svg?v=9';
+    $mime = gaeks_favicon_mime($faviconUrl);
+    $typeAttr = $mime !== null ? ' type="' . $escape($mime) . '"' : '';
+    $href = $escape($faviconUrl);
+    return '<link rel="icon"' . $typeAttr . ' href="' . $href . '">'
+        . '<link rel="shortcut icon" href="' . $href . '">'
+        . '<link rel="apple-touch-icon" href="' . $href . '">';
+}
+
 require_once __DIR__ . '/_service_content.php';

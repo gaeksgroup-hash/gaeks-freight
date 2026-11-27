@@ -95,6 +95,19 @@ function gaeks_optimize_image(string $source, string $sourceName, string $upload
         return [$destination, '/uploads/' . basename($destination), 'vector'];
     }
 
+    if ($extension === 'ico') {
+        $rawIco = (string) @file_get_contents($source);
+        $validIco = strlen($rawIco) >= 6 && (str_starts_with($rawIco, "\x00\x00\x01\x00") || str_starts_with($rawIco, "\x89PNG\r\n\x1a\n"));
+        if (!$validIco) {
+            throw new RuntimeException('File ICO tidak valid.');
+        }
+        $destination = $uploadDir . '/' . $stem . '.ico';
+        if (@file_put_contents($destination, $rawIco, LOCK_EX) === false) {
+            throw new RuntimeException('Favicon ICO belum dapat disimpan.');
+        }
+        return [$destination, '/uploads/' . basename($destination), 'icon'];
+    }
+
     if (class_exists('Imagick')) {
         try {
             $image = new Imagick();

@@ -75,8 +75,11 @@ try {
 
   const changed = structuredClone(data.branding);
   changed.contactGroups.find((g) => g.id === 'air').email = 'local-check@example.com';
+  changed.faviconUrl = '/uploads/custom-favicon-test.webp';
   assert.equal((await save('branding', changed)).status, 200);
   assert.match(await (await fetch(base + '/layanan/freight-udara/')).text(), /local-check@example\.com/);
+  const homeSsrWithFavicon = await (await fetch(base + '/')).text();
+  assert.match(homeSsrWithFavicon, /<link rel="icon" type="image\/webp" href="\/uploads\/custom-favicon-test\.webp">/);
 
   const phoneSsr = await (await fetch(base + '/kontak/telepon/')).text();
   assert.match(phoneSsr, /local-check@example\.com/);
@@ -334,18 +337,45 @@ try {
   await page.keyboard.press('Enter');
   assert.equal(await summary.evaluate((el) => el.parentElement.open), false);
 
-  // Scenario 6: Operator changes a contact in local CMS -> fresh visitor session sees updated target -> restore
+  // Scenario 6: Operator changes a contact + service tagline + favicon in local CMS -> fresh visitor session sees updates even when translating -> restore
   await page.goto(base + '/operator/');
   await page.getByLabel('Username', { exact: true }).fill('cms-local-test');
   await page.getByLabel('Kata sandi', { exact: true }).fill(password);
   await page.getByRole('button', { name: 'Masuk ke ruang kerja', exact: true }).click();
   await page.getByRole('navigation', { name: 'Modul operator' }).getByRole('button', { name: 'Brand & Kontak', exact: true }).click();
+  await page.getByLabel('URL Favicon', { exact: true }).fill('/uploads/custom-favicon-live.webp');
   await page.getByLabel('Email tim', { exact: true }).nth(3).fill('udara-uji@example.com');
+  await page.getByRole('button', { name: 'Simpan ke server', exact: true }).click();
+  await page.waitForTimeout(700);
+  await page.getByRole('navigation', { name: 'Modul operator' }).getByRole('button', { name: 'Layanan', exact: true }).click();
+  await page.getByRole('button', { name: 'Edit' }).first().click();
+  await page.getByLabel('Tagline', { exact: true }).fill('Tagline baru uji kepabeanan GAEKS.');
   await page.getByRole('button', { name: 'Simpan ke server', exact: true }).click();
   await page.waitForTimeout(700);
 
   const freshContext = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const freshPage = await freshContext.newPage();
+  await freshPage.route('https://translate.google.com/**', (route) => route.abort());
+  await freshPage.goto(base + '/');
+  await freshPage.waitForTimeout(600);
+  const faviconAttrs = await freshPage.locator('head link[rel="icon"]').evaluate((el) => ({
+    href: el.getAttribute('href'),
+    type: el.getAttribute('type'),
+  }));
+  assert.deepEqual(faviconAttrs, { href: '/uploads/custom-favicon-live.webp', type: 'image/webp' });
+  assert.match(await freshPage.locator('#home aside').innerText(), /Tagline baru uji kepabeanan GAEKS\./);
+  await freshPage.locator('#services .shipping-step-trigger').first().click();
+  await freshPage.locator('#services .shipping-step-panel .services-step-body').first().waitFor({ state: 'visible', timeout: 3000 });
+  assert.match(await freshPage.locator('#services').innerText(), /Tagline baru uji kepabeanan GAEKS\./);
+  await freshPage.locator('header summary[aria-label^="Bahasa aktif"]').click();
+  await freshPage.getByRole('button', { name: 'English', exact: true }).click();
+  await freshPage.waitForTimeout(200);
+  const translatedHeroAside = await freshPage.locator('#home aside').innerText();
+  const translatedServices = await freshPage.locator('#services').innerText();
+  assert.match(translatedHeroAside, /Tagline baru uji kepabeanan GAEKS\./);
+  assert.doesNotMatch(translatedHeroAside, /Swift PIB\/PEB processing/);
+  assert.match(translatedServices, /Tagline baru uji kepabeanan GAEKS\./);
+  assert.doesNotMatch(translatedServices, /Swift PIB\/PEB processing/);
   await freshPage.goto(base + '/layanan/freight-udara/');
   await freshPage.waitForTimeout(600);
   assert.ok((await freshPage.locator('.service-email-cta').getAttribute('href')).startsWith('mailto:udara-uji@example.com?'));

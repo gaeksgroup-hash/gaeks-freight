@@ -43,13 +43,15 @@ $structured = [
     'publisher' => ['@type' => 'Organization', 'name' => 'GAEKS Freight', 'url' => GAEKS_SITE_URL],
     'mainEntityOfPage' => $url,
 ];
+$siteContent = gaeks_read_json_file(gaeks_content_file(), []);
 $template = preg_replace_callback('/<title>.*?<\/title>/s', static fn(): string => '<title>' . $escape($title) . ' | GAEKS News</title>', $template, 1);
 $template = preg_replace('/\s*<meta name="description"[^>]*\/>/', '', $template);
-$template = preg_replace('/\s*<link rel="canonical"[^>]*\/>/', '', $template);
+$template = preg_replace('/\s*<link rel="(?:canonical|icon|shortcut icon|apple-touch-icon)"[^>]*\/?>/', '', $template);
 $template = preg_replace('/\s*<meta property="og:(?:type|url|title|description|image)"[^>]*\/>/', '', $template);
 $template = preg_replace('/\s*<script type="application\/ld\+json">.*?<\/script>/s', '', $template);
 $template = preg_replace('/\s*<link rel="preload" as="image"[^>]*\/>/', '', $template);
-$head = '<meta name="description" content="' . $escape($description) . '">' . "\n"
+$head = gaeks_head_favicon_tags($siteContent, $escape) . "\n"
+    . '<meta name="description" content="' . $escape($description) . '">' . "\n"
     . '<link rel="canonical" href="' . $escape($url) . '">' . "\n"
     . '<meta property="og:type" content="article"><meta property="og:url" content="' . $escape($url) . '">' . "\n"
     . '<meta property="og:title" content="' . $escape($title) . '"><meta property="og:description" content="' . $escape($description) . '">' . "\n"
@@ -65,5 +67,5 @@ foreach (preg_split('/\n\s*\n/', (string) ($article['content'] ?? '')) as $parag
 $body .= '<p><a href="/berita/">Lihat semua berita</a></p></main>';
 $template = preg_replace_callback('/<div id="root">.*?<\/div>/s', static fn(): string => '<div id="root">' . $body . '</div>', $template, 1);
 header('Content-Type: text/html; charset=UTF-8');
-header('Cache-Control: public, max-age=300');
+header('Cache-Control: no-cache, must-revalidate');
 echo $template;

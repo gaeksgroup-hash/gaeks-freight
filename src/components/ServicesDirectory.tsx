@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import { Language, ServiceDetail } from '../types/freight';
 import { getSiteCopy } from '../utils/adminStorage';
+import { localizeService } from '../utils/localizeContent';
 import { ServiceTitle } from './ServiceTitle';
 import { servicePath } from '../utils/routes';
 
@@ -22,12 +23,7 @@ export function ServicesDirectory({
   React.useEffect(() => setImageFailed(false), [selected?.id]);
   const copy = getSiteCopy();
 
-  const localize = (service: ServiceDetail) => ({
-    title: currentLang === 'en' ? service.title_en || service.title : currentLang === 'zh' ? service.title_zh || service.title : service.title,
-    category: currentLang === 'en' ? service.category_en || service.category : currentLang === 'zh' ? service.category_zh || service.category : service.category,
-    tagline: currentLang === 'en' ? service.tagline_en || service.tagline : currentLang === 'zh' ? service.tagline_zh || service.tagline : service.tagline,
-    description: currentLang === 'en' ? service.description_en || service.description : currentLang === 'zh' ? service.description_zh || service.description : service.description,
-  });
+  const localize = (service: ServiceDetail) => localizeService(service, currentLang);
 
   return (
     <section id="services" className="services-directory" aria-labelledby="services-title">

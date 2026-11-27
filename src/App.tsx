@@ -17,6 +17,7 @@ import { getStoredArticles } from './utils/newsStorage';
 import { articlePath, articleSlug } from './utils/articleRoutes';
 import { quoteContext } from './utils/quoteFlow';
 import { adLanding } from './data/adLanding';
+import { inferFaviconMimeType } from './utils/localizeContent';
 
 const LEGAL_DOC_META = {
   terms: {
@@ -166,16 +167,17 @@ export const App: React.FC = () => {
       setMeta('meta[name="description"]', 'content', description);
       setMeta('meta[name="keywords"]', 'content', seo.keywords);
       setMeta('meta[name="robots"]', 'content', currentPage === 'operator' || !seo.robotsIndex || window.location.hostname.endsWith('.hostingersite.com') ? 'noindex, nofollow' : 'index, follow');
-      setMeta('meta[property="og:title"]', 'content', document.title);
-      setMeta('meta[property="og:description"]', 'content', description);
-      setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl, 'https://gaeks.com').href);
+      setMeta('meta[property="og:title"]', 'content', currentPage === 'home' && seo.ogTitle ? seo.ogTitle : document.title);
+      setMeta('meta[property="og:description"]', 'content', currentPage === 'home' && seo.ogDescription ? seo.ogDescription : description);
+      setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl || '/logos/gaek-symbol.png', 'https://gaeks.com').href);
       let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
       if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
       canonical.href = detailService?.canonical || `https://gaeks.com${detailArticle ? articlePath(detailArticle) : window.location.pathname}`;
       setMeta('meta[property="og:url"]', 'content', canonical.href);
       const orgId = 'https://gaeks.com/#organization';
+      const logoUrl = new URL(branding.symbolLogoUrl || branding.navbarLogoUrl || '/logos/gaek-symbol.png', 'https://gaeks.com').href;
       const graph: Record<string, unknown>[] = [
-        { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: 'https://gaeks.com', logo: 'https://gaeks.com/logos/gaek-symbol.png', email: resolveContact('general').email, telephone: resolveContact('general').whatsappDisplay },
+        { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: 'https://gaeks.com', logo: logoUrl, email: resolveContact('general').email, telephone: resolveContact('general').whatsappDisplay },
         { '@type': 'LocalBusiness', '@id': 'https://gaeks.com/#local-business', name: 'GAEKS Freight', url: 'https://gaeks.com', parentOrganization: { '@id': orgId }, address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' } },
         { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
       ];
@@ -231,9 +233,19 @@ export const App: React.FC = () => {
       let structuredData = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement | null;
       if (!structuredData) { structuredData = document.createElement('script'); structuredData.type = 'application/ld+json'; document.head.appendChild(structuredData); }
       structuredData.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
-      let icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
-      if (!icon) { icon = document.createElement('link'); icon.rel = 'icon'; document.head.appendChild(icon); }
-      icon.href = branding.faviconUrl;
+      const faviconUrl = branding.faviconUrl || '/favicon.svg?v=9';
+      const faviconMime = inferFaviconMimeType(faviconUrl);
+      for (const rel of ['icon', 'shortcut icon', 'apple-touch-icon'] as const) {
+        let link = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;
+        if (!link) {
+          link = document.createElement('link');
+          link.rel = rel;
+          document.head.appendChild(link);
+        }
+        if (rel === 'icon' && faviconMime) link.type = faviconMime;
+        else link.removeAttribute('type');
+        if (link.getAttribute('href') !== faviconUrl) link.href = faviconUrl;
+      }
     };
     applyMetadata();
     window.addEventListener(GAEKS_UPDATE_EVENT, applyMetadata);

@@ -1,14 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { Language, ServiceDetail } from '../types/freight';
+import { Language } from '../types/freight';
 import { GAEKS_UPDATE_EVENT, getStoredServices } from '../utils/adminStorage';
+import { localizeService } from '../utils/localizeContent';
 import { ServiceTitle } from './ServiceTitle';
 
-const localize = (service: ServiceDetail, language: Language) => ({
-  title: language === 'en' ? service.title_en || service.title : language === 'zh' ? service.title_zh || service.title : service.title,
-  category: language === 'en' ? service.category_en || service.category : language === 'zh' ? service.category_zh || service.category : service.category,
-  tagline: language === 'en' ? service.tagline_en || service.tagline : language === 'zh' ? service.tagline_zh || service.tagline : service.tagline,
-});
+const localize = localizeService;
 
 export const HeroServiceHeadline: React.FC<{ currentLang: Language; onOpenService?: (id: string) => void; detailLabel: string; eyebrow: string }> = ({ currentLang, onOpenService, detailLabel, eyebrow }) => {
   const [services, setServices] = useState(getStoredServices());

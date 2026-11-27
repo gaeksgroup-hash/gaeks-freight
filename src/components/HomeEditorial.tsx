@@ -3,6 +3,7 @@ import { ArrowRight, ChevronDown, ClipboardCheck, MessageSquare, Package, CheckC
 import { getStoredArticles } from '../utils/newsStorage';
 import { ArticleItem, Language } from '../types/freight';
 import { GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { localizeArticle } from '../utils/localizeContent';
 import { isPublishedArticle } from '../utils/serviceContent';
 
 interface HomeEditorialProps {
@@ -18,11 +19,7 @@ const steps = [
   { number: '04', title: 'Selesaikan Serah Terima', description: 'Status pengiriman dan dokumen terkait dikoordinasikan hingga proses serah terima.', Icon: CheckCircle2 }
 ] as const;
 
-const localize = (article: ArticleItem, language: Language) => ({
-  title: language === 'en' ? article.title_en || article.title : language === 'zh' ? article.title_zh || article.title : article.title,
-  category: language === 'en' ? article.category_en || article.category : language === 'zh' ? article.category_zh || article.category : article.category,
-  excerpt: language === 'en' ? article.excerpt_en || article.excerpt : language === 'zh' ? article.excerpt_zh || article.excerpt : article.excerpt,
-});
+const localize = (article: ArticleItem, language: Language) => localizeArticle(article, language);
 
 const articleThumbUrl = (url: string, width: number) =>
   url?.includes('images.unsplash.com')

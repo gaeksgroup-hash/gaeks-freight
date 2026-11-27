@@ -53,4 +53,4 @@ foreach($teams as $number=>$members){
     $waText=$copy['phoneMessage'].' '.$teamTitle.'.';
     $body.='<article><h2>'.$e($teamTitle).'</h2><a href="https://wa.me/'.$e($number).'?text='.rawurlencode($waText).'">'.$e($first['whatsappDisplay']).'</a><p><a href="mailto:'.$e($first['email']).'?subject='.rawurlencode('Konsultasi '.$teamTitle).'&body='.rawurlencode($waText).'">'.$e($first['email']).'</a></p></article>';
 }
-$body.='</section></div></main>';$graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com']];require __DIR__.'/_page_template.php';
+$body.='</section></div></main>';$graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com','logo'=>gaeks_resolve_public_url((string)($content['branding']['symbolLogoUrl']??'/logos/gaek-symbol.png'))]];require __DIR__.'/_page_template.php';

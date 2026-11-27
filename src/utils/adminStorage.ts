@@ -1,7 +1,7 @@
 import contactSeed from '../../public/api/contact_groups_seed.json';
 import uiCopySeed from '../../public/api/ui_copy_seed.json';
 import { NewsletterSubscriber, ServiceDetail } from '../types/freight';
-import { DETAILED_SERVICES } from '../components/ServicesCarousel';
+import { DETAILED_SERVICES } from '../data/defaultServices';
 
 export interface ContactGroup {
   id: string;

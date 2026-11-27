@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Calculator, PackageSearch, Route } from 'lucide-react';
 import { Language } from '../types/freight';
-import { getStoredHero, getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { DEFAULT_HERO, getStoredHero, getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { HeroServiceHeadline } from './HeroServiceHeadline';
 
 export interface HeroProps {
@@ -44,7 +44,18 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
   const [videoVisible, setVideoVisible] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const baseText = copy[currentLang];
-  const text = currentLang === 'id' ? { ...baseText, eyebrow: heroSettings.eyebrow, title: `${heroSettings.titlePrefix}${heroSettings.titleHighlight}${heroSettings.titleSuffix}`, body: heroSettings.caption, primary: heroSettings.primaryLabel, secondary: heroSettings.secondaryLabel } : baseText;
+  const liveTitle = `${heroSettings.titlePrefix}${heroSettings.titleHighlight}${heroSettings.titleSuffix}`;
+  const defaultTitle = `${DEFAULT_HERO.titlePrefix}${DEFAULT_HERO.titleHighlight}${DEFAULT_HERO.titleSuffix}`;
+  const pickHeroCopy = (live: string, fallbackDefault: string, translated: string) =>
+    currentLang === 'id' || live.trim() !== fallbackDefault.trim() ? live : translated;
+  const text = {
+    ...baseText,
+    eyebrow: pickHeroCopy(heroSettings.eyebrow, DEFAULT_HERO.eyebrow, baseText.eyebrow),
+    title: pickHeroCopy(liveTitle, defaultTitle, baseText.title),
+    body: pickHeroCopy(heroSettings.caption, DEFAULT_HERO.caption, baseText.body),
+    primary: pickHeroCopy(heroSettings.primaryLabel, DEFAULT_HERO.primaryLabel, baseText.primary),
+    secondary: pickHeroCopy(heroSettings.secondaryLabel, DEFAULT_HERO.secondaryLabel, baseText.secondary),
+  };
   const firstService = getStoredServices()[0];
   const [posterFailed, setPosterFailed] = useState(false);
   const [videoFailed, setVideoFailed] = useState(false);
