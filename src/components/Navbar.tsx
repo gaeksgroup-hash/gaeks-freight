@@ -1,13 +1,14 @@
-import { resolveContact, contactLink } from '../utils/quoteFlow';
 import React, { useEffect, useState } from 'react';
-import { ChevronDown, Menu, PhoneCall, X } from 'lucide-react';
+import { ChevronDown, Menu, X } from 'lucide-react';
 import { Language } from '../types/freight';
 import { DEFAULT_BRANDING, getStoredBranding, getStoredSiteSettings, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { pagePaths } from '../utils/routes';
-import { currentQuoteService, measureContactClick, whatsappDigits } from '../utils/quoteFlow';
+import { currentQuoteService, measureContactClick, resolveServiceContact } from '../utils/quoteFlow';
+import { WhatsAppIcon } from './ContactActions';
 
 export interface NavbarProps {
   currentTab?: string;
+  activeServiceSlug?: string;
   onNavigate?: (page: string) => void;
   currentLang: Language;
   onSelectLang?: (lang: Language) => void;
@@ -17,35 +18,68 @@ export interface NavbarProps {
 const languageOptions: Array<{ value: Language; label: string; flagSrc: string }> = [
   { value: 'id', label: 'Bahasa Indonesia', flagSrc: '/flags/id.svg' },
   { value: 'en', label: 'English', flagSrc: '/flags/gb.svg' },
-  { value: 'zh', label: '中文', flagSrc: '/flags/cn.svg' }
+  { value: 'zh', label: '中文', flagSrc: '/flags/cn.svg' },
 ];
 
-const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Language) => void; align?: 'left' | 'right'; light?: boolean }> = ({ currentLang, onSelect, align = 'right', light = false }) => {
+const LanguageMenu: React.FC<{ currentLang: Language; onSelect: (language: Language) => void; align?: 'left' | 'right'; light?: boolean }> = ({
+  currentLang,
+  onSelect,
+  align = 'right',
+  light = false,
+}) => {
   const detailsRef = React.useRef<HTMLDetailsElement>(null);
   const current = languageOptions.find((option) => option.value === currentLang) || languageOptions[0];
-  return <details ref={detailsRef} className="group relative">
-    <summary aria-label={`Bahasa aktif: ${current.label}`} title={current.label} className={`flex min-h-11 min-w-14 cursor-pointer list-none items-center justify-center gap-1 rounded-full border px-2 text-xl transition-colors [&::-webkit-details-marker]:hidden ${light ? 'border-slate-300 hover:border-cyan-700 hover:bg-slate-50' : 'border-white/20 hover:border-cyan-300 hover:bg-white/5'}`}>
-      <img src={current.flagSrc} alt="" width="24" height="18" className="h-[18px] w-6 rounded-[2px] object-cover shadow-sm" /><ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
-    </summary>
-    <div className={`absolute top-[calc(100%+.5rem)] z-50 flex gap-1 rounded-xl border border-white/15 bg-[#082f34] p-1.5 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}>
-      {languageOptions.map((option) => <button key={option.value} type="button" aria-label={option.label} title={option.label} aria-current={currentLang === option.value ? 'true' : undefined} onClick={() => { onSelect(option.value); detailsRef.current?.removeAttribute('open'); }} className={`flex h-11 w-12 items-center justify-center rounded-lg transition-colors ${currentLang === option.value ? 'bg-cyan-400/20 ring-1 ring-cyan-300/60' : 'hover:bg-white/10'}`}><img src={option.flagSrc} alt="" width="28" height="21" className="h-[21px] w-7 rounded-[2px] object-cover shadow-sm" /></button>)}
-    </div>
-  </details>;
+  return (
+    <details ref={detailsRef} className="group relative">
+      <summary
+        aria-label={`Bahasa aktif: ${current.label}`}
+        title={current.label}
+        className={`flex min-h-11 min-w-14 cursor-pointer list-none items-center justify-center gap-1 rounded-full border px-2 text-xl transition-colors [&::-webkit-details-marker]:hidden ${light ? 'border-slate-300 hover:border-cyan-700 hover:bg-slate-50' : 'border-white/20 hover:border-cyan-300 hover:bg-white/5'}`}
+      >
+        <img src={current.flagSrc} alt="" width="24" height="18" className="h-[18px] w-6 rounded-[2px] object-cover shadow-sm" />
+        <ChevronDown className="h-3.5 w-3.5 text-slate-400 transition-transform group-open:rotate-180" aria-hidden="true" />
+      </summary>
+      <div
+        className={`absolute top-[calc(100%+.5rem)] z-50 flex gap-1 rounded-xl border border-white/15 bg-[#082f34] p-1.5 shadow-xl ${align === 'right' ? 'right-0' : 'left-0'}`}
+      >
+        {languageOptions.map((option) => (
+          <button
+            key={option.value}
+            type="button"
+            aria-label={option.label}
+            title={option.label}
+            aria-current={currentLang === option.value ? 'true' : undefined}
+            onClick={() => {
+              onSelect(option.value);
+              detailsRef.current?.removeAttribute('open');
+            }}
+            className={`flex h-11 w-12 items-center justify-center rounded-lg transition-colors ${currentLang === option.value ? 'bg-cyan-400/20 ring-1 ring-cyan-300/60' : 'hover:bg-white/10'}`}
+          >
+            <img src={option.flagSrc} alt="" width="28" height="21" className="h-[21px] w-7 rounded-[2px] object-cover shadow-sm" />
+          </button>
+        ))}
+      </div>
+    </details>
+  );
 };
 
 export const Navbar: React.FC<NavbarProps> = ({
   currentTab = 'home',
+  activeServiceSlug = '',
   onNavigate,
   currentLang = 'id',
   onSelectLang,
-  onLanguageChange
+  onLanguageChange,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [brandData, setBrandData] = useState(getStoredBranding());
   const [siteSettings, setSiteSettings] = useState(getStoredSiteSettings());
 
   useEffect(() => {
-    const reload = () => { setBrandData(getStoredBranding()); setSiteSettings(getStoredSiteSettings()); };
+    const reload = () => {
+      setBrandData(getStoredBranding());
+      setSiteSettings(getStoredSiteSettings());
+    };
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
@@ -73,7 +107,9 @@ export const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(false);
   };
 
-  const whatsAppUrl = contactLink('whatsapp');
+  const activeService = currentTab === 'service' && activeServiceSlug ? activeServiceSlug : currentQuoteService();
+  const resolvedContact = resolveServiceContact(activeService);
+  const whatsAppLabel = 'Chat WhatsApp';
   const navigation = siteSettings.navigation.filter((item) => item.visible);
   const trackingPage = currentTab === 'tracking';
   const configuredLogo = brandData.navbarLogoUrl || brandData.symbolLogoUrl;
@@ -110,7 +146,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           {navigation.map(({ page, label }) => (
             <a
               key={page}
-              href={pagePaths[page] || "/"}
+              href={pagePaths[page] || '/'}
               onClick={(event) => handleNav(page, event)}
               aria-current={currentTab === page ? 'page' : undefined}
               className={`inline-flex min-h-11 items-center whitespace-nowrap border-b-2 px-2.5 text-[13px] font-semibold transition-colors ${navigationClass(page)}`}
@@ -123,14 +159,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="hidden shrink-0 items-center gap-2 xl:flex">
           <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} light={trackingPage} />
           <a
-            href={whatsAppUrl}
-                onClick={() => measureContactClick('whatsapp', currentQuoteService())}
+            href={resolvedContact.whatsappUrl}
+            onClick={() => measureContactClick('whatsapp', activeService)}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex min-h-11 items-center gap-2 rounded-full bg-cyan-400 px-4 text-sm font-bold text-[#011417] transition-colors hover:bg-cyan-300"
           >
-            <PhoneCall className="h-4 w-4" aria-hidden="true" />
-            Chat WhatsApp
+            <WhatsAppIcon size={16} />
+            <span>{whatsAppLabel}</span>
           </a>
         </div>
 
@@ -154,7 +190,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {navigation.map(({ page, mobileLabel }) => (
                 <a
                   key={page}
-                  href={pagePaths[page] || "/"}
+                  href={pagePaths[page] || '/'}
                   onClick={(event) => handleNav(page, event)}
                   aria-current={currentTab === page ? 'page' : undefined}
                   className={`flex min-h-12 items-center border-l-2 px-4 text-base ${
@@ -171,14 +207,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="sr-only">Pilih bahasa</span>
               <LanguageMenu currentLang={currentLang} onSelect={handleTriggerLanguage} align="left" />
               <a
-                href={whatsAppUrl}
-                onClick={() => measureContactClick('whatsapp', currentQuoteService())}
+                href={resolvedContact.whatsappUrl}
+                onClick={() => measureContactClick('whatsapp', activeService)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-md bg-cyan-400 px-4 text-sm font-semibold text-[#011417] sm:ml-auto sm:w-auto"
               >
-                <PhoneCall className="h-4 w-4" aria-hidden="true" />
-                Chat WhatsApp
+                <WhatsAppIcon size={16} />
+                <span>{whatsAppLabel}</span>
               </a>
             </div>
           </nav>

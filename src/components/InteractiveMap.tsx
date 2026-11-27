@@ -1,4 +1,4 @@
-import { resolveContact, contactLink, whatsappDigits } from '../utils/quoteFlow';
+import { measureContactClick, resolveServiceContact } from '../utils/quoteFlow';
 import React, { useMemo, useState } from 'react';
 import { ArrowRight, ChevronDown, Plane, Search, Ship } from 'lucide-react';
 import { toast } from 'sonner';
@@ -402,6 +402,7 @@ export const InteractiveMap: React.FC = () => {
   }, [selectedRegion, searchQuery]);
 
   const handleInquiryRoute = (origin: string, carrier: string, mode: string, leadTime: string) => {
+    const serviceKey = activeTransportMode === 'air' ? 'air' : 'fcl';
     const text = `Halo Gaek Freight, saya ingin konsultasi jadwal & penawaran rute ${mode}:
 - Asal: ${origin}
 - Rekomendasi Carrier: ${carrier}
@@ -409,7 +410,9 @@ export const InteractiveMap: React.FC = () => {
 - Pelabuhan Tujuan: Jakarta (Tanjung Priok) / Surabaya / Semarang
 Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
 
-    window.open(`https://wa.me/${whatsappDigits(resolveContact('general').whatsappNumber)}?text=${encodeURIComponent(text)}`, '_blank');
+    const target = resolveServiceContact(serviceKey, { extraBody: text });
+    window.open(`https://wa.me/${target.whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    measureContactClick('whatsapp', serviceKey);
     toast.success(`Membuka WhatsApp untuk Rute ${origin}`, {
       description: `Rekomendasi Carrier: ${carrier}`
     });

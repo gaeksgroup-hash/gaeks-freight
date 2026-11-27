@@ -26,7 +26,7 @@ if (preg_match('~^/layanan/([a-z0-9-]+)/?$~i', $path, $match)) {
 if (is_file($file) && str_starts_with(realpath($file), $root . DIRECTORY_SEPARATOR)) {
     return false;
 }
-if ($path === '/' || preg_match('~^/(operator|tracking|layanan|rute-pengiriman|kalkulator|berita|kontak)/?$~', $path)) {
+if ($path === '/' || preg_match('~^/(operator|tracking|layanan|rute-pengiriman|kalkulator|berita|kontak|terms-of-use|privacy-terms)/?$~', $path)) {
     header('Content-Type: text/html; charset=UTF-8');
     readfile($root . '/index.html');
     return true;

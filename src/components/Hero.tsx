@@ -62,12 +62,34 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
 
   useEffect(() => {
     if (heroSettings.bgType !== 'video' || !videoUrl || videoFailed || heroSettings.videoLoadMode === 'poster-only' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (heroSettings.videoLoadMode === 'adaptive' && window.innerWidth < 768) return;
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     if (connection?.saveData) return;
     if (heroSettings.videoLoadMode === 'adaptive' && ['slow-2g', '2g', '3g'].includes(connection?.effectiveType || '')) return;
-    const frame = window.requestAnimationFrame(() => setLoadVideo(true));
-    return () => window.cancelAnimationFrame(frame);
-  }, [heroSettings.bgType, heroSettings.videoLoadMode, videoUrl, videoFailed]);
+    let timerId: number | undefined;
+    let idleId: number | undefined;
+    const triggerVideo = () => {
+      const delay = Math.max(400, Number(heroSettings.videoLoadDelayMs) || 1200);
+      timerId = window.setTimeout(() => setLoadVideo(true), delay);
+    };
+    const schedule = () => {
+      if (typeof window.requestIdleCallback === 'function') {
+        idleId = window.requestIdleCallback(triggerVideo, { timeout: 1500 });
+      } else {
+        triggerVideo();
+      }
+    };
+    if (document.readyState === 'complete') {
+      schedule();
+    } else {
+      window.addEventListener('load', schedule, { once: true });
+    }
+    return () => {
+      window.removeEventListener('load', schedule);
+      if (idleId !== undefined && typeof window.cancelIdleCallback === 'function') window.cancelIdleCallback(idleId);
+      if (timerId !== undefined) window.clearTimeout(timerId);
+    };
+  }, [heroSettings.bgType, heroSettings.videoLoadMode, heroSettings.videoLoadDelayMs, videoUrl, videoFailed]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -89,26 +111,26 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.83)_0%,rgba(3,29,33,.67)_54%,rgba(3,29,33,.42)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(3,29,33,.78)_0%,rgba(3,29,33,.59)_58%,rgba(3,29,33,.78)_100%)]" />
         <div className="page-shell grid min-h-[600px] min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-16">
           <div className="min-w-0 flex flex-col justify-center py-14 sm:py-20 lg:py-24">
-            <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{text.eyebrow}</p>
-            <h1 id="hero-title" className="mt-5 max-w-3xl break-words font-display text-3xl font-bold leading-[1.04] tracking-[-0.04em] text-white min-[360px]:text-4xl sm:text-5xl lg:text-6xl">{text.title}</h1>
-            <p className="mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">{text.body}</p>
-            <div className="mt-7">
+            <p className="hero-choreo-lead text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{text.eyebrow}</p>
+            <h1 id="hero-title" className="hero-choreo-lead mt-5 max-w-3xl break-words font-display text-3xl font-bold leading-[1.04] tracking-[-0.04em] text-white min-[360px]:text-4xl sm:text-5xl lg:text-6xl">{text.title}</h1>
+            <p className="hero-choreo-support mt-6 max-w-xl text-base leading-7 text-slate-200 sm:text-lg">{text.body}</p>
+            <div className="hero-choreo-support mt-7">
               <a href="/tracking/" onClick={(event) => { if (onNavigate) { event.preventDefault(); onNavigate('tracking'); } }} className="hero-track-cta group" aria-label={`${text.trackingTitle}: ${text.trackingDescription}`}>
                 <span className="hero-track-icon" aria-hidden="true"><PackageSearch className="h-5 w-5" /></span>
-                <span className="min-w-0 text-left"><strong className="block text-sm leading-tight">{text.trackingTitle}</strong><span className="mt-0.5 block text-[11px] font-medium text-cyan-100/75">{text.trackingDescription}</span></span>
+                <span className="min-w-0 text-left"><strong className="block text-sm leading-tight">{text.trackingTitle}</strong><span className="mt-0.5 block text-[11px] font-medium text-cyan-100/80">{text.trackingDescription}</span></span>
                 <ArrowRight className="hero-track-arrow ml-1 h-4 w-4 shrink-0 text-cyan-200" aria-hidden="true" />
               </a>
             </div>
-            <div className="mt-5 flex flex-wrap items-center gap-4">
-              <button type="button" onClick={() => onNavigate?.('calculator')} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200">{text.primary}<ArrowRight className="h-4 w-4" /></button>
-              <button type="button" onClick={() => onNavigate?.('services')} className="inline-flex min-h-11 items-center gap-2 px-1 text-sm font-bold text-white underline-offset-4 hover:underline">{text.secondary}<ArrowRight className="h-4 w-4" /></button>
+            <div className="hero-choreo-action mt-5 flex flex-wrap items-center gap-4">
+              <button type="button" onClick={() => onNavigate?.('calculator')} className="btn-press inline-flex min-h-11 items-center justify-center gap-2 rounded-md bg-cyan-300 px-5 py-3 text-sm font-bold text-[#062d32] transition-colors hover:bg-cyan-200">{text.primary}<ArrowRight className="h-4 w-4" /></button>
+              <button type="button" onClick={() => onNavigate?.('services')} className="btn-press inline-flex min-h-11 items-center gap-2 px-1 text-sm font-bold text-white underline-offset-4 hover:underline">{text.secondary}<ArrowRight className="h-4 w-4" /></button>
             </div>
           </div>
           <HeroServiceHeadline currentLang={currentLang} onOpenService={onOpenService} detailLabel={text.detail} eyebrow={text.featured} />
         </div>
       </div>
-      <div className="mx-auto grid max-w-7xl bg-white md:grid-cols-3">
-        {text.utilities.map(([title, description, page], index) => { const Icon = icons[index]; return <button key={page} type="button" onClick={() => onNavigate?.(page)} className="group flex min-h-[104px] items-center gap-4 border-b border-slate-200 px-5 py-5 text-left transition-colors hover:bg-cyan-50 md:border-b-0 md:border-r last:border-r-0"><Icon className="h-5 w-5 shrink-0 text-cyan-700" /><span className="min-w-0 flex-1"><strong className="block text-sm font-bold text-[#12363a]">{title}</strong><span className="mt-1 block text-sm text-slate-500">{description}</span></span><ArrowRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform group-hover:translate-x-1" /></button>; })}
+      <div className="hero-utilities mx-auto grid max-w-7xl bg-white md:grid-cols-3">
+        {text.utilities.map(([title, description, page], index) => { const Icon = icons[index]; return <button key={page} type="button" onClick={() => onNavigate?.(page)} className="hero-utility-item group flex min-h-[104px] items-center gap-4 border-b border-slate-200 px-5 py-5 text-left md:border-b-0 md:border-r last:border-r-0"><span className="hero-utility-icon flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-[#eef5f4] text-[#0a5861]"><Icon className="h-5 w-5" aria-hidden="true" /></span><span className="min-w-0 flex-1"><strong className="block text-sm font-bold text-[#12363a]">{title}</strong><span className="mt-1 block text-sm text-slate-600">{description}</span></span><ArrowRight className="hero-utility-arrow h-4 w-4 shrink-0 text-slate-500" aria-hidden="true" /></button>; })}
       </div>
     </section>
   );

@@ -24,6 +24,12 @@ export interface ServiceDetail {
   evidenceNotes?: string;
   landingTitle?: string;
   landingDescription?: string;
+  heroSummary?: string;
+  ctaServiceName?: string;
+  whatsappCtaLabel?: string;
+  emailCtaLabel?: string;
+  whatsappTemplate?: string;
+  emailSubject?: string;
   id: string;
   title: string;
   title_en?: string;

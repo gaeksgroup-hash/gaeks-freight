@@ -26,7 +26,7 @@ const phpDir = dirname(php);
 const phpOptions = process.platform === 'win32' && php === bundledPhp
   ? ['-d', `extension_dir=${join(phpDir, 'ext')}`, '-d', 'extension=gd']
   : [];
-const backendPort = preview ? 4173 : 8001;
+const backendPort = preview ? Number(process.env.GAEKS_PREVIEW_PORT || 4173) : Number(process.env.GAEKS_API_PORT || 8001);
 const docroot = join(project, preview ? 'dist' : 'public');
 const phpArgs = [
   ...phpOptions,
@@ -56,7 +56,7 @@ if (!preview) {
   children.push(frontend);
 }
 
-console.log(`Demo lokal: http://127.0.0.1:${preview ? 4173 : 5173}/`);
+console.log(`Demo lokal: http://127.0.0.1:${preview ? backendPort : 5173}/`);
 let stopping = false;
 function stop(exitCode = 0) {
   if (stopping) return;

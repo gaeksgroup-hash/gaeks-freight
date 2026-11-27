@@ -3,7 +3,18 @@ import uiCopySeed from '../../public/api/ui_copy_seed.json';
 import { NewsletterSubscriber, ServiceDetail } from '../types/freight';
 import { DETAILED_SERVICES } from '../components/ServicesCarousel';
 
-export interface ContactGroup { id: string; name: string; whatsappNumber: string; whatsappDisplay: string; email: string; ctaText: string; serviceIds: string[]; }
+export interface ContactGroup {
+  id: string;
+  name: string;
+  whatsappNumber: string;
+  whatsappDisplay: string;
+  email: string;
+  ctaText: string;
+  emailCtaText?: string;
+  whatsappTemplate?: string;
+  emailSubjectTemplate?: string;
+  serviceIds: string[];
+}
 export interface BrandingSettings {
   contactGroups?: ContactGroup[];
   faviconUrl: string;
@@ -123,7 +134,13 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
     { page: 'news', label: 'Berita', mobileLabel: 'Berita & Pembaruan', visible: true },
     { page: 'contact', label: 'Kontak', mobileLabel: 'Hubungi Kami', visible: true },
   ],
-  socialLinks: [],
+  socialLinks: [
+    {
+      id: 'social-1791125525370',
+      platform: 'instagram',
+      url: 'https://www.instagram.com/gaeksfreight/',
+    },
+  ],
 };
 export const DEFAULT_SEO: SeoSettings = {
   siteTitle: 'GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia',
@@ -184,7 +201,23 @@ export async function saveSectionToServer(section: 'branding' | 'hero' | 'siteSe
   } catch (error) { return { success: false, message: error instanceof Error ? error.message : 'Koneksi server gagal.' }; }
 }
 
-export const getStoredBranding = () => readObject(STORAGE_KEY_BRANDING, DEFAULT_BRANDING);
+export const getStoredBranding = (): BrandingSettings => {
+  const stored = readObject(STORAGE_KEY_BRANDING, DEFAULT_BRANDING);
+  const seedById = new Map(contactSeed.map((group) => [group.id, group as ContactGroup]));
+  const rawGroups = Array.isArray(stored.contactGroups) && stored.contactGroups.length ? stored.contactGroups : contactSeed;
+  const contactGroups = rawGroups.map((group) => {
+    const seed = seedById.get(group.id);
+    if (!seed) return group;
+    return {
+      ...seed,
+      ...group,
+      emailCtaText: group.emailCtaText || seed.emailCtaText,
+      whatsappTemplate: group.whatsappTemplate || seed.whatsappTemplate,
+      emailSubjectTemplate: group.emailSubjectTemplate || seed.emailSubjectTemplate,
+    };
+  });
+  return { ...stored, contactGroups };
+};
 export const saveStoredBranding = (data: BrandingSettings) => writeObject(STORAGE_KEY_BRANDING, data);
 export const getStoredHero = () => readObject(STORAGE_KEY_HERO, DEFAULT_HERO);
 export const saveStoredHero = (data: HeroSettings) => writeObject(STORAGE_KEY_HERO, data);

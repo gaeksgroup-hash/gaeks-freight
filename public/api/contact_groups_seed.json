@@ -1,61 +1,76 @@
 [
   {
-    "id": "fcl",
-    "name": "Ekspor / impor laut FCL",
-    "whatsappNumber": "6285608561745",
-    "whatsappDisplay": "+6285608561745",
-    "email": "info@gaeks.com",
-    "serviceIds": [
-      "fcl",
-      "project-cargo",
-      "roro-breakbulk"
-    ],
-    "ctaText": "Konsultasikan Ekspor / impor laut FCL"
-  },
-  {
     "id": "ppjk",
-    "name": "Customs Clearance / PPJK",
+    "name": "Kepabeanan / PPJK",
     "whatsappNumber": "6285608561745",
     "whatsappDisplay": "+6285608561745",
     "email": "info@gaeks.com",
     "serviceIds": [
       "ppjk"
     ],
-    "ctaText": "Konsultasikan Customs Clearance / PPJK"
+    "ctaText": "Chat WhatsApp",
+    "emailCtaText": "Kirim Email",
+    "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi customs clearance {arah} di {kota}.",
+    "emailSubjectTemplate": "Konsultasi Kepabeanan {arah} {kota}"
   },
   {
-    "id": "air",
-    "name": "Air Freight",
-    "whatsappNumber": "6287722440148",
-    "whatsappDisplay": "+6287722440148",
-    "email": "aksa@gaeks.com",
+    "id": "fcl",
+    "name": "Freight Laut FCL",
+    "whatsappNumber": "6285608561745",
+    "whatsappDisplay": "+6285608561745",
+    "email": "info@gaeks.com",
     "serviceIds": [
-      "air-shipment"
+      "fcl",
+      "roro-breakbulk"
     ],
-    "ctaText": "Konsultasikan Air Freight"
+    "ctaText": "Chat WhatsApp",
+    "emailCtaText": "Kirim Email",
+    "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi {service} {arah} di {kota}.",
+    "emailSubjectTemplate": "Konsultasi {service} {arah} {kota}"
   },
   {
     "id": "undername",
-    "name": "Undername / Persetujuan Impor",
+    "name": "Undername Impor & PI",
     "whatsappNumber": "6285608561745",
     "whatsappDisplay": "+6285608561745",
     "email": "info@gaeks.com",
     "serviceIds": [
       "undername-impor"
     ],
-    "ctaText": "Konsultasikan Undername / Persetujuan Impor"
+    "ctaText": "Chat WhatsApp",
+    "emailCtaText": "Kirim Email",
+    "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi undername impor dan Persetujuan Impor (PI) di {kota}.",
+    "emailSubjectTemplate": "Konsultasi Undername Impor & PI {kota}"
+  },
+  {
+    "id": "air",
+    "name": "Kargo Udara",
+    "whatsappNumber": "6287722440148",
+    "whatsappDisplay": "+6287722440148",
+    "email": "aksa@gaeks.com",
+    "serviceIds": [
+      "air-shipment"
+    ],
+    "ctaText": "Chat WhatsApp",
+    "emailCtaText": "Kirim Email",
+    "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi air freight {arah} di {kota}.",
+    "emailSubjectTemplate": "Konsultasi Air Freight {arah} {kota}"
   },
   {
     "id": "general",
-    "name": "Layanan pelanggan & general inquiry",
+    "name": "Project Cargo, Domestik & Gudang",
     "whatsappNumber": "6281393453375",
     "whatsappDisplay": "+6281393453375",
     "email": "Cs@gaeks.com",
     "serviceIds": [
+      "project-cargo",
       "domestic-truck",
       "gudang-pbm",
       "lcl"
     ],
-    "ctaText": "Hubungi layanan pelanggan untuk general inquiry"
+    "ctaText": "Chat WhatsApp",
+    "emailCtaText": "Kirim Email",
+    "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi {service} {arah} di {kota}.",
+    "emailSubjectTemplate": "Konsultasi {service} {arah} {kota}"
   }
 ]

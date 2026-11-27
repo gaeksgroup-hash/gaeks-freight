@@ -50,6 +50,8 @@
     ],
     "landingTitle": "Freight Laut FCL",
     "landingDescription": "Diskusikan rute impor atau ekspor peti kemas penuh, jenis kontainer, komoditas, dan kesiapan muat. Tim meninjau pilihan pengiriman berdasarkan detail Anda.",
+    "ctaServiceName": "Freight Laut FCL",
+    "heroSummary": "Konsultasikan kebutuhan kontainer penuh 20ft, 40ft, atau reefer untuk impor maupun ekspor tanpa harus memastikan ukuran di awal.",
     "status": "published",
     "seoTitle": "FCL ekspor dan impor laut | GAEKS Freight",
     "metaDescription": "Importir dan eksportir dengan muatan satu kontainer penuh. Pilihan pelayaran, jadwal cut-off, ruang kapal, biaya terminal, trucking, dan waktu bebas kontainer memengaruhi biaya total.",
@@ -131,6 +133,8 @@
     ],
     "landingTitle": "Air Freight",
     "landingDescription": "Konsultasikan pengiriman kargo udara dengan asal, tujuan, berat, dimensi, dan komoditas. Pilihan layanan dan jadwal ditinjau setelah data awal diterima.",
+    "ctaServiceName": "Air Freight",
+    "heroSummary": "Konsultasikan pengiriman kargo udara ekspor maupun impor dengan keseimbangan biaya efisien dan penanganan yang terjaga.",
     "status": "published",
     "seoTitle": "Air Freight ekspor dan impor | GAEKS Freight",
     "metaDescription": "Bisnis yang memerlukan pengiriman udara dengan prioritas biaya, waktu, dan kualitas penanganan. Tarif mengikuti chargeable weight, kapasitas penerbangan, transit, karakter barang, dan tenggat. Tim membantu membandingkan pilihan biaya yang efisien dengan kualitas penanganan sesuai kebutuhan.",
@@ -220,6 +224,8 @@
     ],
     "landingTitle": "PPJK / Customs Clearance",
     "landingDescription": "Konsultasikan dokumen kepabeanan impor atau ekspor, klasifikasi HS, serta persyaratan yang mungkin berlaku untuk komoditas Anda. Kebutuhan PI atau Lartas diperiksa sesuai kasus.",
+    "ctaServiceName": "Kepabeanan / PPJK",
+    "heroSummary": "Konsultasikan customs clearance ekspor atau impor, dokumen PIB/PEB, SKI, dan peninjauan HS code untuk Jakarta, Semarang, maupun Surabaya.",
     "status": "published",
     "seoTitle": "Customs Clearance dan dokumen ekspor impor | GAEKS Freight",
     "metaDescription": "Importir dan eksportir yang membutuhkan koordinasi kepabeanan untuk general cargo dan peninjauan dokumen terkait. Kelengkapan dokumen, klasifikasi barang, pemeriksaan, kebutuhan SKI atau izin lain, dan keputusan instansi memengaruhi proses. SKI ditinjau sesuai jenis komoditas dan instansi yang berwenang.",
@@ -266,6 +272,8 @@
     "description": "GAEKS menyediakan jasa undername impor dan pendampingan pengurusan Persetujuan Impor (PI). Kebutuhan PI dan kelayakan proses ditinjau berdasarkan HS code, spesifikasi barang, serta ketentuan yang berlaku.",
     "landingTitle": "Undername Impor & Persetujuan Impor",
     "landingDescription": "Dua kebutuhan yang sering bertemu dalam satu shipment: penggunaan entitas importir dan pemeriksaan izin PI. Jelaskan barang serta dokumen Anda agar tim dapat meninjau langkah yang relevan.",
+    "ctaServiceName": "Undername Impor & PI",
+    "heroSummary": "Bahas skema undername impor dan konsultasi Persetujuan Impor (PI), termasuk besi dan baja, untuk pelabuhan Jakarta, Semarang, dan Surabaya.",
     "features": [
       "Konsultasi skema undername impor",
       "Pemeriksaan kebutuhan Persetujuan Impor",
@@ -297,8 +305,8 @@
         "Tidak. Kewajiban PI bergantung pada klasifikasi, spesifikasi, dan ketentuan yang berlaku."
       ],
       [
-        "Apakah status Ready menjamin izin terbit?",
-        "Tidak. Status Ready menunjukkan kesiapan layanan yang diverifikasi GAEKS, bukan persetujuan dari otoritas."
+        "Apakah status Ready menjamin izin atau kuota tersedia?",
+        "Tidak. Konsultasi skema undername dan peninjauan HS code dapat dilakukan kapan saja, sedangkan ketersediaan kuota PI besi/baja hanya berlaku untuk pos tarif yang statusnya telah dikonfirmasi dan diverifikasi tim sebelum pengapalan."
       ]
     ],
     "status": "published",
@@ -309,7 +317,11 @@
     "sections": [
       {
         "title": "Untuk siapa layanan ini",
-        "body": "Pelaku usaha yang perlu meninjau skema importir serta persyaratan PI untuk komoditasnya."
+        "body": "Pelaku usaha yang memerlukan konsultasi skema undername importir maupun pemeriksaan persyaratan Persetujuan Impor (PI), termasuk komoditas besi dan baja."
+      },
+      {
+        "title": "Konsultasi PI besi/baja vs ketersediaan kuota terkonfirmasi",
+        "body": "Layanan konsultasi mencakup peninjauan HS code, spesifikasi teknis, dan kelayakan dokumen sebelum pengapalan. Ketersediaan kuota PI besi/baja berbeda untuk setiap pos tarif dan hanya dianggap tersedia setelah diverifikasi dan dikonfirmasi secara tertulis oleh tim GAEKS pada daftar status Ready."
       },
       {
         "title": "Data awal untuk peninjauan",
@@ -361,6 +373,8 @@
     "equipment": "100+ Unit Armada Siap Jalan",
     "imageUrl": "/uploads/1789232112_387700.webp",
     "commodities": "Kargo industri, consumer goods, semen, bahan bangunan, suku cadang",
+    "ctaServiceName": "Trucking Domestik",
+    "heroSummary": "Konsultasikan pengiriman darat antarkota maupun sambungan dari pelabuhan atau bandara langsung menuju gudang dan pabrik Anda.",
     "summary": "Trucking domestik memindahkan kargo dari pelabuhan, bandara, atau gudang ke titik penerima di darat. Pemilihan armada mempertimbangkan dimensi, berat, jumlah koli, akses lokasi, dan target waktu. Untuk rute dengan lebih dari satu titik bongkar, informasi urutan pengiriman perlu diberikan sejak awal agar penawaran dan rencana perjalanan sesuai kebutuhan.",
     "compare": [
       [
@@ -436,6 +450,8 @@
     "equipment": "Multi-Axle Modular Hydraulic Trailer",
     "imageUrl": "/uploads/1789234361_387709.webp",
     "commodities": "Dump truck tambang, excavator, mesin pabrik, turbin pembangkit, tangki industri, baja",
+    "ctaServiceName": "Project Cargo",
+    "heroSummary": "Diskusikan kebutuhan angkut muatan berat, alat proyek, breakbulk, maupun RORO langsung bersama tim CS kami sebelum survei atau jadwal final.",
     "summary": "Project cargo menangani pengiriman barang berukuran besar, berat, atau memerlukan rencana angkat dan angkut khusus. Sebelum moda dipilih, dimensi rinci, berat, titik angkat, kemasan, serta kondisi akses di asal dan tujuan harus ditinjau. Rencana akhir dapat melibatkan beberapa moda dan perlu disesuaikan dengan izin, peralatan, serta kondisi lapangan.",
     "compare": [
       [
@@ -519,6 +535,8 @@
     "equipment": "Gudang Kawasan Pabean & Non-Pabean",
     "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
     "commodities": "Curah kering, kargo palet, semen kemasan, bahan pangan industri",
+    "ctaServiceName": "Gudang & PBM",
+    "heroSummary": "Konsultasikan kebutuhan bongkar muat dermaga dan penyimpanan gudang transit untuk kargo ekspor, impor, maupun domestik.",
     "summary": "Pergudangan dan pekerjaan bongkar muat membantu menghubungkan kedatangan kargo dengan penyerahan berikutnya. Tim perlu mencocokkan jenis barang, jumlah koli, kebutuhan penanganan, waktu kedatangan, dan tujuan distribusi sebelum memilih pengaturan di terminal atau gudang transit. Ketersediaan ruang, peralatan, serta biaya penanganan dikonfirmasi sesuai lokasi dan jadwal aktual.",
     "compare": [
       [
@@ -585,6 +603,8 @@
     "equipment": "Ditentukan setelah peninjauan spesifikasi kargo.",
     "commodities": "Sesuai hasil peninjauan komoditas.",
     "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
+    "ctaServiceName": "RORO & Breakbulk",
+    "heroSummary": "Konsultasikan penyediaan kapal RORO atau breakbulk untuk unit bergerak, alat berat, dan muatan proyek non-kontainer.",
     "summary": "Pemilik proyek yang memerlukan peninjauan kapal RORO atau breakbulk untuk karakter muatannya.",
     "compare": [
       [
@@ -655,6 +675,8 @@
     "equipment": "Weekly Dedicated Consolidation Box",
     "imageUrl": "/uploads/1789234769_387713.webp",
     "commodities": "Barang retail, palet kemasan kayu, spare parts, sampel bahan, perlengkapan bisnis",
+    "ctaServiceName": "Freight Laut LCL",
+    "heroSummary": "Konsultasikan pengiriman laut konsolidasi untuk muatan di bawah satu kontainer penuh dari atau menuju pelabuhan utama.",
     "summary": "LCL memungkinkan pengiriman laut ketika muatan tidak memerlukan satu kontainer penuh. Barang digabung dengan muatan lain melalui proses konsolidasi, sehingga jadwal cut-off, kemasan, dan penanganan di titik asal maupun tujuan perlu diperhatikan. Untuk memilih LCL atau FCL, bandingkan volume, sifat barang, kebutuhan waktu, dan biaya total sampai lokasi penerima.",
     "compare": [
       [

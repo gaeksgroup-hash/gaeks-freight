@@ -2,7 +2,7 @@
 declare(strict_types=1);
 // Included by page.php; all displayed content comes from the same CMS as React.
 $groups=$content['branding']['contactGroups']??[];
-$priority=['general','fcl','ppjk','undername','air'];
+$priority=['ppjk','fcl','undername','air','general'];
 $rank=static function(string $id)use($priority):int{$n=array_search($id,$priority,true);return $n===false?count($priority):$n;};
 usort($groups,static fn($a,$b)=>$rank($a['id'])<=>$rank($b['id']));
 $teams=[];
@@ -13,10 +13,11 @@ foreach($teams as $number=>$members){
     $teamTitle=implode(' · ',array_column($members,'name'));
     if(count($members)===1&&$first['id']==='general')$teamTitle=$copy['phoneGeneralTeam'];
     elseif(count($members)>1&&!array_diff($memberIds,['fcl','ppjk','undername']))$teamTitle=$copy['phoneTradeTeam'];
+    $waText=$copy['phoneMessage'].' '.$teamTitle.'.';
     $body.='<article class="phone-team"><div class="phone-team-scope"><h2>'.$e($teamTitle).'</h2>'.(in_array('general',$memberIds,true)?'<p class="phone-team-note">'.$e($copy['phoneGeneralNote']).'</p>':'').'<ul>';
     foreach($content['services'] as $s)if(in_array($s['id'],$ids,true))$body.='<li>'.$e($s['title']).'</li>';
-    $body.='</ul></div><div class="phone-team-actions"><a class="phone-number" href="tel:+'.$e($number).'">'.$e($first['whatsappDisplay']).'</a><div class="phone-action-pair"><a class="phone-whatsapp" href="https://wa.me/'.$e($number).'?text='.rawurlencode($copy['phoneMessage'].' '.$teamTitle.'.').'" aria-label="'.$e($copy['phoneWhatsapp'].': '.$teamTitle).'">'.$e($copy['phoneWhatsapp']).'</a><a class="phone-call" href="tel:+'.$e($number).'" aria-label="'.$e($copy['phoneCall'].': '.$teamTitle).'">'.$e($copy['phoneCall']).'</a></div>';
-    foreach(array_unique(array_column($members,'email')) as $email)$body.='<a class="phone-team-email" href="mailto:'.$e($email).'">'.$e($email).'</a>';
+    $body.='</ul></div><div class="phone-team-actions"><a class="phone-number" href="tel:+'.$e($number).'">'.$e($first['whatsappDisplay']).'</a><div class="phone-action-pair"><a class="phone-whatsapp" href="https://wa.me/'.$e($number).'?text='.rawurlencode($waText).'" aria-label="'.$e($copy['phoneWhatsapp'].': '.$teamTitle).'">'.$e($copy['phoneWhatsapp']).'</a><a class="phone-call" href="tel:+'.$e($number).'" aria-label="'.$e($copy['phoneCall'].': '.$teamTitle).'">'.$e($copy['phoneCall']).'</a></div>';
+    foreach(array_unique(array_column($members,'email')) as $email)$body.='<a class="phone-team-email" href="mailto:'.$e($email).'?subject='.rawurlencode('Konsultasi '.$teamTitle).'&body='.rawurlencode($waText).'">'.$e($email).'</a>';
     $body.='</div></article>';
 }
 if(!$teams)$body.='<p class="phone-empty">'.$e($copy['phoneEmpty']).'</p>';

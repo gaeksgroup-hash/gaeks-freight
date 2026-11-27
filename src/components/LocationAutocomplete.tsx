@@ -68,7 +68,7 @@ export const LocationAutocomplete: React.FC<LocationAutocompleteProps> = ({
     <div className="relative block text-sm font-semibold text-slate-700">
       <label htmlFor={inputId} className="flex items-center justify-between gap-3">
         <span>{label}</span>
-        <span className="text-[11px] font-medium text-slate-400">{hint}</span>
+        <span className="text-[11px] font-medium text-slate-600">{hint}</span>
       </label>
       <span className="relative mt-2 block">
         <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />

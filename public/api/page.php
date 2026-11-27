@@ -14,8 +14,9 @@ if($path==='/kontak/telepon/'){
     require __DIR__.'/_page_template.php';
     return;
 }
+$srStyle='position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0';
 if($path==='/layanan/'){
-    $body='<main class="page-shell py-24"><p>'.$e($copy['servicesEyebrow']).'</p><h1>'.$e($copy['servicesHeading']).'</h1><p>'.$e($copy['servicesIntro']).'</p><nav aria-label="'.$e($copy['servicesListLabel']).'"><ol>';
+    $body='<main style="min-height:100vh;background:#f4f5f1;color:#12363a"><section style="background:#082f34;color:#fff;padding:7.5rem 1.5rem 4rem"><div style="max-width:72rem;margin:0 auto"><p style="font-size:.75rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#a3edf2;margin:0 0 1rem">'.$e($copy['servicesEyebrow']).'</p><h1 style="font-size:clamp(2rem,4vw,3.5rem);line-height:1.06;margin:0 0 1rem;max-width:18ch">'.$e($copy['servicesHeading']).'</h1><p style="max-width:52ch;line-height:1.65;color:#dbeaea;margin:0">'.$e($copy['servicesIntro']).'</p></div></section><nav style="'.$srStyle.'" aria-label="'.$e($copy['servicesListLabel']).'"><ol>';
     $items=[];$position=0;
     foreach($content['services'] as $s){
         $serviceUrl='https://gaeks.com/layanan/'.gaeks_service_slug($s['id']).'/';
@@ -24,14 +25,32 @@ if($path==='/layanan/'){
         $items[]=['@type'=>'ListItem','position'=>++$position,'url'=>$serviceUrl,'name'=>$s['title']];
     }
     $body.='</ol></nav>';
-    if(!$items)$body.='<p>'.$e($copy['servicesEmpty']).'</p><p><a href="/kontak/">'.$e($copy['servicesEmptyCta']).'</a></p>';
+    if(!$items)$body.='<p style="max-width:72rem;margin:2rem auto;padding:0 1.5rem">'.$e($copy['servicesEmpty']).' <a href="/kontak/">'.$e($copy['servicesEmptyCta']).'</a></p>';
     $body.='</main>';
     $graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com'],['@type'=>'CollectionPage','name'=>$title,'description'=>$description,'url'=>$url],['@type'=>'ItemList','name'=>$copy['servicesListLabel'],'itemListElement'=>$items]];
     require __DIR__.'/_page_template.php';
     return;
 }
-$body='<main class="page-shell py-24"><h1>'.$e($title).'</h1><p>'.$e($description).'</p><nav>';
-foreach($content['services'] as $s)$body.='<article class="my-5"><h2><a href="/layanan/'.$e(gaeks_service_slug($s['id'])).'/">'.$e($s['title']).'</a></h2><p>'.$e($s['summary']??$s['description']).'</p></article>';
-$body.='</nav><section class="grid gap-4 sm:grid-cols-2">';
-foreach($content['branding']['contactGroups'] as $g){$n=preg_replace('/\D/','',$g['whatsappNumber']);if(str_starts_with($n,'0'))$n='62'.substr($n,1);$body.='<article><h2>'.$e($g['name']).'</h2><a href="https://wa.me/'.$e($n).'?text='.rawurlencode('Konsultasi '.$g['name']).'">'.$e($g['whatsappDisplay']).'</a><p><a href="mailto:'.$e($g['email']).'?subject='.rawurlencode($g['name']).'">'.$e($g['email']).'</a></p></article>';}
-$body.='</section></main>';$graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com']];require __DIR__.'/_page_template.php';
+$groups=$content['branding']['contactGroups']??[];
+$priority=['ppjk','fcl','undername','air','general'];
+$rank=static function(string $id)use($priority):int{$n=array_search($id,$priority,true);return $n===false?count($priority):$n;};
+usort($groups,static fn($a,$b)=>$rank($a['id'])<=>$rank($b['id']));
+$teams=[];
+foreach($groups as $g){$n=preg_replace('/\D/','',$g['whatsappNumber']);if(str_starts_with($n,'0'))$n='62'.substr($n,1);if($n!=='')$teams[$n][]=$g;}
+$heroBg=($path==='/kontak/')?'#f4f5f1':'#062d32';
+$heroColor=($path==='/kontak/')?'#12363a':'#fff';
+$subColor=($path==='/kontak/')?'#4b6265':'#dbeaea';
+$visibleTitle=($path==='/')?($content['hero']['titlePrefix'].$content['hero']['titleHighlight'].$content['hero']['titleSuffix']):$title;
+$visibleCopy=($path==='/')?($content['hero']['caption']??$description):$description;
+$body='<main style="min-height:100vh;background:'.$heroBg.';color:'.$heroColor.'"><section style="position:relative;min-height:664px;display:flex;align-items:center;padding:6.5rem 1.5rem 4rem"><div style="max-width:72rem;width:100%;margin:0 auto"><h1 style="font-size:clamp(2rem,4.5vw,3.75rem);line-height:1.04;letter-spacing:-.04em;margin:0 0 1.25rem;max-width:18ch">'.$e($visibleTitle).'</h1><p style="max-width:52ch;font-size:1.05rem;line-height:1.65;color:'.$subColor.';margin:0">'.$e($visibleCopy).'</p></div></section><div style="'.$srStyle.'"><nav>';
+foreach($content['services'] as $s)$body.='<article><h2><a href="/layanan/'.$e(gaeks_service_slug($s['id'])).'/">'.$e($s['title']).'</a></h2><p>'.$e($s['summary']??$s['description']).'</p></article>';
+$body.='</nav><section>';
+foreach($teams as $number=>$members){
+    $first=$members[0];$memberIds=array_column($members,'id');
+    $teamTitle=implode(' · ',array_column($members,'name'));
+    if(count($members)===1&&$first['id']==='general')$teamTitle=$copy['phoneGeneralTeam'];
+    elseif(count($members)>1&&!array_diff($memberIds,['fcl','ppjk','undername']))$teamTitle=$copy['phoneTradeTeam'];
+    $waText=$copy['phoneMessage'].' '.$teamTitle.'.';
+    $body.='<article><h2>'.$e($teamTitle).'</h2><a href="https://wa.me/'.$e($number).'?text='.rawurlencode($waText).'">'.$e($first['whatsappDisplay']).'</a><p><a href="mailto:'.$e($first['email']).'?subject='.rawurlencode('Konsultasi '.$teamTitle).'&body='.rawurlencode($waText).'">'.$e($first['email']).'</a></p></article>';
+}
+$body.='</section></div></main>';$graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com']];require __DIR__.'/_page_template.php';

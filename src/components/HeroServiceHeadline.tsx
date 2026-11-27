@@ -6,6 +6,7 @@ import { ServiceTitle } from './ServiceTitle';
 
 const localize = (service: ServiceDetail, language: Language) => ({
   title: language === 'en' ? service.title_en || service.title : language === 'zh' ? service.title_zh || service.title : service.title,
+  category: language === 'en' ? service.category_en || service.category : language === 'zh' ? service.category_zh || service.category : service.category,
   tagline: language === 'en' ? service.tagline_en || service.tagline : language === 'zh' ? service.tagline_zh || service.tagline : service.tagline,
 });
 
@@ -27,11 +28,26 @@ export const HeroServiceHeadline: React.FC<{ currentLang: Language; onOpenServic
   const move = (step: number) => setActiveIndex((index) => (index + step + services.length) % services.length);
 
   return (
-    <aside aria-label={eyebrow} className="min-w-0 flex flex-col justify-end border-t border-white/25 py-8 lg:my-16 lg:border-l lg:border-t-0 lg:py-7 lg:pl-10" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)}>
-      <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{eyebrow}</p>
-      <div key={`${active.id}-${currentLang}`} className="service-headline-enter min-w-0"><h2 className="mt-4 max-w-xl break-words font-display text-2xl font-bold leading-[1.08] tracking-[-0.035em] text-white min-[360px]:text-3xl sm:text-4xl"><ServiceTitle title={content.title} /></h2><p className="mt-4 max-w-lg break-words text-sm leading-6 text-slate-200 sm:text-base">{content.tagline}</p></div>
-      <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-white/25 pt-5"><button type="button" onClick={() => onOpenService?.(active.id)} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-white underline-offset-4 hover:underline">{detailLabel}<ArrowRight className="h-4 w-4" /></button><div className="flex items-center gap-2"><button type="button" onClick={() => move(-1)} aria-label="Layanan sebelumnya" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/35 text-white transition-colors hover:bg-white hover:text-[#062d32]"><ArrowLeft className="h-4 w-4" /></button><button type="button" onClick={() => move(1)} aria-label="Layanan berikutnya" className="inline-flex min-h-11 min-w-11 items-center justify-center border border-white/35 text-white transition-colors hover:bg-white hover:text-[#062d32]"><ArrowRight className="h-4 w-4" /></button></div></div>
-      <div className="mt-4 flex gap-1.5" aria-label="Pilih layanan">{services.map((service, index) => <button key={service.id} type="button" onClick={() => setActiveIndex(index)} aria-label={`Tampilkan ${localize(service, currentLang).title}`} aria-current={index === activeIndex ? 'true' : undefined} className="flex min-h-11 items-center"><span className={`block h-0.5 transition-[width,background-color] ${index === activeIndex ? 'w-8 bg-cyan-200' : 'w-3 bg-white/35 hover:bg-white/70'}`} /></button>)}</div>
+    <aside aria-label={eyebrow} className="hero-choreo-aside min-w-0 flex flex-col justify-end border-t border-white/25 py-8 lg:my-16 lg:border-l lg:border-t-0 lg:py-7 lg:pl-10" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocusCapture={() => setPaused(true)} onBlurCapture={() => setPaused(false)}>
+      <div className="flex items-center justify-between gap-3">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{eyebrow}</p>
+        <span className="font-mono text-xs tabular-nums text-cyan-100/80">
+          {String(activeIndex + 1).padStart(2, '0')} / {String(services.length).padStart(2, '0')}
+        </span>
+      </div>
+      <div key={`${active.id}-${currentLang}`} className="service-headline-enter min-w-0">
+        <p className="mt-4 text-xs font-semibold text-cyan-100/80">{content.category}</p>
+        <h2 className="mt-1.5 max-w-xl break-words font-display text-2xl font-bold leading-[1.08] tracking-[-0.035em] text-white min-[360px]:text-3xl sm:text-4xl"><ServiceTitle title={content.title} /></h2>
+        <p className="mt-4 max-w-lg break-words text-sm leading-6 text-slate-200 sm:text-base">{content.tagline}</p>
+      </div>
+      <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-white/25 pt-5">
+        <button type="button" onClick={() => onOpenService?.(active.id)} className="btn-press inline-flex min-h-11 items-center gap-2 text-sm font-bold text-white underline-offset-4 hover:underline">{detailLabel}<ArrowRight className="h-4 w-4" /></button>
+        <div className="flex items-center gap-2">
+          <button type="button" onClick={() => move(-1)} aria-label="Layanan sebelumnya" className="btn-press inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-white/35 text-white transition-colors hover:bg-white hover:text-[#062d32]"><ArrowLeft className="h-4 w-4" /></button>
+          <button type="button" onClick={() => move(1)} aria-label="Layanan berikutnya" className="btn-press inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border border-white/35 text-white transition-colors hover:bg-white hover:text-[#062d32]"><ArrowRight className="h-4 w-4" /></button>
+        </div>
+      </div>
+      <div className="mt-4 flex gap-1.5" aria-label="Pilih layanan">{services.map((service, index) => <button key={service.id} type="button" onClick={() => setActiveIndex(index)} aria-label={`Tampilkan ${localize(service, currentLang).title}`} aria-current={index === activeIndex ? 'true' : undefined} className="flex min-h-11 items-center"><span className={`block h-0.5 transition-[width,background-color] duration-200 ${index === activeIndex ? 'w-8 bg-cyan-200' : 'w-3 bg-white/35 hover:bg-white/70'}`} /></button>)}</div>
     </aside>
   );
 };

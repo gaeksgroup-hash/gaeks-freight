@@ -989,7 +989,13 @@
                 "visible": true
             }
         ],
-        "socialLinks": []
+        "socialLinks": [
+            {
+                "id": "social-1791125525370",
+                "platform": "instagram",
+                "url": "https://www.instagram.com/gaeksfreight/"
+            }
+        ]
     },
     "seo": {
         "siteTitle": "GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia",
