@@ -3,6 +3,7 @@ import { ArrowRight, Check, ChevronDown } from 'lucide-react';
 import { ServiceDetail, Language } from '../types/freight';
 import { getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
 import { ServiceTitle } from './ServiceTitle';
+import { ServicesDirectory } from './ServicesDirectory';
 
 export const DETAILED_SERVICES: ServiceDetail[] = [
   {
@@ -174,6 +175,8 @@ export const ServicesCarousel: React.FC<{
     tagline: currentLang === 'en' ? service.tagline_en || service.tagline : currentLang === 'zh' ? service.tagline_zh || service.tagline : service.tagline,
     description: currentLang === 'en' ? service.description_en || service.description : currentLang === 'zh' ? service.description_zh || service.description : service.description,
   });
+
+  if (standalone) return <ServicesDirectory services={servicesList} currentLang={currentLang} onSelectService={onSelectService} onOpenService={onOpenService} />;
 
   return (
     <section id="services" aria-labelledby="services-title" className="section-block">

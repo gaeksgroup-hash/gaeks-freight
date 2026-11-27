@@ -1,5 +1,7 @@
 # Pembaruan layanan dan inquiry — 27 November 2026
 
+Redesign `/layanan/` dan penguatan HTML/schema katalog dicatat dalam `docs/SERVICES_INDEX_RELEASE_2026-11-27.md`; audit SEO/AEO/GEO mutakhir ada di `docs/AEO_GEO_AUDIT_2026-11-27.md`.
+
 ## Peta topik, URL, dan kontak awal
 
 | Topik | URL | Kelompok / WhatsApp / email |

@@ -142,6 +142,10 @@ export const App: React.FC = () => {
         { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
       ];
       if (currentPage === 'home') graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
+      if (currentPage === 'services') {
+        graph[2]['@type'] = 'CollectionPage';
+        graph.push({ '@type': 'ItemList', name: copy.servicesListLabel, itemListElement: getStoredServices().map((service, index) => ({ '@type': 'ListItem', position: index + 1, name: service.title, url: service.canonical || `https://gaeks.com${servicePath(service.id)}` })) });
+      }
       if (currentPage === 'phones') {
         graph[2]['@type'] = 'ContactPage';
         graph.push({ '@type': 'BreadcrumbList', itemListElement: [
@@ -314,7 +318,7 @@ export const App: React.FC = () => {
       });
     }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
     const register = () => root.querySelectorAll('section:not(.scroll-reveal):not([data-reveal="custom"])').forEach((section) => {
-      if (section.closest('.service-detail, .contact-page, .phone-page')) return;
+      if (section.closest('.service-detail, .contact-page, .phone-page, .services-directory')) return;
       section.classList.add('scroll-reveal');
       if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
         section.classList.add('scroll-reveal-visible');

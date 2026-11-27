@@ -14,6 +14,22 @@ if($path==='/kontak/telepon/'){
     require __DIR__.'/_page_template.php';
     return;
 }
+if($path==='/layanan/'){
+    $body='<main class="page-shell py-24"><p>'.$e($copy['servicesEyebrow']).'</p><h1>'.$e($copy['servicesHeading']).'</h1><p>'.$e($copy['servicesIntro']).'</p><nav aria-label="'.$e($copy['servicesListLabel']).'"><ol>';
+    $items=[];$position=0;
+    foreach($content['services'] as $s){
+        $serviceUrl='https://gaeks.com/layanan/'.gaeks_service_slug($s['id']).'/';
+        $summary=$s['summary']??$s['description'];
+        $body.='<li><article><h2><a href="'.$e($serviceUrl).'">'.$e($s['title']).'</a></h2><p>'.$e($summary).'</p></article></li>';
+        $items[]=['@type'=>'ListItem','position'=>++$position,'url'=>$serviceUrl,'name'=>$s['title']];
+    }
+    $body.='</ol></nav>';
+    if(!$items)$body.='<p>'.$e($copy['servicesEmpty']).'</p><p><a href="/kontak/">'.$e($copy['servicesEmptyCta']).'</a></p>';
+    $body.='</main>';
+    $graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com'],['@type'=>'CollectionPage','name'=>$title,'description'=>$description,'url'=>$url],['@type'=>'ItemList','name'=>$copy['servicesListLabel'],'itemListElement'=>$items]];
+    require __DIR__.'/_page_template.php';
+    return;
+}
 $body='<main class="page-shell py-24"><h1>'.$e($title).'</h1><p>'.$e($description).'</p><nav>';
 foreach($content['services'] as $s)$body.='<article class="my-5"><h2><a href="/layanan/'.$e(gaeks_service_slug($s['id'])).'/">'.$e($s['title']).'</a></h2><p>'.$e($s['summary']??$s['description']).'</p></article>';
 $body.='</nav><section class="grid gap-4 sm:grid-cols-2">';

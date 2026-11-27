@@ -52,6 +52,15 @@
   "footerCompanyName": "GAEKS · Global Andalan Ekspress",
   "servicesMetaTitle": "Layanan Freight & Logistik | GAEKS Freight",
   "servicesMetaDescription": "Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.",
+  "servicesEyebrow": "Layanan GAEKS",
+  "servicesHeading": "Pilih penanganan yang tepat untuk kargo Anda.",
+  "servicesIntro": "Freight laut dan udara, kepabeanan, pengiriman darat, hingga penanganan proyek. Temukan layanan yang sesuai, lalu diskusikan kebutuhan shipment Anda dengan tim kami.",
+  "servicesListLabel": "Jelajahi layanan",
+  "servicesPreviewLabel": "Ruang lingkup layanan",
+  "servicesDetailCta": "Pelajari layanan",
+  "servicesQuoteCta": "Diskusikan shipment",
+  "servicesEmpty": "Belum ada layanan yang dipublikasikan. Tim kami tetap dapat membantu menilai kebutuhan pengiriman Anda.",
+  "servicesEmptyCta": "Hubungi tim GAEKS",
   "contactMetaTitle": "Kontak & Permintaan Penawaran | GAEKS Freight",
   "contactMetaDescription": "Hubungi tim GAEKS untuk mendiskusikan rute, kargo, dokumen, dan kebutuhan penawaran."
 }

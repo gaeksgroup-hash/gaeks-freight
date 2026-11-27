@@ -36,6 +36,7 @@ try{
  const phoneSsr=await(await fetch(base+'/kontak/telepon/')).text();assert.match(phoneSsr,/local-check@example.com/);assert.match(phoneSsr,/ContactPage/);assert.match(phoneSsr,/https:\/\/gaeks.com\/kontak\/telepon\//);
  assert.ok((await(await fetch(base+'/sitemap.xml')).text()).includes('/kontak/telepon/'));
  const site=structuredClone(data.siteSettings);site.uiCopy.contactMetaTitle='CMS contact metadata test';site.uiCopy.footerTrackingCta='Lacak tes CMS';assert.equal((await save('siteSettings',site)).status,200);assert.match(await(await fetch(base+'/kontak/')).text(),/<title>CMS contact metadata test<\/title>/);
+ site.uiCopy.servicesHeading='Layanan dari CMS test';assert.equal((await save('siteSettings',site)).status,200);assert.match(await(await fetch(base+'/layanan/')).text(),/<h1>Layanan dari CMS test<\/h1>/);
  site.uiCopy.phoneHeading='Tim telepon dari CMS';assert.equal((await save('siteSettings',site)).status,200);assert.match(await(await fetch(base+'/kontak/telepon/')).text(),/<h1>Tim telepon dari CMS<\/h1>/);
  const services=structuredClone(data.services);const air=services.find(s=>s.id==='air-shipment');air.seoTitle='CMS test title';air.faq=[['CMS test question','CMS test answer']];
  const saved=await save('services',services); assert.equal(saved.status,200,await saved.text());
@@ -45,20 +46,27 @@ try{
  assert.ok(!(await(await fetch(base+'/sitemap.xml')).text()).includes('/layanan/freight-udara/'));
  assert.ok(!(await(await fetch(base+'/api/sync.php')).json()).services.some(s=>s.id==='air-shipment'));
  await writeFile(contentPath,original);
+ const servicesHtml=await(await fetch(base+'/layanan/')).text();assert.match(servicesHtml,/CollectionPage/);assert.match(servicesHtml,/ItemList/);for(const service of data.services)assert.ok(servicesHtml.includes(service.canonical));
  browser=await chromium.launch({...(process.env.GAEKS_BROWSER_CHANNEL?{channel:process.env.GAEKS_BROWSER_CHANNEL}:{}),headless:true});const context=await browser.newContext({viewport:{width:375,height:844}});const page=await context.newPage();
  await mkdir('test-results',{recursive:true});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  for(const width of [375,768,1024,1440]){
   await page.setViewportSize({width,height:900});
-  for(const route of ['/','/kontak/','/kontak/telepon/','/layanan/freight-udara/','/layanan/roro-breakbulk/','/tracking/']){
+  for(const route of ['/','/layanan/','/kontak/','/kontak/telepon/','/layanan/freight-udara/','/layanan/roro-breakbulk/','/tracking/']){
    await page.goto(base+route);await page.waitForTimeout(700);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,route+' overflow at '+width);
    if(route==='/'){const poster=page.locator('#home img').first();assert.ok((await poster.evaluate(el=>el.naturalWidth))>0,'hero poster loaded at '+width);}
-   if(route==='/kontak/'||route==='/kontak/telepon/'||route==='/layanan/freight-udara/'){
-    await page.screenshot({path:`test-results/${route.includes('freight')?'air':route.includes('telepon')?'phones':'contact'}-${width}.png`,fullPage:true});
+   if(route==='/layanan/'){assert.ok((await page.locator('.services-directory-hero-image').evaluate(el=>el.naturalWidth))>0,'services poster loaded at '+width);}
+   if(route==='/layanan/'||route==='/kontak/'||route==='/kontak/telepon/'||route==='/layanan/freight-udara/'){
+    await page.screenshot({path:`test-results/${route.includes('freight')?'air':route.includes('telepon')?'phones':route==='/layanan/'?'services':'contact'}-${width}.png`,fullPage:true});
     if(width===375||width===1440){const a11y=await new AxeBuilder({page}).include('main').include('footer').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(a11y.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],route+' accessibility');await page.locator('footer').screenshot({path:`test-results/footer-${width}.png`});}
    }
   }
  }
+ await page.goto(base+'/layanan/');await page.locator('.services-directory-choice').first().waitFor();assert.equal(await page.locator('.services-directory-choice').count(),data.services.length);
+ const roroChoice=page.getByRole('button',{name:/Penyediaan \/ sewa RORO/});await roroChoice.focus();await page.keyboard.press('Enter');assert.equal(await roroChoice.getAttribute('aria-pressed'),'true');assert.match(await page.locator('.services-directory-preview h2').innerText(),/RORO/);
+ assert.match(await page.locator('.services-directory-actions a').getAttribute('href'),/\/layanan\/roro-breakbulk\/$/);
+ await page.locator('.services-directory-actions a').click();await page.waitForURL('**/layanan/roro-breakbulk/');assert.match(await page.locator('.service-detail h1').innerText(),/RORO/);
+ await page.goto(base+'/layanan/');await page.getByRole('button',{name:/Penyediaan \/ sewa RORO/}).click();await page.locator('.services-directory-actions button').click();await page.waitForURL('**/kontak/?service=roro-breakbulk');
  await page.goto(base+'/layanan/freight-udara/');
  const footerAddresses=await page.locator('footer a[href^="mailto:"]').evaluateAll(links=>links.map(link=>link.getAttribute('href').toLowerCase()));
  assert.deepEqual(footerAddresses,['mailto:cs@gaeks.com','mailto:info@gaeks.com','mailto:aksa@gaeks.com']);
@@ -95,5 +103,5 @@ try{
  await page.goto(base+'/kontak/');assert.equal(await page.locator('.contact-directory a').getAttribute('href'),'/kontak/telepon/');
  await page.setViewportSize({width:375,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.reload();await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior),'auto');
  assert.deepEqual(errors,[]);
- console.log('PASS: auth/CSRF; CMS save to SSR/schema; draft/sitemap; operator save; 6 RFQ destinations; 24 route/viewport renders; main-content axe checks; disclosure keyboard; inquiry anchor; 3 footer emails; phone directory navigation/back, grouped numbers and service coverage; reduced motion. Screenshots: test-results/.');
+ console.log('PASS: auth/CSRF; CMS save to SSR/schema; draft/sitemap; operator save; 6 RFQ destinations; 28 route/viewport renders; main-content axe checks; service selection keyboard and both CTAs; inquiry anchor; 3 footer emails; phone directory navigation/back, grouped numbers and service coverage; reduced motion. Screenshots: test-results/.');
 }finally{await browser?.close();await writeFile(contentPath,original);if(users)await writeFile(usersPath,users);else await unlink(usersPath);}
