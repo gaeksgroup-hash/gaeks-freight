@@ -1,0 +1,15 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__.'/_bootstrap.php';
+$content=gaeks_public_content(gaeks_read_json_file(gaeks_content_file(),[]));
+$e=fn($v)=>htmlspecialchars((string)$v,ENT_QUOTES|ENT_SUBSTITUTE,'UTF-8');
+$path=rtrim(parse_url($_SERVER['REQUEST_URI'],PHP_URL_PATH),'/').'/';$url='https://gaeks.com'.$path;
+$title=$content['seo']['siteTitle']??'GAEKS Freight';$description=$content['seo']['metaDescription']??'';
+$copy=array_replace(gaeks_read_json_file(__DIR__.'/ui_copy_seed.json',[]),$content['siteSettings']['uiCopy']??[]);
+if($path==='/layanan/'){$title=$copy['servicesMetaTitle'];$description=$copy['servicesMetaDescription'];}
+if($path==='/kontak/'){$title=$copy['contactMetaTitle'];$description=$copy['contactMetaDescription'];}
+$body='<main class="page-shell py-24"><h1>'.$e($title).'</h1><p>'.$e($description).'</p><nav>';
+foreach($content['services'] as $s)$body.='<article class="my-5"><h2><a href="/layanan/'.$e(gaeks_service_slug($s['id'])).'/">'.$e($s['title']).'</a></h2><p>'.$e($s['summary']??$s['description']).'</p></article>';
+$body.='</nav><section class="grid gap-4 sm:grid-cols-2">';
+foreach($content['branding']['contactGroups'] as $g){$n=preg_replace('/\D/','',$g['whatsappNumber']);if(str_starts_with($n,'0'))$n='62'.substr($n,1);$body.='<article><h2>'.$e($g['name']).'</h2><a href="https://wa.me/'.$e($n).'?text='.rawurlencode('Konsultasi '.$g['name']).'">'.$e($g['whatsappDisplay']).'</a><p><a href="mailto:'.$e($g['email']).'?subject='.rawurlencode($g['name']).'">'.$e($g['email']).'</a></p></article>';}
+$body.='</section></main>';$graph=[['@type'=>'Organization','name'=>'GAEKS Freight','url'=>'https://gaeks.com']];require __DIR__.'/_page_template.php';

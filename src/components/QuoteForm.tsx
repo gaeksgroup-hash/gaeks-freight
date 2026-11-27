@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Mail, MessageCircle } from 'lucide-react';
-import { getStoredBranding, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
-import { measureContactClick, quoteContext, QuoteService, serviceLabels, whatsappDigits } from '../utils/quoteFlow';
+import { getStoredBranding, getStoredServices, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
+import { resolveContact, serviceLabel, measureContactClick, quoteContext, QuoteService, serviceLabels, whatsappDigits } from '../utils/quoteFlow';
 
-export const QuoteForm: React.FC<{ defaultService?: QuoteService }> = ({ defaultService = 'ppjk' }) => {
+export const QuoteForm: React.FC<{ defaultService?: QuoteService; onServiceChange?: (service: string) => void }> = ({ defaultService = 'general', onServiceChange }) => {
   const [initial] = useState(() => quoteContext(defaultService));
   const [branding, setBranding] = useState(getStoredBranding);
   const [service, setService] = useState(initial.service);
@@ -24,7 +24,7 @@ export const QuoteForm: React.FC<{ defaultService?: QuoteService }> = ({ default
     const get = (key: string) => String(data.get(key) || '').trim();
     const lines = [
       'Halo GAEKS, saya ingin meminta penawaran.',
-      `Layanan: ${serviceLabels[service]}`,
+      `Layanan: ${serviceLabel(service)}`,
       `Arah: ${service === 'undername' ? 'impor' : direction}`,
       city ? `Kota terkait: ${city}` : '',
       `Nama: ${get('name')}`,
@@ -36,26 +36,26 @@ export const QuoteForm: React.FC<{ defaultService?: QuoteService }> = ({ default
       `Komoditas: ${get('commodity')}`,
       (service === 'ppjk' || service === 'undername') && needs.length ? `Kebutuhan untuk dikonsultasikan: ${needs.join(', ')}` : '',
       get('hsCode') ? `HS code awal: ${get('hsCode')}` : '',
-      get('detail') ? `Detail ${serviceLabels[service]}: ${get('detail')}` : '',
+      get('detail') ? `Detail ${serviceLabel(service)}: ${get('detail')}` : '',
       'Mohon tindak lanjut sesuai kebutuhan dan dokumen yang berlaku. Terima kasih.',
     ].filter(Boolean).join('\n');
     if (channel === 'whatsapp') {
-      const target = whatsappDigits(branding.whatsappNumber);
+      const target = whatsappDigits(resolveContact(service).whatsappNumber);
       if (!target) return;
       window.open(`https://wa.me/${target}?text=${encodeURIComponent(lines)}`, '_blank', 'noopener,noreferrer');
     } else {
-      if (!branding.salesEmail) return;
-      window.location.href = `mailto:${branding.salesEmail}?subject=${encodeURIComponent(`Permintaan ${serviceLabels[service]}`)}&body=${encodeURIComponent(lines)}`;
+      if (!resolveContact(service).email) return;
+      window.location.href = `mailto:${resolveContact(service).email}?subject=${encodeURIComponent(`Permintaan ${serviceLabel(service)}`)}&body=${encodeURIComponent(lines)}`;
     }
     measureContactClick(channel, service);
     setOpened(channel);
   };
   const field = 'field mt-2';
-  return <form id="quote-form" onSubmit={(event) => { event.preventDefault(); send(event.currentTarget, 'whatsapp'); }} className="min-w-0 border border-slate-200 bg-white p-5 sm:p-8">
+  return <form id="quote-form" onSubmit={(event) => { event.preventDefault(); send(event.currentTarget, 'whatsapp'); }} className="quote-surface min-w-0 bg-white p-5 sm:p-8">
     <h2 className="text-2xl font-bold">Minta penawaran</h2>
     <p className="mt-2 text-sm text-slate-600">Isi kebutuhan awal. Tim akan meninjau rute, komoditas, dan dokumen yang relevan.</p>
     <div className="mt-6 grid gap-4 sm:grid-cols-2">
-      <label className="text-sm font-semibold">Layanan<select className={field} value={service} onChange={(e) => { const selected = e.target.value as QuoteService; setService(selected); if (selected === 'undername') setDirection('impor'); setNeeds([]); }}><option value="fcl">Freight Laut FCL</option><option value="air">Air Freight</option><option value="ppjk">PPJK / Customs Clearance</option><option value="undername">Undername Impor & PI</option></select></label>
+      <label className="text-sm font-semibold">Layanan<select className={field} value={service} onChange={(e) => { const selected = e.target.value as QuoteService; setService(selected); onServiceChange?.(selected); if (selected === 'undername') setDirection('impor'); setNeeds([]); }}><option value="general">General inquiry</option>{getStoredServices().map(item => <option key={item.id} value={item.id === 'air-shipment' ? 'air' : item.id === 'undername-impor' ? 'undername' : item.id}>{item.title}</option>)}</select></label>
       <label className="text-sm font-semibold">Arah<select className={field} value={direction} onChange={(e) => setDirection(e.target.value as typeof direction)}><option value="impor">Impor</option>{service !== 'undername' && <option value="ekspor">Ekspor</option>}</select></label>
       <label className="text-sm font-semibold">Kota terkait<select className={field} value={city} onChange={(e) => setCity(e.target.value as typeof city)}><option value="">Pilih jika relevan</option><option>Jakarta</option><option>Semarang</option><option>Surabaya</option></select></label>
       <label className="text-sm font-semibold">Nama *<input name="name" required autoComplete="name" className={field} /></label>
@@ -70,8 +70,8 @@ export const QuoteForm: React.FC<{ defaultService?: QuoteService }> = ({ default
     {service === 'undername' && <label className="mt-5 block text-sm font-semibold">HS code jika sudah diketahui<input name="hsCode" inputMode="numeric" placeholder="Contoh: 7208.39.90" className={field} /></label>}
     <label className="mt-6 block text-sm font-semibold">{service === 'fcl' ? 'Detail kontainer, jumlah, dan kesiapan muat' : service === 'air' ? 'Berat, dimensi, jumlah koli, dan kesiapan kirim' : 'Status dokumen dan pertanyaan kepabeanan'}<textarea name="detail" rows={3} className={field} /></label>
     <label className="mt-5 flex gap-2 text-sm text-slate-600"><input type="checkbox" required className="mt-1" />Saya setuju data ini digunakan untuk menindaklanjuti permintaan.</label>
-    <button type="submit" className="button-primary mt-6 w-full sm:w-auto"><MessageCircle className="h-4 w-4" />Minta penawaran via WhatsApp</button>
-    {service === 'undername' && <button type="button" onClick={(event) => { if (event.currentTarget.form) send(event.currentTarget.form, 'email'); }} className="button-secondary mt-3 w-full sm:ml-3 sm:w-auto"><Mail className="h-4 w-4" />Minta via email</button>}
+    <button type="submit" className="button-primary mt-6 w-full sm:w-auto"><MessageCircle className="h-4 w-4" />{resolveContact(service).ctaText}</button>
+    {<button type="button" onClick={(event) => { if (event.currentTarget.form) send(event.currentTarget.form, 'email'); }} className="button-secondary mt-3 w-full sm:ml-3 sm:w-auto"><Mail className="h-4 w-4" />Minta via email</button>}
     <p role="status" className="mt-3 text-xs text-slate-600">{opened === 'whatsapp' ? 'WhatsApp dibuka dengan pesan siap ditinjau. Anda masih perlu menekan Send di WhatsApp.' : opened === 'email' ? 'Email dibuka dengan draf siap ditinjau. Anda masih perlu menekan Kirim di aplikasi email.' : 'Setelah formulir valid, draf akan terbuka. Anda masih perlu mengirimnya di WhatsApp atau email.'}</p>
   </form>;
 };

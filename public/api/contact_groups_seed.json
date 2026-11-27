@@ -1,0 +1,61 @@
+[
+  {
+    "id": "fcl",
+    "name": "Ekspor / impor laut FCL",
+    "whatsappNumber": "6285608561745",
+    "whatsappDisplay": "+6285608561745",
+    "email": "info@gaeks.com",
+    "serviceIds": [
+      "fcl"
+    ],
+    "ctaText": "Konsultasikan Ekspor / impor laut FCL"
+  },
+  {
+    "id": "ppjk",
+    "name": "Customs Clearance / PPJK",
+    "whatsappNumber": "6285608561745",
+    "whatsappDisplay": "+6285608561745",
+    "email": "info@gaeks.com",
+    "serviceIds": [
+      "ppjk"
+    ],
+    "ctaText": "Konsultasikan Customs Clearance / PPJK"
+  },
+  {
+    "id": "air",
+    "name": "Air Freight",
+    "whatsappNumber": "6287722440148",
+    "whatsappDisplay": "+6287722440148",
+    "email": "aksa@gaeks.com",
+    "serviceIds": [
+      "air-shipment"
+    ],
+    "ctaText": "Konsultasikan Air Freight"
+  },
+  {
+    "id": "undername",
+    "name": "Undername / Persetujuan Impor",
+    "whatsappNumber": "6285608561745",
+    "whatsappDisplay": "+6285608561745",
+    "email": "info@gaeks.com",
+    "serviceIds": [
+      "undername-impor"
+    ],
+    "ctaText": "Konsultasikan Undername / Persetujuan Impor"
+  },
+  {
+    "id": "general",
+    "name": "Project Cargo, Domestic, Gudang & general inquiry",
+    "whatsappNumber": "6281393453375",
+    "whatsappDisplay": "+6281393453375",
+    "email": "Cs@gaeks.com",
+    "serviceIds": [
+      "project-cargo",
+      "domestic-truck",
+      "gudang-pbm",
+      "lcl",
+      "roro-breakbulk"
+    ],
+    "ctaText": "Konsultasikan Project Cargo, Domestic, Gudang & general inquiry"
+  }
+]

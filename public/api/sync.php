@@ -12,7 +12,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         header('Content-Type: application/json; charset=UTF-8');
         header('Cache-Control: no-store, max-age=0');
         header('X-Content-Type-Options: nosniff');
-        readfile($dataFile);
+        $visible = gaeks_read_json_file($dataFile, []);
+        if (!gaeks_session_user()) $visible = gaeks_public_content($visible);
+        echo json_encode($visible, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
             gaeks_process_newsletter_queue(2);
@@ -74,14 +76,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    gaeks_validate_service_content($section, $sectionPayload);
     $current[$section] = $sectionPayload;
     unset($current['subscribers']);
     $current['updatedAt'] = (int) round(microtime(true) * 1000);
     $encoded = json_encode($current, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-    if ($encoded === false || @file_put_contents($dataFile, $encoded, LOCK_EX) === false) {
+    if ($encoded === false || !gaeks_write_json_file($dataFile, $current)) {
         gaeks_json(['status' => 'error', 'message' => 'Konten belum dapat ditulis ke server.'], 500);
     }
-    @chmod($dataFile, 0644);
+    @chmod($dataFile, 0600);
 
     $newsletter = ['articles' => count($changedArticles), 'sent' => 0, 'failed' => 0, 'queued' => 0];
     foreach ($changedArticles as $article) {

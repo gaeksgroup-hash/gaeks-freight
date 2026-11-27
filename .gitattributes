@@ -1,0 +1,6 @@
+*.mjs text eol=lf
+*.tsx text eol=lf
+*.php text eol=lf
+*.md text eol=lf
+.agents/skills/** -text
+docs/skill-licenses/** -text

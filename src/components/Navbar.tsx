@@ -1,3 +1,4 @@
+import { resolveContact, contactLink } from '../utils/quoteFlow';
 import React, { useEffect, useState } from 'react';
 import { ChevronDown, Menu, PhoneCall, X } from 'lucide-react';
 import { Language } from '../types/freight';
@@ -72,7 +73,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     setMobileMenuOpen(false);
   };
 
-  const whatsAppUrl = `https://wa.me/${whatsappDigits(brandData.whatsappNumber)}`;
+  const whatsAppUrl = contactLink('whatsapp');
   const navigation = siteSettings.navigation.filter((item) => item.visible);
   const trackingPage = currentTab === 'tracking';
   const configuredLogo = brandData.navbarLogoUrl || brandData.symbolLogoUrl;

@@ -1,3 +1,4 @@
+import { resolveContact } from './utils/quoteFlow';
 // filepath: /src/App.tsx
 import React, { Suspense, useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
@@ -11,6 +12,7 @@ import { Language } from './types/freight';
 import { getStoredBranding, getStoredSeo, getStoredServices, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
 import { matchesServiceRoute, pagePaths, servicePath, serviceSlug } from './utils/routes';
+import { getSiteCopy } from './utils/adminStorage';
 import { isPublishedArticle, serviceContent } from './utils/serviceContent';
 import { getStoredArticles } from './utils/newsStorage';
 import { articlePath, articleSlug } from './utils/articleRoutes';
@@ -90,22 +92,25 @@ export const App: React.FC = () => {
   useEffect(() => {
     const applyMetadata = () => {
       const seo = getStoredSeo();
+      const copy = getSiteCopy();
       const branding = getStoredBranding();
       const detailService = currentPage === 'service' ? getStoredServices().find((item) => matchesServiceRoute(item.id, activeServiceSlug)) : undefined;
       const routeTitles: Record<string, string> = { services: 'Layanan Freight & Logistik', network: 'Rute Pengiriman', calculator: 'Kalkulator Kargo', tracking: 'Lacak Pengiriman', news: 'Berita Logistik', contact: 'Kontak & Permintaan Penawaran' };
       const routeDescriptions: Record<string, string> = {
-        services: 'Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.',
+        services: copy.servicesMetaDescription,
         network: 'Jelajahi koridor laut dan udara. Jadwal, kapasitas, dan waktu tempuh dikonfirmasi saat pemesanan.',
         calculator: 'Rencanakan kebutuhan kapasitas dan moda pengiriman sebelum meminta penawaran freight.',
         tracking: 'Periksa status shipment GAEKS menggunakan nomor pengiriman.',
         news: 'Baca pembaruan terkait logistik, rute, dan kepabeanan dari GAEKS.',
-        contact: 'Hubungi tim GAEKS untuk mendiskusikan rute, kargo, dokumen, dan kebutuhan penawaran.'
+        contact: copy.contactMetaDescription
       };
-      const knowledge = detailService ? serviceContent(detailService) : undefined;
+      const knowledge = detailService ? {summary: detailService.summary || detailService.description, faq: detailService.faq || [], compare: detailService.compare || []} : undefined;
       const adType = detailService?.id === 'fcl' ? 'fcl' : detailService?.id === 'air-shipment' ? 'air' : detailService?.id === 'ppjk' ? 'ppjk' : detailService?.id === 'undername-impor' ? 'undername' : null;
       const detailArticle = currentPage === 'news' && activeArticleId ? getStoredArticles().find((article) => isPublishedArticle(article) && (article.id === activeArticleId || articleSlug(article) === activeArticleId)) : undefined;
-      const description = detailArticle?.excerpt || (adType ? detailService?.landingDescription || adLanding[adType].intro : knowledge?.summary) || routeDescriptions[currentPage] || seo.metaDescription;
-      document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? `${adType ? detailService.landingTitle || adLanding[adType].title : detailService.title} | GAEKS Freight` : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
+      const description = detailArticle?.excerpt || (detailService?.metaDescription || knowledge?.summary) || routeDescriptions[currentPage] || seo.metaDescription;
+      document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? (detailService.seoTitle || `${detailService.title} | GAEKS Freight`) : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
+      if (currentPage === 'services') document.title = copy.servicesMetaTitle;
+      if (currentPage === 'contact') document.title = copy.contactMetaTitle;
       const setMeta = (selector: string, attribute: string, value: string) => {
         let element = document.querySelector(selector) as HTMLMetaElement | null;
         if (!element) {
@@ -124,11 +129,11 @@ export const App: React.FC = () => {
       setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl, 'https://gaeks.com').href);
       let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
       if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
-      canonical.href = `https://gaeks.com${detailArticle ? articlePath(detailArticle) : window.location.pathname}`;
+      canonical.href = detailService?.canonical || `https://gaeks.com${detailArticle ? articlePath(detailArticle) : window.location.pathname}`;
       setMeta('meta[property="og:url"]', 'content', canonical.href);
       const orgId = 'https://gaeks.com/#organization';
       const graph: Record<string, unknown>[] = [
-        { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: 'https://gaeks.com', logo: 'https://gaeks.com/logos/gaek-symbol.png', email: branding.salesEmail, telephone: branding.whatsappDisplay },
+        { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: 'https://gaeks.com', logo: 'https://gaeks.com/logos/gaek-symbol.png', email: resolveContact('general').email, telephone: resolveContact('general').whatsappDisplay },
         { '@type': 'LocalBusiness', '@id': 'https://gaeks.com/#local-business', name: 'GAEKS Freight', url: 'https://gaeks.com', parentOrganization: { '@id': orgId }, address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' } },
         { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
       ];
@@ -140,7 +145,7 @@ export const App: React.FC = () => {
           { '@type': 'ListItem', position: 2, name: 'Layanan', item: 'https://gaeks.com/layanan/' },
           { '@type': 'ListItem', position: 3, name: detailService.title, item: canonical.href }
         ] });
-        graph.push({ '@type': 'FAQPage', mainEntity: (adType ? adLanding[adType].faqs.map(({ question, answer }) => [question, answer] as [string, string]) : knowledge.faq).map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
+        graph.push({ '@type': 'FAQPage', mainEntity: knowledge.faq.map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
       }
       if (detailArticle) {
         graph.push({ '@type': 'NewsArticle', headline: detailArticle.title, description: detailArticle.excerpt, datePublished: detailArticle.publishedDate, dateModified: detailArticle.updatedAt || detailArticle.publishedDate, image: new URL(detailArticle.imageUrl, 'https://gaeks.com').href, author: { '@type': 'Organization', name: detailArticle.author || 'GAEKS Editorial' }, publisher: { '@id': orgId }, mainEntityOfPage: canonical.href });
@@ -227,8 +232,8 @@ export const App: React.FC = () => {
   };
 
   const handleSelectService = (serviceName: string) => {
-    setSelectedServiceForQuote(serviceName);
-    navigateTo('calculator');
+    const service = getStoredServices().find(item => item.title === serviceName || item.id === serviceName);
+    window.location.assign('/kontak/?service=' + encodeURIComponent(service?.id || 'general'));
   };
 
   const handleOpenService = (serviceId: string) => {
@@ -297,6 +302,7 @@ export const App: React.FC = () => {
       });
     }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
     const register = () => root.querySelectorAll('section:not(.scroll-reveal):not([data-reveal="custom"])').forEach((section) => {
+      if (section.closest('.service-detail, .contact-page')) return;
       section.classList.add('scroll-reveal');
       if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
         section.classList.add('scroll-reveal-visible');

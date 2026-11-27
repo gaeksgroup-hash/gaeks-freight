@@ -1,5 +1,7 @@
 # GAEKS Frontend Design Direction
 
+Owner update: 2026-11-27. This direction is shared by Codex Cloud and local through `AGENTS.md` and `docs/PROJECT_STANDARDS.md`. Read the checked-in Anti Slop, UI/UX Pro Max, and Modern Web Guidance skills for relevant work.
+
 ## Product and audience
 
 GAEKS is a freight forwarding and customs operations website for importers, exporters, procurement teams, and operations staff. The interface should help visitors choose a service, estimate cargo, inspect a route, and contact the team without reading a dashboard full of competing cards.
@@ -8,15 +10,19 @@ GAEKS is a freight forwarding and customs operations website for importers, expo
 
 - Reference: the calm hierarchy and task based entry points used by Hapag-Lloyd.
 - Identity: deep maritime teal, cyan for actions, warm off white canvas, and neutral borders.
-- Character: editorial shipping manifest. Rows, rules, indexes, and concise labels organize information.
+- Character: a contemporary freight editorial. Strong photographic crops, an asymmetric overview, and an elevated inquiry surface give depth; manifest-style rows organize supporting details.
 - Typography: clear sans serif body copy with a stronger display weight for headings.
 - Imagery: real freight, port, aircraft, warehouse, and trucking scenes used only where they explain the service.
 
 ## Interface dials
 
-- ENERGY: 1/5
-- RHYTHM: 2/5
-- MOTION: 2/5
+- ENERGY: 2/3
+- RHYTHM: 3/3
+- MOTION: 1/3 for service/contact pages; existing home carousel retains its controlled transitions.
+
+Reading this as: a B2B freight service and inquiry experience for importers and operations teams, in a maritime editorial style, ENERGY 2 / RHYTHM 3 / MOTION 1.
+
+Stylish must also be efficient. Avoid a flat scaffold of thin-bordered equal cards, excessive whitespace on mobile, and repeated full contact directories. Depth comes from photography and one raised task surface, not glow, glass, or decorative motion. Keep one visible primary action and let visitors reveal secondary information when needed.
 
 Motion supports orientation and continuity. The hero service headline advances automatically with a short opacity and vertical transition plus manual controls. It pauses during pointer or keyboard interaction and disables automatic movement when reduced motion is requested. Glowing surfaces and decorative loops are not used.
 
@@ -39,8 +45,8 @@ Motion supports orientation and continuity. The hero service headline advances a
 - Routes: mode, search, region filter, then route disclosures.
 - News: search, category select, compact article rows, and a restrained article layout.
 - Newsletter: one clearly bounded signup panel with a visible email field, consent, and one action.
-- Contact: contact details beside one structured inquiry form.
-- Service detail: one overview, one image, and three disclosure groups.
+- Contact: a compact identity and relevant contact panel beside one raised inquiry form. Other contacts follow the form in a disclosure, never a long directory blocking the task.
+- Service detail: a maritime-colored overview with a real service photograph; a concise scope summary; editorial detail disclosures; approved experience statements; service-specific questions; one inquiry form. Section compositions follow content, not identical card grids.
 
 ## Content voice
 
@@ -64,6 +70,20 @@ Reading this as: internal publishing workspace for freight operations staff, in 
 - Layout: the login uses an asymmetric identity and task split because brand context and authentication have different jobs; the authenticated workspace uses a stable navigation rail because operators revisit modules frequently.
 - Typography: the existing sans serif stack stays in place for fast scanning and reliable Indonesian text rendering across staff devices.
 - Spacing: dense forms use a compact rhythm, while page headers and module boundaries receive larger separation so long editing sessions remain easy to scan.
-- Panels: flat ruled surfaces organize related settings like a shipping manifest; elevation effects are omitted because hierarchy comes from borders, spacing, and color.
+- Panels: related settings use clear grouped surfaces and visible module boundaries. Selective elevation may identify the active editing task; avoid a lifeless uniformly flat workspace or a shadow on every field.
 - Icons: icons remain only where they identify a concrete operator action or module, such as media, users, saving, synchronization, and logout.
 - Motion: animation is limited to active loading indicators and short interaction transitions; routine editing does not need decorative movement.
+
+## Decisions and rationale for service CMS release
+
+- Color: existing deep teal anchors the brand; warm canvas reduces visual fatigue for operational reading; cyan is reserved for the primary action against teal.
+- Typography: retain Inter and the system fallback already used by GAEKS for consistent Indonesian labels, predictable metrics, and no extra font dependency. Larger balanced headings provide hierarchy without decorative type.
+- Composition: split the service overview between the service promise and cargo photography; on phones the promise and CTA appear before the image.
+- Elevation: a restrained shadow belongs to the inquiry form so the next task is visually distinct from reference content.
+- Rhythm: compare choices in a real table, scope in a list, detailed guidance and FAQ in disclosures, and owner-confirmed experience in a contrasting editorial section.
+- Photography: use existing CMS images only; a photo illustrates a service and does not imply proof of a specific client shipment.
+- Controls: native details/summary retain keyboard behavior without an accordion dependency. More than one item may remain open for comparison.
+- Modern typography: apply `text-wrap: balance` only to short headings; unsupported browsers keep normal readable wrapping. Do not apply it globally.
+- Fixed light theme: the public operational reading surface stays light with teal brand regions for established brand continuity and readable dense forms; no theme toggle is introduced by this change.
+- UI/UX Pro Max search: `logistics freight corporate` returned a logistics operations pattern with useful hierarchy/accessibility checks. Its blue/orange palette, live metrics, trial CTA, and Playfair font are rejected as unsuitable for GAEKS; `freight forwarding` had no product match. These are recommendations, not a replacement brand or evidence.
+- Footer (owner request, 2026-11-27): a lifted teal tracking panel gives the next action its own plane above the darker company footer. The large operational headline, prominent service-specific phone number, compact two-column link list, and quiet address/copyright line create hierarchy without decorations. At tablet width brand context spans the row; at desktop brand, navigation, and the relevant contact share three unequal columns. On mobile they stack in reading order with 44px links. Existing CMS logo, heading, tagline, links, address, and contact routing remain authoritative; new visible footer labels are editable under Navigasi & Footer.

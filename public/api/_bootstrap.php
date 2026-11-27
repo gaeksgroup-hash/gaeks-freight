@@ -211,7 +211,9 @@ function gaeks_private_dir(): string
 
 function gaeks_content_file(): string
 {
-    return gaeks_private_dir() . '/site_content.json';
+    $path = gaeks_private_dir() . '/site_content.json';
+    gaeks_migrate_service_content($path);
+    return $path;
 }
 
 function gaeks_media_library_file(): string
@@ -542,3 +544,5 @@ function gaeks_process_newsletter_queue(int $limit = 10): array
     fclose($lock);
     return ['sent' => $sent, 'failed' => $failed, 'queued' => count($queue)];
 }
+
+require_once __DIR__ . '/_service_content.php';

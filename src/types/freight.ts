@@ -14,6 +14,14 @@ export interface PortEntry {
 }
 
 export interface ServiceDetail {
+  status?: 'draft' | 'published';
+  seoTitle?: string;
+  metaDescription?: string;
+  canonical?: string;
+  imageAlt?: string;
+  sections?: Array<{ title: string; body: string }>;
+  evidence?: Array<{ title: string; detail: string; source: string; date: string; approved: boolean }>;
+  evidenceNotes?: string;
   landingTitle?: string;
   landingDescription?: string;
   id: string;

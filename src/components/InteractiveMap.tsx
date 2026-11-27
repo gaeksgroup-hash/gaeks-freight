@@ -1,3 +1,4 @@
+import { resolveContact, contactLink, whatsappDigits } from '../utils/quoteFlow';
 import React, { useMemo, useState } from 'react';
 import { ArrowRight, ChevronDown, Plane, Search, Ship } from 'lucide-react';
 import { toast } from 'sonner';
@@ -408,7 +409,7 @@ export const InteractiveMap: React.FC = () => {
 - Pelabuhan Tujuan: Jakarta (Tanjung Priok) / Surabaya / Semarang
 Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
 
-    window.open(`https://wa.me/6285608561745?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/${whatsappDigits(resolveContact('general').whatsappNumber)}?text=${encodeURIComponent(text)}`, '_blank');
     toast.success(`Membuka WhatsApp untuk Rute ${origin}`, {
       description: `Rekomendasi Carrier: ${carrier}`
     });

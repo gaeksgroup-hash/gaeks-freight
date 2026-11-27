@@ -1,7 +1,11 @@
+import contactSeed from '../../public/api/contact_groups_seed.json';
+import uiCopySeed from '../../public/api/ui_copy_seed.json';
 import { NewsletterSubscriber, ServiceDetail } from '../types/freight';
 import { DETAILED_SERVICES } from '../components/ServicesCarousel';
 
+export interface ContactGroup { id: string; name: string; whatsappNumber: string; whatsappDisplay: string; email: string; ctaText: string; serviceIds: string[]; }
 export interface BrandingSettings {
+  contactGroups?: ContactGroup[];
   faviconUrl: string;
   symbolLogoUrl: string;
   fullLogoUrl: string;
@@ -44,6 +48,7 @@ export interface NavigationItem { page: string; label: string; mobileLabel: stri
 export type SocialPlatform = 'instagram' | 'facebook' | 'linkedin' | 'youtube' | 'x' | 'tiktok';
 export interface SocialLink { id: string; platform: SocialPlatform; url: string; label?: string; }
 export interface SiteSettings {
+  uiCopy?: Record<string, string>;
   footerTagline: string;
   footerHeading: string;
   digitalProductLabel: string;
@@ -75,6 +80,7 @@ let operatorCsrfToken = '';
 let operatorUser: OperatorUser | null = null;
 
 export const DEFAULT_BRANDING: BrandingSettings = {
+  contactGroups: contactSeed,
   faviconUrl: '/favicon.png?v=8',
   symbolLogoUrl: '/logos/gaek-symbol.png?v=7',
   fullLogoUrl: '/logos/gaek-full.png?v=7',
@@ -104,6 +110,7 @@ export const DEFAULT_HERO: HeroSettings = {
   clients: [],
 };
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  uiCopy: uiCopySeed,
   footerTagline: 'Koordinasi freight, kepabeanan, dan pengiriman darat untuk kargo bisnis.',
   footerHeading: 'Temukan shipment dari satu nomor referensi.',
   digitalProductLabel: 'Gaeks Digital Product', digitalProductUrl: 'https://gdp.gaeks.com',
@@ -192,15 +199,16 @@ export const getStoredSiteSettings = () => {
   return { ...stored, navigation: Array.isArray(stored.navigation) ? stored.navigation : DEFAULT_SITE_SETTINGS.navigation, socialLinks };
 };
 export const saveStoredSiteSettings = (data: SiteSettings) => writeObject(STORAGE_KEY_SITE, data);
+export const getSiteCopy = () => ({ ...uiCopySeed, ...getStoredSiteSettings().uiCopy });
 export const getStoredSeo = () => readObject(STORAGE_KEY_SEO, DEFAULT_SEO);
 export const saveStoredSeo = (data: SeoSettings) => writeObject(STORAGE_KEY_SEO, data);
-export function getStoredServices(): ServiceDetail[] {
+export function getStoredServices(includeDrafts = false): ServiceDetail[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_SERVICES);
     const parsed = raw ? JSON.parse(raw) : DETAILED_SERVICES;
     if (!Array.isArray(parsed)) return DETAILED_SERVICES;
     // Existing production CMS content predates this confirmed service.
-    return parsed.some((item) => item.id === 'undername-impor') ? parsed : [...parsed, DETAILED_SERVICES.find((item) => item.id === 'undername-impor')!];
+    return parsed.filter((item) => includeDrafts || item.status !== 'draft');
   } catch { return DETAILED_SERVICES; }
 }
 export function saveStoredServices(services: ServiceDetail[]): void { localStorage.setItem(STORAGE_KEY_SERVICES, JSON.stringify(services)); notifyLocalUpdate(); }

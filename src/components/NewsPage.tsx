@@ -1,3 +1,4 @@
+import { resolveContact, contactLink } from '../utils/quoteFlow';
 import React, { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { ArrowLeft, ArrowRight, CalendarDays, ChevronDown, Clock3, Mail, Search, Share2 } from 'lucide-react';
@@ -112,7 +113,7 @@ export const NewsPage: React.FC<{ activeDetailId?: string; onBackToList?: () => 
       {detail.imageUrl && <img src={detail.imageUrl} onError={(event) => useFallbackImage(event, detailRaw!)} alt="" width="1200" height="675" className="mt-9 aspect-[16/9] w-full object-cover" />}
       <div className="mx-auto mt-10 max-w-3xl"><ArticleBody content={detail.content} />
         {detail.sources?.length ? <details className="group mt-12 border-y border-slate-300"><summary className="flex min-h-16 items-center justify-between font-bold">Sumber dan rujukan<ChevronDown className="h-4 w-4 transition-transform group-open:rotate-180" /></summary><ul className="list-disc space-y-2 pb-5 pl-5 text-sm text-slate-600">{detail.sources.map((source) => <li key={source}>{source}</li>)}</ul></details> : null}
-        <a href="https://wa.me/6285608561745" target="_blank" rel="noopener noreferrer" className="button-primary mt-8">Bahas dampaknya pada pengiriman<ArrowRight className="h-4 w-4" /></a>
+        <a href={contactLink('whatsapp', 'general')} target="_blank" rel="noopener noreferrer" className="button-primary mt-8">Bahas dampaknya pada pengiriman<ArrowRight className="h-4 w-4" /></a>
       </div>
     </article>
   </div>;

@@ -4,6 +4,10 @@ declare(strict_types=1);
 $root = realpath(__DIR__ . '/../dist');
 $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 $file = $root . str_replace('/', DIRECTORY_SEPARATOR, rawurldecode($path));
+if (in_array(rtrim($path, '/'), ['', '/layanan', '/kontak'], true)) {
+    require $root . '/api/page.php';
+    return true;
+}
 
 if ($path === '/sitemap.xml') {
     require $root . '/api/sitemap.php';

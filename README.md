@@ -2,6 +2,10 @@
 
 Website produksi [gaeks.com](https://gaeks.com) untuk layanan freight forwarding, PPJK, LCL/FCL, air cargo, trucking, pergudangan, dan project cargo.
 
+## Mulai di sini: cloud dan lokal
+
+Baca [AGENTS.md](AGENTS.md), [standar proyek](docs/PROJECT_STANDARDS.md), dan [arah desain](DESIGN.md) sebelum mengubah UI. Skill Anti Slop, UI/UX Pro Max, dan Modern Web Guidance dibundel di `.agents/skills/` dengan versi terkunci. Gunakan `npm ci`, `npm run standards:check`, dan `npm run project:doctor` pada checkout baru. Panduan setup Windows/Linux, browser test, dan batas deployment tersedia dalam standar proyek.
+
 ## Stack
 
 - React 18, TypeScript, dan Vite 8.

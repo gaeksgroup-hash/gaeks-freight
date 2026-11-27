@@ -1,3 +1,4 @@
+import { resolveContact, contactLink } from '../utils/quoteFlow';
 import React, { useEffect, useMemo, useState } from 'react';
 import { ArrowRightLeft, ChevronDown, Mail, MessageCircle, Plane, Ship, Truck } from 'lucide-react';
 import { LocationAutocomplete, LocationOption } from './LocationAutocomplete';
@@ -217,14 +218,14 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
 
   const handleSendWhatsApp = () => {
     const text = `Halo GAEKS, saya ingin konsultasi tarif kargo:\n\n${inquiryLines.map((line) => `- ${line}`).join('\n')}\n\nMohon informasi tarif dan jadwal yang tersedia. Terima kasih.`;
-    window.open(`https://wa.me/${whatsappDigits(branding.whatsappNumber)}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    window.open(`https://wa.me/${whatsappDigits(resolveContact(shippingMode === 'air' ? 'air' : shippingMode === 'ocean' ? 'fcl' : 'domestic-truck').whatsappNumber)}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
     measureContactClick('whatsapp', shippingMode === 'air' ? 'air' : shippingMode === 'ocean' ? 'fcl' : 'other');
   };
 
   const handleSendEmail = () => {
     const subject = `Inquiry ${mode.shortLabel}: ${route.origin} ke ${route.destination}`;
     const body = `Halo Tim Komersial GAEKS,\n\nMohon informasi tarif untuk data berikut:\n${inquiryLines.map((line) => `- ${line}`).join('\n')}\n\nTerima kasih.`;
-    window.location.href = `mailto:${branding.salesEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${resolveContact(shippingMode === 'air' ? 'air' : shippingMode === 'ocean' ? 'fcl' : 'domestic-truck').email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     measureContactClick('email', shippingMode === 'air' ? 'air' : shippingMode === 'ocean' ? 'fcl' : 'other');
   };
 

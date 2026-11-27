@@ -16,3 +16,8 @@ gaeks-private/
 .idea/
 Thumbs.db
 Desktop.ini
+
+# Skill search caches and browser artifacts
+__pycache__/
+*.pyc
+test-results/

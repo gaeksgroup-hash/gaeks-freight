@@ -1,0 +1,36 @@
+name: Project quality
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm run standards:check
+      - run: npm run build
+      - run: php -v && npm run php:lint
+      - run: npx playwright install --with-deps chromium
+      - name: Run local CMS and browser checks
+        run: |
+          npm run demo:preview > /tmp/gaeks-preview.log 2>&1 &
+          for attempt in $(seq 1 20); do
+            if curl --fail --silent http://127.0.0.1:4173/api/sync.php > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:cms
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-review
+          path: test-results/
+          if-no-files-found: ignore
