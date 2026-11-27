@@ -265,7 +265,8 @@ try {
   assert.ok(navWaHref.startsWith('https://wa.me/6287722440148?text='), navWaHref);
   // Copy email button works & announces status
   await page.locator('.service-email-copy-row button').click();
-  assert.equal(await page.locator('.service-email-copy-row [role="status"]').innerText(), 'Tersalin');
+  await page.locator('.service-email-copy-row button[data-copied="true"]').waitFor({ state: 'visible', timeout: 5000 });
+  assert.equal((await page.locator('.service-email-copy-row [role="status"]').innerText()).trim(), 'Tersalin');
 
   // Scenario 3: FCL without container size (page + SmartCalculator empty/unfilled)
   await page.goto(base + '/layanan/freight-laut-fcl/');
