@@ -9,7 +9,13 @@ const serviceInfo = (service) => ({
   compare: service.compare?.length ? service.compare : knowledge[service.id]?.compare || [],
   faq: service.faq?.length ? service.faq : knowledge[service.id]?.faq || [],
 });
-const template = await readFile('dist/index.html', 'utf8');
+const staging = process.env.GAEKS_STAGING === '1';
+let template = await readFile('dist/index.html', 'utf8');
+if (staging) {
+  template = template.replace(/<meta name="robots"[^>]*\/>/, '<meta name="robots" content="noindex, nofollow" />');
+  await writeFile('dist/index.html', template);
+  await writeFile('dist/robots.txt', 'User-agent: *\nDisallow: /\n');
+}
 const routes = [
   { path: '/', title: 'GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia', description: 'Rencanakan pengiriman laut, udara, kepabeanan, pergudangan, dan trucking bersama GAEKS Freight.', heading: 'Kargo bergerak dengan rencana yang jelas.', body: 'GAEKS membantu merencanakan moda, dokumen, rute, dan serah terima kargo untuk kebutuhan bisnis.' },
   { path: '/layanan/', title: 'Layanan Freight Forwarding & Logistik | GAEKS', description: 'Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.', heading: 'Layanan freight untuk setiap jenis kargo.', body: 'Pilih layanan berdasarkan volume, sifat barang, kesiapan dokumen, dan tujuan pengiriman.' },

@@ -19,6 +19,10 @@ function gaeks_staging_site(): bool
     return preg_match('/\\.hostingersite\\.com$/i', $_SERVER['HTTP_HOST'] ?? '') === 1;
 }
 
+if (gaeks_staging_site()) {
+    header('X-Robots-Tag: noindex, nofollow');
+}
+
 function gaeks_json(array $payload, int $status = 200): void
 {
     http_response_code($status);

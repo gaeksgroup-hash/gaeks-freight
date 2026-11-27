@@ -118,7 +118,7 @@ export const App: React.FC = () => {
       };
       setMeta('meta[name="description"]', 'content', description);
       setMeta('meta[name="keywords"]', 'content', seo.keywords);
-      setMeta('meta[name="robots"]', 'content', currentPage === 'operator' || !seo.robotsIndex ? 'noindex, nofollow' : 'index, follow');
+      setMeta('meta[name="robots"]', 'content', currentPage === 'operator' || !seo.robotsIndex || window.location.hostname.endsWith('.hostingersite.com') ? 'noindex, nofollow' : 'index, follow');
       setMeta('meta[property="og:title"]', 'content', document.title);
       setMeta('meta[property="og:description"]', 'content', description);
       setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl, 'https://gaeks.com').href);
