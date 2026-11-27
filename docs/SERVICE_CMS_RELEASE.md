@@ -9,12 +9,14 @@
 | Jasa impor/ekspor, dokumen, Customs Clearance Jakarta/Semarang/Surabaya, SKI | /layanan/ppjk-customs-clearance/ | PPJK · +6285608561745 · info@gaeks.com |
 | Undername Jakarta/Semarang/Surabaya, Persetujuan Impor, PI besi baja | /layanan/undername-impor-pi/ | Undername · +6285608561745 · info@gaeks.com |
 | Trucking domestic | /layanan/trucking/ | General · +6281393453375 · Cs@gaeks.com |
-| Penyediaan / sewa kapal RORO dan breakbulk | /layanan/roro-breakbulk/ | General · +6281393453375 · Cs@gaeks.com |
-| Project Cargo | /layanan/project-cargo-heavy-lift/ | General · +6281393453375 · Cs@gaeks.com |
+| Penyediaan / sewa kapal RORO dan breakbulk | /layanan/roro-breakbulk/ | FCL/Info · +6285608561745 · info@gaeks.com |
+| Project Cargo | /layanan/project-cargo-heavy-lift/ | FCL/Info · +6285608561745 · info@gaeks.com |
 | Gudang dan PBM | /layanan/pergudangan-stevedoring/ | General · +6281393453375 · Cs@gaeks.com |
 | LCL | /layanan/freight-laut-lcl/ | General · +6281393453375 · Cs@gaeks.com |
 
 Kota dibahas dalam bagian layanan yang relevan, tanpa halaman kota duplikat. Semua kelompok, pemetaan, kontak, tampilan nomor, dan CTA dikelola di Operator → Brand & Kontak. Halaman layanan, FAQ, bagian kota, gambar/alt, SEO title, description, canonical, status, serta bukti dikelola di Operator → Layanan. Pratinjau teks tersedia sebelum simpan. Kontak yang tidak dipetakan memakai kelompok `general`.
+
+Koreksi pemilik 27 November 2026: RORO/breakbulk dan Project Cargo diarahkan ke nomor Info; CS memuat general inquiry, trucking, gudang, dan LCL. Migrasi CMS versi 4 menyimpan cadangan privat `site_content.json.before-contact-routing-v2`, mengubah hanya pemetaan dua layanan tersebut dan label bawaan terkait. Direktori mengikuti komposisi Tracking: gradien biru laut, ilustrasi maritim yang sudah disetujui, serta daftar kontak terangkat. Penanda cakupan layanan berupa titik visual, bukan em dash.
 
 ## Bukti dan redaksi
 

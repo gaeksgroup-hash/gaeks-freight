@@ -16,6 +16,7 @@ export function PhoneContactsPage() {
   const services = getStoredServices();
   return <div className="phone-page">
     <header className="phone-intro">
+      <div className="phone-intro-visual" aria-hidden="true"><img src="/tracking/approved-maritime-illustration.webp" width="398" height="233" alt="" decoding="async" /></div>
       <div className="page-shell">
         <nav className="phone-breadcrumb" aria-label={copy.phoneBreadcrumbLabel}><ol>
           <li><a href="/">{copy.phoneHomeLabel}</a></li>
@@ -35,7 +36,7 @@ export function PhoneContactsPage() {
           const title = phoneTeamTitle(members, copy);
           const message = copy.phoneMessage + ' ' + title + '.';
           return <article className="phone-team" key={number}>
-            <div className="phone-team-scope"><span className="phone-team-index" aria-hidden="true">0{index + 1} / 0{teams.length}</span><h2>{title}</h2>{scope.length > 0 && <ul>{scope.map(service => <li key={service.id}>{service.title}</li>)}</ul>}</div>
+            <div className="phone-team-scope"><span className="phone-team-index" aria-hidden="true">0{index + 1} / 0{teams.length}</span><h2>{title}</h2>{members.some(group => group.id === 'general') && <p className="phone-team-note">{copy.phoneGeneralNote}</p>}{scope.length > 0 && <ul>{scope.map(service => <li key={service.id}>{service.title}</li>)}</ul>}</div>
             <div className="phone-team-actions">
               <a className="phone-number" href={'tel:+' + number}><Phone size={19} aria-hidden="true" /><span>{first.whatsappDisplay}</span></a>
               <div className="phone-action-pair"><a className="phone-whatsapp" href={'https://wa.me/' + number + '?text=' + encodeURIComponent(message)} onClick={() => measureContactClick('whatsapp', ids[0] || 'general')} aria-label={copy.phoneWhatsapp + ': ' + title}><MessageCircle size={18} aria-hidden="true" />{copy.phoneWhatsapp}<ArrowUpRight size={17} aria-hidden="true" /></a><a className="phone-call" href={'tel:+' + number} aria-label={copy.phoneCall + ': ' + title}>{copy.phoneCall}</a></div>

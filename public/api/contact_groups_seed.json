@@ -6,7 +6,9 @@
     "whatsappDisplay": "+6285608561745",
     "email": "info@gaeks.com",
     "serviceIds": [
-      "fcl"
+      "fcl",
+      "project-cargo",
+      "roro-breakbulk"
     ],
     "ctaText": "Konsultasikan Ekspor / impor laut FCL"
   },
@@ -45,17 +47,15 @@
   },
   {
     "id": "general",
-    "name": "Project Cargo, Domestic, Gudang & general inquiry",
+    "name": "Layanan pelanggan & general inquiry",
     "whatsappNumber": "6281393453375",
     "whatsappDisplay": "+6281393453375",
     "email": "Cs@gaeks.com",
     "serviceIds": [
-      "project-cargo",
       "domestic-truck",
       "gudang-pbm",
-      "lcl",
-      "roro-breakbulk"
+      "lcl"
     ],
-    "ctaText": "Konsultasikan Project Cargo, Domestic, Gudang & general inquiry"
+    "ctaText": "Hubungi layanan pelanggan untuk general inquiry"
   }
 ]

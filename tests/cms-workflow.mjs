@@ -21,6 +21,9 @@ try{
  const cookie=login.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
  const headers={'Content-Type':'application/json',Cookie:cookie,'X-CSRF-Token':auth.csrfToken};
  const data=JSON.parse(original);
+ assert.equal(data.serviceCmsVersion,4);
+ assert.equal(data.branding.contactGroups.find(g=>g.id==='general').serviceIds.includes('project-cargo'),false);
+ assert.equal(data.branding.contactGroups.find(g=>g.id==='fcl').serviceIds.includes('roro-breakbulk'),true);
  assert.equal(data.hero.imageUrl,'/uploads/gaeks-hero-cargo-poster.webp');
  assert.equal(data.hero.videoUrl,'/uploads/gaeks-hero-cargo-optimized.webm');
  for(const service of data.services){const path=new URL(service.canonical).pathname;const response=await fetch(base+path);assert.equal(response.status,200,path);assert.match(await response.text(),/application\/ld\+json/);}
@@ -66,6 +69,9 @@ try{
  const phoneLinks=await page.locator('.phone-whatsapp').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
  assert.deepEqual(phoneLinks,['/6281393453375','/6285608561745','/6287722440148']);
  assert.equal(await page.locator('.phone-team-scope li').count(),data.services.length);
+ assert.match(await page.locator('.phone-team').first().innerText(),/general inquiry/i);
+ assert.match(await page.locator('.phone-team').nth(1).innerText(),/RORO/);
+ assert.match(await page.locator('.phone-team').nth(1).innerText(),/Project Cargo/);
  assert.equal(await page.locator('.phone-breadcrumb [aria-current="page"]').getAttribute('href'),'/kontak/telepon/');
  await page.goBack();await page.waitForURL('**/layanan/freight-udara/');
  const summary=page.locator('.service-disclosures summary').last();await summary.focus();await page.keyboard.press('Enter');assert.equal(await summary.evaluate(el=>el.parentElement.open),true);await page.keyboard.press('Enter');assert.equal(await summary.evaluate(el=>el.parentElement.open),false);
@@ -81,7 +87,7 @@ try{
  await page.evaluate(()=>{window.open=(url)=>{window.__quoteTarget=String(url);return null;};});
  for(const [name,value] of Object.entries({name:'Test lokal',company:'Test company',phone:'08123456789',email:'test@example.com',origin:'Jakarta',destination:'Semarang',commodity:'General cargo'}))await page.locator('[name="'+name+'"]').fill(value);
  await page.locator('input[type=checkbox][required]').check();
- for(const [service,phone] of [['fcl','6285608561745'],['air','6287722440148'],['ppjk','6285608561745'],['undername','6285608561745'],['project-cargo','6281393453375'],['general','6281393453375']]){
+ for(const [service,phone] of [['fcl','6285608561745'],['air','6287722440148'],['ppjk','6285608561745'],['undername','6285608561745'],['project-cargo','6285608561745'],['roro-breakbulk','6285608561745'],['general','6281393453375']]){
    await page.locator('#quote-form select').first().selectOption(service);await page.locator('#quote-form button[type=submit]').click();
    assert.ok((await page.evaluate(()=>window.__quoteTarget)).startsWith('https://wa.me/'+phone+'?text='));
  }
