@@ -27,7 +27,7 @@ export function PhoneContactsPage() {
     </header>
     <div className="page-shell phone-layout">
       <section className="phone-directory-sheet" aria-label={copy.phoneDirectoryLabel}>
-        {teams.map(({ number, members }) => {
+        {teams.map(({ number, members }, index) => {
           const first = members[0];
           const ids = [...new Set(members.flatMap(group => group.serviceIds))];
           const scope = services.filter(service => ids.includes(service.id));
@@ -35,7 +35,7 @@ export function PhoneContactsPage() {
           const title = phoneTeamTitle(members, copy);
           const message = copy.phoneMessage + ' ' + title + '.';
           return <article className="phone-team" key={number}>
-            <div className="phone-team-scope"><h2>{title}</h2>{scope.length > 0 && <ul>{scope.map(service => <li key={service.id}>{service.title}</li>)}</ul>}</div>
+            <div className="phone-team-scope"><span className="phone-team-index" aria-hidden="true">0{index + 1} / 0{teams.length}</span><h2>{title}</h2>{scope.length > 0 && <ul>{scope.map(service => <li key={service.id}>{service.title}</li>)}</ul>}</div>
             <div className="phone-team-actions">
               <a className="phone-number" href={'tel:+' + number}><Phone size={19} aria-hidden="true" /><span>{first.whatsappDisplay}</span></a>
               <div className="phone-action-pair"><a className="phone-whatsapp" href={'https://wa.me/' + number + '?text=' + encodeURIComponent(message)} onClick={() => measureContactClick('whatsapp', ids[0] || 'general')} aria-label={copy.phoneWhatsapp + ': ' + title}><MessageCircle size={18} aria-hidden="true" />{copy.phoneWhatsapp}<ArrowUpRight size={17} aria-hidden="true" /></a><a className="phone-call" href={'tel:+' + number} aria-label={copy.phoneCall + ': ' + title}>{copy.phoneCall}</a></div>

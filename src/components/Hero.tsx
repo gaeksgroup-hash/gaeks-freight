@@ -35,6 +35,8 @@ const copy = {
 
 const icons = [PackageSearch, Calculator, Route];
 const imageVariant = (url: string, width: number) => url.includes('images.unsplash.com') ? url.replace(/([?&])w=\d+/i, `$1w=${width}`).replace(/([?&])q=\d+/i, '$1q=72') : url;
+const missingHeroPoster = '/uploads/1791915131-e31c7018-lv_0_20261004214354-poster-optimized.webp';
+const missingHeroVideo = '/uploads/1791915131-8afd4eca-lv_0_20261004214354-optimized.webm';
 
 export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLang = 'id' }) => {
   const [heroSettings, setHeroSettings] = useState(getStoredHero());
@@ -44,25 +46,28 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
   const baseText = copy[currentLang];
   const text = currentLang === 'id' ? { ...baseText, eyebrow: heroSettings.eyebrow, title: `${heroSettings.titlePrefix}${heroSettings.titleHighlight}${heroSettings.titleSuffix}`, body: heroSettings.caption, primary: heroSettings.primaryLabel, secondary: heroSettings.secondaryLabel } : baseText;
   const firstService = getStoredServices()[0];
-  const posterUrl = heroSettings.imageUrl || firstService?.imageUrl;
+  const [posterFailed, setPosterFailed] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const posterUrl = posterFailed || heroSettings.imageUrl === missingHeroPoster ? '/uploads/gaeks-hero-cargo-poster.webp' : heroSettings.imageUrl || firstService?.imageUrl;
+  const videoUrl = heroSettings.videoUrl === missingHeroVideo ? '/uploads/gaeks-hero-cargo-optimized.webm' : heroSettings.videoUrl;
   const posterSrcSet = posterUrl?.includes('images.unsplash.com') ? [720, 1280, 1920].map((width) => `${imageVariant(posterUrl, width)} ${width}w`).join(', ') : undefined;
-  const mobileVideoUrl = heroSettings.videoUrl === '/uploads/gaeks-hero-cargo-optimized.webm' ? '/uploads/gaeks-hero-cargo-mobile.webm' : null;
-  const videoType = /\.mp4(?:\?|$)/i.test(heroSettings.videoUrl) ? 'video/mp4' : 'video/webm';
+  const mobileVideoUrl = videoUrl === '/uploads/gaeks-hero-cargo-optimized.webm' ? '/uploads/gaeks-hero-cargo-mobile.webm' : null;
+  const videoType = /\.mp4(?:\?|$)/i.test(videoUrl) ? 'video/mp4' : 'video/webm';
 
   useEffect(() => {
-    const reload = () => { setHeroSettings(getStoredHero()); setLoadVideo(false); setVideoVisible(false); };
+    const reload = () => { setHeroSettings(getStoredHero()); setLoadVideo(false); setVideoVisible(false); setPosterFailed(false); setVideoFailed(false); };
     window.addEventListener(GAEKS_UPDATE_EVENT, reload);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, reload);
   }, []);
 
   useEffect(() => {
-    if (heroSettings.bgType !== 'video' || !heroSettings.videoUrl || heroSettings.videoLoadMode === 'poster-only' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (heroSettings.bgType !== 'video' || !videoUrl || videoFailed || heroSettings.videoLoadMode === 'poster-only' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
     if (connection?.saveData) return;
     if (heroSettings.videoLoadMode === 'adaptive' && ['slow-2g', '2g', '3g'].includes(connection?.effectiveType || '')) return;
     const frame = window.requestAnimationFrame(() => setLoadVideo(true));
     return () => window.cancelAnimationFrame(frame);
-  }, [heroSettings.bgType, heroSettings.videoLoadMode, heroSettings.videoUrl]);
+  }, [heroSettings.bgType, heroSettings.videoLoadMode, videoUrl, videoFailed]);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -74,14 +79,14 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenService, currentLa
     syncPlayback();
     document.addEventListener('visibilitychange', syncPlayback);
     return () => document.removeEventListener('visibilitychange', syncPlayback);
-  }, [loadVideo, heroSettings.videoUrl]);
+  }, [loadVideo, videoUrl]);
 
   return (
     <section id="home" aria-labelledby="hero-title" className="border-b border-slate-200 bg-[#062d32] pt-16 text-white">
       <div className="relative isolate overflow-hidden">
-        {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" className={`absolute inset-0 -z-30 h-full w-full object-cover ${heroSettings.bgType === 'video' ? `hero-poster-motion ${videoVisible ? 'hero-poster-paused' : ''}` : ''}`} />}
-        {heroSettings.bgType === 'video' && loadVideo && heroSettings.videoUrl && <video ref={videoRef} key={heroSettings.videoUrl} className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${videoVisible ? 'opacity-100' : 'opacity-0'}`} autoPlay muted loop playsInline preload="auto" poster={posterUrl} aria-hidden="true" onPlaying={() => setVideoVisible(true)} onError={() => setVideoVisible(false)}>{mobileVideoUrl && <source src={mobileVideoUrl} type="video/webm" media="(max-width: 767px)" />}<source src={heroSettings.videoUrl} type={videoType} /></video>}
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.96)_0%,rgba(3,29,33,.82)_55%,rgba(3,29,33,.58)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(3,29,33,.93)_0%,rgba(3,29,33,.78)_58%,rgba(3,29,33,.9)_100%)]" />
+        {heroSettings.bgType !== 'none' && posterUrl && <img src={imageVariant(posterUrl, 1920)} srcSet={posterSrcSet} sizes="100vw" alt="" width="1920" height="1080" decoding="async" fetchPriority="high" onError={() => setPosterFailed(true)} className={`absolute inset-0 -z-30 h-full w-full object-cover ${heroSettings.bgType === 'video' ? `hero-poster-motion ${videoVisible ? 'hero-poster-paused' : ''}` : ''}`} />}
+        {heroSettings.bgType === 'video' && loadVideo && !videoFailed && videoUrl && <video ref={videoRef} key={videoUrl} className={`absolute inset-0 -z-20 h-full w-full object-cover transition-opacity duration-700 ${videoVisible ? 'opacity-100' : 'opacity-0'}`} autoPlay muted loop playsInline preload="metadata" poster={posterUrl} aria-hidden="true" onPlaying={() => setVideoVisible(true)} onError={() => {setVideoVisible(false);setVideoFailed(true);}}>{mobileVideoUrl && <source src={mobileVideoUrl} type="video/webm" media="(max-width: 767px)" />}<source src={videoUrl} type={videoType} /></video>}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(3,29,33,.83)_0%,rgba(3,29,33,.67)_54%,rgba(3,29,33,.42)_100%)] max-lg:bg-[linear-gradient(180deg,rgba(3,29,33,.78)_0%,rgba(3,29,33,.59)_58%,rgba(3,29,33,.78)_100%)]" />
         <div className="page-shell grid min-h-[600px] min-w-0 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)] lg:gap-16">
           <div className="min-w-0 flex flex-col justify-center py-14 sm:py-20 lg:py-24">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-cyan-200">{text.eyebrow}</p>

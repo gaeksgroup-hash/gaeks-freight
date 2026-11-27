@@ -6,7 +6,8 @@ function gaeks_migrate_service_content(string $path): void {
     if (!$lock || !flock($lock, LOCK_EX)) return;
     try {
         $data = gaeks_read_json_file($path, gaeks_read_json_file(__DIR__ . '/site_content.json', []));
-        if (($data['serviceCmsVersion'] ?? 0) >= 2) return;
+        if (($data['serviceCmsVersion'] ?? 0) >= 3) return;
+        if (($data['serviceCmsVersion'] ?? 0) < 2) {
         if (is_file($path) && !is_file($path . '.before-service-cms-v1')) copy($path, $path . '.before-service-cms-v1');
         $data['siteSettings']['uiCopy'] = array_replace(gaeks_read_json_file(__DIR__ . '/ui_copy_seed.json', []), $data['siteSettings']['uiCopy'] ?? []);
         $data['branding']['contactGroups'] ??= gaeks_read_json_file(__DIR__ . '/contact_groups_seed.json', []);
@@ -21,6 +22,11 @@ function gaeks_migrate_service_content(string $path): void {
         }
         $data['services'] = $services;
         $data['serviceCmsVersion'] = 2;
+        }
+        if (!is_file($path . '.before-hero-media-v1') && is_file($path)) copy($path, $path . '.before-hero-media-v1');
+        if (($data['hero']['imageUrl'] ?? '') === '/uploads/1791915131-e31c7018-lv_0_20261004214354-poster-optimized.webp') $data['hero']['imageUrl'] = '/uploads/gaeks-hero-cargo-poster.webp';
+        if (($data['hero']['videoUrl'] ?? '') === '/uploads/1791915131-8afd4eca-lv_0_20261004214354-optimized.webm') $data['hero']['videoUrl'] = '/uploads/gaeks-hero-cargo-optimized.webm';
+        $data['serviceCmsVersion'] = 3;
         $data['updatedAt'] = (int) round(microtime(true)*1000);
         if (!gaeks_write_json_file($path, $data)) gaeks_json(['message'=>'Migrasi konten belum tersimpan.'],503);
     } finally { flock($lock, LOCK_UN); fclose($lock); }

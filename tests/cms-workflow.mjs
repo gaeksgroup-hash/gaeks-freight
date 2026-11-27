@@ -21,6 +21,8 @@ try{
  const cookie=login.headers.getSetCookie().map(c=>c.split(';')[0]).join('; ');
  const headers={'Content-Type':'application/json',Cookie:cookie,'X-CSRF-Token':auth.csrfToken};
  const data=JSON.parse(original);
+ assert.equal(data.hero.imageUrl,'/uploads/gaeks-hero-cargo-poster.webp');
+ assert.equal(data.hero.videoUrl,'/uploads/gaeks-hero-cargo-optimized.webm');
  for(const service of data.services){const path=new URL(service.canonical).pathname;const response=await fetch(base+path);assert.equal(response.status,200,path);assert.match(await response.text(),/application\/ld\+json/);}
  const save=(section,payload,extra=headers)=>fetch(base+'/api/sync.php',{method:'POST',headers:extra,body:JSON.stringify({section,payload})});
  assert.equal((await save('branding',data.branding,{'Content-Type':'application/json'})).status,401);
@@ -47,6 +49,7 @@ try{
   await page.setViewportSize({width,height:900});
   for(const route of ['/','/kontak/','/kontak/telepon/','/layanan/freight-udara/','/layanan/roro-breakbulk/','/tracking/']){
    await page.goto(base+route);await page.waitForTimeout(700);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,route+' overflow at '+width);
+   if(route==='/'){const poster=page.locator('#home img').first();assert.ok((await poster.evaluate(el=>el.naturalWidth))>0,'hero poster loaded at '+width);}
    if(route==='/kontak/'||route==='/kontak/telepon/'||route==='/layanan/freight-udara/'){
     await page.screenshot({path:`test-results/${route.includes('freight')?'air':route.includes('telepon')?'phones':'contact'}-${width}.png`,fullPage:true});
     if(width===375||width===1440){const a11y=await new AxeBuilder({page}).include('main').include('footer').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(a11y.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],route+' accessibility');await page.locator('footer').screenshot({path:`test-results/footer-${width}.png`});}
@@ -83,7 +86,7 @@ try{
    assert.ok((await page.evaluate(()=>window.__quoteTarget)).startsWith('https://wa.me/'+phone+'?text='));
  }
  await page.setViewportSize({width:1440,height:1000});await page.reload();await page.waitForTimeout(700);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
- await page.goto(base+'/kontak/');await page.locator('.contact-directory summary').click();assert.equal(await page.locator('.contact-directory').evaluate(el=>el.open),true);
+ await page.goto(base+'/kontak/');assert.equal(await page.locator('.contact-directory a').getAttribute('href'),'/kontak/telepon/');
  await page.setViewportSize({width:375,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.reload();await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior),'auto');
  assert.deepEqual(errors,[]);
  console.log('PASS: auth/CSRF; CMS save to SSR/schema; draft/sitemap; operator save; 6 RFQ destinations; 24 route/viewport renders; main-content axe checks; disclosure keyboard; inquiry anchor; 3 footer emails; phone directory navigation/back, grouped numbers and service coverage; reduced motion. Screenshots: test-results/.');
