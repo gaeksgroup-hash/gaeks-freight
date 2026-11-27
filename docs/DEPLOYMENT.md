@@ -8,6 +8,12 @@ Repository GitHub:
 
 Branch produksi: `main`.
 
+## Jalur development Hostinger
+
+Cabang `develop` terhubung ke situs staging `https://trusty-mediumvioletred-octopus-86.hostingersite.com/` pada paket Hostinger yang sama. Push ke `develop` memicu build staging; push ke `main` tetap memicu build produksi. Kerjakan dan verifikasi perubahan pada `develop` sebelum membuat pull request ke `main`.
+
+Staging memakai direktori dan penyimpanan privat sendiri. Konten CMS produksi tidak disalin otomatis. Pengiriman email newsletter dimatikan pada domain `*.hostingersite.com`, dan respons HTML staging membawa `X-Robots-Tag: noindex, nofollow`.
+
 Hostinger terhubung langsung ke repository dan menjalankan build setelah commit baru masuk ke `main`. GitHub Actions dan FTP tidak digunakan.
 
 ## Konfigurasi build aktif

@@ -14,6 +14,11 @@ function gaeks_local_demo(): bool
         && preg_match('/^(?:127\\.0\\.0\\.1|localhost)(?::\\d+)?$/', $_SERVER['HTTP_HOST'] ?? '') === 1;
 }
 
+function gaeks_staging_site(): bool
+{
+    return preg_match('/\\.hostingersite\\.com$/i', $_SERVER['HTTP_HOST'] ?? '') === 1;
+}
+
 function gaeks_json(array $payload, int $status = 200): void
 {
     http_response_code($status);
@@ -406,7 +411,7 @@ function gaeks_send_via_smtp(array $config, string $to, string $subject, string 
 
 function gaeks_send_html_mail(string $to, string $subject, string $html, ?string $unsubscribeUrl = null): bool
 {
-    if (gaeks_local_demo()) {
+    if (gaeks_local_demo() || gaeks_staging_site()) {
         return false;
     }
     if (!filter_var($to, FILTER_VALIDATE_EMAIL)) {
