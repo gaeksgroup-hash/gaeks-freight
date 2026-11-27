@@ -4,6 +4,7 @@
   RewriteRule ^ https://gaeks.com%{REQUEST_URI} [R=301,L]
   RewriteRule ^$ api/page.php [L]
   RewriteRule ^(layanan|kontak)/?$ api/page.php [L]
+  RewriteRule ^kontak/telepon/?$ api/page.php [L]
 
   # Fresh CMS articles and sitemap are rendered from server content for crawlers.
   RewriteRule ^sitemap\.xml$ api/sitemap.php [L]

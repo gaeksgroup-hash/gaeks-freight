@@ -8,6 +8,12 @@ $title=$content['seo']['siteTitle']??'GAEKS Freight';$description=$content['seo'
 $copy=array_replace(gaeks_read_json_file(__DIR__.'/ui_copy_seed.json',[]),$content['siteSettings']['uiCopy']??[]);
 if($path==='/layanan/'){$title=$copy['servicesMetaTitle'];$description=$copy['servicesMetaDescription'];}
 if($path==='/kontak/'){$title=$copy['contactMetaTitle'];$description=$copy['contactMetaDescription'];}
+if($path==='/kontak/telepon/'){
+    $title=$copy['phoneMetaTitle'];$description=$copy['phoneMetaDescription'];
+    require __DIR__.'/_phone_directory.php';
+    require __DIR__.'/_page_template.php';
+    return;
+}
 $body='<main class="page-shell py-24"><h1>'.$e($title).'</h1><p>'.$e($description).'</p><nav>';
 foreach($content['services'] as $s)$body.='<article class="my-5"><h2><a href="/layanan/'.$e(gaeks_service_slug($s['id'])).'/">'.$e($s['title']).'</a></h2><p>'.$e($s['summary']??$s['description']).'</p></article>';
 $body.='</nav><section class="grid gap-4 sm:grid-cols-2">';

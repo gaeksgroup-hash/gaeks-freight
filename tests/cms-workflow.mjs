@@ -28,7 +28,10 @@ try{
  const changed=structuredClone(data.branding);changed.contactGroups.find(g=>g.id==='air').email='local-check@example.com';
  assert.equal((await save('branding',changed)).status,200);
  assert.match(await (await fetch(base+'/layanan/freight-udara/')).text(),/local-check@example.com/);
+ const phoneSsr=await(await fetch(base+'/kontak/telepon/')).text();assert.match(phoneSsr,/local-check@example.com/);assert.match(phoneSsr,/ContactPage/);assert.match(phoneSsr,/https:\/\/gaeks.com\/kontak\/telepon\//);
+ assert.ok((await(await fetch(base+'/sitemap.xml')).text()).includes('/kontak/telepon/'));
  const site=structuredClone(data.siteSettings);site.uiCopy.contactMetaTitle='CMS contact metadata test';site.uiCopy.footerTrackingCta='Lacak tes CMS';assert.equal((await save('siteSettings',site)).status,200);assert.match(await(await fetch(base+'/kontak/')).text(),/<title>CMS contact metadata test<\/title>/);
+ site.uiCopy.phoneHeading='Tim telepon dari CMS';assert.equal((await save('siteSettings',site)).status,200);assert.match(await(await fetch(base+'/kontak/telepon/')).text(),/<h1>Tim telepon dari CMS<\/h1>/);
  const services=structuredClone(data.services);const air=services.find(s=>s.id==='air-shipment');air.seoTitle='CMS test title';air.faq=[['CMS test question','CMS test answer']];
  const saved=await save('services',services); assert.equal(saved.status,200,await saved.text());
  const html=await(await fetch(base+'/layanan/freight-udara/')).text();assert.match(html,/<title>CMS test title<\/title>/);assert.match(html,/CMS test answer/);assert.match(html,/FAQPage/);
@@ -42,15 +45,26 @@ try{
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  for(const width of [375,768,1024,1440]){
   await page.setViewportSize({width,height:900});
-  for(const route of ['/','/kontak/','/layanan/freight-udara/','/layanan/roro-breakbulk/','/tracking/']){
+  for(const route of ['/','/kontak/','/kontak/telepon/','/layanan/freight-udara/','/layanan/roro-breakbulk/','/tracking/']){
    await page.goto(base+route);await page.waitForTimeout(700);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false,route+' overflow at '+width);
-   if(route==='/kontak/'||route==='/layanan/freight-udara/'){
-    await page.screenshot({path:`test-results/${route.includes('freight')?'air':'contact'}-${width}.png`,fullPage:true});
+   if(route==='/kontak/'||route==='/kontak/telepon/'||route==='/layanan/freight-udara/'){
+    await page.screenshot({path:`test-results/${route.includes('freight')?'air':route.includes('telepon')?'phones':'contact'}-${width}.png`,fullPage:true});
     if(width===375||width===1440){const a11y=await new AxeBuilder({page}).include('main').include('footer').withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();assert.deepEqual(a11y.violations.map(v=>({id:v.id,nodes:v.nodes.map(n=>n.target)})),[],route+' accessibility');await page.locator('footer').screenshot({path:`test-results/footer-${width}.png`});}
    }
   }
  }
  await page.goto(base+'/layanan/freight-udara/');
+ const footerAddresses=await page.locator('footer a[href^="mailto:"]').evaluateAll(links=>links.map(link=>link.getAttribute('href').toLowerCase()));
+ assert.deepEqual(footerAddresses,['mailto:cs@gaeks.com','mailto:info@gaeks.com','mailto:aksa@gaeks.com']);
+ assert.equal(await page.locator('footer a[href^="tel:"], footer a[href*="wa.me"]').count(),0);
+ await page.locator('.footer-directory').focus();await page.keyboard.press('Enter');await page.waitForURL('**/kontak/telepon/');
+ await page.locator('.phone-number').first().waitFor();
+ assert.equal(await page.locator('.phone-team').count(),3);
+ const phoneLinks=await page.locator('.phone-whatsapp').evaluateAll(links=>links.map(link=>new URL(link.href).pathname));
+ assert.deepEqual(phoneLinks,['/6281393453375','/6285608561745','/6287722440148']);
+ assert.equal(await page.locator('.phone-team-scope li').count(),data.services.length);
+ assert.equal(await page.locator('.phone-breadcrumb [aria-current="page"]').getAttribute('href'),'/kontak/telepon/');
+ await page.goBack();await page.waitForURL('**/layanan/freight-udara/');
  const summary=page.locator('.service-disclosures summary').last();await summary.focus();await page.keyboard.press('Enter');assert.equal(await summary.evaluate(el=>el.parentElement.open),true);await page.keyboard.press('Enter');assert.equal(await summary.evaluate(el=>el.parentElement.open),false);
  await page.locator('.service-primary').click();assert.match(page.url(),/#quote-form$/);
  for(const href of await page.locator('footer a[href^="/"]').evaluateAll(links=>links.map(link=>link.getAttribute('href')))){assert.equal((await fetch(base+href.split('#')[0])).status,200,'footer '+href);}
@@ -72,5 +86,5 @@ try{
  await page.goto(base+'/kontak/');await page.locator('.contact-directory summary').click();assert.equal(await page.locator('.contact-directory').evaluate(el=>el.open),true);
  await page.setViewportSize({width:375,height:844});await page.emulateMedia({reducedMotion:'reduce'});await page.reload();await page.waitForTimeout(500);assert.equal(await page.evaluate(()=>getComputedStyle(document.documentElement).scrollBehavior),'auto');
  assert.deepEqual(errors,[]);
- console.log('PASS: auth/CSRF; CMS save to SSR/schema; draft/sitemap; operator save; 6 RFQ destinations; 20 route/viewport renders; main-content axe checks; disclosure keyboard; inquiry anchor; contact directory; reduced motion. Screenshots: test-results/.');
+ console.log('PASS: auth/CSRF; CMS save to SSR/schema; draft/sitemap; operator save; 6 RFQ destinations; 24 route/viewport renders; main-content axe checks; disclosure keyboard; inquiry anchor; 3 footer emails; phone directory navigation/back, grouped numbers and service coverage; reduced motion. Screenshots: test-results/.');
 }finally{await browser?.close();await writeFile(contentPath,original);if(users)await writeFile(usersPath,users);else await unlink(usersPath);}

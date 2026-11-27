@@ -2,7 +2,8 @@ import React from 'react';
 import { ArrowUpRight, Mail, MapPin, PackageSearch, PhoneCall } from 'lucide-react';
 import { Language } from '../types/freight';
 import { getStoredBranding, getStoredSiteSettings, getSiteCopy, GAEKS_UPDATE_EVENT } from '../utils/adminStorage';
-import { contactLink, currentQuoteService, measureContactClick, resolveContact } from '../utils/quoteFlow';
+import { measureContactClick } from '../utils/quoteFlow';
+import { footerEmails } from '../utils/contactDirectory';
 import { SocialLinks } from './SocialLinks';
 import { pagePaths } from '../utils/routes';
 
@@ -21,7 +22,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
       event.preventDefault(); onNavigate(page);
     }
   };
-  const contact = resolveContact();
+  const emails = footerEmails(brand.contactGroups || []);
   const copy = getSiteCopy();
   const links = settings.navigation.filter(item => item.visible && item.page !== 'home');
   return <footer className="freight-footer">
@@ -37,10 +38,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {settings.socialLinks.length > 0 && <SocialLinks links={settings.socialLinks} tone="dark" />}
         </div>
         <nav className="footer-navigation" aria-label="Navigasi footer"><h3>{copy.footerNavigationLabel}</h3><div>{links.map(({ page, label }) => <a key={page} href={pagePaths[page] || '/'} onClick={event => nav(page, event)}>{label}</a>)}</div></nav>
-        <div className="footer-contact"><h3>{copy.footerContactLabel}</h3><p className="footer-contact-name">{contact.name}</p>
-          <a className="footer-phone" href={contactLink('whatsapp')} onClick={() => measureContactClick('whatsapp', currentQuoteService())}><PhoneCall size={19} aria-hidden="true" /><span>{contact.whatsappDisplay}</span></a>
-          <a className="footer-email" href={contactLink('email')} onClick={() => measureContactClick('email', currentQuoteService())}><Mail size={18} aria-hidden="true" /><span>{contact.email}</span></a>
-          <a className="footer-directory" href="/kontak/#kontak-layanan">{copy.footerDirectory}<ArrowUpRight size={16} aria-hidden="true" /></a>
+        <div className="footer-contact"><h3>{copy.footerContactLabel}</h3>
+          <ul className="footer-emails">{emails.map(group => <li key={group.id}><a className="footer-email" href={'mailto:' + group.email} onClick={() => measureContactClick('email', group.serviceIds[0] || 'general')}><Mail size={18} aria-hidden="true" /><span>{group.email}</span></a></li>)}</ul>
+          <a className="footer-directory" href={pagePaths.phones} onClick={event => nav('phones', event)}><PhoneCall size={17} aria-hidden="true" />{copy.footerPhoneDirectory}<ArrowUpRight size={16} aria-hidden="true" /></a>
         </div>
       </div>
       <div className="footer-base">

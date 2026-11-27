@@ -24,6 +24,7 @@ const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').th
 const NewsPage = React.lazy(() => import('./components/NewsPage').then((module) => ({ default: module.NewsPage })));
 const OperatorAdmin = React.lazy(() => import('./components/OperatorAdmin').then((module) => ({ default: module.OperatorAdmin })));
 const ContactPage = React.lazy(() => import('./components/ContactPage').then((module) => ({ default: module.ContactPage })));
+const PhoneContactsPage = React.lazy(() => import('./components/PhoneContactsPage').then((module) => ({ default: module.PhoneContactsPage })));
 const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })));
 const ShipmentTracking = React.lazy(() => import('./components/ShipmentTracking').then((module) => ({ default: module.ShipmentTracking })));
 
@@ -47,6 +48,7 @@ export const App: React.FC = () => {
       return 'operator';
     }
     if (getServiceSlug()) return 'service';
+    if (path === 'kontak/telepon') return 'phones';
     if (path.startsWith('berita/')) return 'news';
     if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
       return hash;
@@ -102,7 +104,8 @@ export const App: React.FC = () => {
         calculator: 'Rencanakan kebutuhan kapasitas dan moda pengiriman sebelum meminta penawaran freight.',
         tracking: 'Periksa status shipment GAEKS menggunakan nomor pengiriman.',
         news: 'Baca pembaruan terkait logistik, rute, dan kepabeanan dari GAEKS.',
-        contact: copy.contactMetaDescription
+        contact: copy.contactMetaDescription,
+        phones: copy.phoneMetaDescription
       };
       const knowledge = detailService ? {summary: detailService.summary || detailService.description, faq: detailService.faq || [], compare: detailService.compare || []} : undefined;
       const adType = detailService?.id === 'fcl' ? 'fcl' : detailService?.id === 'air-shipment' ? 'air' : detailService?.id === 'ppjk' ? 'ppjk' : detailService?.id === 'undername-impor' ? 'undername' : null;
@@ -111,6 +114,7 @@ export const App: React.FC = () => {
       document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? (detailService.seoTitle || `${detailService.title} | GAEKS Freight`) : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
       if (currentPage === 'services') document.title = copy.servicesMetaTitle;
       if (currentPage === 'contact') document.title = copy.contactMetaTitle;
+      if (currentPage === 'phones') document.title = copy.phoneMetaTitle;
       const setMeta = (selector: string, attribute: string, value: string) => {
         let element = document.querySelector(selector) as HTMLMetaElement | null;
         if (!element) {
@@ -138,6 +142,14 @@ export const App: React.FC = () => {
         { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
       ];
       if (currentPage === 'home') graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
+      if (currentPage === 'phones') {
+        graph[2]['@type'] = 'ContactPage';
+        graph.push({ '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: copy.phoneHomeLabel, item: 'https://gaeks.com/' },
+          { '@type': 'ListItem', position: 2, name: copy.phoneContactLabel, item: 'https://gaeks.com/kontak/' },
+          { '@type': 'ListItem', position: 3, name: copy.phonePageLabel, item: canonical.href }
+        ] });
+      }
       if (detailService && knowledge) {
         graph.push({ '@type': 'Service', name: detailService.title, serviceType: detailService.category, description, provider: { '@id': orgId }, areaServed: { '@type': 'Country', name: 'Indonesia' }, url: canonical.href });
         graph.push({ '@type': 'BreadcrumbList', itemListElement: [
@@ -302,7 +314,7 @@ export const App: React.FC = () => {
       });
     }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
     const register = () => root.querySelectorAll('section:not(.scroll-reveal):not([data-reveal="custom"])').forEach((section) => {
-      if (section.closest('.service-detail, .contact-page')) return;
+      if (section.closest('.service-detail, .contact-page, .phone-page')) return;
       section.classList.add('scroll-reveal');
       if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
         section.classList.add('scroll-reveal-visible');
@@ -375,6 +387,7 @@ export const App: React.FC = () => {
         {currentPage === 'contact' && (
           <ContactPage />
         )}
+        {currentPage === 'phones' && <PhoneContactsPage />}
 
         {currentPage === 'home' && (
           <>

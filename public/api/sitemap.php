@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/_article.php';
 
-$paths = ['/', '/layanan/', '/rute-pengiriman/', '/kalkulator/', '/tracking/', '/berita/', '/kontak/'];
+$paths = ['/', '/layanan/', '/rute-pengiriman/', '/kalkulator/', '/tracking/', '/berita/', '/kontak/', '/kontak/telepon/'];
 $slugs = ['ppjk' => 'ppjk-customs-clearance', 'gudang-pbm' => 'pergudangan-stevedoring', 'domestic-truck' => 'trucking', 'project-cargo' => 'project-cargo-heavy-lift', 'lcl' => 'freight-laut-lcl', 'fcl' => 'freight-laut-fcl', 'air-shipment' => 'freight-udara', 'undername-impor' => 'undername-impor-pi'];
 $content = gaeks_read_json_file(gaeks_content_file(), []);
 $siteModified = gmdate('Y-m-d', max((int) @filemtime(gaeks_content_file()), (int) @filemtime(__DIR__ . '/site_content.json')));

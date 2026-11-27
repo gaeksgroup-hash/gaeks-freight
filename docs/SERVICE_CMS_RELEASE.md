@@ -26,7 +26,7 @@ Persyaratan impor harus diperiksa menurut HS code, komoditas, dan ketentuan saat
 
 ## Implementasi
 
-Footer diperbarui dengan panel tracking, hierarki judul/nomor kontak yang lebih kuat, navigasi ringkas, dan informasi perusahaan. Label baru dan metadata halaman layanan/kontak dapat disunting di Operator → Navigasi & Footer → Redaksi halaman layanan, kontak, dan footer. Arah desain serta alasan pemilihannya tercatat dalam `DESIGN.md`.
+Footer diperbarui dengan panel tracking, tiga email (CS, Info, Aksa), navigasi ringkas, dan informasi perusahaan. Sesuai koreksi terbaru pemilik, footer tidak lagi memilih satu nomor/kontak berdasarkan layanan. Tautan **Lihat kontak telepon** membuka `/kontak/telepon/` dengan nomor yang dikelompokkan, cakupan layanan, WhatsApp, telepon, email, dan petunjuk persiapan inquiry. FCL/PPJK/Undername memakai satu baris karena nomor yang sama. Sumber nomor/email tetap Brand & Kontak; label, judul, dan metadata baru dapat disunting di Operator → Navigasi & Footer → Redaksi halaman layanan, kontak, dan footer. Arah desain serta alasan pemilihannya tercatat dalam `DESIGN.md`.
 
 Standar Codex Cloud/lokal kini memiliki `AGENTS.md`, snapshot 310 file skill terkunci, pemeriksaan integritas, CLI desain/panduan versi tetap, setup Windows/Linux, serta workflow GitHub Actions. Tes browser tidak lagi bergantung pada folder temporer atau Edge tertentu.
 
@@ -44,7 +44,13 @@ Standar Codex Cloud/lokal kini memiliki `AGENTS.md`, snapshot 310 file skill ter
 
 Tes browser memakai Playwright dan axe-core yang terkunci di `package-lock.json`. Jalankan `npm ci`, `npx playwright install chromium`, preview PHP lokal, lalu `npm run test:cms`. Windows dapat memakai `GAEKS_BROWSER_CHANNEL=msedge`. Tes menulis hanya data lokal di `gaeks-private` dan memulihkannya. Panduan lintas Windows/Linux ada di `docs/PROJECT_STANDARDS.md`.
 
-## Verifikasi rilis langsung
+## Koreksi footer dan direktori telepon
+
+Pengujian lokal tambahan: build, lint 18 file PHP, integritas 310 file skill, 24 kombinasi halaman/viewport (375/768/1024/1440), axe pada main/footer kontak, telepon, dan air di 375/1440. Ketiga email tampil di footer; tidak ada tautan nomor langsung di footer. Tautan direktori dibuka dengan Enter, history Back kembali ke layanan. Tiga nomor unik memuat seluruh sembilan layanan, tujuan WhatsApp/tel diperiksa tanpa membuka aplikasi atau mengirim pesan. Judul dan email yang disimpan di CMS lokal muncul pada HTML server direktori; canonical, ContactPage schema, breadcrumbs, dan sitemap juga diperiksa. Screenshot `phones-375.png` dan `phones-1440.png` ditinjau visual.
+
+Modern Web Guidance `breadcrumbs`: gunakan nav berlabel, daftar berurutan, `aria-current="page"`, serta pemisah dekoratif. UI/UX Pro Max menegaskan hierarki heading dan navigasi halaman bertingkat. Tidak ditambahkan ketersediaan staf atau janji waktu respons yang belum dikonfirmasi.
+
+## Verifikasi rilis langsung sebelumnya
 
 Kode rilis: `4b5ba1c01be140956b3f6295afd131afedab04be`. Hostinger melaporkan build staging `01a21c8b-cd62-72fd-9d7a-6e5da84f3347` dan produksi `01a21c8d-da19-71c7-81a3-c904e50dfb5c` selesai **completed** pada commit tersebut. [GitHub Actions Linux/Chromium](https://github.com/gaeksgroup-hash/gaeks-freight/actions/runs/45982266706) juga **success**.
 
@@ -53,7 +59,7 @@ Audit produksi baca-saja pada 27 November 2026, 17:31 WIB:
 - Sembilan URL layanan pada tabel di atas mengembalikan HTTP 200; title CMS, canonical, schema JSON-LD, izin indeks, dan keikutsertaan sitemap diperiksa.
 - Beranda, daftar layanan, kontak, tracking, serta Operator mengembalikan HTTP 200. API publik menunjukkan migrasi CMS versi 2, sembilan layanan dan lima kelompok kontak.
 - `https://www.gaeks.com/` mengalihkan 301 ke `https://gaeks.com/`; HTTP mengalihkan ke HTTPS. HTTP dengan www melalui dua redirect (HTTPS www, lalu domain utama).
-- Halaman air freight menampilkan kontak Air pada footer. Halaman kontak dengan parameter undername memilih layanan yang sesuai; lebar 375 px tidak meluap. Tidak ditemukan exception JavaScript pada alur yang diperiksa.
+- Pada rilis awal, halaman air freight menampilkan kontak Air pada footer; perilaku ini digantikan oleh tiga email dan direktori telepon sesuai koreksi pemilik di atas. Halaman kontak dengan parameter undername memilih layanan yang sesuai; lebar 375 px tidak meluap. Tidak ditemukan exception JavaScript pada alur yang diperiksa.
 - Screenshot produksi `test-results/production-footer-desktop.png` diperiksa visual; screenshot halaman dan JSON audit disimpan di `test-results/production-*`. Direktori artifact lokal ini tidak dipublikasikan dalam repository.
 - Staging diperiksa terpisah: sembilan layanan, metadata/schema/sitemap, noindex, kontak footer, dan reflow kontak. Tidak ada mutasi data pengujian pada produksi.
 

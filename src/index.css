@@ -216,15 +216,14 @@ details > summary::-webkit-details-marker { display: none; }
 .footer-navigation > div { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.3rem; }
 .footer-navigation a { display: flex; align-items: center; min-height: 44px; font-size: .9rem; font-weight: 500; }
 .footer-navigation a:hover { text-decoration: underline; text-underline-offset: 5px; }
-.footer-contact-name { max-width: 34ch; line-height: 1.5; font-size: .85rem; margin-bottom: .5rem; }
-.footer-phone, .footer-email { display: flex; align-items: center; gap: .65rem; min-height: 44px; }
-.footer-phone svg, .footer-email svg { flex-shrink: 0; color: #a3edf2; }
-.footer-phone { color: white; font-size: clamp(1.05rem, 1.6vw, 1.35rem); font-weight: 600; letter-spacing: -.02em; }
+.footer-email { display: flex; align-items: center; gap: .65rem; min-height: 44px; }
+.footer-email svg { flex-shrink: 0; color: #a3edf2; }
 .footer-email { font-size: .9rem; }
-.footer-phone span, .footer-email span { overflow-wrap: anywhere; }
-.footer-phone:hover span, .footer-email:hover span { text-decoration: underline; text-underline-offset: 4px; }
-.footer-directory { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .8rem; color: #b3c9cb; text-decoration: underline; text-underline-offset: 4px; }
-.footer-directory:hover { color: white; }
+.footer-email span { overflow-wrap: anywhere; }
+.footer-email:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.footer-directory { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; margin-top: .75rem; padding: .55rem .75rem; border: 1px solid #698589; border-radius: 5px; font-size: .8rem; color: #e0f5f3; }
+.footer-directory:hover { color: white; background: #103b42; border-color: #a3edf2; }
+.footer-identity > div a { min-height: 44px; min-width: 44px; }
 .footer-base { border-top: 1px solid #345359; padding-block: 1.1rem .65rem; }
 .footer-address { display: flex; align-items: start; gap: .5rem; font-size: .8rem; line-height: 1.6; color: #b3c9cb; }
 .footer-address svg { flex-shrink: 0; margin-top: .1rem; }
@@ -232,6 +231,52 @@ details > summary::-webkit-details-marker { display: none; }
 .footer-legal a { display: inline-flex; align-items: center; gap: .4rem; min-height: 44px; }
 .footer-legal a:hover { color: white; text-decoration: underline; }
 .freight-footer :focus-visible { outline-color: #a3edf2; }
+.phone-page { background: var(--gaeks-canvas, #f4f5f1); color: #12363a; padding-top: 64px; }
+.phone-intro { background: #0b3036; color: #fff; padding-block: 1.25rem 3rem; }
+.phone-breadcrumb ol { display: flex; flex-wrap: wrap; align-items: center; gap: .2rem .55rem; list-style: none; padding: 0; }
+.phone-breadcrumb li { display: flex; align-items: center; gap: .55rem; font-size: .8rem; color: #c4dcdc; }
+.phone-breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; }
+.phone-breadcrumb a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.phone-breadcrumb [aria-current] { font-weight: 650; color: #fff; }
+.phone-intro :focus-visible { outline-color: #a3edf2; }
+.phone-intro-grid { display: grid; gap: 1.25rem; padding-top: 1.5rem; }
+.phone-eyebrow { font-size: .75rem; font-weight: 650; letter-spacing: .08em; color: #25636b; margin-bottom: 1rem; }
+.phone-intro .phone-eyebrow { color: #a3edf2; }
+.phone-intro h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.08; font-weight: 600; letter-spacing: -.04em; max-width: 19ch; text-wrap: balance; }
+.phone-intro-copy { max-width: 46ch; line-height: 1.75; color: #c4dcdc; }
+.phone-layout { display: grid; gap: 2rem; padding-block: 2rem 3rem; align-items: start; }
+.phone-directory-sheet { min-width: 0; background: #fff; border: 1px solid #c6d5d3; border-radius: 10px; box-shadow: 0 14px 30px -25px #153f45; overflow: hidden; }
+.phone-team { display: grid; gap: 1.25rem; padding: 1.5rem; }
+.phone-team + .phone-team { border-top: 1px solid #c6d5d3; }
+.phone-team h2 { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.3; font-weight: 650; letter-spacing: -.025em; text-wrap: balance; }
+.phone-team-scope ul { margin-top: .8rem; padding-left: 1rem; list-style: disc; color: #496269; font-size: .875rem; line-height: 1.65; }
+.phone-team-scope li + li { margin-top: .2rem; }
+.phone-team-actions { min-width: 0; }
+.phone-number { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: clamp(1.05rem, 1.7vw, 1.35rem); letter-spacing: -.025em; font-weight: 650; }
+.phone-number span { overflow-wrap: anywhere; }
+.phone-number svg, .phone-team-email svg { flex-shrink: 0; }
+.phone-number:hover span { text-decoration: underline; text-underline-offset: 4px; }
+.phone-action-pair { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-block: .5rem; }
+.phone-whatsapp { display: inline-flex; justify-content: center; align-items: center; gap: .6rem; min-height: 44px; padding: .65rem .8rem; background: #10464e; color: white; border-radius: 5px; font-size: .875rem; font-weight: 600; }
+.phone-whatsapp:hover { background: #082f34; }
+.phone-call { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; font-size: .875rem; }
+.phone-team-email { display: flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: #496269; overflow-wrap: anywhere; }
+.phone-team-email:hover { color: #10464e; text-decoration: underline; text-underline-offset: 4px; }
+.phone-preparation { border-left: 3px solid #4f8c91; padding: .25rem 0 .25rem 1.25rem; }
+.phone-preparation h2 { font-size: 1.35rem; font-weight: 600; line-height: 1.35; text-wrap: balance; }
+.phone-preparation ul { list-style: disc; padding-left: 1rem; margin-block: 1rem 1.5rem; }
+.phone-preparation li, .phone-preparation > p:not(.phone-eyebrow) { color: #496269; font-size: .9rem; line-height: 1.7; }
+.phone-preparation li + li { margin-top: .65rem; }
+.phone-preparation > a { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.phone-empty { padding: 2rem; }
+@media (min-width: 48rem) {
+  .phone-intro { padding-block: 2rem 3rem; }
+  .phone-intro-grid { grid-template-columns: 1.1fr 1fr; align-items: end; gap: 4rem; }
+  .phone-team { grid-template-columns: minmax(0, 1fr) minmax(240px, .85fr); gap: 2rem; padding: 2rem; }
+}
+@media (min-width: 75rem) {
+  .phone-layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 3rem; padding-block: 3rem 4rem; }
+}
 @media (min-width: 40rem) {
   .footer-main { grid-template-columns: 1fr 1fr; }
   .footer-identity { grid-column: 1 / -1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: .5rem 2rem; }
