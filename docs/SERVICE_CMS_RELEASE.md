@@ -44,6 +44,21 @@ Standar Codex Cloud/lokal kini memiliki `AGENTS.md`, snapshot 310 file skill ter
 
 Tes browser memakai Playwright dan axe-core yang terkunci di `package-lock.json`. Jalankan `npm ci`, `npx playwright install chromium`, preview PHP lokal, lalu `npm run test:cms`. Windows dapat memakai `GAEKS_BROWSER_CHANNEL=msedge`. Tes menulis hanya data lokal di `gaeks-private` dan memulihkannya. Panduan lintas Windows/Linux ada di `docs/PROJECT_STANDARDS.md`.
 
+## Verifikasi rilis langsung
+
+Kode rilis: `4b5ba1c01be140956b3f6295afd131afedab04be`. Hostinger melaporkan build staging `01a21c8b-cd62-72fd-9d7a-6e5da84f3347` dan produksi `01a21c8d-da19-71c7-81a3-c904e50dfb5c` selesai **completed** pada commit tersebut. [GitHub Actions Linux/Chromium](https://github.com/gaeksgroup-hash/gaeks-freight/actions/runs/45982266706) juga **success**.
+
+Audit produksi baca-saja pada 27 November 2026, 17:31 WIB:
+
+- Sembilan URL layanan pada tabel di atas mengembalikan HTTP 200; title CMS, canonical, schema JSON-LD, izin indeks, dan keikutsertaan sitemap diperiksa.
+- Beranda, daftar layanan, kontak, tracking, serta Operator mengembalikan HTTP 200. API publik menunjukkan migrasi CMS versi 2, sembilan layanan dan lima kelompok kontak.
+- `https://www.gaeks.com/` mengalihkan 301 ke `https://gaeks.com/`; HTTP mengalihkan ke HTTPS. HTTP dengan www melalui dua redirect (HTTPS www, lalu domain utama).
+- Halaman air freight menampilkan kontak Air pada footer. Halaman kontak dengan parameter undername memilih layanan yang sesuai; lebar 375 px tidak meluap. Tidak ditemukan exception JavaScript pada alur yang diperiksa.
+- Screenshot produksi `test-results/production-footer-desktop.png` diperiksa visual; screenshot halaman dan JSON audit disimpan di `test-results/production-*`. Direktori artifact lokal ini tidak dipublikasikan dalam repository.
+- Staging diperiksa terpisah: sembilan layanan, metadata/schema/sitemap, noindex, kontak footer, dan reflow kontak. Tidak ada mutasi data pengujian pada produksi.
+
+Batas yang sudah ada sebelum rilis: tiga URL media lama dari konten produksi mengembalikan 404 saat penarikan demo, yaitu video/poster hero `1791915131-8afd4eca-lv_0_20261004214354-optimized.webm`, `1791915131-e31c7018-lv_0_20261004214354-poster-optimized.webp`, dan gambar `1795022773-c132e433-443962-optimized.webp` di `/uploads/`. Rilis footer ini tidak memulihkan ketiga aset tersebut. Hasil tes di atas tidak berarti semua aset lama atau seluruh alur ERP telah diverifikasi.
+
 ## Baseline dan pengukuran 30/60 hari
 
 Belum tersedia akses metrik Google Search Console atau Bing Webmaster Tools pada sesi ini. Impresi, klik, posisi, indeks akun, dan kutipan AI: **belum diukur**, bukan nol. Diperlukan akses baca properti `gaeks.com` atau ekspor laporan bertanggal. Verifikasi kepemilikan/DNS hanya diperlukan bila properti belum dibuat; jangan mengganti record verifikasi yang sudah ada.
