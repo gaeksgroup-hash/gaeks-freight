@@ -1,7 +1,6 @@
 import { resolveContact } from './utils/quoteFlow';
 // filepath: /src/App.tsx
 import React, { Suspense, useState, useEffect } from 'react';
-import { Toaster } from 'sonner';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
 import { ServicesCarousel } from './components/ServicesCarousel';
@@ -19,14 +18,31 @@ import { articlePath, articleSlug } from './utils/articleRoutes';
 import { quoteContext } from './utils/quoteFlow';
 import { adLanding } from './data/adLanding';
 
+const LEGAL_DOC_META = {
+  terms: {
+    route: '/terms-of-use/',
+    pageTitle: 'Terms of Use Website',
+    seoTitle: 'Terms of Use Website | GAEKS',
+    metaDescription: 'Read the official website terms of use of PT Global Andalan Ekspress (GAEKS), an international freight forwarding and logistics company.'
+  },
+  privacy: {
+    route: '/privacy-terms/',
+    pageTitle: 'Privacy Terms',
+    seoTitle: 'Privacy Terms | GAEKS',
+    metaDescription: 'Learn how PT Global Andalan Ekspress (GAEKS) collects, processes, protects, and manages personal data in its freight forwarding and logistics activities.'
+  }
+} as const;
+
 const SmartCalculator = React.lazy(() => import('./components/SmartCalculator').then((module) => ({ default: module.SmartCalculator })));
 const InteractiveMap = React.lazy(() => import('./components/InteractiveMap').then((module) => ({ default: module.InteractiveMap })));
 const NewsPage = React.lazy(() => import('./components/NewsPage').then((module) => ({ default: module.NewsPage })));
 const OperatorAdmin = React.lazy(() => import('./components/OperatorAdmin').then((module) => ({ default: module.OperatorAdmin })));
 const ContactPage = React.lazy(() => import('./components/ContactPage').then((module) => ({ default: module.ContactPage })));
 const PhoneContactsPage = React.lazy(() => import('./components/PhoneContactsPage').then((module) => ({ default: module.PhoneContactsPage })));
+const LegalDocumentPage = React.lazy(() => import('./components/LegalDocumentPage').then((module) => ({ default: module.LegalDocumentPage })));
 const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })));
 const ShipmentTracking = React.lazy(() => import('./components/ShipmentTracking').then((module) => ({ default: module.ShipmentTracking })));
+const Toaster = React.lazy(() => import('sonner').then((module) => ({ default: module.Toaster })));
 
 const PageFallback = ({ tracking = false }: { tracking?: boolean }) => <div className={`${tracking ? 'min-h-[736px] bg-[#f8fafc] sm:min-h-[660px]' : 'min-h-[60vh] bg-[#f4f5f1]'} pt-32 text-center text-sm text-slate-500`}>Memuat halaman…</div>;
 
@@ -53,7 +69,16 @@ export const App: React.FC = () => {
     if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(hash)) {
       return hash;
     }
-    const paths: Record<string, string> = { layanan: 'services', tracking: 'tracking', 'rute-pengiriman': 'network', kalkulator: 'calculator', berita: 'news', kontak: 'contact' };
+    const paths: Record<string, string> = {
+      layanan: 'services',
+      tracking: 'tracking',
+      'rute-pengiriman': 'network',
+      kalkulator: 'calculator',
+      berita: 'news',
+      kontak: 'contact',
+      'terms-of-use': 'terms',
+      'privacy-terms': 'privacy'
+    };
     if (paths[path]) return paths[path];
     return 'home';
   };
@@ -97,7 +122,16 @@ export const App: React.FC = () => {
       const copy = getSiteCopy();
       const branding = getStoredBranding();
       const detailService = currentPage === 'service' ? getStoredServices().find((item) => matchesServiceRoute(item.id, activeServiceSlug)) : undefined;
-      const routeTitles: Record<string, string> = { services: 'Layanan Freight & Logistik', network: 'Rute Pengiriman', calculator: 'Kalkulator Kargo', tracking: 'Lacak Pengiriman', news: 'Berita Logistik', contact: 'Kontak & Permintaan Penawaran' };
+      const routeTitles: Record<string, string> = {
+        services: 'Layanan Freight & Logistik',
+        network: 'Rute Pengiriman',
+        calculator: 'Kalkulator Kargo',
+        tracking: 'Lacak Pengiriman',
+        news: 'Berita Logistik',
+        contact: 'Kontak & Permintaan Penawaran',
+        terms: LEGAL_DOC_META.terms.seoTitle,
+        privacy: LEGAL_DOC_META.privacy.seoTitle
+      };
       const routeDescriptions: Record<string, string> = {
         services: copy.servicesMetaDescription,
         network: 'Jelajahi koridor laut dan udara. Jadwal, kapasitas, dan waktu tempuh dikonfirmasi saat pemesanan.',
@@ -105,7 +139,9 @@ export const App: React.FC = () => {
         tracking: 'Periksa status shipment GAEKS menggunakan nomor pengiriman.',
         news: 'Baca pembaruan terkait logistik, rute, dan kepabeanan dari GAEKS.',
         contact: copy.contactMetaDescription,
-        phones: copy.phoneMetaDescription
+        phones: copy.phoneMetaDescription,
+        terms: LEGAL_DOC_META.terms.metaDescription,
+        privacy: LEGAL_DOC_META.privacy.metaDescription
       };
       const knowledge = detailService ? {summary: detailService.summary || detailService.description, faq: detailService.faq || [], compare: detailService.compare || []} : undefined;
       const adType = detailService?.id === 'fcl' ? 'fcl' : detailService?.id === 'air-shipment' ? 'air' : detailService?.id === 'ppjk' ? 'ppjk' : detailService?.id === 'undername-impor' ? 'undername' : null;
@@ -115,6 +151,8 @@ export const App: React.FC = () => {
       if (currentPage === 'services') document.title = copy.servicesMetaTitle;
       if (currentPage === 'contact') document.title = copy.contactMetaTitle;
       if (currentPage === 'phones') document.title = copy.phoneMetaTitle;
+      if (currentPage === 'terms') document.title = LEGAL_DOC_META.terms.seoTitle;
+      if (currentPage === 'privacy') document.title = LEGAL_DOC_META.privacy.seoTitle;
       const setMeta = (selector: string, attribute: string, value: string) => {
         let element = document.querySelector(selector) as HTMLMetaElement | null;
         if (!element) {
@@ -152,6 +190,17 @@ export const App: React.FC = () => {
           { '@type': 'ListItem', position: 1, name: copy.phoneHomeLabel, item: 'https://gaeks.com/' },
           { '@type': 'ListItem', position: 2, name: copy.phoneContactLabel, item: 'https://gaeks.com/kontak/' },
           { '@type': 'ListItem', position: 3, name: copy.phonePageLabel, item: canonical.href }
+        ] });
+      }
+      if (currentPage === 'terms' || currentPage === 'privacy') {
+        const legalDoc = currentPage === 'terms' ? LEGAL_DOC_META.terms : LEGAL_DOC_META.privacy;
+        canonical.href = `https://gaeks.com${legalDoc.route}`;
+        setMeta('meta[property="og:url"]', 'content', canonical.href);
+        graph[2]['@id'] = canonical.href;
+        graph[2]['url'] = canonical.href;
+        graph.push({ '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://gaeks.com/' },
+          { '@type': 'ListItem', position: 2, name: legalDoc.pageTitle, item: canonical.href }
         ] });
       }
       if (detailService && knowledge) {
@@ -208,13 +257,14 @@ export const App: React.FC = () => {
       } else if (path.startsWith('berita/')) {
         setActiveArticleId(path.substring('berita/'.length));
         setCurrentPage('news');
-      } else if (!fullHash && Object.entries(pagePaths).some(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)) {
-        setActiveServiceSlug('');
-        setCurrentPage(Object.entries(pagePaths).find(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)?.[0] || 'home');
       } else if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
         setActiveServiceSlug('');
         setCurrentPage(fullHash);
+      } else if (Object.entries(pagePaths).some(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)) {
+        setActiveServiceSlug('');
+        setCurrentPage(Object.entries(pagePaths).find(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)?.[0] || 'home');
+        if (fullHash) return;
       } else {
         setCurrentPage('home');
       }
@@ -230,11 +280,18 @@ export const App: React.FC = () => {
   const navigateTo = (page: string) => {
     const target = new URL(pagePaths[page] || '/', window.location.origin);
     if (page === 'contact' && activeServiceSlug) {
-      const selected = activeServiceSlug === 'fcl' || activeServiceSlug === 'freight-laut-fcl' ? 'fcl' : activeServiceSlug === 'air-shipment' || activeServiceSlug === 'freight-udara' ? 'air' : activeServiceSlug === 'ppjk' || activeServiceSlug === 'ppjk-customs-clearance' ? 'ppjk' : activeServiceSlug === 'undername-impor' || activeServiceSlug === 'undername-impor-pi' ? 'undername' : '';
+      const matched = getStoredServices().find((item) => matchesServiceRoute(item.id, activeServiceSlug));
+      const selected = matched
+        ? matched.id === 'air-shipment'
+          ? 'air'
+          : matched.id === 'undername-impor'
+            ? 'undername'
+            : matched.id
+        : activeServiceSlug;
       if (selected) {
         const context = quoteContext(selected);
         target.searchParams.set('service', selected);
-        target.searchParams.set('direction', selected === 'undername' ? 'impor' : context.direction);
+        if (context.explicitDirection) target.searchParams.set('direction', context.explicitDirection);
         if (context.city) target.searchParams.set('city', context.city);
         const incoming = new URLSearchParams(window.location.search);
         for (const key of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) { const value = incoming.get(key); if (value && value.length <= 200) target.searchParams.set(key, value); }
@@ -318,7 +375,7 @@ export const App: React.FC = () => {
       });
     }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
     const register = () => root.querySelectorAll('section:not(.scroll-reveal):not([data-reveal="custom"])').forEach((section) => {
-      if (section.closest('.service-detail, .contact-page, .phone-page, .services-directory')) return;
+      if (section.closest('.service-detail, .contact-page, .phone-page, .services-directory, .legal-page')) return;
       section.classList.add('scroll-reveal');
       if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
         section.classList.add('scroll-reveal-visible');
@@ -334,14 +391,17 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f4f5f1] text-[#12363a] font-sans">
-      <Toaster position="bottom-right" richColors closeButton />
+      <Suspense fallback={null}>
+        <Toaster position="bottom-right" richColors closeButton />
+      </Suspense>
       {!isOperatorPage && <a href="#public-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-20 focus:z-[70] focus:bg-white focus:px-4 focus:py-3">Lewati navigasi</a>}
 
       {!isOperatorPage && (
-        <Navbar 
-          currentTab={currentPage} 
-          onNavigate={navigateTo} 
-          currentLang={currentLang} 
+        <Navbar
+          currentTab={currentPage}
+          activeServiceSlug={activeServiceSlug}
+          onNavigate={navigateTo}
+          currentLang={currentLang}
           onSelectLang={handleLanguageChange}
         />
       )}
@@ -354,7 +414,7 @@ export const App: React.FC = () => {
         )}
 
         {currentPage === 'services' && (
-          <div className="pt-24">
+          <div className="pt-16">
             <ServicesCarousel standalone onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
           </div>
         )}
@@ -392,12 +452,14 @@ export const App: React.FC = () => {
           <ContactPage />
         )}
         {currentPage === 'phones' && <PhoneContactsPage />}
+        {currentPage === 'terms' && <LegalDocumentPage documentType="terms" onNavigate={navigateTo} />}
+        {currentPage === 'privacy' && <LegalDocumentPage documentType="privacy" onNavigate={navigateTo} />}
 
         {currentPage === 'home' && (
           <>
             <Hero onNavigate={navigateTo} onOpenService={handleOpenService} currentLang={currentLang} />
             <HomeNetworks />
-            <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} currentLang={currentLang} />
+            <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} onViewAll={() => navigateTo('services')} currentLang={currentLang} />
             <HomeClients />
             <HomeEditorial
               currentLang={currentLang}

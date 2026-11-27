@@ -1,6 +1,7 @@
 export const pagePaths: Record<string, string> = {
   home: '/', services: '/layanan/', network: '/rute-pengiriman/', calculator: '/kalkulator/',
-  tracking: '/tracking/', news: '/berita/', contact: '/kontak/', phones: '/kontak/telepon/', operator: '/operator/'
+  tracking: '/tracking/', news: '/berita/', contact: '/kontak/', phones: '/kontak/telepon/',
+  terms: '/terms-of-use/', privacy: '/privacy-terms/', operator: '/operator/'
 };
 
 export const serviceSlugs: Record<string, string> = {
