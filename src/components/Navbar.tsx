@@ -46,6 +46,8 @@ const NAV_GROUPS: Record<'services' | 'tools' | 'company', NavGroupItem> = {
       { label: 'Pengurusan Kepabeanan (PPJK)', href: servicePath('ppjk'), page: 'service', serviceId: 'ppjk' },
       { label: 'Transportasi Darat', href: servicePath('domestic-truck'), page: 'service', serviceId: 'domestic-truck' },
       { label: 'Perizinan Impor dan Undername', href: servicePath('undername-impor'), page: 'service', serviceId: 'undername-impor' },
+      { label: 'Kapal RORO & Breakbulk', href: servicePath('roro-breakbulk'), page: 'service', serviceId: 'roro-breakbulk' },
+      { label: 'Project Cargo & Heavy Lift', href: servicePath('project-cargo'), page: 'service', serviceId: 'project-cargo' },
       { label: 'Pergudangan', href: servicePath('gudang-pbm'), page: 'service', serviceId: 'gudang-pbm' },
       { label: 'Lihat Semua Layanan', href: pagePaths.services, page: 'services', dividerAbove: true },
     ],

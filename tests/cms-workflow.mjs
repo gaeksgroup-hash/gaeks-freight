@@ -45,7 +45,7 @@ try {
   const headers = { 'Content-Type': 'application/json', Cookie: cookie, 'X-CSRF-Token': auth.csrfToken };
 
   const data = JSON.parse(original);
-  assert.equal(data.serviceCmsVersion, 6);
+  assert.equal(data.serviceCmsVersion, 7);
   assert.equal(data.branding.contactGroups.find((g) => g.id === 'general').serviceIds.includes('project-cargo'), true);
   assert.equal(data.branding.contactGroups.find((g) => g.id === 'fcl').serviceIds.includes('project-cargo'), false);
   assert.equal(data.branding.contactGroups.find((g) => g.id === 'fcl').serviceIds.includes('roro-breakbulk'), true);
@@ -60,7 +60,21 @@ try {
     assert.match(html, /application\/ld\+json/);
     assert.match(html, /wa\.me\//);
     assert.match(html, /mailto:/);
+    assert.doesNotMatch(html, /<meta name="keywords"/i);
+    assert.match(html, /hreflang="en"/);
   }
+
+  // Verify Search Intelligence /operator/ strict noindex, /en/ SSR hreflang, and legacy alias 301 redirect
+  const opResp = await fetch(base + '/operator/');
+  const opHtml = await opResp.text();
+  assert.match(opResp.headers.get('x-robots-tag') || '', /noindex/i);
+  assert.match(opHtml, /noindex,\s*nofollow,\s*noarchive/i);
+  const enHomeHtml = await (await fetch(base + '/en/')).text();
+  assert.match(enHomeHtml, /<html lang="en"/i);
+  assert.match(enHomeHtml, /hreflang="id-ID"/);
+  const aliasResp = await fetch(base + '/carrier/', { redirect: 'manual' });
+  assert.equal(aliasResp.status, 301);
+  assert.equal(aliasResp.headers.get('location'), '/maskapai-dan-pelayaran/');
 
   // Verify Project Cargo SSR explicitly routes to CS (+6281393453375 / Cs@gaeks.com) and NOT FCL
   const projectSsr = await (await fetch(base + '/layanan/project-cargo-heavy-lift/')).text();
@@ -541,7 +555,7 @@ try {
   assert.deepEqual(errors, []);
 
   console.log(
-    'PASS: auth/CSRF; v6 migration; Project Cargo->CS; all 6 buyer/operator scenarios; smart multi-service QuoteForm + CMS Inquiry DB; analytics; SSR/schema; 40 route/viewport overflow checks; axe a11y; keyboard; reduced motion.'
+    'PASS: auth/CSRF; v7 Search Intelligence migration; Project Cargo->CS; /operator/ noindex; /en/ hreflang; all 6 buyer/operator scenarios; smart multi-service QuoteForm + CMS Inquiry DB; analytics; SSR/schema; 40 route/viewport overflow checks; axe a11y; keyboard; reduced motion.'
   );
 } finally {
   await browser?.close();

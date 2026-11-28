@@ -58,6 +58,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         { label: 'Kepabeanan (PPJK)', href: servicePath('ppjk'), page: 'service' },
         { label: 'Transportasi Darat', href: servicePath('domestic-truck'), page: 'service' },
         { label: 'Perizinan Impor & Undername', href: servicePath('undername-impor'), page: 'service' },
+        { label: 'Kapal RORO & Breakbulk', href: servicePath('roro-breakbulk'), page: 'service' },
+        { label: 'Project Cargo & Heavy Lift', href: servicePath('project-cargo'), page: 'service' },
         { label: 'Pergudangan', href: servicePath('gudang-pbm'), page: 'service' },
       ],
     },

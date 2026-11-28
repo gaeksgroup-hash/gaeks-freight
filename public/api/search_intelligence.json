@@ -1,0 +1,272 @@
+{
+  "baseUrl": "https://gaeks.com",
+  "organization": {
+    "@id": "https://gaeks.com/#organization",
+    "name": "GAEKS Freight",
+    "legalName": "PT Global Andalan Ekspress",
+    "alternateName": "GAEKS",
+    "slogan": "Powered by People. Driven by Technology. Focused on You.",
+    "descriptionId": "GAEKS Freight adalah merek layanan freight forwarding dan logistik internasional dari PT Global Andalan Ekspress, dengan fokus utama pada pengiriman ekspor dan impor FCL serta kargo udara, didukung layanan kepabeanan PPJK, LCL, undername impor, Persetujuan Impor (PI), penyediaan kapal RORO dan breakbulk, project cargo, transportasi darat, dan pergudangan di Indonesia.",
+    "descriptionEn": "GAEKS Freight is the international freight forwarding and logistics brand of PT Global Andalan Ekspress in Indonesia, focused on FCL ocean freight export/import and air freight, supported by PPJK customs brokerage, LCL consolidation, undername import & Import Approval (PI), RORO & breakbulk vessel sourcing, project cargo, domestic trucking, and warehousing.",
+    "logo": "https://gaeks.com/logos/gaek-symbol.png",
+    "address": {
+      "addressLocality": "Tanjung Priok",
+      "addressRegion": "DKI Jakarta",
+      "addressCountry": "ID"
+    },
+    "areaServed": [
+      { "type": "Country", "name": "Indonesia" },
+      { "type": "City", "name": "Jakarta" },
+      { "type": "City", "name": "Semarang" },
+      { "type": "City", "name": "Surabaya" }
+    ],
+    "knowsAbout": [
+      "Freight Forwarding Internasional",
+      "FCL Ocean Freight Export dan Import",
+      "Air Freight Export dan Import",
+      "LCL Consolidation Ocean Freight",
+      "Jasa PPJK dan Customs Clearance Indonesia",
+      "Undername Impor dan Persetujuan Impor (PI)",
+      "Penyediaan Kapal RORO dan Breakbulk",
+      "Project Cargo dan Heavy Lift",
+      "Trucking Domestik",
+      "Pergudangan dan Bongkar Muat"
+    ]
+  },
+  "serviceSlugs": {
+    "ppjk": "ppjk-customs-clearance",
+    "gudang-pbm": "pergudangan-stevedoring",
+    "domestic-truck": "trucking",
+    "project-cargo": "project-cargo-heavy-lift",
+    "lcl": "freight-laut-lcl",
+    "fcl": "freight-laut-fcl",
+    "air-shipment": "freight-udara",
+    "undername-impor": "undername-impor-pi",
+    "roro-breakbulk": "roro-breakbulk"
+  },
+  "serviceRelations": {
+    "fcl": {
+      "relatedServices": ["lcl", "ppjk", "domestic-truck"],
+      "tools": ["network", "calculator", "rates"],
+      "articles": ["art-4", "art-8", "art-15"]
+    },
+    "air-shipment": {
+      "relatedServices": ["ppjk", "domestic-truck", "lcl"],
+      "tools": ["calculator", "network", "rates"],
+      "articles": ["art-krakatau-2026", "art-9", "art-10"]
+    },
+    "lcl": {
+      "relatedServices": ["fcl", "ppjk", "gudang-pbm"],
+      "tools": ["calculator", "network", "rates"],
+      "articles": ["art-9", "art-8", "art-17"]
+    },
+    "ppjk": {
+      "relatedServices": ["undername-impor", "fcl", "air-shipment"],
+      "tools": ["tracking", "contact", "phones"],
+      "articles": ["art-2", "art-6", "art-7"]
+    },
+    "undername-impor": {
+      "relatedServices": ["ppjk", "fcl", "lcl"],
+      "tools": ["contact", "phones", "rates"],
+      "articles": ["art-3", "art-18", "art-2"]
+    },
+    "roro-breakbulk": {
+      "relatedServices": ["project-cargo", "ppjk", "domestic-truck"],
+      "tools": ["contact", "phones", "network"],
+      "articles": ["art-14", "art-13", "art-11"]
+    },
+    "project-cargo": {
+      "relatedServices": ["roro-breakbulk", "domestic-truck", "gudang-pbm"],
+      "tools": ["contact", "phones", "calculator"],
+      "articles": ["art-14", "art-13", "art-16"]
+    },
+    "domestic-truck": {
+      "relatedServices": ["fcl", "gudang-pbm", "project-cargo"],
+      "tools": ["calculator", "tracking", "contact"],
+      "articles": ["art-11", "art-14", "art-8"]
+    },
+    "gudang-pbm": {
+      "relatedServices": ["lcl", "fcl", "domestic-truck"],
+      "tools": ["calculator", "contact", "phones"],
+      "articles": ["art-13", "art-12", "art-20"]
+    }
+  },
+  "routes": {
+    "/": {
+      "schemaType": "WebPage",
+      "enAvailable": true,
+      "id": {
+        "title": "Freight Forwarder Indonesia | FCL, Air Freight & Logistik Internasional | GAEKS Freight",
+        "description": "PT Global Andalan Ekspress (GAEKS Freight) adalah perusahaan freight forwarding internasional Indonesia dengan fokus FCL ekspor/impor, air freight, PPJK customs clearance, LCL, undername impor/PI, RORO, breakbulk, dan project cargo.",
+        "heading": "Diperkuat oleh Manusia. Digerakkan oleh Teknologi. Berfokus pada Anda.",
+        "body": "GAEKS Freight (PT Global Andalan Ekspress) memadukan keahlian operasional, sistem terintegrasi, dan eksekusi transparan untuk pengiriman FCL, air freight, kepabeanan PPJK, LCL, undername impor/PI, penyediaan kapal RORO dan breakbulk, serta logistik proyek."
+      },
+      "en": {
+        "title": "Indonesia Freight Forwarder | FCL, Air Freight & International Logistics | GAEKS Freight",
+        "description": "PT Global Andalan Ekspress (GAEKS Freight) provides international freight forwarding in Indonesia specializing in FCL ocean freight export/import, air freight, PPJK customs clearance, LCL, undername import/PI, RORO, breakbulk, and project cargo.",
+        "heading": "Powered by People. Driven by Technology. Focused on You.",
+        "body": "GAEKS Freight (PT Global Andalan Ekspress) combines operational expertise, integrated systems, and transparent execution for FCL ocean freight, air freight, PPJK customs brokerage, LCL consolidation, undername import/PI, RORO and breakbulk vessel sourcing, and project logistics."
+      }
+    },
+    "/layanan/": {
+      "schemaType": "CollectionPage",
+      "enAvailable": true,
+      "id": {
+        "title": "Layanan Freight Forwarding FCL, Air Freight, PPJK & Project Cargo | GAEKS Freight",
+        "description": "Jelajahi layanan GAEKS Freight: pengiriman laut FCL & LCL, air freight ekspor/impor, jasa PPJK customs clearance, undername impor & PI besi baja, penyediaan kapal RORO & breakbulk, project cargo, trucking, dan pergudangan.",
+        "heading": "Pilih penanganan yang tepat untuk kargo Anda.",
+        "body": "Layanan freight laut dan udara, kepabeanan PPJK, perizinan impor, penyediaan kapal RORO & breakbulk, hingga transportasi darat dan pergudangan dalam satu koordinasi."
+      },
+      "en": {
+        "title": "Freight Forwarding, Customs Clearance & Vessel Services | GAEKS Freight",
+        "description": "Explore GAEKS Freight services in Indonesia: FCL & LCL ocean freight, air freight export/import, PPJK customs clearance, undername import & Import Approval (PI), RORO & breakbulk sourcing, project cargo, trucking, and warehousing.",
+        "heading": "Choose the right cargo handling for your shipment.",
+        "body": "International ocean and air freight, PPJK customs brokerage, import licensing support, RORO and breakbulk sourcing, inland trucking, and port warehousing under unified operational coordination."
+      }
+    },
+    "/rute-pengiriman/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Rute dan Jadwal Pengiriman Laut & Udara Indonesia | GAEKS Freight",
+        "description": "Jelajahi koridor pelabuhan dan bandara utama Asia, Eropa, dan Amerika menuju Jakarta, Semarang, dan Surabaya untuk pengiriman FCL, LCL, dan kargo udara.",
+        "heading": "Rute dan jadwal pengiriman laut serta udara.",
+        "body": "Koridor dipilih berdasarkan asal, tujuan, jenis komoditas, target waktu, dan kesiapan dokumen. Waktu tempuh bersifat indikatif dan dikonfirmasi bersama jadwal aktual saat pemesanan."
+      }
+    },
+    "/kalkulator/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Kalkulator Kargo CBM & Berat Volumetrik Air Freight | GAEKS Freight",
+        "description": "Hitung kubikasi CBM kontainer FCL/LCL dan berat volumetrik air freight (chargeable weight) secara akurat sebelum meminta penawaran pengiriman.",
+        "heading": "Kalkulator CBM dan berat volumetrik kargo.",
+        "body": "Hitung volume CBM untuk FCL/LCL (P x L x T / 1.000.000) serta berat volumetrik udara (P x L x T / 6.000) untuk menentukan chargeable weight dan memilih moda pengiriman yang tepat."
+      }
+    },
+    "/tarif-pengiriman/": {
+      "schemaType": "WebPage",
+      "enAvailable": true,
+      "id": {
+        "title": "Tarif Pengiriman FCL, LCL & Air Freight Indonesia | GAEKS Freight",
+        "description": "Informasi faktor tarif pengiriman laut FCL, konsolidasi LCL, kargo udara air freight, dan kepabeanan PPJK sesuai rute, komoditas, serta jadwal pengiriman aktual.",
+        "heading": "Rencanakan pengiriman Anda dengan informasi tarif yang tepat.",
+        "body": "Tarif freight disesuaikan dengan rute asal-tujuan, moda, dimensi dan berat kargo, Incoterms, serta jadwal aktual. Siapkan data awal Anda untuk menerima penawaran tertulis."
+      },
+      "en": {
+        "title": "Ocean FCL, LCL & Air Freight Rate Information | GAEKS Freight",
+        "description": "Understand rate factors and request tailored FCL ocean freight, LCL consolidation, air freight, and PPJK customs brokerage quotations from GAEKS Freight Indonesia.",
+        "heading": "Plan your shipment with clear freight rate guidance.",
+        "body": "Freight quotations depend on origin-destination corridor, transport mode, cargo weight and volume, Incoterms, and live carrier capacity. Share your shipment brief to receive a verified quotation."
+      }
+    },
+    "/maskapai-dan-pelayaran/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Maskapai Kargo Udara dan Perusahaan Pelayaran | GAEKS Freight",
+        "description": "Pemilihan maskapai kargo udara dan perusahaan pelayaran FCL/LCL di GAEKS Freight mempertimbangkan rute, kapasitas ruang, frekuensi jadwal, dan karakter komoditas.",
+        "heading": "Pilihan angkutan untuk kebutuhan pengiriman Anda.",
+        "body": "Pemilihan maskapai penerbangan dan perusahaan pelayaran dilakukan berdasarkan ketersediaan ruang, kestabilan jadwal, port call, free time kontainer, dan kebutuhan komoditas."
+      }
+    },
+    "/tentang-kami/": {
+      "schemaType": "AboutPage",
+      "enAvailable": true,
+      "id": {
+        "title": "Tentang Kami | PT Global Andalan Ekspress (GAEKS Freight)",
+        "description": "Mengenal PT Global Andalan Ekspress (GAEKS Freight): visi, enam misi strategis, prinsip berbasis pelanggan, kapabilitas digital ERP terintegrasi, dan nilai inti perusahaan.",
+        "heading": "Lebih dari sekadar pengiriman. Kami memahami nilai di baliknya.",
+        "body": "PT Global Andalan Ekspress (GAEKS Freight) adalah perusahaan freight forwarding dan logistik internasional di Indonesia dengan fondasi kesejahteraan karyawan, kepemimpinan teknologi, keunggulan operasional, dan fokus pada pelanggan."
+      },
+      "en": {
+        "title": "About Us | PT Global Andalan Ekspress (GAEKS Freight)",
+        "description": "Learn about PT Global Andalan Ekspress (GAEKS Freight): our official vision, six missions, customer-centric principles, integrated ERP digital capabilities, and core corporate values.",
+        "heading": "More than shipping. We understand the value behind every cargo.",
+        "body": "PT Global Andalan Ekspress (GAEKS Freight) is a customer-centric, technology-driven international freight forwarding and customs company in Indonesia. Powered by People. Driven by Technology. Focused on You."
+      }
+    },
+    "/karier/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Karier di GAEKS Freight | PT Global Andalan Ekspress",
+        "description": "Kenali budaya kerja, pengembangan kompetensi logistik, dan peluang karier resmi di PT Global Andalan Ekspress (GAEKS Freight).",
+        "heading": "Bertumbuh bersama. Membangun masa depan logistik.",
+        "body": "Kami percaya perusahaan yang kuat dibangun oleh manusia yang dihargai, didukung, dan diberi kesempatan mengembangkan spesialisasi logistik serta kepabeanan."
+      }
+    },
+    "/tracking/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Pelacakan Pengiriman HAWB, B/L & Kontainer | GAEKS Freight",
+        "description": "Panduan melacak status milestone pengiriman FCL, LCL, kargo udara, dan customs clearance GAEKS Freight menggunakan nomor HAWB, AWB, B/L, GJO, atau kontainer.",
+        "heading": "Pelacakan Pengiriman",
+        "body": "Gunakan nomor referensi HAWB/AWB, B/L/HBL, GJO, atau kontainer untuk memeriksa milestone status pengiriman Anda secara real-time."
+      }
+    },
+    "/berita/": {
+      "schemaType": "CollectionPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Wawasan dan Berita Logistik, Kepabeanan & Pelayaran | GAEKS Freight",
+        "description": "Kumpulan analisis regulasi kepabeanan CEISA 4.0, Persetujuan Impor, rute maritim, kargo udara, kalkulasi CBM, dan logistik proyek dari GAEKS Freight.",
+        "heading": "Berita yang membantu keputusan pengiriman.",
+        "body": "Artikel teknis dan pembaruan regulasi perdagangan internasional, kepabeanan PPJK, rute pelayaran, dan manajemen kargo untuk pelaku ekspor-impor Indonesia."
+      }
+    },
+    "/kontak/": {
+      "schemaType": "ContactPage",
+      "enAvailable": true,
+      "id": {
+        "title": "Hubungi Kami & Permintaan Penawaran Freight | GAEKS Freight",
+        "description": "Konsultasikan kebutuhan FCL, air freight, PPJK customs clearance, undername impor/PI, RORO, breakbulk, dan project cargo bersama tim spesialis GAEKS Freight.",
+        "heading": "Pilih tim sesuai kebutuhan pengiriman Anda.",
+        "body": "Sertakan asal, tujuan, komoditas, perkiraan berat atau volume, dan target waktu. Anda dapat langsung mengirim brief melalui WhatsApp atau email ke tim yang relevan."
+      },
+      "en": {
+        "title": "Contact Us & Freight Quote Request | GAEKS Freight",
+        "description": "Contact GAEKS Freight specialists in Indonesia for FCL ocean freight, air freight, PPJK customs clearance, undername import/PI, RORO, breakbulk, and project cargo.",
+        "heading": "Connect with the right freight team.",
+        "body": "Share your origin, destination, commodity, estimated weight or volume, and target schedule to receive direct assistance via WhatsApp or email."
+      }
+    },
+    "/kontak/telepon/": {
+      "schemaType": "ContactPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Kontak Telepon, WhatsApp & Email Tim | GAEKS Freight",
+        "description": "Daftar kontak telepon, WhatsApp, dan email resmi GAEKS Freight per kelompok layanan: Kepabeanan/FCL/Undername, Air Freight, serta Project Cargo/Domestik/LCL.",
+        "heading": "Terhubung dengan tim yang tepat.",
+        "body": "Pilih kontak tim layanan yang sesuai kebutuhan pengiriman Anda beserta panduan informasi awal yang disiapkan."
+      }
+    },
+    "/terms-of-use/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Terms of Use Website | Ketentuan Penggunaan | GAEKS Freight",
+        "description": "Ketentuan penggunaan resmi situs web PT Global Andalan Ekspress (GAEKS Freight), perusahaan freight forwarding dan logistik internasional.",
+        "heading": "Terms of Use Website",
+        "body": "Ketentuan Penggunaan Situs Web PT Global Andalan Ekspress (GAEKS). Tanggal Efektif: 1 Februari 2025. Versi Dokumen: 1.0."
+      }
+    },
+    "/privacy-terms/": {
+      "schemaType": "WebPage",
+      "enAvailable": false,
+      "id": {
+        "title": "Privacy Terms | Kebijakan Privasi | GAEKS Freight",
+        "description": "Kebijakan pelindungan data pribadi PT Global Andalan Ekspress (GAEKS Freight) dalam operasional situs web dan layanan freight forwarding.",
+        "heading": "Privacy Terms",
+        "body": "Kebijakan Pelindungan Data Pribadi PT Global Andalan Ekspress (GAEKS). Tanggal Efektif: 1 Februari 2025. Versi Dokumen: 1.0."
+      }
+    }
+  },
+  "routeRedirects": {
+    "/carrier/": "/maskapai-dan-pelayaran/",
+    "/karir/": "/karier/",
+    "/rate/": "/tarif-pengiriman/",
+    "/about/": "/tentang-kami/"
+  }
+}

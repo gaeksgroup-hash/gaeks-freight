@@ -292,10 +292,16 @@ export function ServiceEditorialEditor({
       <div className="grid gap-4 sm:grid-cols-2">
         {(
           [
-            ['seoTitle', 'SEO title'],
-            ['metaDescription', 'Meta description'],
+            ['seoTitle', 'SEO title (ID)'],
+            ['metaDescription', 'Meta description (ID)'],
+            ['seoTitle_en', 'SEO title (EN)'],
+            ['metaDescription_en', 'Meta description (EN)'],
+            ['primaryKeyword', 'Primary keyword / query fokus (internal)'],
+            ['searchIntent', 'Search intent (transactional / commercial / informational)'],
             ['canonical', 'Canonical (kosong = URL layanan)'],
             ['imageAlt', 'Alt text gambar'],
+            ['reviewedBy', 'Ditinjau oleh (editorial governance)'],
+            ['reviewedAt', 'Tanggal tinjau (YYYY-MM-DD)'],
             ['evidenceNotes', 'Bahan bukti yang masih diperlukan (internal)'],
           ] as const
         ).map(([key, label]) => (
@@ -304,6 +310,22 @@ export function ServiceEditorialEditor({
             <input className={field} value={String(s[key as keyof ServiceDetail] || '')} onChange={(e) => set(key, e.target.value)} />
           </label>
         ))}
+        <label className={`${labelClass} sm:col-span-2`}>
+          Secondary keywords / variasi kueri (internal, pisahkan dengan koma)
+          <input
+            className={field}
+            value={Array.isArray(s.secondaryKeywords) ? s.secondaryKeywords.join(', ') : ''}
+            onChange={(e) =>
+              set(
+                'secondaryKeywords',
+                e.target.value
+                  .split(',')
+                  .map((v) => v.trim())
+                  .filter(Boolean)
+              )
+            }
+          />
+        </label>
       </div>
 
       <div className="space-y-3">

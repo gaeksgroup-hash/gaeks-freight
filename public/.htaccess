@@ -2,24 +2,36 @@
   RewriteEngine On
   RewriteCond %{HTTP_HOST} ^www\.gaeks\.com$ [NC]
   RewriteRule ^ https://gaeks.com%{REQUEST_URI} [R=301,L]
+
+  # Permanent redirects from legacy route aliases to canonical Indonesian paths.
+  RewriteRule ^carrier/?$ https://gaeks.com/maskapai-dan-pelayaran/ [R=301,L]
+  RewriteRule ^karir/?$ https://gaeks.com/karier/ [R=301,L]
+  RewriteRule ^rate/?$ https://gaeks.com/tarif-pengiriman/ [R=301,L]
+  RewriteRule ^about/?$ https://gaeks.com/tentang-kami/ [R=301,L]
+
+  # Server-rendered Indonesian and English priority routes.
   RewriteRule ^$ api/page.php [L]
+  RewriteRule ^en/?$ api/page.php [L]
   RewriteRule ^(layanan|kontak)/?$ api/page.php [L]
+  RewriteRule ^en/(layanan|kontak|tentang-kami|tarif-pengiriman)/?$ api/page.php [L]
   RewriteRule ^kontak/telepon/?$ api/page.php [L]
 
-  # Fresh CMS articles and sitemap are rendered from server content for crawlers.
+  # Fresh CMS articles, services, and dynamic sitemap.
   RewriteRule ^sitemap\.xml$ api/sitemap.php [L]
   RewriteRule ^berita/([^/]+)/?$ api/article.php?slug=$1 [L,QSA]
   RewriteRule ^layanan/([^/]+)/?$ api/service.php?slug=$1 [L,QSA]
+  RewriteRule ^en/layanan/([^/]+)/?$ api/service.php?slug=$1&lang=en [L,QSA]
 
-  # Preserve generated HTML for public routes and the existing backend API.
+  # Preserve pre-generated HTML for public routes and the existing backend API.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
   # Serve the React app for routes handled in src/App.tsx.
-  RewriteRule ^operator/?$ index.html [L]
+  RewriteRule ^operator/?$ operator/index.html [L]
   RewriteRule ^tracking/?$ index.html [L]
-  RewriteRule ^(layanan|rute-pengiriman|kalkulator|tarif-pengiriman|maskapai-dan-pelayaran|carrier|tentang-kami|karier|berita|kontak|terms-of-use|privacy-terms)/?$ index.html [L]
+  RewriteRule ^(layanan|rute-pengiriman|kalkulator|tarif-pengiriman|maskapai-dan-pelayaran|tentang-kami|karier|berita|kontak|terms-of-use|privacy-terms)/?$ index.html [L]
+  RewriteRule ^en(?:/.*)?$ index.html [L]
   RewriteRule ^layanan/[^/]+/?$ index.html [L]
 </IfModule>
 
@@ -29,6 +41,13 @@
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+
+  <If "%{REQUEST_URI} =~ m#^/operator(/|$)#">
+    Header always set X-Robots-Tag "noindex, nofollow, noarchive"
+  </If>
+  <If "%{REQUEST_URI} =~ m#^/tracking(/|$)# && %{QUERY_STRING} != ''">
+    Header always set X-Robots-Tag "noindex, nofollow"
+  </If>
 
   <FilesMatch "\.(?:js|css|svg|png|jpg|jpeg|gif|webp|avif|mp4|webm|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"

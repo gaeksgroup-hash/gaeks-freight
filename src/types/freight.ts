@@ -17,6 +17,18 @@ export interface ServiceDetail {
   status?: 'draft' | 'published';
   seoTitle?: string;
   metaDescription?: string;
+  seoTitle_en?: string;
+  metaDescription_en?: string;
+  landingTitle_en?: string;
+  landingDescription_en?: string;
+  heroSummary_en?: string;
+  summary_en?: string;
+  primaryKeyword?: string;
+  secondaryKeywords?: string[];
+  searchIntent?: string;
+  reviewedBy?: string;
+  reviewedAt?: string;
+  relatedServiceIds?: string[];
   canonical?: string;
   imageAlt?: string;
   sections?: Array<{ title: string; body: string }>;

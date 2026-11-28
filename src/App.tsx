@@ -11,7 +11,8 @@ import { HomeSignatureSection } from './components/HomeSignatureSection';
 import { Language } from './types/freight';
 import { getStoredBranding, getStoredCorporate, getStoredSeo, getStoredServices, getStoredSiteSettings, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
-import { matchesServiceRoute, pagePaths, routeAliases, servicePath, serviceSlug } from './utils/routes';
+import { localizedPagePath, matchesServiceRoute, pagePaths, routeAliases, servicePath, serviceSlug, stripLangPrefix } from './utils/routes';
+import { SEARCH_BASE_URL, SEARCH_ORG, SEARCH_ROUTES } from './data/searchIntelligence';
 import { getSiteCopy } from './utils/adminStorage';
 import { isPublishedArticle, serviceContent } from './utils/serviceContent';
 import { getStoredArticles } from './utils/newsStorage';
@@ -53,10 +54,13 @@ const Toaster = React.lazy(() => import('sonner').then((module) => ({ default: m
 const PageFallback = ({ tracking = false }: { tracking?: boolean }) => <div className={`${tracking ? 'min-h-[736px] bg-[#f8fafc] sm:min-h-[660px]' : 'min-h-[60vh] bg-[#f4f5f1]'} pt-32 text-center text-sm text-slate-500`}>Memuat halaman…</div>;
 
 export const App: React.FC = () => {
-  const [currentLang, setCurrentLang] = useState<Language>(() => getPreferredLanguage());
+  const [currentLang, setCurrentLang] = useState<Language>(() => {
+    const p = window.location.pathname.toLowerCase();
+    return p === '/en' || p.startsWith('/en/') ? 'en' : getPreferredLanguage();
+  });
   const [activeArticleId, setActiveArticleId] = useState<string>(() => window.location.pathname.match(/^\/berita\/([^/]+)\/?$/)?.[1] || '');
   const getServiceSlug = () => {
-    const path = window.location.pathname.toLowerCase();
+    const { path } = stripLangPrefix(window.location.pathname.toLowerCase());
     const hash = window.location.hash.toLowerCase();
     if (path.startsWith('/layanan/')) return path.substring('/layanan/'.length).replace(/\/$/, '');
     if (hash.startsWith('#service=')) return hash.substring('#service='.length);
@@ -64,7 +68,8 @@ export const App: React.FC = () => {
   };
 
   const getInitialPage = () => {
-    const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+    const { path: stripped } = stripLangPrefix(window.location.pathname.toLowerCase());
+    const path = stripped.replace(/^\/+|\/+$/g, '');
     const hash = window.location.hash.replace('#', '').toLowerCase();
     if (path === 'operator' || hash === 'operator' || hash === 'admin') {
       return 'operator';
@@ -167,17 +172,37 @@ export const App: React.FC = () => {
       const knowledge = detailService ? {summary: detailService.summary || detailService.description, faq: detailService.faq || [], compare: detailService.compare || []} : undefined;
       const adType = detailService?.id === 'fcl' ? 'fcl' : detailService?.id === 'air-shipment' ? 'air' : detailService?.id === 'ppjk' ? 'ppjk' : detailService?.id === 'undername-impor' ? 'undername' : null;
       const detailArticle = currentPage === 'news' && activeArticleId ? getStoredArticles().find((article) => isPublishedArticle(article) && (article.id === activeArticleId || articleSlug(article) === activeArticleId)) : undefined;
-      const description = detailArticle?.excerpt || (detailService?.metaDescription || knowledge?.summary) || routeDescriptions[currentPage] || seo.metaDescription;
-      document.title = detailArticle ? `${detailArticle.title} | GAEKS News` : detailService ? (detailService.seoTitle || `${detailService.title} | GAEKS Freight`) : currentPage === 'home' ? seo.siteTitle : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
-      if (currentPage === 'services') document.title = copy.servicesMetaTitle;
-      if (currentPage === 'contact') document.title = copy.contactMetaTitle;
-      if (currentPage === 'phones') document.title = copy.phoneMetaTitle;
-      if (currentPage === 'about') document.title = corporate.about.seoTitle;
-      if (currentPage === 'rates') document.title = corporate.rateCard.seoTitle;
-      if (currentPage === 'carriers') document.title = corporate.carriers.seoTitle;
-      if (currentPage === 'careers') document.title = corporate.careers.seoTitle;
-      if (currentPage === 'terms') document.title = LEGAL_DOC_META.terms.seoTitle;
-      if (currentPage === 'privacy') document.title = LEGAL_DOC_META.privacy.seoTitle;
+      const { path: logicalPath, isEn: isEnRoute } = stripLangPrefix(window.location.pathname.toLowerCase());
+      const siRoute = SEARCH_ROUTES[logicalPath];
+      const baseUrl = SEARCH_BASE_URL.replace(/\/$/, '');
+
+      const description = isEnRoute && detailService?.metaDescription_en
+        ? detailService.metaDescription_en
+        : isEnRoute && siRoute?.en?.description
+          ? siRoute.en.description
+          : detailArticle?.excerpt || (detailService?.metaDescription || knowledge?.summary) || routeDescriptions[currentPage] || seo.metaDescription;
+      document.title = isEnRoute && detailService?.seoTitle_en
+        ? detailService.seoTitle_en
+        : isEnRoute && siRoute?.en?.title
+          ? siRoute.en.title
+          : detailArticle
+            ? `${detailArticle.title} | GAEKS News`
+            : detailService
+              ? (detailService.seoTitle || `${detailService.title} | GAEKS Freight`)
+              : currentPage === 'home'
+                ? seo.siteTitle
+                : `${routeTitles[currentPage] || 'GAEKS Freight'} | GAEKS Freight`;
+      if (!isEnRoute) {
+        if (currentPage === 'services') document.title = copy.servicesMetaTitle;
+        if (currentPage === 'contact') document.title = copy.contactMetaTitle;
+        if (currentPage === 'phones') document.title = copy.phoneMetaTitle;
+        if (currentPage === 'about') document.title = corporate.about.seoTitle;
+        if (currentPage === 'rates') document.title = corporate.rateCard.seoTitle;
+        if (currentPage === 'carriers') document.title = corporate.carriers.seoTitle;
+        if (currentPage === 'careers') document.title = corporate.careers.seoTitle;
+        if (currentPage === 'terms') document.title = LEGAL_DOC_META.terms.seoTitle;
+        if (currentPage === 'privacy') document.title = LEGAL_DOC_META.privacy.seoTitle;
+      }
       const setMeta = (selector: string, attribute: string, value: string) => {
         let element = document.querySelector(selector) as HTMLMetaElement | null;
         if (!element) {
@@ -188,47 +213,87 @@ export const App: React.FC = () => {
         }
         element.setAttribute(attribute, value);
       };
+      document.querySelector('meta[name="keywords"]')?.remove();
       setMeta('meta[name="description"]', 'content', description);
-      setMeta('meta[name="keywords"]', 'content', seo.keywords);
-      setMeta('meta[name="robots"]', 'content', currentPage === 'operator' || !seo.robotsIndex || window.location.hostname.endsWith('.hostingersite.com') ? 'noindex, nofollow' : 'index, follow');
-      setMeta('meta[property="og:title"]', 'content', currentPage === 'home' && seo.ogTitle ? seo.ogTitle : document.title);
-      setMeta('meta[property="og:description"]', 'content', currentPage === 'home' && seo.ogDescription ? seo.ogDescription : description);
-      setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl || '/logos/gaek-symbol.png', 'https://gaeks.com').href);
+      const isOperatorRoute = currentPage === 'operator';
+      const isTrackingQuery = currentPage === 'tracking' && window.location.search.length > 0;
+      const robotsValue = isOperatorRoute
+        ? 'noindex, nofollow, noarchive'
+        : isTrackingQuery || !seo.robotsIndex || window.location.hostname.endsWith('.hostingersite.com')
+          ? 'noindex, nofollow'
+          : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+      setMeta('meta[name="robots"]', 'content', robotsValue);
+      setMeta('meta[property="og:title"]', 'content', !isEnRoute && currentPage === 'home' && seo.ogTitle ? seo.ogTitle : document.title);
+      setMeta('meta[property="og:description"]', 'content', !isEnRoute && currentPage === 'home' && seo.ogDescription ? seo.ogDescription : description);
+      setMeta('meta[property="og:image"]', 'content', new URL(seo.ogImageUrl || '/logos/gaek-symbol.png', baseUrl).href);
+      setMeta('meta[property="og:locale"]', 'content', isEnRoute ? 'en_US' : 'id_ID');
       let canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
       if (!canonical) { canonical = document.createElement('link'); canonical.rel = 'canonical'; document.head.appendChild(canonical); }
-      canonical.href = detailService?.canonical || `https://gaeks.com${detailArticle ? articlePath(detailArticle) : window.location.pathname}`;
+      const idPath = detailArticle ? articlePath(detailArticle) : detailService ? servicePath(detailService.id, 'id') : logicalPath;
+      const canonicalPath = isEnRoute && (detailService || siRoute?.enAvailable)
+        ? (detailService ? servicePath(detailService.id, 'en') : localizedPagePath(currentPage, 'en'))
+        : idPath;
+      canonical.href = `${baseUrl}${canonicalPath}`;
       setMeta('meta[property="og:url"]', 'content', canonical.href);
-      const orgId = 'https://gaeks.com/#organization';
-      const logoUrl = new URL(branding.symbolLogoUrl || branding.navbarLogoUrl || '/logos/gaek-symbol.png', 'https://gaeks.com').href;
-      const areaServedIndonesia = [
-        { '@type': 'Country', name: 'Indonesia' },
-        { '@type': 'City', name: 'Jakarta' },
-        { '@type': 'City', name: 'Semarang' },
-        { '@type': 'City', name: 'Surabaya' },
-      ];
+
+      // Update hreflang alternates cleanly
+      document.querySelectorAll('link[rel="alternate"][hreflang]').forEach((el) => el.remove());
+      if (!isOperatorRoute) {
+        const alternates: Array<[string, string]> = [['id-ID', `${baseUrl}${idPath}`]];
+        if (detailService || siRoute?.enAvailable) {
+          const enAltPath = detailService ? servicePath(detailService.id, 'en') : localizedPagePath(currentPage, 'en');
+          alternates.push(['en', `${baseUrl}${enAltPath}`]);
+        }
+        alternates.push(['x-default', `${baseUrl}${idPath}`]);
+        for (const [hreflang, href] of alternates) {
+          const alt = document.createElement('link');
+          alt.rel = 'alternate';
+          alt.hreflang = hreflang;
+          alt.href = href;
+          document.head.appendChild(alt);
+        }
+      }
+
+      const orgId = SEARCH_ORG['@id'] || `${baseUrl}/#organization`;
+      const logoUrl = new URL(branding.symbolLogoUrl || branding.navbarLogoUrl || '/logos/gaek-symbol.png', baseUrl).href;
+      const areaServedIndonesia = (SEARCH_ORG.areaServed || []).map((loc) => ({ '@type': loc.type, name: loc.name }));
       const graph: Record<string, unknown>[] = [
         {
           '@type': 'Organization',
           '@id': orgId,
-          name: 'GAEKS Freight',
-          legalName: 'PT Global Andalan Ekspress',
-          url: 'https://gaeks.com',
+          name: SEARCH_ORG.name,
+          legalName: SEARCH_ORG.legalName,
+          alternateName: SEARCH_ORG.alternateName,
+          slogan: SEARCH_ORG.slogan,
+          url: `${baseUrl}/`,
           logo: logoUrl,
           email: resolveContact('general').email,
           telephone: resolveContact('general').whatsappDisplay,
           sameAs: (getStoredSiteSettings().socialLinks || []).map((s) => s.url).filter(Boolean),
-          knowsAbout: ['Freight Forwarding Internasional', 'Pengiriman Laut FCL', 'Pengiriman Laut LCL', 'Jasa PPJK & Customs Clearance', 'Air Freight', 'Undername Impor & PI', 'Project Cargo', 'Domestic Trucking'],
+          knowsAbout: SEARCH_ORG.knowsAbout,
         },
         {
           '@type': ['LocalBusiness', 'ProfessionalService'],
-          '@id': 'https://gaeks.com/#local-business',
-          name: 'GAEKS Freight — PT Global Andalan Ekspress',
-          url: 'https://gaeks.com',
+          '@id': `${baseUrl}/#local-business`,
+          name: `${SEARCH_ORG.name} - ${SEARCH_ORG.legalName}`,
+          url: `${baseUrl}/`,
           parentOrganization: { '@id': orgId },
-          address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' },
+          address: {
+            '@type': 'PostalAddress',
+            addressLocality: SEARCH_ORG.address.addressLocality,
+            addressRegion: SEARCH_ORG.address.addressRegion,
+            addressCountry: SEARCH_ORG.address.addressCountry,
+          },
           areaServed: areaServedIndonesia,
         },
-        { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
+        {
+          '@type': siRoute?.schemaType || 'WebPage',
+          '@id': `${canonical.href}#webpage`,
+          url: canonical.href,
+          name: document.title,
+          description,
+          inLanguage: isEnRoute ? 'en' : 'id-ID',
+        }
       ];
       if (currentPage === 'home') {
         graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
@@ -264,14 +329,28 @@ export const App: React.FC = () => {
           { '@type': 'ListItem', position: 2, name: legalDoc.pageTitle, item: canonical.href }
         ] });
       }
+      graph.push({ '@type': 'WebSite', '@id': `${baseUrl}/#website`, url: `${baseUrl}/`, name: 'GAEKS Freight', inLanguage: ['id-ID', 'en'], publisher: { '@id': orgId } });
       if (detailService && knowledge) {
-        graph.push({ '@type': 'Service', name: detailService.title, serviceType: detailService.category, description, provider: { '@id': orgId }, areaServed: { '@type': 'Country', name: 'Indonesia' }, url: canonical.href });
+        graph.push({
+          '@type': 'Service',
+          '@id': `${canonical.href}#service`,
+          name: isEnRoute && detailService.landingTitle_en ? detailService.landingTitle_en : detailService.title,
+          serviceType: detailService.category,
+          description,
+          provider: { '@id': orgId },
+          areaServed: areaServedIndonesia,
+          inLanguage: isEnRoute ? 'en' : 'id-ID',
+          url: canonical.href,
+        });
         graph.push({ '@type': 'BreadcrumbList', itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://gaeks.com/' },
-          { '@type': 'ListItem', position: 2, name: 'Layanan', item: 'https://gaeks.com/layanan/' },
+          { '@type': 'ListItem', position: 1, name: isEnRoute ? 'Home' : 'Beranda', item: `${baseUrl}${isEnRoute ? '/en/' : '/'}` },
+          { '@type': 'ListItem', position: 2, name: isEnRoute ? 'Services' : 'Layanan', item: `${baseUrl}${isEnRoute ? '/en/layanan/' : '/layanan/'}` },
           { '@type': 'ListItem', position: 3, name: detailService.title, item: canonical.href }
         ] });
-        graph.push({ '@type': 'FAQPage', mainEntity: knowledge.faq.map(([name, answer]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
+        const faqList = (detailService.faq?.length ? detailService.faq : knowledge.faq || []).filter(([q, a]) => q && a);
+        if (faqList.length) {
+          graph.push({ '@type': 'FAQPage', mainEntity: faqList.map(([name, answer]: [string, string]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text: answer } })) });
+        }
       }
       if (detailArticle) {
         graph.push({ '@type': 'NewsArticle', headline: detailArticle.title, description: detailArticle.excerpt, datePublished: detailArticle.publishedDate, dateModified: detailArticle.updatedAt || detailArticle.publishedDate, image: new URL(detailArticle.imageUrl, 'https://gaeks.com').href, author: { '@type': 'Organization', name: detailArticle.author || 'GAEKS Editorial' }, publisher: { '@id': orgId }, mainEntityOfPage: canonical.href });
@@ -305,16 +384,19 @@ export const App: React.FC = () => {
         else link.removeAttribute('type');
         if (link.getAttribute('href') !== faviconUrl) link.href = faviconUrl;
       }
+      document.documentElement.lang = isEnRoute ? 'en' : currentLang;
     };
     applyMetadata();
     window.addEventListener(GAEKS_UPDATE_EVENT, applyMetadata);
     return () => window.removeEventListener(GAEKS_UPDATE_EVENT, applyMetadata);
-  }, [currentPage, activeServiceSlug, activeArticleId]);
+  }, [currentPage, activeServiceSlug, activeArticleId, currentLang]);
 
   useEffect(() => {
     const handleHashChange = () => {
       const fullHash = window.location.hash.replace('#', '').toLowerCase();
-      const path = window.location.pathname.replace(/^\/+|\/+$/g, '').toLowerCase();
+      const { path: stripped, isEn } = stripLangPrefix(window.location.pathname.toLowerCase());
+      const path = stripped.replace(/^\/+|\/+$/g, '');
+      if (isEn) setCurrentLang('en');
       
       if (path === 'operator' || fullHash === 'operator' || fullHash === 'admin') {
         setCurrentPage('operator');
@@ -360,7 +442,8 @@ export const App: React.FC = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const target = new URL(pagePaths[page] || '/', window.location.origin);
+    const onEnPrefix = window.location.pathname === '/en' || window.location.pathname.startsWith('/en/');
+    const target = new URL(localizedPagePath(page, onEnPrefix ? 'en' : 'id'), window.location.origin);
     if (page === 'contact' && window.location.pathname === target.pathname && (window.location.search || window.location.hash)) {
       setActiveArticleId('');
       setActiveServiceSlug('');
@@ -398,8 +481,9 @@ export const App: React.FC = () => {
   };
 
   const handleOpenService = (serviceId: string) => {
+    const onEnPrefix = window.location.pathname === '/en' || window.location.pathname.startsWith('/en/');
     setActiveServiceSlug(serviceSlug(serviceId));
-    window.history.pushState({}, '', servicePath(serviceId));
+    window.history.pushState({}, '', servicePath(serviceId, onEnPrefix ? 'en' : 'id'));
     setCurrentPage('service');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };

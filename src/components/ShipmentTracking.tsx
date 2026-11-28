@@ -146,6 +146,42 @@ export const ShipmentTracking: React.FC = () => {
             </div>
           </div>
         )}
+
+        <section
+          aria-labelledby="tracking-guide-heading"
+          className="mt-8 rounded-xl border border-slate-200 bg-white p-6 text-[#12363a] sm:p-8"
+        >
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#0b4f57]">Panduan Pelacakan</p>
+          <h2 id="tracking-guide-heading" className="mt-2 font-display text-xl font-bold tracking-tight sm:text-2xl">
+            Referensi Dokumen &amp; Arti Milestone Pengiriman
+          </h2>
+          <div className="mt-5 grid gap-5 md:grid-cols-3">
+            <article className="border-t border-slate-200 pt-4">
+              <h3 className="text-sm font-bold text-[#12363a]">Format Nomor Referensi</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Masukkan nomor HAWB atau Master AWB untuk kargo udara, B/L atau HBL untuk pengiriman laut FCL/LCL, nomor GJO operasional GAEKS, atau nomor kontainer tanpa spasi tambahan.
+              </p>
+            </article>
+            <article className="border-t border-slate-200 pt-4">
+              <h3 className="text-sm font-bold text-[#12363a]">Urutan Milestone Utama</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Status menampilkan tahap verifikasi dokumen, proses kepabeanan PPJK (PEB atau PIB), jadwal muat kapal atau maskapai, hingga serah terima di lokasi tujuan.
+              </p>
+            </article>
+            <article className="border-t border-slate-200 pt-4">
+              <h3 className="text-sm font-bold text-[#12363a]">Butuh Konfirmasi Manual?</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Jika milestone belum diperbarui atau dokumen membutuhkan tindak lanjut bea cukai, hubungi tim spesialis kami secara langsung.
+              </p>
+              <a
+                href="/kontak/telepon/"
+                className="mt-2 inline-flex min-h-11 items-center text-sm font-bold text-[#0b4f57] underline underline-offset-4 hover:text-[#082f34]"
+              >
+                Buka direktori telepon &amp; WhatsApp tim
+              </a>
+            </article>
+          </div>
+        </section>
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ function gaeks_migrate_service_content(string $path): void {
     if (!$lock || !flock($lock, LOCK_EX)) return;
     try {
         $data = gaeks_read_json_file($path, gaeks_read_json_file(__DIR__ . '/site_content.json', []));
-        if (($data['serviceCmsVersion'] ?? 0) >= 6) return;
+        if (($data['serviceCmsVersion'] ?? 0) >= 7) return;
         if (($data['serviceCmsVersion'] ?? 0) < 2) {
             if (is_file($path) && !is_file($path . '.before-service-cms-v1')) copy($path, $path . '.before-service-cms-v1');
             $data['siteSettings']['uiCopy'] = array_replace(gaeks_read_json_file(__DIR__ . '/ui_copy_seed.json', []), $data['siteSettings']['uiCopy'] ?? []);
@@ -125,7 +125,101 @@ function gaeks_migrate_service_content(string $path): void {
             if (!gaeks_write_json_file($path, $data)) gaeks_json(['message' => 'Migrasi konten belum tersimpan.'], 503);
         }
         gaeks_migrate_cta_labels($path);
+        gaeks_migrate_search_intelligence_v7($path);
     } finally { flock($lock, LOCK_UN); fclose($lock); }
+}
+
+function gaeks_migrate_search_intelligence_v7(string $path): void {
+    $data = gaeks_read_json_file($path, []);
+    if ((int)($data['serviceCmsVersion'] ?? 0) >= 7) return;
+    if (is_file($path) && !is_file($path . '.before-search-intelligence-v7')) {
+        copy($path, $path . '.before-search-intelligence-v7');
+    }
+    $serviceSeeds = gaeks_read_json_file(__DIR__ . '/service_editorial_seed.json', []);
+    $seedById = [];
+    foreach ($serviceSeeds as $seed) {
+        if (is_array($seed) && !empty($seed['id'])) {
+            $seedById[(string)$seed['id']] = $seed;
+        }
+    }
+    $services = is_array($data['services'] ?? null) ? $data['services'] : [];
+    $seenIds = [];
+    foreach ($services as &$service) {
+        if (!is_array($service) || empty($service['id'])) continue;
+        $id = (string)$service['id'];
+        $seenIds[$id] = true;
+        if (!isset($seedById[$id])) continue;
+        $seed = $seedById[$id];
+        // Backfill English & Search Intelligence editorial fields without overriding owner copy
+        foreach (['seoTitle_en', 'metaDescription_en', 'landingTitle_en', 'landingDescription_en', 'heroSummary_en', 'summary_en', 'primaryKeyword', 'secondaryKeywords', 'searchIntent', 'relatedServiceIds'] as $field) {
+            if (empty($service[$field]) && !empty($seed[$field])) {
+                $service[$field] = $seed[$field];
+            }
+        }
+        // Upgrade unedited uniform process sections or thin RORO seed
+        $firstSectionText = '';
+        if (!empty($service['sections'][0]['body']) && is_string($service['sections'][0]['body'])) {
+            $firstSectionText = $service['sections'][0]['body'];
+        } elseif (!empty($service['sections'][0]['paragraphs'][0]) && is_string($service['sections'][0]['paragraphs'][0])) {
+            $firstSectionText = $service['sections'][0]['paragraphs'][0];
+        }
+        if (str_contains($firstSectionText, 'Kirim brief dan dokumen awal') || ($id === 'roro-breakbulk' && count($service['faq'] ?? []) < 4)) {
+            $service['sections'] = $seed['sections'] ?? ($service['sections'] ?? []);
+            $service['faq'] = $seed['faq'] ?? ($service['faq'] ?? []);
+            $service['compare'] = $seed['compare'] ?? ($service['compare'] ?? []);
+            $service['features'] = $seed['features'] ?? ($service['features'] ?? []);
+        }
+        if ($id === 'roro-breakbulk' && (($service['imageUrl'] ?? '') === '' || str_contains((string)$service['imageUrl'], '1789234769_387713'))) {
+            $service['imageUrl'] = $seed['imageUrl'] ?? $service['imageUrl'];
+        }
+        if ($id === 'project-cargo' && str_contains((string)($service['tagline'] ?? ''), 'RORO')) {
+            $service['tagline'] = $seed['tagline'] ?? $service['tagline'];
+            $service['seoTitle'] = $seed['seoTitle'] ?? $service['seoTitle'];
+            $service['metaDescription'] = $seed['metaDescription'] ?? $service['metaDescription'];
+        }
+    }
+    unset($service);
+    foreach ($seedById as $id => $seed) {
+        if (!isset($seenIds[$id])) {
+            $services[] = $seed;
+        }
+    }
+    $data['services'] = $services;
+
+    $articleSeeds = gaeks_read_json_file(__DIR__ . '/articles_seed.json', []);
+    $articleSeedById = [];
+    foreach ($articleSeeds as $artSeed) {
+        if (is_array($artSeed) && !empty($artSeed['id'])) {
+            $articleSeedById[(string)$artSeed['id']] = $artSeed;
+        }
+    }
+    $articles = is_array($data['articles'] ?? null) ? $data['articles'] : [];
+    foreach ($articles as &$art) {
+        if (!is_array($art) || empty($art['id'])) continue;
+        $aid = (string)$art['id'];
+        if (!isset($articleSeedById[$aid])) continue;
+        $contentBlob = (string)($art['content'] ?? '') . ' ' . (string)($art['excerpt'] ?? '');
+        $isLegacyBoilerplate = str_contains($contentBlob, 'Tata kelola rantai pasok maritim dan kepatuhan prosedur kepabeanan internasional pada subjek')
+            || str_contains((string)($art['slug'] ?? ''), 'analisis-komprehensif-logistik-maritim-');
+        if ($isLegacyBoilerplate) {
+            $art = array_replace($art, $articleSeedById[$aid]);
+        }
+    }
+    unset($art);
+    $data['articles'] = $articles;
+
+    if (isset($data['seo']) && is_array($data['seo'])) {
+        $si = gaeks_read_json_file(__DIR__ . '/search_intelligence.json', []);
+        $homeId = $si['routes']['/']['id'] ?? [];
+        if (($data['seo']['siteTitle'] ?? '') === '' || str_contains((string)($data['seo']['siteTitle'] ?? ''), 'Jasa Freight Forwarding Resmi')) {
+            if (!empty($homeId['title'])) $data['seo']['siteTitle'] = $homeId['title'];
+            if (!empty($homeId['description'])) $data['seo']['metaDescription'] = $homeId['description'];
+        }
+    }
+
+    $data['serviceCmsVersion'] = 7;
+    $data['updatedAt'] = (int) round(microtime(true) * 1000);
+    gaeks_write_json_file($path, $data);
 }
 
 function gaeks_migrate_cta_labels(string $path): void {
@@ -143,7 +237,7 @@ function gaeks_migrate_cta_labels(string $path): void {
 }
 
 function gaeks_service_slug(string $id): string {
-    return ['fcl'=>'freight-laut-fcl','air-shipment'=>'freight-udara','ppjk'=>'ppjk-customs-clearance','undername-impor'=>'undername-impor-pi','domestic-truck'=>'trucking','gudang-pbm'=>'pergudangan-stevedoring','project-cargo'=>'project-cargo-heavy-lift','lcl'=>'freight-laut-lcl'][$id] ?? $id;
+    return ['fcl'=>'freight-laut-fcl','air-shipment'=>'freight-udara','ppjk'=>'ppjk-customs-clearance','undername-impor'=>'undername-impor-pi','domestic-truck'=>'trucking','gudang-pbm'=>'pergudangan-stevedoring','project-cargo'=>'project-cargo-heavy-lift','lcl'=>'freight-laut-lcl','roro-breakbulk'=>'roro-breakbulk'][$id] ?? $id;
 }
 function gaeks_service_contact(array $content, string $id): array {
     $groups=$content['branding']['contactGroups'] ?? [];

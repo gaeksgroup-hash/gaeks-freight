@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import { ChevronRight, Mail } from 'lucide-react';
 import { Language } from '../types/freight';
 import { GAEKS_UPDATE_EVENT, getStoredServices, getSiteCopy } from '../utils/adminStorage';
-import { matchesServiceRoute, pagePaths } from '../utils/routes';
+import { matchesServiceRoute, pagePaths, servicePath } from '../utils/routes';
+import { SERVICE_RELATIONS, TOOL_LINKS } from '../data/searchIntelligence';
 import { measureContactClick, resolveServiceContact } from '../utils/quoteFlow';
 import { QuoteForm } from './QuoteForm';
 import { PiCatalogTable } from './PiCatalogTable';
@@ -74,7 +75,30 @@ export const ServiceDetailPage: React.FC<{
 
   const contact = resolveServiceContact(service.id);
   const evidence = service.evidence?.filter((item) => item.approved && item.source && item.date && item.detail) || [];
-  const heroSummary = service.heroSummary?.trim() || service.landingDescription?.trim() || service.tagline || service.description;
+  const isEnRoute = window.location.pathname === '/en' || window.location.pathname.startsWith('/en/');
+  const heroTitle = (isEnRoute && service.landingTitle_en) || service.landingTitle || service.title;
+  const heroSummary =
+    (isEnRoute && (service.heroSummary_en?.trim() || service.landingDescription_en?.trim() || service.summary_en?.trim())) ||
+    service.heroSummary?.trim() ||
+    service.landingDescription?.trim() ||
+    service.tagline ||
+    service.description;
+  const relationSpec = SERVICE_RELATIONS[service.id];
+  const relatedServices = (relationSpec?.relatedServices || [])
+    .map((id) => services.find((item) => item.id === id))
+    .filter((item): item is NonNullable<typeof item> => Boolean(item));
+  const relatedTools = (relationSpec?.tools || [])
+    .map((key) => TOOL_LINKS[key])
+    .filter(Boolean);
+
+  const navigateInternal = (href: string, event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && event.button === 0) {
+      event.preventDefault();
+      window.history.pushState({}, '', href);
+      window.dispatchEvent(new PopStateEvent('popstate'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <div className="service-detail pb-24 md:pb-0">
@@ -86,7 +110,7 @@ export const ServiceDetailPage: React.FC<{
           <div className="service-overview-grid">
             <div className="service-intro">
               <p className="service-category">{service.category}</p>
-              <h1>{service.landingTitle || service.title}</h1>
+              <h1>{heroTitle}</h1>
               <p className="service-summary">{heroSummary}</p>
 
               <div ref={heroActionsRef} className="service-actions-row">
@@ -267,6 +291,72 @@ export const ServiceDetailPage: React.FC<{
         )}
 
         {service.id === 'undername-impor' && <PiCatalogTable />}
+
+        {(relatedServices.length > 0 || relatedTools.length > 0) && (
+          <section className="service-guide" aria-labelledby="related-solutions-heading">
+            <div>
+              <p className="section-label">{isEnRoute ? 'Connected Workflow' : 'Keterkaitan Layanan'}</p>
+              <h2 id="related-solutions-heading" className="service-heading">
+                {isEnRoute ? 'Related Services & Freight Tools' : 'Layanan & Alat Bantu Terkait'}
+              </h2>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              {relatedServices.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-[#0b4f57]">
+                    {isEnRoute ? 'Complementary Services' : 'Layanan Terkait'}
+                  </h3>
+                  <ul className="mt-3 space-y-2.5">
+                    {relatedServices.map((rel) => {
+                      const relHref = servicePath(rel.id, isEnRoute ? 'en' : 'id');
+                      return (
+                        <li key={rel.id}>
+                          <a
+                            href={relHref}
+                            onClick={(event) => navigateInternal(relHref, event)}
+                            className="group flex items-start justify-between gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-[#12363a] transition-colors hover:border-[#0e7490] hover:text-[#0b4f57]"
+                          >
+                            <span>
+                              <span className="block">{rel.title}</span>
+                              <span className="mt-0.5 block text-xs font-normal text-slate-600">
+                                {(isEnRoute && rel.summary_en) || rel.summary || rel.tagline}
+                              </span>
+                            </span>
+                            <ChevronRight size={16} className="mt-0.5 shrink-0 text-slate-400 group-hover:text-[#0b4f57]" aria-hidden="true" />
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
+              )}
+              {relatedTools.length > 0 && (
+                <div>
+                  <h3 className="text-sm font-bold uppercase tracking-[0.14em] text-[#0b4f57]">
+                    {isEnRoute ? 'Operational Tools' : 'Alat Perencanaan'}
+                  </h3>
+                  <ul className="mt-3 space-y-2.5">
+                    {relatedTools.map((tool) => (
+                      <li key={tool.href}>
+                        <a
+                          href={tool.href}
+                          onClick={(event) => navigateInternal(tool.href, event)}
+                          className="group flex items-start justify-between gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm font-semibold text-[#12363a] transition-colors hover:border-[#0e7490] hover:text-[#0b4f57]"
+                        >
+                          <span>
+                            <span className="block">{isEnRoute ? tool.labelEn : tool.label}</span>
+                            <span className="mt-0.5 block text-xs font-normal text-slate-600">{tool.note}</span>
+                          </span>
+                          <ChevronRight size={16} className="mt-0.5 shrink-0 text-slate-400 group-hover:text-[#0b4f57]" aria-hidden="true" />
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
+        )}
 
         <section ref={quoteSectionRef} className="service-inquiry" aria-label="Tambahkan detail untuk penawaran">
           <div className="service-inquiry-intro">

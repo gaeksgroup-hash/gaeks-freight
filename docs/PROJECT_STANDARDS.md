@@ -58,6 +58,7 @@ Browser policy: utamakan fitur Baseline Widely Available. Fitur lebih baru harus
 npm run standards:check
 npm run build
 npm run php:lint
+npm run seo:check
 # Jalankan demo:preview di terminal lain, lalu:
 npm run test:cms
 ```
@@ -72,6 +73,7 @@ Test CMS hanya boleh menulis ke localhost dan selalu memulihkan data/uji operato
 - `.hostinger/site.json` bersifat lokal; environment cloud mengatur koneksi sendiri. Jangan memasukkan token/password ke dokumen atau source.
 - File produksi privat milik server; pertahankan backup sebelum migrasi. Jangan menimpa CMS dengan seed saat update.
 - Laporan perubahan yang sedang dikerjakan: `docs/SERVICE_CMS_RELEASE.md`.
+- Dokumentasi & kebijakan GAEKS Search Intelligence 1.0: `docs/search-intelligence/01_GAEKS_SEARCH_STRATEGY.md` s.d. `10_GAEKS_SEO_CHANGE_POLICY.md`.
 
 ## Memperbarui skill
 

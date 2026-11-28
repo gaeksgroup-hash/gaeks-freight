@@ -579,6 +579,45 @@ export const SmartCalculator: React.FC<SmartCalculatorProps> = ({ prefillService
             </div>
           </aside>
         </div>
+
+        <section
+          aria-labelledby="calculator-methodology-heading"
+          className="mt-10 rounded-xl border border-slate-200 bg-white p-6 sm:p-8"
+        >
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#0b4f57]">Panduan Rumus &amp; Perencanaan</p>
+          <h2 id="calculator-methodology-heading" className="mt-2 font-display text-2xl font-bold tracking-tight text-[#12363a]">
+            Cara Menentukan Basis Tagihan Laut (CBM) dan Udara (Chargeable Weight)
+          </h2>
+          <div className="mt-6 grid gap-6 md:grid-cols-3">
+            <article className="border-t border-slate-200 pt-4">
+              <h3 className="text-base font-bold text-[#12363a]">Rumus Kubikasi Laut (CBM)</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Volume dalam meter kubik dihitung dari Panjang x Lebar x Tinggi (cm) dibagi 1.000.000, lalu dikalikan jumlah koli.
+              </p>
+              <a href="/layanan/freight-laut-lcl/" className="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-[#0b4f57] underline underline-offset-4 hover:text-[#082f34]">
+                Pelajari layanan LCL
+              </a>
+            </article>
+            <article className="border-t border-slate-200 pt-4">
+              <h3 className="text-base font-bold text-[#12363a]">Rumus Volumetrik Udara</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Standar IATA membagi Panjang x Lebar x Tinggi (cm) dengan 6.000. Maskapai mengenakan chargeable weight dari angka terbesar antara berat aktual dan volumetrik.
+              </p>
+              <a href="/layanan/freight-udara/" className="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-[#0b4f57] underline underline-offset-4 hover:text-[#082f34]">
+                Pelajari Air Freight GAEKS
+              </a>
+            </article>
+            <article className="border-t border-slate-200 pt-4">
+              <h3 className="text-base font-bold text-[#12363a]">Kapan Beralih ke FCL Penuh</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                Saat total kubikasi mendekati kapasitas kontainer 20ft atau 40ft, atau muatan membutuhkan segel eksklusif tanpa konsolidasi, opsi FCL layak dibandingkan.
+              </p>
+              <a href="/layanan/freight-laut-fcl/" className="mt-3 inline-flex min-h-11 items-center text-sm font-bold text-[#0b4f57] underline underline-offset-4 hover:text-[#082f34]">
+                Pelajari layanan FCL
+              </a>
+            </article>
+          </div>
+        </section>
       </div>
     </section>
   );

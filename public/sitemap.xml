@@ -1,46 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://gaeks.com/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/layanan/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/rute-pengiriman/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/kalkulator/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/tarif-pengiriman/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/tarif-pengiriman/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/maskapai-dan-pelayaran/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/tentang-kami/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/tentang-kami/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/karier/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/tracking/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/berita/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/kontak/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/kontak/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/kontak/telepon/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/terms-of-use/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/privacy-terms/</loc><lastmod>2026-11-28</lastmod></url>
-  <url><loc>https://gaeks.com/layanan/ppjk-customs-clearance/</loc><lastmod>2026-11-28</lastmod></url>
-  <url><loc>https://gaeks.com/layanan/pergudangan-stevedoring/</loc><lastmod>2026-11-28</lastmod></url>
-  <url><loc>https://gaeks.com/layanan/trucking/</loc><lastmod>2026-11-28</lastmod></url>
-  <url><loc>https://gaeks.com/layanan/project-cargo-heavy-lift/</loc><lastmod>2026-11-28</lastmod></url>
-  <url><loc>https://gaeks.com/layanan/freight-laut-lcl/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/layanan/freight-laut-fcl/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/freight-laut-fcl/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/layanan/freight-udara/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/freight-udara/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/layanan/freight-laut-lcl/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/freight-laut-lcl/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/layanan/ppjk-customs-clearance/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/ppjk-customs-clearance/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/layanan/undername-impor-pi/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/undername-impor-pi/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/layanan/roro-breakbulk/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/roro-breakbulk/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/layanan/project-cargo-heavy-lift/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/project-cargo-heavy-lift/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/layanan/trucking/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/trucking/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/layanan/pergudangan-stevedoring/</loc><lastmod>2026-11-28</lastmod></url>
+  <url><loc>https://gaeks.com/en/layanan/pergudangan-stevedoring/</loc><lastmod>2026-11-28</lastmod></url>
   <url><loc>https://gaeks.com/berita/disrupsi-logistik-maritim-topan-dolphin-china-pelabuhan-tertunda/</loc><lastmod>2026-09-08</lastmod></url>
   <url><loc>https://gaeks.com/berita/erupsi-gunung-anak-krakatau-penutupan-bandara-mitigasi-kargo-udara/</loc><lastmod>2026-09-09</lastmod></url>
   <url><loc>https://gaeks.com/berita/badai-topan-shanghai-ningbo-analisis-kongesti-kapal/</loc><lastmod>2026-09-06</lastmod></url>
-  <url><loc>https://gaeks.com/berita/penerapan-penuh-wajib-ceisa-4-0-nasional-kep-163-bc-2026-analisis-kepatuhan-manifes-bc-1-1-dan-m-art-2/</loc><lastmod>2026-09-01</lastmod></url>
-  <url><loc>https://gaeks.com/berita/deregulasi-kebijakan-impor-barang-industri-permendag-16-2025-permendag-22-2025-evaluasi-persetuj-art-3/</loc><lastmod>2026-08-25</lastmod></url>
-  <url><loc>https://gaeks.com/berita/struktur-baru-aliansi-pelayaran-global-2025-2026-debut-gemini-cooperation-dan-dampak-alokasi-kap-art-4/</loc><lastmod>2026-08-16</lastmod></url>
-  <url><loc>https://gaeks.com/berita/krisis-keamanan-maritim-laut-merah-dan-rerouting-cape-of-good-hope-evaluasi-kenaikan-biaya-bunke-art-5/</loc><lastmod>2026-08-04</lastmod></url>
-  <url><loc>https://gaeks.com/berita/implementasi-penuh-surat-keterangan-asal-elektronik-e-form-e-acfta-mekanisme-klaim-tarif-bea-mas-art-6/</loc><lastmod>2026-07-22</lastmod></url>
-  <url><loc>https://gaeks.com/berita/prosedur-pemeriksaan-fisik-jalur-merah-pengujian-laboratorium-bpib-bea-cukai-langkah-preventif-m-art-7/</loc><lastmod>2026-07-10</lastmod></url>
-  <url><loc>https://gaeks.com/berita/tata-kelola-pengembalian-peti-kemas-kosong-empty-container-dan-mitigasi-biaya-demurrage-detentio-art-8/</loc><lastmod>2026-06-28</lastmod></url>
-  <url><loc>https://gaeks.com/berita/formula-volumetrik-dan-kubikasi-kargo-analisis-komparasi-rasio-berat-chargeable-angkutan-laut-cb-art-9/</loc><lastmod>2026-06-15</lastmod></url>
-  <url><loc>https://gaeks.com/berita/regulasi-pengangkutan-udara-baterai-lithium-iata-dgr-section-ii-dan-ketentuan-pengujian-teknis-s-art-10/</loc><lastmod>2026-06-01</lastmod></url>
-  <url><loc>https://gaeks.com/berita/perkembangan-infrastruktur-logistik-pelabuhan-patimban-dan-konektivitas-terhadap-sentra-industri-art-11/</loc><lastmod>2026-05-19</lastmod></url>
-  <url><loc>https://gaeks.com/berita/pengoperasian-rantai-dingin-cold-chain-peti-kemas-berpendingin-reefer-container-pada-distribusi--art-12/</loc><lastmod>2026-05-04</lastmod></url>
-  <url><loc>https://gaeks.com/berita/standar-operasional-perusahaan-bongkar-muat-pbm-dan-stevedoring-kargo-curah-kering-di-dermaga-ja-art-13/</loc><lastmod>2026-04-20</lastmod></url>
-  <url><loc>https://gaeks.com/berita/rekayasa-transportasi-kargo-proyek-over-dimension-over-weight-odow-dan-evaluasi-kekuatan-struktu-art-14/</loc><lastmod>2026-04-08</lastmod></url>
-  <url><loc>https://gaeks.com/berita/pembukaan-jalur-pelayaran-langsung-direct-call-asia-timur-ke-pelabuhan-tanjung-emas-semarang-ana-art-15/</loc><lastmod>2026-03-26</lastmod></url>
-  <url><loc>https://gaeks.com/berita/aspek-perlindungan-hukum-polis-asuransi-pengangkutan-laut-evaluasi-komparatif-klausul-institute--art-16/</loc><lastmod>2026-03-14</lastmod></url>
-  <url><loc>https://gaeks.com/berita/perbedaan-kekuatan-hukum-antara-master-bill-of-lading-mbl-dan-house-b-l-hbl-dalam-mekanisme-pemb-art-17/</loc><lastmod>2026-02-27</lastmod></url>
-  <url><loc>https://gaeks.com/berita/ekosistem-terpadu-indonesia-national-single-window-insw-integrasi-data-lintas-kementerian-pembin-art-18/</loc><lastmod>2026-02-14</lastmod></url>
-  <url><loc>https://gaeks.com/berita/analisis-tren-indeks-pasar-angkutan-peti-kemas-spot-dunia-scfi-dan-drewry-wci-strategi-pengadaan-art-19/</loc><lastmod>2026-01-30</lastmod></url>
-  <url><loc>https://gaeks.com/berita/standar-karantina-tumbuhan-internasional-ispm-15-dan-prosedur-fumigasi-komoditas-ekspor-rempah-d-art-20/</loc><lastmod>2026-01-14</lastmod></url>
+  <url><loc>https://gaeks.com/berita/ceisa-4-0-manifes-bc-1-1-mitigasi-reject-pib/</loc><lastmod>2026-09-01</lastmod></url>
+  <url><loc>https://gaeks.com/berita/permendag-16-2025-22-2025-persetujuan-impor-laporan-surveyor/</loc><lastmod>2026-08-25</lastmod></url>
+  <url><loc>https://gaeks.com/berita/aliansi-pelayaran-global-gemini-cooperation-feeder-indonesia/</loc><lastmod>2026-08-16</lastmod></url>
+  <url><loc>https://gaeks.com/berita/rerouting-laut-merah-cape-of-good-hope-evaluasi-baf/</loc><lastmod>2026-08-04</lastmod></url>
+  <url><loc>https://gaeks.com/berita/e-form-e-acfta-klaim-tarif-preferensi-bea-masuk/</loc><lastmod>2026-07-22</lastmod></url>
+  <url><loc>https://gaeks.com/berita/pemeriksaan-jalur-merah-pengujian-bpib-mitigasi-notul/</loc><lastmod>2026-07-10</lastmod></url>
+  <url><loc>https://gaeks.com/berita/pengembalian-kontainer-kosong-mitigasi-demurrage-detention/</loc><lastmod>2026-06-28</lastmod></url>
+  <url><loc>https://gaeks.com/berita/formula-volumetrik-kubikasi-cbm-chargeable-weight-laut-udara/</loc><lastmod>2026-06-15</lastmod></url>
+  <url><loc>https://gaeks.com/berita/regulasi-pengangkutan-udara-baterai-lithium-iata-dgr-un-38-3/</loc><lastmod>2026-06-01</lastmod></url>
+  <url><loc>https://gaeks.com/berita/infrastruktur-pelabuhan-patimban-konektivitas-industri-subang-karawang/</loc><lastmod>2026-05-19</lastmod></url>
+  <url><loc>https://gaeks.com/berita/rantai-dingin-cold-chain-reefer-container-farmasi-pangan/</loc><lastmod>2026-05-04</lastmod></url>
+  <url><loc>https://gaeks.com/berita/operasional-pbm-stevedoring-kargo-tanjung-perak-surabaya/</loc><lastmod>2026-04-20</lastmod></url>
+  <url><loc>https://gaeks.com/berita/rekayasa-transportasi-project-cargo-odow-survei-rute/</loc><lastmod>2026-04-08</lastmod></url>
+  <url><loc>https://gaeks.com/berita/jalur-pelayaran-tanjung-emas-semarang-efisiensi-logistik-jawa-tengah/</loc><lastmod>2026-03-26</lastmod></url>
+  <url><loc>https://gaeks.com/berita/asuransi-pengangkutan-laut-institute-cargo-clauses-a-b-c/</loc><lastmod>2026-03-14</lastmod></url>
+  <url><loc>https://gaeks.com/berita/perbedaan-master-bill-of-lading-mbl-dan-house-bl-hbl-ucp-600/</loc><lastmod>2026-02-27</lastmod></url>
+  <url><loc>https://gaeks.com/berita/ekosistem-indonesia-national-single-window-insw-perizinan-impor/</loc><lastmod>2026-02-14</lastmod></url>
+  <url><loc>https://gaeks.com/berita/indeks-angkutan-peti-kemas-scfi-drewry-wci-anggaran-logistik/</loc><lastmod>2026-01-30</lastmod></url>
+  <url><loc>https://gaeks.com/berita/standar-ispm-15-fumigasi-kemasan-kayu-ekspor-indonesia/</loc><lastmod>2026-01-14</lastmod></url>
 </urlset>

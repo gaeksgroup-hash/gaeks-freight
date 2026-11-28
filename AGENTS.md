@@ -16,6 +16,7 @@ Applies to Codex Cloud, Codex local, and other coding agents working in this rep
 - Preserve the GAEKS maritime teal identity. Apply design methodology to the actual content; never copy a generated recommendation blindly.
 - The owner authorizes publishing editorial statements about past RORO project imports, general-cargo customs work, SKI assistance, undername/PI assistance, cost-conscious quality air shipments, and guidance on shipping decisions. Attribute the source internally to the owner's confirmation. Do not invent customer names, dates of shipments, quantities, savings, reviews, approvals, or independent verification.
 - Portfolio material is being prepared. It is not a prerequisite to publishing the authorized service descriptions.
+- Search Intelligence governance (`SEO / SXO / LLMO / AIO / GSO / AISO / VSO / GEO`): permanent documentation lives in `docs/search-intelligence/`. Use `npm run seo:check` after `npm run build` and follow `docs/search-intelligence/10_GAEKS_SEO_CHANGE_POLICY.md` before modifying routes, canonicals, `robots.txt`, `sitemap.xml`, `llms.txt`, or JSON-LD schema.
 
 ## Reproducibility and scope
 

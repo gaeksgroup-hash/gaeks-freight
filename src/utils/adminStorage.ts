@@ -145,12 +145,12 @@ export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   ],
 };
 export const DEFAULT_SEO: SeoSettings = {
-  siteTitle: 'GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia',
-  metaDescription: 'Layanan freight forwarding, customs clearance, ocean freight, air freight, dan trucking untuk kebutuhan kargo bisnis.',
-  keywords: 'freight forwarding, customs clearance, PPJK, ocean freight, air freight, trucking Indonesia',
-  ogTitle: 'GAEKS Freight | Global Andalan Ekspress',
-  ogDescription: 'Koordinasi freight dan kepabeanan untuk kargo bisnis.',
-  ogImageUrl: '/logos/gaek-full.png?v=7', robotsIndex: true,
+  siteTitle: 'Freight Forwarder Indonesia | FCL, Air Freight & Logistik Internasional | GAEKS Freight',
+  metaDescription: 'PT Global Andalan Ekspress (GAEKS Freight) adalah perusahaan freight forwarding internasional Indonesia dengan fokus FCL ekspor/impor, air freight, PPJK customs clearance, LCL, undername impor/PI, RORO, breakbulk, dan project cargo.',
+  keywords: 'freight forwarder indonesia, fcl export import, air freight indonesia, jasa ppjk, undername impor, persetujuan impor, kapal roro breakbulk, project cargo',
+  ogTitle: 'GAEKS Freight | PT Global Andalan Ekspress',
+  ogDescription: 'Solusi freight forwarding FCL, Air Freight, PPJK Customs Clearance, Undername Impor/PI, RORO & Breakbulk di Indonesia.',
+  ogImageUrl: '/logos/gaek-symbol.png', robotsIndex: true,
 };
 
 export function notifyLocalUpdate(): void {

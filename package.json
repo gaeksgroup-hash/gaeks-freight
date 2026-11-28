@@ -17,6 +17,7 @@
     "design:search": "node scripts/project-tools.mjs design",
     "guidance": "node scripts/project-tools.mjs guidance",
     "php:lint": "node scripts/lint-php.mjs",
+    "seo:check": "node scripts/verify-seo.mjs",
     "test:cms": "node tests/cms-workflow.mjs",
     "build": "tsc && vite build && node scripts/generate-seo.mjs",
     "preview": "vite preview"

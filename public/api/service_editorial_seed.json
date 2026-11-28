@@ -1,166 +1,156 @@
 [
   {
     "id": "fcl",
+    "status": "published",
     "title": "FCL (Full Container Load)",
     "title_en": "FCL Ocean Freight",
-    "title_zh": "海运整箱 (FCL)",
     "category": "Kontainer Eksklusif Internasional",
-    "category_en": "Container Liner Slot",
-    "category_zh": "集装箱整箱国际订舱",
-    "tagline": "Pelayaran kontainer samudra penuh langsung ke pelabuhan utama Indonesia.",
-    "tagline_en": "Direct ocean carrier booking with dedicated full container slots.",
-    "tagline_zh": "整箱国际海运直航订舱，专属集装箱安全出运。",
-    "description": "Penyediaan kontainer 20ft, 40ft General Purpose, 40ft High Cube, Reefer berpendingin, serta Open Top untuk rute utama langsung ke Jakarta, Semarang, dan Surabaya.",
-    "description_en": "Dedicated 20ft, 40ft GP, 40ft HC, Reefer, and Open Top equipment with direct calls to Tanjung Priok, Tanjung Emas, and Tanjung Perak.",
-    "description_zh": "提供 20GP/40GP/40HQ 及特种箱，直航印尼三大核心海港。",
-    "features": [
-      "Alokasi Ruang Kapal Dijamin Saat Peak Season",
-      "Free Time Demurrage & Detention Lebih Panjang",
-      "Pilihan Door-to-Door atau Port-to-Port Transparan"
-    ],
-    "equipment": "Kontainer 20ft, 40ft GP, 40ft HC, Reefer",
-    "imageUrl": "/uploads/1789234509_387710.webp",
-    "commodities": "Manufaktur massal, bahan baku kimia, resin, komoditas ekspor",
-    "summary": "FCL memakai satu kontainer untuk pengiriman laut yang memerlukan ruang khusus atau volume lebih besar. Pemilihan ukuran dan tipe kontainer mengikuti dimensi, berat, sifat komoditas, serta cara muat. Sebelum memesan ruang kapal, tentukan pelabuhan asal dan tujuan, Incoterms, kesiapan barang, serta kebutuhan trucking dan pengurusan dokumen di kedua sisi.",
-    "compare": [
-      [
-        "20 kaki",
-        "Muatan dengan kebutuhan ruang lebih ringkas",
-        "Berat total, dimensi, dan pola susun barang"
-      ],
-      [
-        "40 kaki",
-        "Muatan yang membutuhkan ruang lebih panjang",
-        "Volume, dimensi, berat, dan tipe kontainer"
-      ]
-    ],
-    "faq": [
-      [
-        "Kapan memilih kontainer 20 atau 40 kaki?",
-        "Pilihan ditentukan oleh volume, berat, dimensi per koli, dan cara penyusunan. Tim perlu memeriksa keduanya sebelum pemesanan."
-      ],
-      [
-        "Apakah FCL selalu lebih cepat dari LCL?",
-        "Waktu total bergantung pada jadwal kapal, proses pelabuhan, dokumen, dan pengiriman darat; FCL tidak otomatis lebih cepat."
-      ],
-      [
-        "Data apa yang dibutuhkan untuk penawaran?",
-        "Berikan asal, tujuan, jenis barang, volume, berat, tanggal siap barang, dan Incoterms bila sudah disepakati."
-      ]
-    ],
+    "category_en": "Full Container Ocean Freight",
+    "tagline": "Pengiriman peti kemas penuh ekspor dan impor melalui pelabuhan utama Indonesia.",
+    "tagline_en": "Dedicated 20ft, 40ft, High Cube, and Reefer container shipping for export and import.",
+    "description": "Penyediaan kontainer 20ft, 40ft General Purpose, 40ft High Cube, Reefer berpendingin, serta Open Top untuk rute ekspor dan impor melalui Jakarta, Semarang, dan Surabaya.",
+    "description_en": "Full container ocean freight (20ft, 40ft GP, 40ft HC, Reefer, and Open Top) supporting port-to-port and door-to-door export/import via Jakarta, Semarang, and Surabaya.",
     "landingTitle": "Freight Laut FCL",
-    "landingDescription": "Diskusikan rute impor atau ekspor peti kemas penuh, jenis kontainer, komoditas, dan kesiapan muat. Tim meninjau pilihan pengiriman berdasarkan detail Anda.",
+    "landingTitle_en": "FCL Ocean Freight (Export & Import)",
+    "landingDescription": "Diskusikan rute impor atau ekspor peti kemas penuh, pilihan kontainer 20ft/40ft/HC/Reefer, skema port-to-port atau door-to-door, serta kesiapan muat bersama tim GAEKS.",
+    "landingDescription_en": "Plan international FCL export or import shipments with 20ft, 40ft GP, 40ft High Cube, or Reefer containers under port-to-port or door-to-door coordination.",
     "ctaServiceName": "Freight Laut FCL",
-    "heroSummary": "Konsultasikan kebutuhan kontainer penuh 20ft, 40ft, atau reefer untuk impor maupun ekspor tanpa harus memastikan ukuran di awal.",
-    "status": "published",
-    "seoTitle": "FCL ekspor dan impor laut | GAEKS Freight",
-    "metaDescription": "Importir dan eksportir dengan muatan satu kontainer penuh. Pilihan pelayaran, jadwal cut-off, ruang kapal, biaya terminal, trucking, dan waktu bebas kontainer memengaruhi biaya total.",
+    "heroSummary": "Konsultasikan kebutuhan pengiriman kontainer penuh (FCL) ekspor dan impor 20ft, 40ft, High Cube, atau Reefer secara port-to-port maupun door-to-door.",
+    "heroSummary_en": "Consult international FCL ocean freight export and import across 20ft, 40ft, High Cube, and Reefer equipment with integrated port clearance and inland delivery.",
+    "seoTitle": "Jasa FCL Ekspor & Impor Kontainer Internasional | GAEKS Freight",
+    "seoTitle_en": "FCL Ocean Freight Export & Import Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa pengiriman kontainer penuh FCL ekspor dan impor (20ft, 40ft GP, 40ft HC, Reefer) secara port-to-port maupun door-to-door dengan dukungan kepabeanan PPJK dan trucking di Jakarta, Semarang, dan Surabaya.",
+    "metaDescription_en": "Reliable international FCL ocean freight export and import in Indonesia covering 20ft, 40ft, High Cube, and Reefer containers with PPJK customs clearance and trucking.",
     "canonical": "https://gaeks.com/layanan/freight-laut-fcl/",
-    "imageAlt": "FCL ekspor dan impor laut",
+    "imageUrl": "/uploads/1789234509_387710.webp",
+    "imageAlt": "Aktivitas pemuatan kontainer peti kemas FCL ekspor dan impor di terminal pelabuhan",
+    "features": [
+      "FCL ekspor dan impor dengan pilihan 20ft, 40ft GP, 40ft High Cube, Reefer, dan Open Top",
+      "Skema pengiriman port-to-port maupun door-to-door sesuai Incoterms",
+      "Koordinasi jadwal cut-off, stuffing kontainer, PPJK kepabeanan, dan waktu bebas Demurrage & Detention"
+    ],
+    "equipment": "Kontainer 20ft GP, 40ft GP, 40ft High Cube, Reefer, Open Top",
+    "commodities": "Bahan baku industri, produk manufaktur, kimia terkemas, resin, mesin terkemas, komoditas ekspor",
+    "summary": "FCL (Full Container Load) adalah layanan pengiriman laut menggunakan satu kontainer penuh secara eksklusif untuk satu pengirim pada rute ekspor maupun impor. Pemilihan tipe kontainer (20ft, 40ft GP, High Cube, atau Reefer), Incoterms, jadwal stuffing, serta free time Demurrage dan Detention ditinjau berdasarkan spesifikasi kargo dan pelabuhan tujuan.",
+    "summary_en": "FCL (Full Container Load) provides exclusive container space for export and import cargo across 20ft, 40ft, High Cube, and Reefer units, aligned with Incoterms, stuffing schedules, customs clearance, and Demurrage/Detention planning.",
+    "primaryKeyword": "jasa FCL terbaik",
+    "secondaryKeywords": ["jasa ekspor FCL", "jasa impor FCL", "tarif pengiriman kontainer 20 feet 40 feet", "FCL door to door Indonesia"],
+    "searchIntent": "commercial-transactional",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Importir dan eksportir dengan muatan satu kontainer penuh."
+        "title": "Untuk siapa layanan FCL ini",
+        "body": "Importir dan eksportir dengan volume muatan yang mengisi satu kontainer penuh, atau pemilik kargo yang membutuhkan ruang peti kemas eksklusif tanpa digabung dengan muatan pihak lain untuk menjaga keamanan, jadwal stuffing, dan kontrol penyusunan barang."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Jenis kontainer, jumlah, berat, dimensi, pelabuhan asal dan tujuan, Incoterms, serta kesiapan barang."
+        "title": "Ekspor, impor, dan pilihan Incoterms (Port-to-Port vs Door-to-Door)",
+        "body": "GAEKS menangani pengiriman FCL ekspor dari pabrik atau gudang di Indonesia menuju pelabuhan tujuan global, serta FCL impor dari pelabuhan muat internasional ke Tanjung Priok (Jakarta), Tanjung Emas (Semarang), maupun Tanjung Perak (Surabaya). Ruang lingkup dapat diatur sebagai port-to-port atau door-to-door menyesuaikan kesepakatan Incoterms seperti FOB, CIF, CFR, EXW, DAP, maupun DDP."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Data awal untuk peninjauan dan penawaran",
+        "body": "Siapkan pelabuhan asal dan tujuan (atau alamat pickup/delivery), perkiraan tipe serta jumlah kontainer (20ft, 40ft GP, 40ft HC, atau Reefer), jenis komoditas, berat kotor, dimensi kemasan, Incoterms, dan tanggal kesiapan muat (cargo ready date)."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Pilihan pelayaran, jadwal cut-off, ruang kapal, biaya terminal, trucking, dan waktu bebas kontainer memengaruhi biaya total."
+        "title": "Proses kerja FCL di GAEKS",
+        "body": "1) Verifikasi rute, Incoterms, serta kecocokan berat dan kubikasi terhadap kapasitas kontainer 20ft atau 40ft. 2) Peninjauan jadwal pelayaran, cut-off dokumen dan kontainer (CY closing), serta pemesanan ruang kapal. 3) Koordinasi penarikan kontainer kosong, stuffing, pengiriman ke terminal pelabuhan, serta penyelarasan dokumen B/L dan kepabeanan PIB/PEB. 4) Pengawasan kedatangan kapal, pemantauan free time Demurrage & Detention, hingga pengantaran kontainer ke gudang penerima."
       },
       {
-        "title": "Memilih jasa FCL terbaik untuk kebutuhan Anda",
-        "body": "Bandingkan kesesuaian rute, ruang lingkup biaya, kesiapan dokumen, cara penanganan, dan tindak lanjut tim. GAEKS membantu meninjau pilihan proses pengiriman berdasarkan kebutuhan kargo Anda. Penawaran dibahas setelah data shipment tersedia; tidak ada satu moda, tarif, atau waktu yang paling tepat untuk semua pengiriman."
+        "title": "Faktor biaya dan waktu pengiriman FCL",
+        "body": "Biaya total dan lead time dipengaruhi rute pelayaran (direct call vs transshipment), ketersediaan slot kapal dan kontainer di pelabuhan muat, jenis kontainer (standar atau khusus), biaya terminal asal dan tujuan (THC, lift on/off), trucking darat, kepabeanan PPJK, serta ketentuan masa bebas sewa kontainer (free time Demurrage dan Detention)."
+      },
+      {
+        "title": "Memilih jasa FCL terbaik untuk kebutuhan bisnis Anda",
+        "body": "Dalam memilih penyedia jasa FCL terbaik, bandingkan kecocokan jadwal kapal dan port call terhadap target produksi, transparansi komponen biaya pelabuhan di awal, kesiapan koordinasi stuffing dan trucking, serta ketelitian tim dalam menyelaraskan dokumen ekspor-impor. Penawaran disusun berdasarkan data aktual shipment agar tidak ada biaya tersembunyi di pelabuhan tujuan."
       }
+    ],
+    "compare": [
+      ["20ft General Purpose", "Muatan padat dengan berat tinggi atau volume di kisaran 25-28 CBM", "Pelabuhan asal/tujuan, berat total, dimensi kemasan, dan target muat"],
+      ["40ft GP & 40ft High Cube", "Muatan bervolume besar atau ringan yang membutuhkan panjang dan tinggi ruang ekstra", "Estimasi CBM, dimensi per koli/palet, Incoterms, dan jadwal stuffing"],
+      ["Reefer / Kontainer Khusus", "Kargo bersuhu terkontrol, berdimensi tinggi (Open Top/Flat Rack), atau penanganan khusus", "Kebutuhan suhu/ventilasi, gambar dimensi, berat per unit, dan kesiapan dokumen"]
+    ],
+    "faq": [
+      ["Kapan sebaiknya memilih kontainer 20ft atau 40ft?", "Kontainer 20ft cocok untuk muatan lebih ringkas atau berbobot berat karena batas muatan beratnya efisien, sedangkan 40ft GP atau High Cube lebih ekonomis per CBM untuk kargo bervolume besar. Tim memeriksa berat dan kubikasi bersamaan sebelum konfirmasi booking."],
+      ["Apa perbedaan FCL port-to-port dan door-to-door?", "Port-to-port mencakup pengangkutan laut antar pelabuhan muat dan bongkar, sedangkan door-to-door menghubungkan penjemputan dari gudang pengirim, pengapalan laut, customs clearance, hingga pengantaran ke gudang penerima sesuai Incoterms yang disepakati."],
+      ["Apa itu Demurrage dan Detention pada pengiriman FCL?", "Demurrage adalah biaya pemakaian kontainer yang masih berada di dalam area terminal pelabuhan melebihi batas free time setelah bongkar. Detention adalah biaya pemakaian kontainer di luar pelabuhan sebelum kontainer kosong dikembalikan ke depo."],
+      ["Apakah FCL selalu lebih cepat dari LCL?", "FCL tidak melewati proses konsolidasi dan de-konsolidasi CFS sehingga umumnya lebih terprediksi, namun total waktu tetap bergantung pada jadwal kapal, jalur transshipment, kesiapan dokumen pabean, dan pengiriman darat."],
+      ["Data apa yang dibutuhkan untuk meminta penawaran FCL?", "Berikan pelabuhan atau kota asal dan tujuan, jenis barang, perkiraan jumlah/ukuran kontainer (atau total berat dan CBM), tanggal siap barang, serta Incoterms bila sudah ditentukan."]
     ],
     "evidence": [],
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
   },
   {
     "id": "air-shipment",
-    "title": "Air Shipment Priority",
-    "title_en": "Priority Air Cargo",
-    "title_zh": "优先航空货运",
-    "category": "Kargo Udara Ekspres",
-    "category_en": "Express Airfreight",
-    "category_zh": "时效级航空快运",
-    "tagline": "Penanganan kargo udara di apron bandara untuk kargo berprioritas kritis.",
-    "tagline_en": "Airport tarmac cargo handling for critical time-sensitive shipments.",
-    "tagline_zh": "机场停机坪及货运站快速装运，紧急备件极速出运。",
-    "description": "Layanan kargo udara reguler dan charter untuk suku cadang mesin mendesak, sampel komersial, kargo bernilai tinggi, dan komoditas time-sensitive dengan pemrosesan AWB kilat di bandara.",
-    "description_en": "Priority airfreight and charter solutions for urgent machine spare parts, commercial samples, and high-value commodities with rapid airport terminal processing.",
-    "description_zh": "客机腹舱与全货机直航，机场货站优先配舱与快速分拨。",
-    "features": [
-      "Next-Flight-Out Prioritas Tertinggi",
-      "Door-to-Airport & Door-to-Door Handling",
-      "Pengurusan Dokumen Air Waybill (AWB) Kilat"
-    ],
-    "equipment": "Direct Space Contract Airline Partner",
-    "imageUrl": "/uploads/1789234609_387712.webp",
-    "commodities": "Sampel ekspor, suku cadang mesin, elektronik presisi, farmasi",
-    "summary": "Air freight digunakan ketika target waktu, nilai barang, atau kebutuhan penanganan membuat pengiriman udara lebih sesuai. Kapasitas dan dasar tagihan dipengaruhi berat aktual serta berat volumetrik. Untuk menyiapkan penawaran, berikan bandara asal dan tujuan, ukuran tiap koli, berat, jenis komoditas, tanggal siap barang, dan dokumen yang tersedia.",
-    "compare": [
-      [
-        "Kargo reguler",
-        "Pengiriman dengan jadwal yang dapat direncanakan",
-        "Bandara, dimensi, berat, dan tanggal siap"
-      ],
-      [
-        "Kargo mendesak",
-        "Pengiriman dengan batas waktu lebih ketat",
-        "Batas waktu, kesiapan dokumen, dan opsi penerbangan"
-      ]
-    ],
-    "faq": [
-      [
-        "Apa itu berat volumetrik udara?",
-        "Berat volumetrik mengubah ukuran paket menjadi dasar perhitungan ruang. Penawaran umumnya membandingkannya dengan berat aktual."
-      ],
-      [
-        "Apakah semua komoditas dapat dikirim lewat udara?",
-        "Tidak. Jenis barang, pembatasan maskapai, kemasan, dan dokumen harus diperiksa lebih dahulu."
-      ],
-      [
-        "Kapan jadwal penerbangan dapat dikonfirmasi?",
-        "Jadwal dan ruang dikonfirmasi setelah data barang, dokumen, serta kesiapan pengiriman diperiksa."
-      ]
-    ],
-    "landingTitle": "Air Freight",
-    "landingDescription": "Konsultasikan pengiriman kargo udara dengan asal, tujuan, berat, dimensi, dan komoditas. Pilihan layanan dan jadwal ditinjau setelah data awal diterima.",
-    "ctaServiceName": "Air Freight",
-    "heroSummary": "Konsultasikan pengiriman kargo udara ekspor maupun impor dengan keseimbangan biaya efisien dan penanganan yang terjaga.",
     "status": "published",
-    "seoTitle": "Air Freight ekspor dan impor | GAEKS Freight",
-    "metaDescription": "Bisnis yang memerlukan pengiriman udara dengan prioritas biaya, waktu, dan kualitas penanganan. Tarif mengikuti chargeable weight, kapasitas penerbangan, transit, karakter barang, dan tenggat. Tim membantu membandingkan pilihan biaya yang efisien dengan kualitas penanganan sesuai kebutuhan.",
+    "title": "Air Shipment Priority",
+    "title_en": "Air Freight Export & Import",
+    "category": "Kargo Udara Internasional",
+    "category_en": "International Air Cargo",
+    "tagline": "Solusi pengiriman kargo udara ekspor dan impor dengan keseimbangan biaya efisien dan penanganan terjaga.",
+    "tagline_en": "Export and import air cargo balancing cost efficiency, schedule reliability, and careful handling.",
+    "description": "Layanan pengiriman kargo udara (air freight) ekspor dan impor untuk kebutuhan reguler maupun mendesak, mencakup suku cadang industri, sampel komersial, elektronik, dan komoditas bernilai tinggi dengan perhitungan chargeable weight yang transparan.",
+    "description_en": "International air freight export and import for regular and urgent shipments, covering industrial spare parts, samples, electronics, and high-value goods with clear chargeable weight planning.",
+    "landingTitle": "Air Freight",
+    "landingTitle_en": "Air Freight (Export & Import)",
+    "landingDescription": "Konsultasikan pengiriman udara ekspor maupun impor dengan data bandara asal dan tujuan, berat aktual, dimensi kemasan, serta komoditas untuk mendapatkan opsi maskapai dan tarif yang efisien.",
+    "landingDescription_en": "Consult air freight export and import routes with airport pairs, actual weight, package dimensions, and commodity specifications for balanced cost and schedule options.",
+    "ctaServiceName": "Air Freight",
+    "heroSummary": "Konsultasikan pengiriman kargo udara ekspor maupun impor dengan prioritas biaya yang efisien, jadwal penerbangan sesuai tenggat, dan kualitas penanganan yang terjaga.",
+    "heroSummary_en": "Consult export and import air freight shipments balancing cost-conscious airline options, dependable transit schedules, and careful terminal handling.",
+    "seoTitle": "Jasa Air Freight Ekspor & Impor Kargo Udara | GAEKS Freight",
+    "seoTitle_en": "Air Freight Export & Import Services Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa pengiriman udara (air freight) ekspor dan impor di Indonesia untuk kargo reguler maupun mendesak. Perhitungan berat volumetrik dan chargeable weight transparan dengan pilihan maskapai berbiaya efisien.",
+    "metaDescription_en": "Cost-conscious international air freight export and import in Indonesia for standard and urgent cargo, with transparent volumetric chargeable weight planning and AWB coordination.",
     "canonical": "https://gaeks.com/layanan/freight-udara/",
-    "imageAlt": "Air Freight ekspor dan impor",
+    "imageUrl": "/uploads/1789234609_387712.webp",
+    "imageAlt": "Penanganan palet kargo udara air freight di area apron bandara internasional",
+    "features": [
+      "Air freight ekspor dan impor untuk kargo reguler terjadwal maupun pengiriman mendesak",
+      "Optimalisasi pilihan maskapai dan rute transit dengan biaya efisien serta penanganan terjaga",
+      "Pemeriksaan berat aktual vs berat volumetrik (chargeable weight), dokumen AWB/HAWB, dan kepabeanan bandara"
+    ],
+    "equipment": "Penerbangan Kargo Terjadwal & Konsolidasi Udara Internasional",
+    "commodities": "Suku cadang mesin, elektronik presisi, sampel ekspor, perlengkapan industri, barang bernilai tinggi",
+    "summary": "Air freight adalah layanan pengiriman kargo melalui transportasi udara untuk kebutuhan ekspor dan impor yang mengutamakan kepastian waktu, keamanan barang bernilai tinggi, atau kesinambungan lini produksi. GAEKS meninjau bandara asal dan tujuan, berat aktual, berat volumetrik (chargeable weight), dan ketentuan maskapai agar pelanggan memperoleh kombinasi biaya efisien dan kualitas penanganan yang tepat.",
+    "summary_en": "Air freight delivers time-sensitive and high-value export/import cargo through scheduled airlines. GAEKS reviews origin-destination airports, actual vs volumetric chargeable weight, and airline compliance to balance cost efficiency and service quality.",
+    "primaryKeyword": "jasa air freight terbaik",
+    "secondaryKeywords": ["jasa pengiriman udara terbaik", "air freight export import Indonesia", "biaya pengiriman kargo udara", "berat volumetrik air freight"],
+    "searchIntent": "commercial-transactional",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Bisnis yang memerlukan pengiriman udara dengan prioritas biaya, waktu, dan kualitas penanganan."
+        "title": "Untuk siapa layanan air freight ini",
+        "body": "Perusahaan manufaktur, distributor, dan eksportir-importir yang memerlukan pengiriman udara dengan pertimbangan ketat atas tenggat waktu, nilai barang, risiko keterlambatan produksi, serta keseimbangan antara efisiensi biaya dan kualitas penanganan."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Bandara asal dan tujuan, berat aktual, dimensi tiap koli, jumlah kemasan, jenis komoditas, serta tanggal siap kirim."
+        "title": "Ekspor dan impor kargo udara (Reguler vs Prioritas)",
+        "body": "GAEKS melayani air freight ekspor maupun impor melalui gerbang bandara utama seperti Soekarno-Hatta (CGK), Juanda (SUB), dan bandara penghubung lainnya. Untuk muatan yang memiliki ruang waktu terencana, layanan konsolidasi udara reguler memberi struktur biaya lebih hemat; sementara untuk suku cadang kritis atau tenggat ketat, opsi penerbangan langsung dan prioritas disiapkan sesuai kapasitas maskapai."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Berat aktual, berat volumetrik, dan chargeable weight",
+        "body": "Tarif kargo udara dihitung berdasarkan chargeable weight, yaitu nilai lebih besar antara berat aktual (gross weight dalam kg) dan berat volumetrik dengan rumus standar industri udara (Panjang x Lebar x Tinggi dalam cm dibagi 6.000). Anda dapat menghitung estimasi awal terlebih dahulu melalui halaman Kalkulator Kargo GAEKS sebelum meminta penawaran."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Tarif mengikuti chargeable weight, kapasitas penerbangan, transit, karakter barang, dan tenggat. Tim membantu membandingkan pilihan biaya yang efisien dengan kualitas penanganan sesuai kebutuhan."
+        "title": "Proses kerja air freight di GAEKS",
+        "body": "1) Pemeriksaan awal jenis komoditas (termasuk skrining MSDS, baterai lithium, atau barang khusus), dimensi koli, berat aktual, serta bandara asal dan tujuan. 2) Perbandingan opsi maskapai, rute langsung vs transit, dan jadwal penerbangan agar biaya tetap efisien tanpa mengorbankan keandalan penanganan. 3) Penerbitan AWB/HAWB, penyerahan ke terminal kargo bandara, serta koordinasi customs clearance pabean impor atau ekspor. 4) Pemantauan milestone penerbangan hingga barang siap diambil atau diantarkan ke lokasi penerima."
       },
       {
-        "title": "Memilih jasa air freight terbaik untuk kebutuhan Anda",
-        "body": "Bandingkan kesesuaian rute, ruang lingkup biaya, kesiapan dokumen, cara penanganan, dan tindak lanjut tim. GAEKS membantu meninjau pilihan proses pengiriman berdasarkan kebutuhan kargo Anda. Penawaran dibahas setelah data shipment tersedia; tidak ada satu moda, tarif, atau waktu yang paling tepat untuk semua pengiriman."
+        "title": "Faktor biaya, kapasitas, dan jenis komoditas",
+        "body": "Biaya air freight ditentukan oleh chargeable weight, pilihan rute langsung atau transit, tingkat urgensi layanan, biaya terminal bandara dan fuel/security surcharge, serta perlakuan khusus untuk komoditas tertentu seperti barang mudah rusak, elektronik dengan baterai, atau muatan berdimensi besar yang memerlukan pesawat freighter."
+      },
+      {
+        "title": "Memilih solusi pengiriman udara terbaik sesuai kebutuhan kargo",
+        "body": "Pengiriman udara terbaik bukan selalu opsi termahal. Tim GAEKS membantu membandingkan selisih biaya dan waktu tempuh antar maskapai serta opsi konsolidasi udara sehingga pengiriman tetap efisien secara anggaran dan terjaga kualitas penanganannya."
       }
+    ],
+    "compare": [
+      ["Kargo Udara Reguler / Konsolidasi", "Pengiriman terencana dengan prioritas efisiensi biaya udara", "Bandara asal/tujuan, berat aktual, dimensi koli, dan tanggal siap barang"],
+      ["Air Shipment Priority / Mendesak", "Suku cadang kritis, sampel mendesak, atau tenggat produksi ketat", "Batas waktu tiba, dimensi/berat per koli, kesiapan dokumen, dan opsi direct flight"],
+      ["Komoditas Khusus / Terjaga", "Elektronik berdaya baterai, instrumen presisi, atau kargo dengan persyaratan MSDS", "MSDS / dokumen teknis, kemasan ekspor, dan ketentuan maskapai (IATA)"]
+    ],
+    "faq": [
+      ["Bagaimana cara menghitung berat volumetrik dan chargeable weight kargo udara?", "Rumus standar berat volumetrik air freight adalah (Panjang x Lebar x Tinggi dalam cm) / 6.000 per koli. Maskapai membandingkan total berat volumetrik dengan berat aktual (kg), lalu menggunakan angka yang lebih besar sebagai chargeable weight."],
+      ["Apakah GAEKS melayani air freight untuk ekspor maupun impor?", "Ya. GAEKS menangani air freight ekspor dari Indonesia ke jaringan bandara internasional serta air freight impor menuju bandara utama di Indonesia berikut pengurusan kepabeanan dan pengiriman daratnya."],
+      ["Apakah semua jenis barang bisa dikirim melalui kargo udara?", "Tidak semua komoditas dapat langsung naik pesawat penumpang. Barang yang mengandung baterai lithium, cairan kimia, magnet, atau berdimensi melebihi pintu kargo pesawat harus diperiksa MSDS, kemasan, dan persetujuan maskapainya terlebih dahulu."],
+      ["Bagaimana cara menekan biaya pengiriman udara tanpa menurunkan kualitas?", "Perbaiki efisiensi dimensi kemasan agar berat volumetrik tidak membengkak, rencanakan tanggal siap barang beberapa hari lebih awal untuk memanfaatkan tarif reguler, dan pilih bandara transit yang paling seimbang antara biaya dan jadwal."],
+      ["Kapan jadwal penerbangan dan ruang kargo udara dapat dikonfirmasi?", "Jadwal penerbangan, kapasitas ruang pesawat, dan tarif resmi dikonfirmasi setelah data bandara asal-tujuan, berat, dimensi, jenis komoditas, serta kesiapan dokumen diperiksa oleh tim air freight kami."]
     ],
     "evidence": [
       {
@@ -174,84 +164,148 @@
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
   },
   {
-    "id": "ppjk",
-    "title": "PPJK (Customs Clearance)",
-    "title_en": "PPJK Customs Clearance",
-    "title_zh": "PPJK 专业海关清关",
-    "category": "Legalitas & Kepabeanan",
-    "category_en": "Customs Compliance",
-    "category_zh": "海关清关与合规",
-    "tagline": "Penyelesaian PIB, PEB, jalur hijau, dan mitigasi demurrage pabean.",
-    "tagline_en": "Swift PIB/PEB processing and port demurrage risk mitigation.",
-    "tagline_zh": "进出口报关单快速放行及滞港费用风险严格控制。",
-    "description": "Kuasa kepabeanan resmi terhubung langsung ke portal INSW dan Ceisa Bea Cukai. Kami memastikan verifikasi dokumen, validasi HS code, dan kepatuhan perizinan impor bebas denda.",
-    "description_en": "Licensed customs brokerage connected directly to INSW and Ceisa 4.0. We ensure document compliance, HS code verification, and zero-penalty customs audit.",
-    "description_zh": "直连印尼海关 Ceisa 4.0 及 INSW 系统，确保商品代码精准归类与免罚高效通关。",
-    "features": [
-      "Penetapan Klasifikasi HS Code Akurat",
-      "Penanganan Jalur Hijau, Kuning, & Merah",
-      "Pengurusan Persetujuan Impor (PI) & Lartas"
-    ],
-    "equipment": "Sistem Terintegrasi Ceisa 4.0 Bea Cukai",
-    "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
-    "commodities": "Komoditas industri, bahan baku, tekstil, mesin, barang umum (dapat dikonsultasikan)",
-    "summary": "Layanan PPJK membantu importir dan eksportir menyiapkan serta mengajukan dokumen kepabeanan untuk barang yang masuk atau keluar Indonesia. Ruang kerjanya mencakup pemeriksaan invoice dan packing list, peninjauan HS code, pengecekan ketentuan komoditas, serta koordinasi proses PIB atau PEB. Kebutuhan izin dan waktu penyelesaian ditentukan oleh jenis barang dan hasil pemeriksaan otoritas.",
-    "compare": [
-      [
-        "Impor",
-        "Barang masuk ke Indonesia",
-        "Invoice, packing list, HS code, dokumen pengangkutan"
-      ],
-      [
-        "Ekspor",
-        "Barang keluar dari Indonesia",
-        "Invoice, packing list, data penerima, ketentuan komoditas"
-      ]
-    ],
-    "faq": [
-      [
-        "Dokumen apa yang perlu disiapkan untuk customs clearance?",
-        "Mulailah dengan invoice, packing list, dokumen pengangkutan, dan data komoditas. Dokumen tambahan bergantung pada HS code dan ketentuan barang."
-      ],
-      [
-        "Apakah HS code harus sudah tersedia?",
-        "HS code awal membantu pemeriksaan, tetapi klasifikasi perlu ditinjau terhadap uraian dan spesifikasi barang sebelum pengajuan."
-      ],
-      [
-        "Apakah waktu penyelesaian dapat dijamin?",
-        "Waktu proses bergantung pada kelengkapan dokumen, ketentuan komoditas, respons sistem, dan pemeriksaan otoritas."
-      ]
-    ],
-    "landingTitle": "PPJK / Customs Clearance",
-    "landingDescription": "Konsultasikan dokumen kepabeanan impor atau ekspor, klasifikasi HS, serta persyaratan yang mungkin berlaku untuk komoditas Anda. Kebutuhan PI atau Lartas diperiksa sesuai kasus.",
-    "ctaServiceName": "Kepabeanan / PPJK",
-    "heroSummary": "Konsultasikan customs clearance ekspor atau impor, dokumen PIB/PEB, SKI, dan peninjauan HS code untuk Jakarta, Semarang, maupun Surabaya.",
+    "id": "lcl",
     "status": "published",
-    "seoTitle": "Customs Clearance dan dokumen ekspor impor | GAEKS Freight",
-    "metaDescription": "Importir dan eksportir yang membutuhkan koordinasi kepabeanan untuk general cargo dan peninjauan dokumen terkait. Kelengkapan dokumen, klasifikasi barang, pemeriksaan, kebutuhan SKI atau izin lain, dan keputusan instansi memengaruhi proses. SKI ditinjau sesuai jenis komoditas dan instansi yang berwenang.",
-    "canonical": "https://gaeks.com/layanan/ppjk-customs-clearance/",
-    "imageAlt": "Customs Clearance dan dokumen ekspor impor",
+    "title": "LCL (Less than Container Load)",
+    "title_en": "LCL Ocean Consolidation",
+    "category": "Konsolidasi Laut Ekonomis",
+    "category_en": "Ocean Consolidation",
+    "tagline": "Pengiriman laut konsolidasi berdasarkan kubikasi CBM tanpa harus menyewa satu kontainer penuh.",
+    "tagline_en": "Cost-effective ocean consolidation charged by volume/weight without booking a full container.",
+    "description": "Solusi pengiriman laut ekspor dan impor untuk muatan berukuran di bawah satu kontainer penuh melalui sistem konsolidasi terjadwal dengan perhitungan CBM atau Weight/Measure (W/M) yang jelas.",
+    "description_en": "Scheduled LCL export and import consolidation for smaller ocean shipments with clear CBM/W/M calculation and CFS unstuffing coordination.",
+    "landingTitle": "Freight Laut LCL",
+    "landingTitle_en": "LCL Ocean Consolidation",
+    "landingDescription": "Konsultasikan pengiriman laut konsolidasi (LCL) ekspor maupun impor, perhitungan CBM dan W/M, jadwal cut-off gudang CFS, serta perbandingan ekonomis antara LCL dan FCL.",
+    "landingDescription_en": "Plan LCL export and import ocean consolidation based on CBM, Weight/Measure basis, CFS cut-off schedules, and FCL vs LCL cost comparison.",
+    "ctaServiceName": "Freight Laut LCL",
+    "heroSummary": "Konsultasikan pengiriman laut konsolidasi (LCL) untuk muatan di bawah satu kontainer penuh dengan perhitungan CBM yang jelas.",
+    "heroSummary_en": "Consult LCL ocean consolidation for export and import shipments under a full container load.",
+    "seoTitle": "Jasa LCL Ekspor & Impor Konsolidasi Laut | GAEKS Freight",
+    "seoTitle_en": "LCL Ocean Freight Consolidation Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa pengiriman laut LCL ekspor dan impor di Indonesia dengan perhitungan CBM / Weight or Measure transparan, jadwal konsolidasi CFS teratur, dan perbandingan jelas terhadap FCL.",
+    "metaDescription_en": "LCL ocean consolidation services for export and import cargo in Indonesia with clear CBM/W/M calculation and CFS handling.",
+    "canonical": "https://gaeks.com/layanan/freight-laut-lcl/",
+    "imageUrl": "/uploads/1789234769_387713.webp",
+    "imageAlt": "Forklift memindahkan palet kargo konsolidasi LCL ke dalam kontainer di gudang CFS",
+    "features": [
+      "Konsolidasi laut ekspor dan impor untuk volume mulai dari 1 CBM ke atas",
+      "Perhitungan tarif berbasis kubikasi (CBM) atau Weight/Measure (W/M) yang transparan",
+      "Koordinasi jadwal cut-off gudang CFS, unstuffing pelabuhan tujuan, dan kepabeanan PPJK"
+    ],
+    "equipment": "Kontainer Konsolidasi Terjadwal via Gudang CFS",
+    "commodities": "Barang retail, palet kemasan industri, suku cadang, sampel bahan, perlengkapan bisnis",
+    "summary": "LCL (Less than Container Load) adalah pengiriman laut konsolidasi di mana muatan dari beberapa pengirim digabungkan dalam satu kontainer dan dihitung berdasarkan volume (CBM) atau berat (W/M). Layanan ini ideal ketika volume belum memerlukan kontainer penuh FCL, dengan memperhatikan jadwal cut-off CFS dan kemasan pelindung kargo.",
+    "summary_en": "LCL (Less than Container Load) consolidates smaller ocean shipments into shared containers charged by CBM or Weight/Measure (W/M), ideal when cargo does not require an exclusive FCL container.",
+    "primaryKeyword": "jasa LCL terbaik",
+    "secondaryKeywords": ["jasa impor LCL", "jasa ekspor LCL", "pengiriman laut konsolidasi CBM", "perbedaan FCL dan LCL"],
+    "searchIntent": "commercial-investigation",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Importir dan eksportir yang membutuhkan koordinasi kepabeanan untuk general cargo dan peninjauan dokumen terkait."
+        "title": "Untuk siapa layanan LCL ini",
+        "body": "Importir, eksportir, dan perusahaan yang mengirimkan barang bervolume kecil hingga menengah (umumnya 1 hingga sekitar 12-14 CBM) sehingga lebih hemat membayar sesuai porsi ruang daripada menyewa satu kontainer penuh FCL."
+      },
+      {
+        "title": "Dasar perhitungan CBM dan Weight or Measure (W/M)",
+        "body": "Tarif LCL umumnya dihitung berdasarkan perbandingan antara volume dalam meter kubik (CBM) dan berat kotor dalam ton metrik (1.000 kg), atau yang dikenal sebagai Weight or Measure (W/M), dengan mengambil angka yang lebih besar. Gunakan Kalkulator Kargo GAEKS untuk menghitung total CBM dari dimensi kemasan Anda sebelum berkonsultasi."
       },
       {
         "title": "Data awal untuk peninjauan",
-        "body": "Invoice, packing list, BL/AWB bila ada, identitas importir/eksportir, uraian barang, HS code awal, dan status izin."
+        "body": "Pelabuhan atau kota asal dan tujuan, jumlah koli, jenis kemasan (karton, palet, peti kayu), dimensi (P x L x T), berat kotor total, sifat komoditas, serta kesiapan dokumen ekspor atau impor."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Proses kerja konsolidasi LCL di GAEKS",
+        "body": "1) Evaluasi perbandingan biaya total antara LCL dan FCL 20ft berdasarkan CBM, berat, dan biaya tujuan. 2) Penjadwalan penyerahan barang ke gudang konsolidasi (CFS) sebelum batas waktu cut-off kapal. 3) Penataan dan pemuatan bersama kargo lain ke kontainer konsolidasi serta penerbitan House B/L. 4) Proses pembongkaran (unstuffing) di CFS tujuan, penyelesaian kepabeanan PPJK, dan penyerahan kargo ke penerima."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Kelengkapan dokumen, klasifikasi barang, pemeriksaan, kebutuhan SKI atau izin lain, dan keputusan instansi memengaruhi proses. SKI ditinjau sesuai jenis komoditas dan instansi yang berwenang."
-      },
-      {
-        "title": "Jakarta, Semarang, dan Surabaya",
-        "body": "Jakarta: sebutkan apakah proses melalui Tanjung Priok atau bandara, berikut lokasi penerimaan. Semarang: sertakan titik proses di Tanjung Emas dan akses trucking ke lokasi tujuan. Surabaya: jelaskan kebutuhan melalui Tanjung Perak serta sambungan pengiriman berikutnya. Tim meninjau dokumen dan kesiapan tiap titik proses berdasarkan shipment, bukan satu estimasi yang berlaku untuk semua kota."
+        "title": "Faktor biaya, kemasan, dan waktu LCL",
+        "body": "Total biaya dan waktu tempuh LCL dipengaruhi volume CBM atau W/M, biaya penanganan di gudang CFS asal dan tujuan, waktu tunggu konsolidasi/unstuffing, serta kesiapan dokumen kepabeanan. Kemasan kayu atau palet wajib memenuhi kekuatan tumpuk dan standar karantina (seperti ISPM 15 untuk kemasan kayu ekspor)."
       }
+    ],
+    "compare": [
+      ["LCL Konsolidasi", "Muatan 1 hingga ~14 CBM yang belum memerlukan satu kontainer penuh", "CBM, berat kotor, jenis kemasan, pelabuhan, dan tanggal siap barang"],
+      ["FCL Kontainer Penuh", "Volume mendekati kapasitas 20ft/40ft atau kargo sensitif terhadap pencampuran", "Jenis kontainer, estimasi volume/berat, Incoterms, dan lokasi stuffing"],
+      ["Air Freight", "Kargo kecil bernilai tinggi atau memiliki tenggat pengiriman mendesak", "Bandara asal/tujuan, dimensi per koli, berat aktual, dan tenggat tiba"]
+    ],
+    "faq": [
+      ["Apa perbedaan utama antara LCL dan FCL?", "LCL menggabungkan beberapa kiriman berbeda dalam satu kontainer dengan perhitungan biaya per CBM/W/M, sedangkan FCL menggunakan satu kontainer penuh secara eksklusif untuk satu pengirim. FCL mulai lebih ekonomis per unit saat volume mendekati atau melampaui kisaran 15 CBM atau ketika faktor keamanan dan kecepatan bongkar menjadi prioritas."],
+      ["Bagaimana cara menghitung CBM untuk pengiriman LCL?", "Hitung (Panjang cm x Lebar cm x Tinggi cm) / 1.000.000 untuk satu koli, lalu kalikan dengan jumlah koli. Bandingkan hasil CBM dengan berat kotor dalam ton (kg / 1.000) untuk memperkirakan dasar W/M."],
+      ["Apa itu jadwal cut-off dan CFS pada pengiriman LCL?", "CFS (Container Freight Station) adalah gudang tempat konsolidasi atau pembongkaran muatan LCL dilakukan. Cut-off adalah batas waktu terakhir kargo dan dokumen harus masuk ke CFS agar dapat dimuat pada jadwal pelayaran minggu tersebut."],
+      ["Mengapa kemasan sangat penting dalam LCL?", "Karena barang ditangani di gudang CFS bersama kiriman pengirim lain, kemasan berupa palet yang kokoh, pelindung sudut, atau peti kayu terstandar membantu mencegah kerusakan selama proses pemuatan dan unstuffing."]
+    ],
+    "evidence": [],
+    "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
+  },
+  {
+    "id": "ppjk",
+    "status": "published",
+    "title": "PPJK (Customs Clearance)",
+    "title_en": "PPJK Customs Clearance",
+    "category": "Legalitas & Kepabeanan",
+    "category_en": "Customs Brokerage & Compliance",
+    "tagline": "Pengurusan kepabeanan PIB, PEB, peninjauan HS Code, SKI, dan Lartas secara terpadu.",
+    "tagline_en": "Customs brokerage for PIB/PEB filings, HS code classification, and Lartas/SKI compliance.",
+    "description": "Jasa Pengusaha Pengurusan Jasa Kepabeanan (PPJK) dan customs brokerage untuk impor dan ekspor general cargo, mencakup pemeriksaan invoice/packing list, peninjauan HS Code (BTKI), pengecekan ketentuan Lartas/SKI di INSW, hingga koordinasi PIB/PEB pada sistem CEISA 4.0.",
+    "description_en": "Licensed PPJK customs clearance for import (PIB) and export (PEB), document pre-audit, HS code validation, INSW Lartas screening, and port release coordination.",
+    "landingTitle": "PPJK / Customs Clearance",
+    "landingTitle_en": "PPJK & Customs Clearance Indonesia",
+    "landingDescription": "Konsultasikan dokumen kepabeanan impor (PIB) atau ekspor (PEB), peninjauan HS Code, serta ketentuan Lartas, SKI, atau PI untuk Jakarta, Semarang, dan Surabaya.",
+    "landingDescription_en": "Consult import (PIB) and export (PEB) customs clearance, HS code reviews, and Lartas/SKI compliance across Jakarta, Semarang, and Surabaya.",
+    "ctaServiceName": "Kepabeanan / PPJK",
+    "heroSummary": "Konsultasikan customs clearance ekspor atau impor, dokumen PIB/PEB, SKI, dan peninjauan HS code untuk pelabuhan maupun bandara di Jakarta, Semarang, dan Surabaya.",
+    "heroSummary_en": "Consult import and export customs clearance, PIB/PEB declarations, HS code reviews, and regulatory compliance across major Indonesian ports and airports.",
+    "seoTitle": "Jasa PPJK & Customs Clearance Ekspor Impor | GAEKS Freight",
+    "seoTitle_en": "PPJK & Customs Clearance Services Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa PPJK dan customs clearance terpercaya untuk impor (PIB) dan ekspor (PEB) di Jakarta, Semarang, dan Surabaya. Peninjauan HS Code, Lartas, SKI, dan kepatuhan CEISA 4.0 & INSW.",
+    "metaDescription_en": "Professional PPJK customs brokerage and clearance in Indonesia for PIB/PEB filings, HS code reviews, INSW Lartas compliance, and port/airport cargo release.",
+    "canonical": "https://gaeks.com/layanan/ppjk-customs-clearance/",
+    "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Proses pengurusan dokumen kepabeanan PPJK dan pemeriksaan kontainer di pelabuhan",
+    "features": [
+      "Penyusunan dan pengajuan PIB (impor) serta PEB (ekspor) melalui sistem CEISA 4.0",
+      "Pra-audit Invoice, Packing List, B/L atau AWB, serta peninjauan HS Code terhadap BTKI dan INSW",
+      "Koordinasi persyaratan Lartas, SKI, Laporan Surveyor, dan pemeriksaan jalur pabean di Jakarta, Semarang, dan Surabaya"
+    ],
+    "equipment": "Koneksi Sistem Kepabeanan CEISA 4.0 & Portal INSW",
+    "commodities": "General cargo, bahan baku industri, mesin, produk manufaktur, dan komoditas berizin khusus",
+    "summary": "Layanan PPJK (Pengusaha Pengurusan Jasa Kepabeanan) dan customs clearance membantu importir maupun eksportir menyiapkan, memverifikasi, serta mengajukan pemberitahuan pabean (PIB/PEB) melalui CEISA 4.0 dan INSW. GAEKS meninjau kesesuaian invoice, packing list, HS Code, ketentuan Lartas, serta kebutuhan SKI sebelum pengajuan guna meminimalkan risiko penolakan atau denda.",
+    "summary_en": "PPJK customs brokerage supports importers and exporters with PIB/PEB filing, HS code review, INSW Lartas verification, and SKI coordination across Jakarta, Semarang, and Surabaya.",
+    "primaryKeyword": "jasa PPJK terbaik",
+    "secondaryKeywords": ["jasa customs clearance Indonesia", "pengurusan PIB dan PEB", "jasa PPJK Jakarta Semarang Surabaya", "konsultasi HS Code dan SKI"],
+    "searchIntent": "commercial-transactional",
+    "sections": [
+      {
+        "title": "Untuk siapa layanan PPJK ini",
+        "body": "Importir dan eksportir yang membutuhkan mitra customs brokerage untuk general cargo maupun komoditas dengan ketentuan khusus (Lartas, SKI, atau PI) agar sinkronisasi antara dokumen dagang, manifes pengangkut, dan regulasi kepabeanan berjalan tertib."
+      },
+      {
+        "title": "Data dan dokumen awal untuk peninjauan",
+        "body": "Siapkan Commercial Invoice, Packing List, draft atau salinan Bill of Lading (B/L) / Air Waybill (AWB), identitas legal importir atau eksportir (NIB/API), uraian spesifikasi teknis barang, HS Code awal bila sudah ada, serta surat keterangan atau perizinan seperti SKI, Certificate of Origin (SKA/Form E), atau Laporan Surveyor bila dipersyaratkan."
+      },
+      {
+        "title": "Proses kerja customs clearance di GAEKS",
+        "body": "1) Pra-audit dokumen komersial dan penyelarasan uraian barang terhadap klasifikasi pos tarif BTKI serta aturan Lartas pada portal INSW. 2) Konfirmasi kebutuhan perizinan tambahan (seperti SKI, LS, atau Persetujuan Impor) sebelum kapal atau pesawat tiba. 3) Penyusunan draft PIB atau PEB untuk persetujuan pelanggan, dilanjutkan pengajuan resmi di sistem CEISA 4.0 dan pelunasan bea masuk/pajak sesuai billing resmi negara. 4) Pendampingan proses pemeriksaan dokumen maupun pemeriksaan fisik apabila terkena jalur kuning/merah hingga terbitnya SPPB/NPE dan pengeluaran barang."
+      },
+      {
+        "title": "Faktor biaya, waktu penyelesaian, dan pengurusan SKI",
+        "body": "Kecepatan penyelesaian customs clearance ditentukan oleh kelengkapan dan akurasi dokumen sebelum barang tiba, kecocokan manifes BC 1.1 dengan data PIB, kewajiban perizinan instansi pembina (seperti SKI atau Persetujuan Impor yang ditinjau per komoditas dan instansi terkait), serta penetapan jalur pemeriksaan oleh otoritas Bea Cukai. Waktu rilis tidak dapat dijanjikan secara sepihak karena bergantung pada pemeriksaan dan respons sistem otoritas."
+      },
+      {
+        "title": "Cakupan operasional Jakarta, Semarang, dan Surabaya",
+        "body": "Jakarta: koordinasi kepabeanan melalui Pelabuhan Tanjung Priok serta terminal kargo Bandara Soekarno-Hatta (CGK), termasuk penyelarasan trucking ke kawasan industri Jabodetabek dan Jawa Barat. Semarang: proses pabean Pelabuhan Tanjung Emas dan sambungan pengiriman ke sentra industri Jawa Tengah. Surabaya: penanganan kepabeanan Pelabuhan Tanjung Perak serta koordinasi distribusi ke Jawa Timur dan Indonesia Timur. Setiap kota ditinjau berdasarkan titik masuk dan dokumen aktual shipment."
+      }
+    ],
+    "compare": [
+      ["Customs Clearance Impor (PIB)", "Barang masuk ke daerah pabean Indonesia lewat laut atau udara", "Invoice, Packing List, B/L atau AWB, NIB/API, HS Code awal, dan status izin Lartas/SKI"],
+      ["Customs Clearance Ekspor (PEB)", "Barang keluar dari Indonesia menuju negara tujuan", "Invoice, Packing List, rincian penerima, HS Code, dan dokumen pendukung ekspor/SKA"],
+      ["Peninjauan HS Code, SKI & Lartas", "Komoditas baru atau barang yang berpotensi terkena aturan tata niaga", "Uraian fungsi/material barang, katalog/spesifikasi teknis, dan foto produk"]
+    ],
+    "faq": [
+      ["Dokumen apa saja yang wajib disiapkan untuk customs clearance impor?", "Dokumen dasar mencakup Commercial Invoice, Packing List, Bill of Lading (B/L) atau Air Waybill (AWB), identitas NIB/API importir, serta keterangan teknis barang. Komoditas tertentu juga memerlukan Certificate of Origin (COO), Laporan Surveyor (LS), SKI, atau Persetujuan Impor (PI)."],
+      ["Apa perbedaan PIB dan PEB dalam kepabeanan Indonesia?", "PIB (Pemberitahuan Impor Barang) adalah dokumen deklarasi pabean yang diajukan untuk memasukkan barang impor ke Indonesia. PEB (Pemberitahuan Ekspor Barang) adalah deklarasi untuk mengirimkan barang keluar dari wilayah pabean Indonesia."],
+      ["Apakah HS Code harus sudah dipastikan sebelum menghubungi tim PPJK?", "Belum harus final. Anda dapat mengirimkan uraian produk, komposisi bahan, dan fungsi barang kepada tim PPJK GAEKS untuk membantu meninjau kesesuaian klasifikasi HS Code pada BTKI dan ketentuan Lartas di INSW sebelum pengajuan."],
+      ["Bagaimana peran SKI (Surat Keterangan Impor) dalam customs clearance?", "SKI adalah dokumen persetujuan dari instansi teknis terkait (misalnya BPOM atau instansi pembina lainnya sesuai HS Code) untuk komoditas tertentu sebelum barang dikeluarkan dari kawasan pabean. Kebutuhannya diperiksa kasus per kasus berdasarkan jenis barang."],
+      ["Apakah waktu keluar SPPB dapat dijamin selesai dalam satu hari?", "Tidak ada pihak swasta yang dapat menjamin waktu rilis otoritas karena proses bergantung pada kelengkapan dokumen, ketiadaan selisih manifes BC 1.1, aturan perizinan komoditas, serta penetapan jalur pemeriksaan (hijau, kuning, atau merah) oleh Bea Cukai."]
     ],
     "evidence": [
       {
@@ -266,79 +320,78 @@
   },
   {
     "id": "undername-impor",
-    "title": "Undername Impor & Persetujuan Impor (PI)",
-    "category": "Importasi dan perizinan",
-    "tagline": "Bahas kebutuhan undername dan PI berdasarkan komoditas serta dokumen impor.",
-    "description": "GAEKS menyediakan jasa undername impor dan pendampingan pengurusan Persetujuan Impor (PI). Kebutuhan PI dan kelayakan proses ditinjau berdasarkan HS code, spesifikasi barang, serta ketentuan yang berlaku.",
-    "landingTitle": "Undername Impor & Persetujuan Impor",
-    "landingDescription": "Dua kebutuhan yang sering bertemu dalam satu shipment: penggunaan entitas importir dan pemeriksaan izin PI. Jelaskan barang serta dokumen Anda agar tim dapat meninjau langkah yang relevan.",
-    "ctaServiceName": "Undername Impor & PI",
-    "heroSummary": "Bahas skema undername impor dan konsultasi Persetujuan Impor (PI), termasuk besi dan baja, untuk pelabuhan Jakarta, Semarang, dan Surabaya.",
-    "features": [
-      "Konsultasi skema undername impor",
-      "Pemeriksaan kebutuhan Persetujuan Impor",
-      "Peninjauan dokumen dan HS code"
-    ],
-    "equipment": "Peninjauan dokumen impor sesuai kebutuhan komoditas",
-    "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
-    "commodities": "Kebutuhan impor yang dapat ditinjau berdasarkan jenis barang dan peraturan",
-    "summary": "Undername impor membantu meninjau skema penggunaan entitas importir sesuai dokumen transaksi. Persetujuan Impor (PI) adalah izin yang diperlukan untuk barang tertentu menurut ketentuan yang berlaku. GAEKS membahas kebutuhan keduanya berdasarkan HS code, spesifikasi barang, asal, tujuan, dan kesiapan dokumen sebelum menyusun langkah layanan.",
-    "compare": [
-      [
-        "Undername impor",
-        "Skema importasi perlu ditinjau",
-        "Pihak importir, invoice, dan dokumen transaksi"
-      ],
-      [
-        "Persetujuan Impor (PI)",
-        "Barang berpotensi memerlukan izin",
-        "HS code, spesifikasi, dan ketentuan terbaru"
-      ]
-    ],
-    "faq": [
-      [
-        "Apakah undername impor sama dengan PI?",
-        "Tidak. Undername berkaitan dengan skema importir, sedangkan PI adalah izin impor untuk barang tertentu."
-      ],
-      [
-        "Apakah semua barang memerlukan PI?",
-        "Tidak. Kewajiban PI bergantung pada klasifikasi, spesifikasi, dan ketentuan yang berlaku."
-      ],
-      [
-        "Apakah status Ready menjamin izin atau kuota tersedia?",
-        "Tidak. Konsultasi skema undername dan peninjauan HS code dapat dilakukan kapan saja, sedangkan ketersediaan kuota PI besi/baja hanya berlaku untuk pos tarif yang statusnya telah dikonfirmasi dan diverifikasi tim sebelum pengapalan."
-      ]
-    ],
     "status": "published",
-    "seoTitle": "Undername impor, Persetujuan Impor dan PI besi baja | GAEKS Freight",
-    "metaDescription": "Pelaku usaha yang perlu meninjau skema importir serta persyaratan PI untuk komoditasnya. Kebutuhan PI bergantung pada HS code, jenis barang, dan ketentuan yang berlaku. Kelayakan skema dan dokumen diperiksa sebelum pengapalan; penerbitan izin tidak dijamin.",
+    "title": "Undername Impor & Persetujuan Impor (PI)",
+    "title_en": "Undername Import & Import Approval (PI)",
+    "category": "Importasi dan perizinan",
+    "category_en": "Import Representation & Licensing",
+    "tagline": "Konsultasi skema undername impor, kelayakan Persetujuan Impor (PI), serta peninjauan PI besi dan baja.",
+    "tagline_en": "Structured consultation on undername import schemes and Import Approval (PI) requirements including iron and steel.",
+    "description": "Pendampingan skema undername impor (penggunaan entitas importir berizin sesuai ketentuan transaksi) dan konsultasi Persetujuan Impor (PI), termasuk peninjauan HS Code, spesifikasi komoditas besi dan baja, serta pengecekan status ketersediaan kuota PI terkonfirmasi.",
+    "description_en": "Advisory and execution support for undername import schemes and Import Approval (PI) review in Indonesia, including HS code screening and steel/iron PI status verification.",
+    "landingTitle": "Undername Impor & Persetujuan Impor",
+    "landingTitle_en": "Undername Import & Import Approval (PI)",
+    "landingDescription": "Pahami perbedaan skema undername impor dan kewajiban Persetujuan Impor (PI). Periksa HS Code komoditas Anda, termasuk besi dan baja, serta konsultasikan kelayakan dokumen sebelum pengapalan.",
+    "landingDescription_en": "Clarify undername import schemes vs Import Approval (PI) compliance, check HS codes for regulated commodities including iron and steel, and verify requirements before shipping.",
+    "ctaServiceName": "Undername Impor & PI",
+    "heroSummary": "Konsultasikan skema undername impor dan persyaratan Persetujuan Impor (PI), termasuk komoditas besi dan baja, untuk gerbang pelabuhan Jakarta, Semarang, dan Surabaya.",
+    "heroSummary_en": "Consult compliant undername import representation and Import Approval (PI) screening, including steel commodities, via Jakarta, Semarang, and Surabaya.",
+    "seoTitle": "Jasa Undername Impor, Persetujuan Impor & PI Besi Baja | GAEKS Freight",
+    "seoTitle_en": "Undername Import & Import Approval (PI) Indonesia | GAEKS Freight",
+    "metaDescription": "Konsultasi jasa undername impor terpercaya dan Persetujuan Impor (PI) termasuk PI besi dan baja di Indonesia. Peninjauan HS Code, kelayakan dokumen transaksi, serta status ketersediaan terverifikasi sebelum pengapalan.",
+    "metaDescription_en": "Compliant undername import and Import Approval (PI) consultation in Indonesia, covering HS code review, steel/iron PI screening, and pre-shipment documentation checks.",
     "canonical": "https://gaeks.com/layanan/undername-impor-pi/",
-    "imageAlt": "Undername impor, Persetujuan Impor dan PI besi baja",
+    "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
+    "imageAlt": "Kontainer dan fasilitas terminal pelabuhan untuk layanan undername impor dan Persetujuan Impor PI",
+    "features": [
+      "Peninjauan skema undername impor beserta kesesuaian pihak transaksi, kontrak, dan pembayaran",
+      "Pemeriksaan kewajiban Persetujuan Impor (PI) dan Laporan Surveyor (LS) berdasarkan HS Code terbaru",
+      "Daftar status HS Code PI besi dan baja yang memisahkan konsultasi umum dari kuota berstatus Ready terkonfirmasi"
+    ],
+    "equipment": "Verifikasi HS Code BTKI, Tata Niaga INSW & Daftar Status PI",
+    "commodities": "Barang industri umum, mesin, bahan baku, serta komoditas besi dan baja sesuai ketentuan berlaku",
+    "summary": "Undername impor adalah skema pelaksanaan impor menggunakan entitas importir yang memiliki legalitas kepabeanan aktif ketika pemilik barang belum memiliki izin atau kuota impor terkait, sedangkan Persetujuan Impor (PI) adalah izin tata niaga pemerintah untuk komoditas tertentu seperti besi dan baja. GAEKS meninjau HS Code, spesifikasi teknis, dan kesesuaian dokumen sebelum pengapalan dilakukan.",
+    "summary_en": "Undername import arranges customs importation through a licensed importer entity aligned with transaction documentation, while Import Approval (PI) is a government trade permit required for regulated goods such as iron and steel.",
+    "primaryKeyword": "jasa undername impor terbaik",
+    "secondaryKeywords": ["jasa sewa undername impor", "jasa pengurusan Persetujuan Impor", "PI besi baja", "undername impor Jakarta Semarang Surabaya"],
+    "searchIntent": "commercial-investigation",
     "sections": [
       {
         "title": "Untuk siapa layanan ini",
-        "body": "Pelaku usaha yang memerlukan konsultasi skema undername importir maupun pemeriksaan persyaratan Persetujuan Impor (PI), termasuk komoditas besi dan baja."
+        "body": "Pelaku usaha atau pembeli barang luar negeri yang memerlukan peninjauan skema importasi melalui entitas importir berizin (undername) maupun pendampingan pemeriksaan kewajiban Persetujuan Impor (PI), termasuk komoditas besi, baja, mesin, dan bahan baku industri."
       },
       {
-        "title": "Konsultasi PI besi/baja vs ketersediaan kuota terkonfirmasi",
-        "body": "Layanan konsultasi mencakup peninjauan HS code, spesifikasi teknis, dan kelayakan dokumen sebelum pengapalan. Ketersediaan kuota PI besi/baja berbeda untuk setiap pos tarif dan hanya dianggap tersedia setelah diverifikasi dan dikonfirmasi secara tertulis oleh tim GAEKS pada daftar status Ready."
+        "title": "Perbedaan undername impor dengan pengurusan Persetujuan Impor (PI)",
+        "body": "Undername impor berkaitan dengan penunjukan dan penggunaan entitas hukum importir (pemegang NIB/API dan akses kepabeanan) secara sah dalam proses pemasukan barang, termasuk penyelarasan kontrak/indentor bila dipersyaratkan. Sebaliknya, Persetujuan Impor (PI) adalah izin komoditas yang diterbitkan oleh otoritas terkait (seperti Kementerian Perdagangan berdasarkan pertimbangan teknis bila disyaratkan) untuk pos tarif HS tertentu. Izin impor tidak dapat diperlakukan sebagai dokumen yang dipindahtangankan secara bebas; kelayakan skema dan kepemilikan izin selalu diverifikasi terhadap ketentuan peraturan yang berlaku."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Jenis dan spesifikasi besi baja/barang, HS code awal, volume, negara asal, dokumen transaksi, serta kebutuhan importir."
+        "title": "Konsultasi PI besi/baja vs status ketersediaan kuota terkonfirmasi",
+        "body": "Konsultasi peninjauan HS Code, spesifikasi teknis material, dan persyaratan Laporan Surveyor (LS) tersedia kapan saja sebelum barang diberangkatkan dari negara asal. Namun, ketersediaan kuota atau kesiapan PI besi/baja bersifat spesifik per pos tarif HS dan periode regulasi. Pada tabel Daftar PI di bawah halaman ini, hanya pos tarif dengan status Ready yang telah diverifikasi tim GAEKS beserta sumber dan tanggal pemeriksaannya; status To be confirmed menandakan kuota dan aturan terbarunya masih harus dikonfirmasi terlebih dahulu."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Data awal untuk peninjauan kelayakan",
+        "body": "Uraian detail barang, spesifikasi teknis atau mill certificate (khusus besi/baja), HS Code awal bila ada, estimasi berat dan volume, negara asal, nilai transaksi serta skema pembayaran, dan pelabuhan tujuan di Indonesia."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Kebutuhan PI bergantung pada HS code, jenis barang, dan ketentuan yang berlaku. Kelayakan skema dan dokumen diperiksa sebelum pengapalan; penerbitan izin tidak dijamin."
+        "title": "Proses kerja konsultasi undername dan PI di GAEKS",
+        "body": "1) Pemeriksaan awal HS Code dan ketentuan tata niaga Lartas/PI/LS melalui rujukan Permendag dan portal INSW. 2) Peninjauan kelayakan skema entitas importir, skema kontrak transaksi, serta kesiapan kuota atau izin terkait. 3) Konfirmasi persyaratan pra-pengapalan di negara asal (seperti kewajiban verifikasi teknis Laporan Surveyor sebelum muat). 4) Penyelarasan pengiriman laut atau udara bersama pengajuan kepabeanan PIB hingga rilis di pelabuhan tujuan."
       },
       {
         "title": "Jakarta, Semarang, dan Surabaya",
-        "body": "Jakarta: sebutkan apakah proses melalui Tanjung Priok atau bandara, berikut lokasi penerimaan. Semarang: sertakan titik proses di Tanjung Emas dan akses trucking ke lokasi tujuan. Surabaya: jelaskan kebutuhan melalui Tanjung Perak serta sambungan pengiriman berikutnya. Tim meninjau dokumen dan kesiapan tiap titik proses berdasarkan shipment, bukan satu estimasi yang berlaku untuk semua kota."
+        "body": "Jakarta: penanganan melalui Pelabuhan Tanjung Priok dan Bandara Soekarno-Hatta. Semarang: penanganan melalui Pelabuhan Tanjung Emas dengan koneksi distribusi ke kawasan industri Jawa Tengah. Surabaya: penanganan melalui Pelabuhan Tanjung Perak. Setiap pelabuhan dan kategori komoditas ditinjau dokumen serta kesiapannya sebelum kapal berangkat agar terhindar dari kendala clearance maupun penumpukan di terminal."
       }
+    ],
+    "compare": [
+      ["Undername Impor", "Perusahaan belum memiliki API aktif atau membutuhkan entitas importir sesuai transaksi", "Profil barang, nilai transaksi, skema pembayaran, negara asal, dan pelabuhan tujuan"],
+      ["Konsultasi & Pengurusan PI", "Importir yang ingin memastikan kewajiban izin komoditas berdasarkan HS Code", "Uraian barang, spesifikasi teknis/mill sheet, HS Code awal, dan rencana volume"],
+      ["Peninjauan PI Besi & Baja", "Komoditas baja canai, pipa, profil, atau produk industri dalam daftar Lartas", "HS Code 8 digit, dimensi/ketebalan, standar mutu, dan pengecekan status Ready"]
+    ],
+    "faq": [
+      ["Bagaimana cara memilih jasa undername impor yang aman dan patuh?", "Pastikan penyedia menjelaskan peran entitas importir secara transparan, memeriksa HS Code dan kewajiban Lartas/PI sebelum barang dikapalkan, menyelaraskan kontrak transaksi dan pembayaran secara sah, serta memiliki akses kepabeanan PPJK yang terstruktur."],
+      ["Apakah undername impor sama dengan Persetujuan Impor (PI)?", "Tidak. Undername adalah skema penggunaan entitas importir resmi untuk mengurus pemasukan barang, sedangkan PI adalah surat izin impor komoditas tertentu sesuai klasifikasi HS Code dan peraturan Kementerian Perdagangan."],
+      ["Apakah semua impor barang besi dan baja membutuhkan PI?", "Sebagian besar pos tarif besi, baja, dan produk turunannya diatur dalam ketentuan tata niaga impor (Lartas) dan dapat mewajibkan Persetujuan Impor (PI) serta Laporan Surveyor (LS). Kewajiban pastinya harus dicek per nomor HS Code 8 digit yang berlaku saat pengapalan."],
+      ["Apakah status Ready pada daftar PI berarti izin otoritas pasti terbit?", "Tidak. Status Ready menandai kesiapan layanan atau kuota yang telah diverifikasi dan dicatat tim GAEKS pada tanggal tertentu, bukan jaminan persetujuan otomatis dari otoritas pemerintah. Kelayakan dokumen tetap diperiksa sebelum pengapalan."],
+      ["Mengapa HS Code harus diperiksa sebelum barang dimuat di negara asal?", "Beberapa komoditas yang terkena ketentuan PI dan Laporan Surveyor (LS) wajib diverifikasi di negara asal sebelum barang dimuat ke kapal. Mengirim barang tanpa pemeriksaan awal berisiko menyebabkan barang tertahan saat tiba di pelabuhan Indonesia."]
     ],
     "evidence": [
       {
@@ -352,155 +405,160 @@
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
   },
   {
-    "id": "domestic-truck",
-    "title": "Domestic Trucking",
-    "title_en": "Inland Domestic Trucking",
-    "title_zh": "印尼内陆公路卡车运输",
-    "category": "Inland Fleet Distribution",
-    "category_en": "Inland Fleet",
-    "category_zh": "内陆车队调度",
-    "tagline": "Armada distribusi multi-moda dari pelabuhan langsung ke pabrik Anda.",
-    "tagline_en": "Multimodal delivery straight from container terminal to factory.",
-    "tagline_zh": "自营重型卡车车队，码头直达工厂仓库。",
-    "description": "Layanan angkutan darat terjadwal yang menjangkau seluruh pulau Jawa, Sumatra, dan Bali dengan pengawasan posisi armada via GPS satelit 24 jam nonstop.",
-    "description_en": "Scheduled road freight spanning Java, Sumatra, and Bali backed by 24/7 real-time satellite GPS tracking.",
-    "description_zh": "覆盖爪哇、苏门答腊及巴厘岛的全程卫星定位卡车运输。",
-    "features": [
-      "Trailer Petikemas 20ft & 40ft (Standar & HC)",
-      "Truk CDD Box, Fuso Berat, hingga Wingbox 32T",
-      "Monitoring GPS Terintegrasi Real-time"
-    ],
-    "equipment": "100+ Unit Armada Siap Jalan",
-    "imageUrl": "/uploads/1789232112_387700.webp",
-    "commodities": "Kargo industri, consumer goods, semen, bahan bangunan, suku cadang",
-    "ctaServiceName": "Trucking Domestik",
-    "heroSummary": "Konsultasikan pengiriman darat antarkota maupun sambungan dari pelabuhan atau bandara langsung menuju gudang dan pabrik Anda.",
-    "summary": "Trucking domestik memindahkan kargo dari pelabuhan, bandara, atau gudang ke titik penerima di darat. Pemilihan armada mempertimbangkan dimensi, berat, jumlah koli, akses lokasi, dan target waktu. Untuk rute dengan lebih dari satu titik bongkar, informasi urutan pengiriman perlu diberikan sejak awal agar penawaran dan rencana perjalanan sesuai kebutuhan.",
-    "compare": [
-      [
-        "Satu tujuan",
-        "Pengiriman langsung ke satu lokasi",
-        "Alamat, akses kendaraan, volume, dan waktu penerimaan"
-      ],
-      [
-        "Multi-drop",
-        "Pengiriman ke beberapa lokasi",
-        "Urutan titik bongkar, volume per titik, dan jam operasional"
-      ]
-    ],
-    "faq": [
-      [
-        "Bagaimana memilih jenis truk?",
-        "Jenis armada dipilih dari berat, volume, panjang barang, kebutuhan perlindungan, dan akses kendaraan di lokasi."
-      ],
-      [
-        "Apakah pengiriman bisa mencakup beberapa titik?",
-        "Bisa direncanakan. Cantumkan seluruh alamat dan urutan pengiriman agar rute serta biaya dapat dihitung."
-      ],
-      [
-        "Apa yang perlu disiapkan di lokasi bongkar?",
-        "Pastikan akses kendaraan, jam penerimaan, petugas penerima, dan alat bongkar bila dibutuhkan."
-      ]
-    ],
+    "id": "roro-breakbulk",
     "status": "published",
-    "seoTitle": "Trucking domestic | GAEKS Freight",
-    "metaDescription": "Pengirim dengan kebutuhan pengangkutan darat antarlokasi dan sambungan pelabuhan atau gudang. Jenis kendaraan, jarak, akses lokasi, waktu tunggu, dan kebutuhan alat bongkar menentukan rencana biaya serta waktu.",
-    "canonical": "https://gaeks.com/layanan/trucking/",
-    "imageAlt": "Trucking domestic",
+    "title": "Penyediaan / Sewa Kapal RORO & Breakbulk",
+    "title_en": "RORO & Breakbulk Vessel Sourcing",
+    "category": "Kapal Non-Kontainer & Kargo Khusus",
+    "category_en": "Non-Containerized Ocean Transport",
+    "tagline": "Pemilihan moda, penyediaan ruang, dan penyewaan kapal RORO maupun breakbulk untuk kendaraan, alat berat, dan muatan non-kontainer.",
+    "tagline_en": "RORO and breakbulk vessel sourcing and charter coordination for rolling machinery, vehicles, and non-containerized cargo.",
+    "description": "Layanan peninjauan teknis, penyediaan ruang kapal, dan koordinasi sewa (charter) kapal RORO maupun kapal breakbulk untuk pengiriman kendaraan niaga, alat berat bergerak, mesin industri, struktur baja, serta muatan non-kontainer.",
+    "description_en": "Technical assessment, space sourcing, and charter coordination for Roll-on/Roll-off (RORO) and Breakbulk vessels carrying wheeled equipment, heavy machinery, and oversized non-containerized cargo.",
+    "landingTitle": "Penyediaan / Sewa Kapal RORO & Breakbulk",
+    "landingTitle_en": "RORO & Breakbulk Vessel Services",
+    "landingDescription": "Bandingkan kapal RORO dan kapal breakbulk untuk unit beroda, alat berat, maupun mesin industri non-kontainer. GAEKS membantu penyediaan ruang kapal, lashing, kepabeanan, dan kesiapan pelabuhan sesuai spesifikasi aktual.",
+    "landingDescription_en": "Compare RORO and breakbulk vessels for wheeled machinery, vehicles, and out-of-gauge industrial cargo with technical ramp, lifting, lashing, and port readiness review.",
+    "ctaServiceName": "RORO & Breakbulk",
+    "heroSummary": "Konsultasikan penyediaan ruang dan sewa kapal RORO maupun breakbulk untuk kendaraan, alat berat tambang/konstruksi, mesin industri, dan muatan non-kontainer.",
+    "heroSummary_en": "Consult RORO and breakbulk vessel sourcing or charter options for wheeled equipment, heavy machinery, and non-containerized industrial cargo.",
+    "seoTitle": "Jasa Penyediaan & Sewa Kapal RORO dan Breakbulk | GAEKS Freight",
+    "seoTitle_en": "RORO & Breakbulk Vessel Charter & Forwarding Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa penyediaan dan sewa kapal RORO serta kapal breakbulk di Indonesia untuk alat berat, kendaraan, mesin industri, dan kargo non-kontainer. Tinjauan ramp, deck, lifting, lashing, fasilitas pelabuhan, serta jadwal proyek.",
+    "metaDescription_en": "RORO and breakbulk vessel sourcing and forwarding in Indonesia for rolling equipment, heavy machinery, and non-containerized cargo, covering ramp, deck, lifting, and lashing planning.",
+    "canonical": "https://gaeks.com/layanan/roro-breakbulk/",
+    "imageUrl": "/uploads/1789234361_387709.webp",
+    "imageAlt": "Penanganan alat berat dan kargo non-kontainer di terminal pelabuhan untuk pengapalan RORO dan breakbulk",
+    "features": [
+      "Kapal RORO (Roll-on/Roll-off) untuk kendaraan, dump truck, dan alat berat beroda/tracked yang dapat melalui ramp",
+      "Kapal Breakbulk / MPV untuk mesin industri, pipa, struktur baja, dan kargo non-kontainer dengan penanganan crane & lifting",
+      "Koordinasi penyediaan ruang atau charter kapal, lashing & securing, kepabeanan PPJK, serta kesiapan dermaga"
+    ],
+    "equipment": "Koordinasi Kapal RORO, Kapal Breakbulk / Multipurpose (MPV), Peralatan Lifting & Lashing",
+    "commodities": "Kendaraan niaga, dump truck, excavator, wheel loader, mesin pabrik, gulungan/struktur baja, trafo, dan kargo proyek non-kontainer",
+    "summary": "Layanan RORO dan Breakbulk menangani pengiriman laut untuk muatan yang tidak masuk ke kontainer standar. Kapal RORO digunakan untuk unit beroda atau alat berat yang dapat melaju atau ditarik melalui ramp kapal, sedangkan kapal Breakbulk digunakan untuk kargo non-kontainer yang dimuat dengan crane (lifting) lalu diamankan (lashing/securing) di deck atau palka. GAEKS membantu penyediaan dan koordinasi sewa kapal berdasarkan ketersediaan armada aktual.",
+    "summary_en": "RORO and Breakbulk shipping covers non-containerized ocean cargo: RORO vessels carry wheeled or tracked units via ship ramps, while Breakbulk vessels handle lifted heavy machinery and structural cargo with crane gear and lashing.",
+    "primaryKeyword": "jasa sewa kapal RORO",
+    "secondaryKeywords": ["penyediaan kapal RORO", "jasa breakbulk terbaik", "sewa kapal breakbulk Indonesia", "perbedaan RORO dan breakbulk"],
+    "searchIntent": "commercial-investigation",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Pengirim dengan kebutuhan pengangkutan darat antarlokasi dan sambungan pelabuhan atau gudang."
+        "title": "Pengertian dan penggunaan kapal RORO (Roll-on/Roll-off)",
+        "body": "Kapal RORO dirancang dengan jalur landai (stern ramp atau side ramp) dan deck khusus sehingga muatan beroda seperti kendaraan niaga, bus, dump truck, maupun alat berat beroda atau bertrek (excavator, bulldozer, wheel loader) dapat dikemudikan atau ditarik langsung masuk ke dalam ruang kapal tanpa proses pengangkatan crane. Keunggulan utamanya adalah perlindungan kargo di dalam deck tertutup (untuk kapal PCC/PCTC) serta minimnya risiko titik angkat pada unit self-propelled, selama tinggi bersih ramp (ramp height) dan kapasitas beban lantai deck (deck load strength) memenuhi spesifikasi unit."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Alamat pickup/drop-off, akses kendaraan, berat, dimensi, jenis kemasan, dan kesiapan bongkar muat."
+        "title": "Pengertian dan penggunaan kapal Breakbulk / Multipurpose",
+        "body": "Kapal Breakbulk atau Multipurpose Vessel (MPV) melayani muatan non-kontainer yang tidak memiliki roda atau melebihi batas dimensi ramp RORO, seperti mesin industri berukuran besar, generator, tangki, gulungan baja, pipa, hingga komponen konstruksi pabrik. Barang dimuat ke palka (hold) atau di atas deck menggunakan crane kapal (ship gear) atau crane darat pelabuhan (shore crane), lalu diikat dan ditopang dengan metode dunnage, chocking, serta lashing dan securing sesuai standar keselamatan maritim."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Penyediaan dan sewa kapal vs kepemilikan armada",
+        "body": "Dalam layanan ini, GAEKS bertindak sebagai freight forwarder dan koordinator penyediaan kapal. Tim melakukan pencocokan spesifikasi muatan terhadap ruang kapal RORO berjadwal (part cargo/slot unit) maupun opsi penyewaan kapal (charter) breakbulk/RORO bersama operator atau pemilik kapal yang tersedia, tanpa mengklaim kepemilikan armada kapal sendiri. Ketersediaan kapal, rute pelabuhan singgah, serta jadwal berlayar dikonfirmasi sesuai posisi kapal aktual di pasar."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Jenis kendaraan, jarak, akses lokasi, waktu tunggu, dan kebutuhan alat bongkar menentukan rencana biaya serta waktu."
+        "title": "Persyaratan teknis: rolling, ramp, lifting, lashing, dan fasilitas pelabuhan",
+        "body": "Keberhasilan pemuatan RORO dan breakbulk sangat bergantung pada kesiapan teknis sejak awal: 1) Kemampuan gerak (running condition vs static/towable) serta radius putar dan ground clearance untuk melintasi ramp RORO. 2) Gambar teknik yang menunjukkan berat kotor per unit, dimensi panjang-lebar-tinggi, pusat gravitasi (center of gravity), dan titik angkat (lifting lugs/points) untuk kargo breakbulk. 3) Kebutuhan lashing, shoring, dan proteksi cuaca bila muatan ditempatkan di deck terbuka. 4) Ketersediaan kedalaman dermaga, kapasitas crane pelabuhan, dan area staging di pelabuhan asal maupun tujuan."
+      },
+      {
+        "title": "Proses kerja penyediaan RORO & Breakbulk di GAEKS",
+        "body": "1) Evaluasi gambar dimensi, berat per unit, kondisi rolling, serta jadwal proyek untuk menentukan apakah kapal RORO, kapal breakbulk, atau kontainer khusus (Flat Rack) paling tepat. 2) Pencarian ketersediaan slot ruang atau kandidat kapal charter yang memenuhi batas ramp, tinggi palka, dan kapasitas crane (SWL). 3) Peninjauan fasilitas pelabuhan muat/bongkar, metode lifting/lashing, serta syarat kepabeanan dan perizinan impor (termasuk PIB dan ketentuan Lartas alat berat/baja bila berlaku). 4) Koordinasi pemuatan di pelabuhan, pengapalan laut, hingga penyambungan transportasi darat lanjutan."
+      },
+      {
+        "title": "Faktor biaya, ketersediaan kapal, dan jadwal proyek",
+        "body": "Biaya penyediaan atau sewa kapal RORO dan breakbulk dipengaruhi volume (FRT/freight ton), berat unit, kebutuhan ruang deck/palka khusus, sewa crane berat bila tidak memakai gear kapal, material lashing & dunnage, biaya pelabuhan (wharfage/stevedoring), serta apakah pengapalan memakai slot reguler atau charter penuh. Untuk perencanaan rekayasa jalur darat, survei jembatan, dan manajemen proyek multimoda menyeluruh, halaman ini terhubung langsung dengan layanan Project Cargo & Heavy Lift."
       }
     ],
-    "evidence": [],
+    "compare": [
+      ["Kapal RORO (Roll-on/Roll-off)", "Kendaraan, dump truck, bus, dan alat berat beroda atau bertrek yang dapat melintasi ramp", "Dimensi (P x L x T), berat unit, kondisi mesin/rolling, tinggi ramp/deck, dan pelabuhan"],
+      ["Kapal Breakbulk / MPV", "Mesin industri, struktur baja, pipa, atau muatan statis non-kontainer yang perlu diangkat crane", "Gambar dimensi, berat kotor, titik angkat (lifting points), pusat gravitasi, dan kebutuhan lashing"],
+      ["Project Cargo Multimoda", "Proyek terpadu yang membutuhkan survei rute darat, alat angkat khusus, dan beberapa moda sekaligus", "Jadwal proyek, akses jalan/jembatan lokasi tujuan, dan rencana serah terima lapangan"]
+    ],
+    "faq": [
+      ["Apa perbedaan utama antara pengiriman RORO dan Breakbulk?", "RORO mengangkut unit beroda atau alat berat yang bergerak langsung masuk lewat ramp kapal ke dalam deck, sedangkan Breakbulk mengangkut muatan non-kontainer statis atau terlalu besar yang diangkat menggunakan crane ke palka atau deck kapal lalu diamankan dengan lashing."],
+      ["Kargo apa saja yang paling sesuai menggunakan kapal RORO?", "Kendaraan niaga, dump truck pertambangan, excavator, bulldozer, wheel loader, traktor, dan peralatan bergerak di atas roda atau trailer (MAFI) yang dimensinya masih masuk ke kapasitas tinggi dan lebar ramp kapal RORO."],
+      ["Apakah GAEKS menyewakan kapal sendiri atau membantu penyediaan kapal?", "GAEKS berperan sebagai koordinator freight forwarding yang mencarikan dan menyediakan slot ruang kapal RORO reguler maupun skema penyewaan/charter kapal breakbulk melalui jaringan operator dan pemilik kapal terverifikasi sesuai jadwal aktual."],
+      ["Data apa yang wajib disiapkan sebelum meminta penawaran RORO atau Breakbulk?", "Siapkan gambar dimensi atau brosur unit, berat total per item, status apakah unit dapat menyala/berjalan sendiri (running) atau statis, titik angkat (untuk breakbulk), pelabuhan asal dan tujuan, serta target tanggal muat proyek."],
+      ["Kapan saya perlu melihat layanan Project Cargo selain RORO & Breakbulk?", "Apabila pengiriman tidak berhenti di pelabuhan melainkan memerlukan survei rute darat, izin angkut Over Dimension Over Weight (ODOW), evaluasi jembatan, multi-axle trailer, dan pengaturan crane hingga ke lokasi pabrik atau tambang, koordinasikan bersama layanan Project Cargo & Heavy Lift."]
+    ],
+    "evidence": [
+      {
+        "title": "Pengalaman operasional GAEKS",
+        "detail": "GAEKS pernah menangani impor proyek menggunakan kapal RORO dan membantu pelanggan menentukan keputusan proses pengiriman.",
+        "source": "Konfirmasi pemilik GAEKS, 27 November 2026",
+        "date": "2026-11-27",
+        "approved": true
+      }
+    ],
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
   },
   {
     "id": "project-cargo",
-    "title": "Project Cargo & Heavy Lift",
-    "title_en": "Project Cargo & Heavy Lift",
-    "title_zh": "重大件与工程特种物流",
-    "category": "Specialized Industrial Logistics",
-    "category_en": "Heavy Machinery Transport",
-    "category_zh": "超重超宽大件运输",
-    "tagline": "Breakbulk & RoRo untuk alat berat tambang, dump truck, dan modul industri raksasa.",
-    "tagline_en": "Breakbulk & RoRo solutions for heavy mining dump trucks and massive industrial modules.",
-    "tagline_zh": "重大件散杂货 (Breakbulk) 与滚装 (Ro-Ro) 运输矿山自卸车及重型工业装备。",
-    "description": "Solusi angkutan muatan berbobot ekstrem dan berdimensi raksasa untuk proyek energi, konstruksi pabrik, armada dump truck pertambangan, genset pembangkit, dan transformator.",
-    "description_en": "Heavy-lift logistics for power generation, smelters, mining dump trucks, manufacturing plants, and heavy industrial machinery.",
-    "description_zh": "矿山重型自卸车、电站发电机组、大型冶金设备综合专案运输方案。",
-    "features": [
-      "Survei Rute Jalan & Analisis Kekuatan Jembatan",
-      "Armada Multi-Axle Modular Hydraulic Trailer",
-      "Pengapalan Kapal Breakbulk & Kapal Ro-Ro"
-    ],
-    "equipment": "Multi-Axle Modular Hydraulic Trailer",
-    "imageUrl": "/uploads/1789234361_387709.webp",
-    "commodities": "Dump truck tambang, excavator, mesin pabrik, turbin pembangkit, tangki industri, baja",
-    "ctaServiceName": "Project Cargo",
-    "heroSummary": "Diskusikan kebutuhan angkut muatan berat, alat proyek, breakbulk, maupun RORO langsung bersama tim CS kami sebelum survei atau jadwal final.",
-    "summary": "Project cargo menangani pengiriman barang berukuran besar, berat, atau memerlukan rencana angkat dan angkut khusus. Sebelum moda dipilih, dimensi rinci, berat, titik angkat, kemasan, serta kondisi akses di asal dan tujuan harus ditinjau. Rencana akhir dapat melibatkan beberapa moda dan perlu disesuaikan dengan izin, peralatan, serta kondisi lapangan.",
-    "compare": [
-      [
-        "Barang berdimensi besar",
-        "Ukuran melampaui ruang kargo standar",
-        "Gambar dimensi, berat, pusat gravitasi, dan kemasan"
-      ],
-      [
-        "Barang berat",
-        "Memerlukan alat angkat atau armada khusus",
-        "Titik angkat, akses lokasi, dan rencana bongkar"
-      ]
-    ],
-    "faq": [
-      [
-        "Data awal apa yang paling penting?",
-        "Siapkan gambar barang, dimensi lengkap, berat kotor, pusat gravitasi bila ada, dan foto lokasi."
-      ],
-      [
-        "Apakah satu moda selalu cukup?",
-        "Tidak selalu. Pilihan laut, darat, atau kombinasi moda ditentukan setelah akses dan kebutuhan penanganan diperiksa."
-      ],
-      [
-        "Kapan rencana angkat disusun?",
-        "Rencana angkat dibuat setelah detail barang, titik angkat, peralatan, dan kondisi lokasi tersedia."
-      ]
-    ],
     "status": "published",
-    "seoTitle": "Project Cargo | GAEKS Freight",
-    "metaDescription": "Pemilik proyek dengan muatan berat, berdimensi khusus, atau kebutuhan pengiriman bertahap. Pemilihan moda, survei akses, alat angkat, urutan muat, dan kesiapan penerimaan menentukan rencana operasional.",
+    "title": "Project Cargo & Heavy Lift",
+    "title_en": "Project Cargo & Heavy Lift Logistics",
+    "category": "Rekayasa & Manajemen Kargo Proyek",
+    "category_en": "Project Logistics & Heavy Lift Engineering",
+    "tagline": "Perencanaan pengiriman terpadu, survei rute, heavy lift, dan koordinasi multimoda untuk muatan industri berdimensi ekstrem.",
+    "tagline_en": "Integrated project logistics planning, route feasibility surveys, heavy lift coordination, and multimodal execution.",
+    "description": "Manajemen logistik proyek menyeluruh untuk alat berat, mesin pabrik, genset, transformator, dan kargo Out of Gauge (OOG), mencakup studi kelayakan, survei rute darat & jembatan, analisis titik angkat, serta koordinasi multimoda dari asal hingga lokasi proyek.",
+    "description_en": "End-to-end project cargo engineering covering feasibility studies, road and bridge route surveys, lifting plan alignment, OOG management, and multimodal site delivery.",
+    "landingTitle": "Project Cargo & Heavy Lift",
+    "landingTitle_en": "Project Cargo & Heavy Lift",
+    "landingDescription": "Rencanakan pengangkutan muatan berat, kargo Out of Gauge (OOG), dan mesin industri melalui studi kelayakan rute, titik angkat, kesiapan lokasi, serta koordinasi multimoda.",
+    "landingDescription_en": "Plan heavy-lift, out-of-gauge (OOG), and industrial machinery movements with engineering feasibility, route surveys, lifting plans, and multimodal site coordination.",
+    "ctaServiceName": "Project Cargo",
+    "heroSummary": "Diskusikan perencanaan kargo proyek, alat berat, dan muatan Out of Gauge (OOG) termasuk survei rute, titik angkat, serta koordinasi multimoda hingga lokasi proyek.",
+    "heroSummary_en": "Consult project cargo feasibility, route surveys, heavy lift engineering, and multimodal delivery for oversized industrial shipments.",
+    "seoTitle": "Jasa Project Cargo & Heavy Lift Logistics Indonesia | GAEKS Freight",
+    "seoTitle_en": "Project Cargo & Heavy Lift Logistics Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa project cargo dan heavy lift di Indonesia untuk pengiriman alat berat, mesin pabrik, dan kargo Out of Gauge (OOG). Mencakup studi kelayakan, survei rute, analisis titik angkat, dan koordinasi multimoda.",
+    "metaDescription_en": "Project cargo and heavy lift forwarding in Indonesia featuring feasibility assessments, route and bridge surveys, lifting point coordination, and multimodal site delivery.",
     "canonical": "https://gaeks.com/layanan/project-cargo-heavy-lift/",
-    "imageAlt": "Project Cargo",
+    "imageUrl": "/uploads/1789234361_387709.webp",
+    "imageAlt": "Operasional pengiriman project cargo dan alat berat dengan koordinasi heavy lift",
+    "features": [
+      "Studi kelayakan teknis, survei akses rute jalan, lebar tikungan, dan daya dukung jembatan",
+      "Peninjauan dimensi Out of Gauge (OOG), pusat gravitasi, titik angkat, dan rencana rigging/crane",
+      "Koordinasi multimoda terintegrasi dengan kapal RORO/breakbulk, trailer multi-axle, dan kepabeanan proyek"
+    ],
+    "equipment": "Perencanaan Rigging, Multi-Axle Hydraulic Trailer & Koordinasi Angkat Berat",
+    "commodities": "Mesin pabrik industri, turbin pembangkit, transformator, boiler, tangki industri, alat berat proyek",
+    "summary": "Project Cargo & Heavy Lift berfokus pada perencanaan dan eksekusi logistik untuk kargo berdimensi ekstrem (Out of Gauge/OOG) atau berbobot berat yang tidak dapat ditangani secara standar. Tim meninjau studi kelayakan, survei rute dan jembatan, titik angkat, pusat gravitasi, kesiapan lokasi bongkar, serta mengoordinasikan kombinasi moda laut dan darat.",
+    "summary_en": "Project Cargo & Heavy Lift provides end-to-end engineering logistics for oversized and heavy industrial cargo, integrating route surveys, lifting/rigging reviews, site readiness, and multimodal ocean-to-site execution.",
+    "primaryKeyword": "project cargo Indonesia",
+    "secondaryKeywords": ["jasa pengiriman alat berat", "heavy lift logistics Indonesia", "Out of Gauge cargo", "pengangkutan kargo proyek"],
+    "searchIntent": "commercial-investigation",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Pemilik proyek dengan muatan berat, berdimensi khusus, atau kebutuhan pengiriman bertahap."
+        "title": "Untuk siapa layanan project cargo ini",
+        "body": "Pemilik proyek energi, manufaktur, konstruksi, dan pertambangan yang perlu mengirimkan mesin atau modul berdimensi besar, berbobot berat, atau memiliki jadwal pengiriman bertahap dari pemasok luar negeri maupun antarwilayah hingga ke titik instalasi akhir."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Gambar teknis, berat, dimensi, titik angkat, asal tujuan, jadwal proyek, dan kondisi lokasi."
+        "title": "Fokus Project Cargo vs penyediaan kapal RORO & Breakbulk",
+        "body": "Layanan Project Cargo menangani perencanaan proyek menyeluruh (feasibility, survei akses darat, izin angkut, alat angkat, dan urutan pengiriman bertahap sampai lokasi tujuan). Untuk kebutuhan pemilihan dan penyediaan ruang atau charter kapal laut non-kontainer secara spesifik, halaman ini terintegrasi dengan layanan Penyediaan / Sewa Kapal RORO & Breakbulk."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Data awal dan gambar teknis untuk peninjauan",
+        "body": "Siapkan gambar teknik (engineering drawing) yang memuat dimensi lengkap (panjang, lebar, tinggi), berat kotor per bagian, posisi pusat gravitasi (center of gravity), titik angkat (lifting points), kondisi kemasan/skid, alamat titik muat dan lokasi proyek, serta foto akses jalan atau gerbang penerimaan."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Pemilihan moda, survei akses, alat angkat, urutan muat, dan kesiapan penerimaan menentukan rencana operasional."
+        "title": "Proses kerja project cargo di GAEKS",
+        "body": "1) Pemeriksaan engineering drawing, dimensi OOG, berat, dan syarat keselamatan lapangan. 2) Studi kelayakan dan survei rute jalan, utilitas udara, tikungan, dan batas beban jembatan menuju lokasi proyek. 3) Penentuan kombinasi moda (kontainer Flat Rack/Open Top, kapal RORO, kapal breakbulk, dan trailer lowbed/multi-axle) serta persiapan izin jalan bila diperlukan. 4) Sinkronisasi dokumen kepabeanan proyek, pengawasan proses bongkar-angkat di pelabuhan dan lokasi akhir, serta pelaporan bertahap."
+      },
+      {
+        "title": "Faktor biaya, risiko operasional, dan kesiapan lokasi",
+        "body": "Biaya dan durasi project cargo dipengaruhi hasil survei akses rute, kebutuhan pengawalan atau perizinan jalan khusus (ODOW), kapasitas crane atau alat angkat di asal dan lokasi proyek, urutan muat antar-batch, kondisi cuaca saat bongkar, serta kesiapan pondasi atau area staging di lokasi penerima."
       }
+    ],
+    "compare": [
+      ["Kargo Out of Gauge (OOG)", "Lebar atau tinggi melampaui batas kontainer standar namun masih dapat diangkut Flat Rack/Open Top", "Gambar dimensi, berat kotor, lokasi stuffing, dan titik lashing"],
+      ["Heavy Lift & Multimoda Darat-Laut", "Bobot atau dimensi ekstrem yang memerlukan kapal khusus, trailer multi-axle, dan crane berat", "Engineering drawing, pusat gravitasi, titik angkat, survei rute, dan foto akses lokasi"],
+      ["Pengiriman Proyek Bertahap (Lot/Batch)", "Pengadaan pabrik atau pembangkit yang dikirim dalam beberapa gelombang sesuai jadwal konstruksi", "Packing list per lot, urutan prioritas tiba, dan kesiapan gudang staging"]
+    ],
+    "faq": [
+      ["Data teknis apa yang paling penting sebelum tim memulai perencanaan project cargo?", "Gambar dimensi lengkap, berat kotor per unit/komponen, posisi pusat gravitasi (COG), titik angkat (lifting lugs), jenis kemasan, serta foto akses jalan dan area bongkar di lokasi proyek."],
+      ["Apakah pengiriman project cargo harus menggunakan satu moda saja?", "Tidak. Sering kali pengiriman proyek memadukan angkutan laut (kontainer Flat Rack, RORO, atau breakbulk) dengan armada darat khusus (lowbed atau multi-axle hydraulic trailer) serta crane di titik serah."],
+      ["Kapan survei rute dan rencana angkat (lifting plan) disusun?", "Survei rute dan evaluasi rencana angkat disusun setelah spesifikasi final barang, batas beban infrastruktur jalan/jembatan, peralatan angkat yang tersedia, dan kondisi lokasi tujuan ditinjau."],
+      ["Bagaimana hubungan layanan Project Cargo dengan halaman RORO & Breakbulk?", "Project Cargo berfokus pada rekayasa perjalanan proyek, feasibility, akses darat, dan integrasi multimoda hingga site; sedangkan halaman RORO & Breakbulk membahas pemilihan moda kapal, ramp/deck, dan penyediaan atau charter ruang kapalnya."]
     ],
     "evidence": [
       {
@@ -514,218 +572,139 @@
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
   },
   {
-    "id": "gudang-pbm",
-    "title": "Gudang & PBM (Bongkar Muat)",
-    "title_en": "Stevedoring & Port Warehousing",
-    "title_zh": "装卸驳运与港口仓储",
-    "category": "Perusahaan Bongkar Muat & Warehouse",
-    "category_en": "Stevedoring & Warehouse",
-    "category_zh": "港区装卸与仓储物流",
-    "tagline": "Stevedoring dermaga dan fasilitas pergudangan transit strategis.",
-    "tagline_en": "Berth stevedoring and strategic transit storage.",
-    "tagline_zh": "专业码头驳运装卸及一线保税中转仓储。",
-    "description": "Fasilitas bongkar muat kapal pelabuhan (stevedoring, cargodoring, receiving/delivery) didukung fasilitas gudang konsolidasi berstandar keamanan tinggi dekat area lini 1 dermaga.",
-    "description_en": "Complete vessel stevedoring, cargodoring, and receiving/delivery supported by secure line-1 port warehouse facilities.",
-    "description_zh": "完备的货船装卸驳运及一线保税监管仓库配套。",
-    "features": [
-      "Fasilitas Penyimpanan Kargo Kering & Tertutup",
-      "Armada Forklift 3T - 45T & Reach Stacker",
-      "Cross-docking, Sorting, & Palletizing"
-    ],
-    "equipment": "Gudang Kawasan Pabean & Non-Pabean",
-    "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
-    "commodities": "Curah kering, kargo palet, semen kemasan, bahan pangan industri",
-    "ctaServiceName": "Gudang & PBM",
-    "heroSummary": "Konsultasikan kebutuhan bongkar muat dermaga dan penyimpanan gudang transit untuk kargo ekspor, impor, maupun domestik.",
-    "summary": "Pergudangan dan pekerjaan bongkar muat membantu menghubungkan kedatangan kargo dengan penyerahan berikutnya. Tim perlu mencocokkan jenis barang, jumlah koli, kebutuhan penanganan, waktu kedatangan, dan tujuan distribusi sebelum memilih pengaturan di terminal atau gudang transit. Ketersediaan ruang, peralatan, serta biaya penanganan dikonfirmasi sesuai lokasi dan jadwal aktual.",
-    "compare": [
-      [
-        "Bongkar muat",
-        "Perpindahan kargo di area pelabuhan",
-        "Jenis barang, berat, dimensi, dan jadwal kapal"
-      ],
-      [
-        "Gudang transit",
-        "Penyimpanan sementara sebelum distribusi",
-        "Jumlah koli, lama simpan, dan instruksi serah terima"
-      ]
-    ],
-    "faq": [
-      [
-        "Kapan kargo memerlukan gudang transit?",
-        "Gudang transit dapat diperlukan bila waktu kedatangan dan jadwal penyerahan tidak sama, atau kargo perlu dikonsolidasikan lebih dahulu."
-      ],
-      [
-        "Data apa yang dibutuhkan untuk bongkar muat?",
-        "Berikan jenis komoditas, jumlah koli, dimensi, berat, kemasan, lokasi, dan perkiraan waktu kedatangan."
-      ],
-      [
-        "Apakah penanganan barang khusus bisa diatur?",
-        "Kebutuhan alat, keamanan, atau kondisi penyimpanan khusus perlu ditinjau bersama sebelum jadwal dan biaya dikonfirmasi."
-      ]
-    ],
+    "id": "domestic-truck",
     "status": "published",
-    "seoTitle": "Gudang dan penanganan kargo | GAEKS Freight",
-    "metaDescription": "Bisnis yang memerlukan penyimpanan dan koordinasi penanganan barang. Kapasitas, lama simpan, frekuensi handling, dan alat bongkar muat menjadi dasar penawaran.",
-    "canonical": "https://gaeks.com/layanan/pergudangan-stevedoring/",
-    "imageAlt": "Gudang dan penanganan kargo",
+    "title": "Domestic Trucking",
+    "title_en": "Inland Domestic Trucking",
+    "category": "Distribusi & Angkutan Darat",
+    "category_en": "Inland Fleet Transportation",
+    "tagline": "Pengangkutan darat kontainer ekspor-impor serta kargo antarkota dari pelabuhan dan bandara ke lokasi Anda.",
+    "tagline_en": "Port-to-factory container haulage and intercity domestic road freight across Java, Sumatra, and Bali.",
+    "description": "Layanan trucking kontainer 20ft/40ft dan truk kargo (CDD Box, Fuso, Wingbox) untuk sambungan pelabuhan, bandara, gudang, maupun distribusi antarkota dengan pemantauan perjalanan terjadwal.",
+    "description_en": "Container chassis trucking (20ft/40ft) and box/wingbox road freight connecting ports, airports, warehouses, and manufacturing sites across Indonesia.",
+    "landingTitle": "Trucking Domestik & Kontainer",
+    "landingTitle_en": "Domestic & Container Trucking",
+    "landingDescription": "Koordinasikan trucking kontainer ekspor-impor pelabuhan, penjemputan bandara, maupun pengangkutan darat antarkota dengan pemilihan armada yang sesuai akses lokasi bongkar.",
+    "landingDescription_en": "Arrange port container haulage, airport pickup, and intercity domestic road transport tailored to cargo weight, dimensions, and site access.",
+    "ctaServiceName": "Trucking Domestik",
+    "heroSummary": "Konsultasikan trucking kontainer pelabuhan, sambungan kargo bandara, maupun distribusi darat antarkota langsung menuju gudang dan pabrik Anda.",
+    "heroSummary_en": "Consult container trucking from ports, air cargo pickup, and intercity road distribution to your warehouse or factory.",
+    "seoTitle": "Jasa Trucking Kontainer & Angkutan Darat Indonesia | GAEKS Freight",
+    "seoTitle_en": "Container & Domestic Trucking Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa trucking kontainer 20ft/40ft untuk ekspor impor pelabuhan serta pengiriman darat antarkota menggunakan CDD, Fuso, dan Wingbox di Indonesia.",
+    "metaDescription_en": "Domestic and port container trucking services in Indonesia with 20ft/40ft chassis, CDD, Fuso, and Wingbox options.",
+    "canonical": "https://gaeks.com/layanan/trucking/",
+    "imageUrl": "/uploads/1789232112_387700.webp",
+    "imageAlt": "Armada truk kontainer dan distribusi darat GAEKS Freight siap melakukan pengiriman",
+    "features": [
+      "Trucking trailer kontainer 20ft, 40ft GP, dan 40ft High Cube dari dan menuju pelabuhan",
+      "Pilihan armada CDD Box, Fuso, hingga Wingbox untuk pengiriman kargo umum dan multi-drop",
+      "Penyelarasan jadwal pickup dengan pembukaan gate pelabuhan, bandara, dan jam operasional pabrik"
+    ],
+    "equipment": "Trailer Kontainer 20ft/40ft, Truk CDD Box, Fuso, Wingbox",
+    "commodities": "Kontainer ekspor-impor, barang industri, palet manufaktur, bahan bangunan, suku cadang",
+    "summary": "Domestic Trucking memindahkan kontainer maupun kargo lepas dari pelabuhan, bandara, atau gudang menuju titik penerima di darat serta distribusi antarkota. Pemilihan armada didasarkan pada jenis muatan (kontainer vs loose/pallet), dimensi, berat kotor, akses jalan/gerbang lokasi, dan target waktu bongkar.",
+    "summary_en": "Domestic Trucking connects seaports, airports, warehouses, and inland destinations with container trailers and box/wingbox fleets matched to cargo dimensions, weight, and site access.",
+    "primaryKeyword": "jasa trucking kontainer",
+    "secondaryKeywords": ["trucking ekspor impor", "jasa pengangkutan darat", "trucking pelabuhan Tanjung Priok", "trucking antarkota Indonesia"],
+    "searchIntent": "commercial-transactional",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Bisnis yang memerlukan penyimpanan dan koordinasi penanganan barang."
+        "title": "Untuk siapa layanan trucking ini",
+        "body": "Eksportir, importir, dan pelaku distribusi yang membutuhkan armada darat terpercaya untuk menarik atau mengantar kontainer dari pelabuhan (Tanjung Priok, Tanjung Emas, Tanjung Perak), menjemput kargo CFS/bandara, maupun mengirim barang antarkota."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Jenis barang, volume, karakter penyimpanan, masa simpan, serta jadwal barang masuk dan keluar."
+        "title": "Data awal untuk peninjauan armada",
+        "body": "Alamat lengkap titik muat (pickup) dan titik bongkar (drop-off), jenis armada atau ukuran kontainer (20ft/40ft, CDD, Fuso, Wingbox), berat kotor, jumlah koli atau dimensi, akses jalan atau batas jam masuk truk di kawasan industri, serta kesiapan alat bongkar (forklift/docking) di lokasi penerima."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Proses kerja trucking di GAEKS",
+        "body": "1) Verifikasi tipe armada yang sesuai terhadap berat, panjang barang, dan kondisi lebar akses jalan serta gerbang pabrik. 2) Penyelarasan jadwal penjemputan dengan waktu rilis SPPB pabean, antrean gate terminal pelabuhan/bandara, atau kesiapan stuffing. 3) Penjadwalan keberangkatan, pemantauan posisi perjalanan, serta konfirmasi urutan bongkar bila terdapat lebih dari satu tujuan (multi-drop). 4) Penyerahan barang, pengembalian kontainer kosong ke depo (untuk FCL), dan penyelesaian bukti serah terima (POD)."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Kapasitas, lama simpan, frekuensi handling, dan alat bongkar muat menjadi dasar penawaran."
+        "title": "Faktor biaya dan waktu tempuh darat",
+        "body": "Tarif dan estimasi waktu perjalanan dipengaruhi jarak dan rute (dalam kota, kawasan industri penyangga, atau antarkota), jenis armada, biaya tol atau penyeberangan, jumlah titik bongkar, potensi waktu tunggu muat/bongkar (detention/overnight truk), serta pembatasan jam operasional kendaraan berat."
       }
+    ],
+    "compare": [
+      ["Trailer Kontainer Pelabuhan (FCL)", "Penarikan dan pengantaran kontainer 20ft/40ft dari/ke terminal pelabuhan", "Pelabuhan asal, alamat pabrik/gudang, ukuran kontainer, dan depo pengembalian"],
+      ["Truk Kargo Tunggal (CDD / Fuso / Wingbox)", "Pengiriman langsung kargo palet/karton dari bandara, CFS, atau gudang ke satu tujuan", "Alamat pickup/drop-off, berat total, dimensi muatan, dan akses truk"],
+      ["Distribusi Multi-Drop", "Pengiriman satu rute yang mencakup beberapa titik bongkar berurutan", "Daftar seluruh alamat tujuan, urutan prioritas bongkar, dan jam buka masing-masing lokasi"]
+    ],
+    "faq": [
+      ["Bagaimana cara memilih jenis truk yang paling sesuai?", "Armada dipilih berdasarkan jenis muatan (apakah berupa peti kemas utuh 20ft/40ft atau barang palet/karton), berat kotor, dimensi terpanjang, kebutuhan perlindungan cuaca (box tertutup vs bak terbuka), dan lebar akses jalan di lokasi muat/bongkar."],
+      ["Apakah trucking dapat diselaraskan langsung dengan jadwal rilis pabean di pelabuhan?", "Ya. Koordinasi antara tim PPJK dan tim trucking membantu menjadwalkan penarikan segera setelah SPPB dan dokumen pengeluaran terminal terbit sehingga risiko penumpukan di pelabuhan berkurang."],
+      ["Apakah pengiriman bisa mencakup lebih dari satu lokasi bongkar (multi-drop)?", "Bisa direncanakan. Cantumkan seluruh alamat dan urutan pembongkaran sejak awal agar rute perjalanan, kapasitas kendaraan, serta biayanya dapat dihitung dengan tepat."],
+      ["Hal apa yang perlu dipastikan di lokasi tujuan sebelum truk tiba?", "Pastikan akses jalan dan izin masuk kawasan tersedia untuk ukuran truk yang dipesan, jam operasional penerimaan gudang, petugas penerima, serta ketersediaan forklift atau tenaga bongkar muat bila diperlukan."]
     ],
     "evidence": [],
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
   },
   {
-    "id": "roro-breakbulk",
-    "title": "Penyediaan / sewa RORO dan breakbulk",
-    "category": "Layanan logistik",
-    "tagline": "Penyediaan / sewa RORO dan breakbulk",
-    "description": "Pemilik proyek yang memerlukan peninjauan kapal RORO atau breakbulk untuk karakter muatannya.",
-    "features": [
-      "Peninjauan kebutuhan",
-      "Koordinasi proses pengiriman"
-    ],
-    "equipment": "Ditentukan setelah peninjauan spesifikasi kargo.",
-    "commodities": "Sesuai hasil peninjauan komoditas.",
-    "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
-    "ctaServiceName": "RORO & Breakbulk",
-    "heroSummary": "Konsultasikan penyediaan kapal RORO atau breakbulk untuk unit bergerak, alat berat, dan muatan proyek non-kontainer.",
-    "summary": "Pemilik proyek yang memerlukan peninjauan kapal RORO atau breakbulk untuk karakter muatannya.",
-    "compare": [
-      [
-        "Pilihan moda",
-        "Sesuai spesifikasi kargo",
-        "Spesifikasi muatan, kemampuan rolling, berat per unit, dimensi, pelabuhan, kebutuhan lashing dan jadwal proyek."
-      ]
-    ],
-    "faq": [
-      [
-        "Bagaimana meminta penawaran?",
-        "Spesifikasi muatan, kemampuan rolling, berat per unit, dimensi, pelabuhan, kebutuhan lashing dan jadwal proyek."
-      ]
-    ],
+    "id": "gudang-pbm",
     "status": "published",
-    "seoTitle": "Penyediaan / sewa RORO dan breakbulk | GAEKS Freight",
-    "metaDescription": "Pemilik proyek yang memerlukan peninjauan kapal RORO atau breakbulk untuk karakter muatannya. Pilihan kapal mengikuti kesesuaian ramp/deck atau alat angkat, kapasitas, fasilitas pelabuhan, dan jadwal yang tersedia.",
-    "canonical": "https://gaeks.com/layanan/roro-breakbulk/",
-    "imageAlt": "Penyediaan / sewa RORO dan breakbulk",
+    "title": "Gudang & PBM (Bongkar Muat)",
+    "title_en": "Warehousing & Stevedoring (PBM)",
+    "category": "Pergudangan & Bongkar Muat",
+    "category_en": "Warehousing & Port Stevedoring",
+    "tagline": "Layanan gudang transit, penyimpanan, konsolidasi, serta pekerjaan bongkar muat (stevedoring/PBM) di area pelabuhan.",
+    "tagline_en": "Transit warehousing, consolidation handling, and port stevedoring coordination supporting sea and inland cargo flows.",
+    "description": "Fasilitas koordinasi bongkar muat kapal (stevedoring, cargodoring, receiving/delivery) dan pergudangan transit untuk penyimpanan sementara, cross-docking, sorting, palletizing, serta persiapan distribusi.",
+    "description_en": "Port stevedoring, cargodoring, and transit warehousing services covering temporary storage, cross-docking, sorting, palletizing, and distribution handoffs.",
+    "landingTitle": "Pergudangan & PBM (Bongkar Muat)",
+    "landingTitle_en": "Warehousing & Stevedoring",
+    "landingDescription": "Konsultasikan kebutuhan gudang transit, konsolidasi barang, penanganan forklift/alat angkat, dan pekerjaan bongkar muat (stevedoring) sebelum distribusi akhir.",
+    "landingDescription_en": "Plan port stevedoring, transit warehouse storage, consolidation, and cargo handling prior to final distribution.",
+    "ctaServiceName": "Gudang & PBM",
+    "heroSummary": "Konsultasikan kebutuhan penyimpanan gudang transit, konsolidasi muatan, dan bongkar muat dermaga untuk kargo ekspor, impor, maupun domestik.",
+    "heroSummary_en": "Consult transit warehouse storage, cargo consolidation, and stevedoring operations for import, export, and domestic cargo.",
+    "seoTitle": "Jasa Pergudangan, Gudang Transit & Bongkar Muat (PBM) | GAEKS Freight",
+    "seoTitle_en": "Warehousing & Stevedoring Services Indonesia | GAEKS Freight",
+    "metaDescription": "Jasa pergudangan ekspor impor, gudang transit kargo, konsolidasi, dan bongkar muat (PBM / stevedoring) di Indonesia dengan penanganan sesuai karakter dan kapasitas barang.",
+    "metaDescription_en": "Transit warehousing, cargo consolidation, cross-docking, and port stevedoring services in Indonesia aligned with shipment schedules.",
+    "canonical": "https://gaeks.com/layanan/pergudangan-stevedoring/",
+    "imageUrl": "https://images.unsplash.com/photo-1587293852726-70cdb56c2866?auto=format&fit=crop&w=1200&q=80",
+    "imageAlt": "Fasilitas gudang logistik dan aktivitas bongkar muat kargo palet",
+    "features": [
+      "Koordinasi stevedoring, cargodoring, dan receiving/delivery di area terminal pelabuhan",
+      "Gudang transit untuk penyimpanan sementara, konsolidasi ekspor, dan persiapan distribusi",
+      "Layanan penanganan barang termasuk sorting, palletizing, cross-docking, dan koordinasi alat angkat"
+    ],
+    "equipment": "Gudang Transit Kargo, Forklift & Peralatan Penanganan Dermaga",
+    "commodities": "Kargo palet, barang industri kemasan, curah kering terkemas, suku cadang, dan muatan konsolidasi",
+    "summary": "Layanan Pergudangan dan Perusahaan Bongkar Muat (PBM) menjembatani proses pembongkaran atau pemuatan kargo di pelabuhan dengan penyimpanan transit, konsolidasi, maupun persiapan distribusi darat. Kapasitas ruang, peralatan penanganan (forklift/crane), durasi simpan, dan tarif dikonfirmasi sesuai lokasi serta jadwal aktual.",
+    "summary_en": "Warehousing and Stevedoring (PBM) bridge vessel loading/discharge with transit storage, cargo consolidation, and distribution readiness based on verified capacity and equipment.",
+    "primaryKeyword": "jasa pergudangan",
+    "secondaryKeywords": ["gudang transit kargo", "pergudangan ekspor impor", "jasa bongkar muat stevedoring", "warehouse logistics Indonesia"],
+    "searchIntent": "commercial-investigation",
     "sections": [
       {
-        "title": "Untuk siapa layanan ini",
-        "body": "Pemilik proyek yang memerlukan peninjauan kapal RORO atau breakbulk untuk karakter muatannya."
+        "title": "Untuk siapa layanan pergudangan dan PBM ini",
+        "body": "Eksportir, importir, dan pemilik kargo yang membutuhkan tempat penyimpanan transit sebelum distribusi, ruang untuk konsolidasi/pengemasan ulang, atau tenaga dan peralatan bongkar muat (stevedoring) di area pelabuhan."
       },
       {
-        "title": "Data awal untuk peninjauan",
-        "body": "Spesifikasi muatan, kemampuan rolling, berat per unit, dimensi, pelabuhan, kebutuhan lashing dan jadwal proyek."
+        "title": "Data awal untuk peninjauan kapasitas",
+        "body": "Jenis komoditas dan sifat penyimpanan (kering/tertutup), jumlah koli atau palet, estimasi luas/volume CBM, berat per koli, perkiraan lama masa simpan, jadwal barang masuk dan keluar, serta kebutuhan peralatan angkat khusus."
       },
       {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
+        "title": "Proses kerja pergudangan dan bongkar muat di GAEKS",
+        "body": "1) Pencocokan jenis komoditas, dimensi kemasan, serta jadwal kedatangan kapal atau truk terhadap ketersediaan ruang gudang dan kapasitas alat bongkar. 2) Konfirmasi ruang lingkup penanganan (stevedoring/cargodoring di pelabuhan atau receiving, put-away, sorting, dan palletizing di gudang). 3) Pelaksanaan pencatatan masuk barang (tally), penyimpanan atau cross-docking sesuai instruksi. 4) Penyiapan pengeluaran barang (delivery order) dan penyambungan ke armada trucking distribusi."
       },
       {
-        "title": "Faktor biaya dan waktu",
-        "body": "Pilihan kapal mengikuti kesesuaian ramp/deck atau alat angkat, kapasitas, fasilitas pelabuhan, dan jadwal yang tersedia."
+        "title": "Faktor kapasitas, penanganan, dan biaya",
+        "body": "Penawaran ditentukan oleh lokasi fasilitas, luas atau volume ruang yang dibutuhkan, durasi penyimpanan, frekuensi keluar-masuk barang (handling in/out), kebutuhan peralatan seperti forklift kapasitas besar atau reach stacker, serta persyaratan keamanan atau perlindungan khusus."
       }
     ],
-    "evidence": [
-      {
-        "title": "Pengalaman operasional GAEKS",
-        "detail": "GAEKS pernah menangani impor proyek menggunakan kapal RORO dan membantu pelanggan menentukan keputusan proses pengiriman.",
-        "source": "Konfirmasi pemilik GAEKS, 27 November 2026",
-        "date": "2026-11-27",
-        "approved": true
-      }
-    ],
-    "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."
-  },
-  {
-    "id": "lcl",
-    "title": "LCL (Less than Container Load)",
-    "title_en": "LCL Ocean Consolidation",
-    "title_zh": "海运散货拼箱 (LCL)",
-    "category": "Konsolidasi Laut Ekonomis",
-    "category_en": "Sea Consolidation",
-    "category_zh": "经济型海运拼箱",
-    "tagline": "Kirim barang tanpa harus menyewa satu peti kemas penuh.",
-    "tagline_en": "Cost-effective consolidation without booking an entire container.",
-    "tagline_zh": "按立方米计费，无需租赁整箱即可出运。",
-    "description": "Solusi hemat bagi importir dan UKM dengan volume di bawah 15 CBM melalui sistem konsolidasi mingguan terjadwal dari hub Asia Timur dan Asean.",
-    "description_en": "Economical cargo consolidation for shipments under 15 CBM with weekly sailing schedules from Asian manufacturing ports.",
-    "description_zh": "每周固定船期，散货拼箱直达印尼海关监管仓库快速拆箱。",
-    "features": [
-      "Perhitungan Tarif Berbasis Kubikasi Murni (CBM)",
-      "Jadwal Konsolidasi Mingguan Tetap",
-      "Unstuffing Cepat di CFS Gudang Pelabuhan"
-    ],
-    "equipment": "Weekly Dedicated Consolidation Box",
-    "imageUrl": "/uploads/1789234769_387713.webp",
-    "commodities": "Barang retail, palet kemasan kayu, spare parts, sampel bahan, perlengkapan bisnis",
-    "ctaServiceName": "Freight Laut LCL",
-    "heroSummary": "Konsultasikan pengiriman laut konsolidasi untuk muatan di bawah satu kontainer penuh dari atau menuju pelabuhan utama.",
-    "summary": "LCL memungkinkan pengiriman laut ketika muatan tidak memerlukan satu kontainer penuh. Barang digabung dengan muatan lain melalui proses konsolidasi, sehingga jadwal cut-off, kemasan, dan penanganan di titik asal maupun tujuan perlu diperhatikan. Untuk memilih LCL atau FCL, bandingkan volume, sifat barang, kebutuhan waktu, dan biaya total sampai lokasi penerima.",
     "compare": [
-      [
-        "LCL",
-        "Volume belum memerlukan kontainer eksklusif",
-        "CBM, berat, jenis kemasan, dan jadwal siap barang"
-      ],
-      [
-        "FCL",
-        "Butuh ruang kontainer khusus",
-        "Jenis kontainer, volume, berat, dan lokasi stuffing"
-      ]
+      ["Bongkar Muat (Stevedoring / PBM)", "Pemindahan kargo dari/ke kapal dan area lini pelabuhan", "Nama kapal/pelabuhan, jumlah koli, berat, dimensi per unit, dan jadwal sandar"],
+      ["Gudang Transit & Cross-Docking", "Penyimpanan sementara saat jadwal kedatangan dan penerimaan pabrik belum sinkron", "Volume CBM/palet, perkiraan durasi simpan, dan rencana pengiriman keluar"],
+      ["Konsolidasi & Repacking", "Penggabungan beberapa batch barang atau penataan palet sebelum ekspor/distribusi", "Daftar item, instruksi sortir/labeling, dan standar kemasan yang diinginkan"]
     ],
     "faq": [
-      [
-        "Apa perbedaan LCL dan FCL?",
-        "LCL menggabungkan barang dengan muatan lain dalam satu kontainer. FCL menggunakan kontainer untuk satu pengiriman atau pemesan."
-      ],
-      [
-        "Bagaimana dasar perhitungan LCL?",
-        "Penawaran biasanya memerlukan volume dan berat terukur. Komponen biaya akhir bergantung pada rute, penanganan, dan ketentuan layanan."
-      ],
-      [
-        "Apa yang perlu diperhatikan pada kemasan?",
-        "Kemasan perlu melindungi barang selama konsolidasi, pemindahan, dan pembongkaran bersama muatan lain."
-      ]
-    ],
-    "status": "published",
-    "seoTitle": "Freight laut LCL | GAEKS Freight",
-    "metaDescription": "Pengirim yang membutuhkan konsolidasi muatan laut. Volume konsolidasi, handling gudang, rute, dan jadwal menentukan biaya serta estimasi waktu.",
-    "canonical": "https://gaeks.com/layanan/freight-laut-lcl/",
-    "imageAlt": "Freight laut LCL",
-    "sections": [
-      {
-        "title": "Untuk siapa layanan ini",
-        "body": "Pengirim yang membutuhkan konsolidasi muatan laut."
-      },
-      {
-        "title": "Data awal untuk peninjauan",
-        "body": "Volume, berat, jumlah koli, komoditas, pelabuhan, dan kesiapan dokumen."
-      },
-      {
-        "title": "Proses kerja",
-        "body": "Kirim brief dan dokumen awal. Tim meninjau kebutuhan, membahas pilihan proses pengiriman, lalu mengonfirmasi ruang lingkup, penawaran, dan kesiapan pelaksanaan bersama Anda."
-      },
-      {
-        "title": "Faktor biaya dan waktu",
-        "body": "Volume konsolidasi, handling gudang, rute, dan jadwal menentukan biaya serta estimasi waktu."
-      }
+      ["Kapan sebuah pengiriman memerlukan gudang transit?", "Gudang transit diperlukan ketika jadwal rilis barang dari pelabuhan tidak bersamaan dengan kesiapan gudang penerima, ketika kargo dari beberapa pemasok harus dikumpulkan untuk dikonsolidasikan (LCL/FCL), atau ketika barang memerlukan penyortiran sebelum didistribusikan."],
+      ["Data apa yang dibutuhkan untuk merencanakan bongkar muat (stevedoring)?", "Berikan jenis komoditas, jumlah koli, dimensi dan berat per unit (terutama untuk barang berat atau non-palet), jenis kemasan, lokasi pelabuhan, dan perkiraan waktu kedatangan kapal."],
+      ["Apakah penanganan kargo khusus atau alat angkat berat bisa diatur?", "Bisa ditinjau. Sebutkan berat maksimum per koli dan syarat perlindungannya agar tim dapat memeriksa ketersediaan forklift berkapasitas sesuai, crane, atau ruang penyimpanan khusus sebelum jadwal dikonfirmasi."],
+      ["Bagaimana layanan gudang terhubung dengan pengiriman laut dan trucking?", "Setelah barang selesai disortir atau disimpan di gudang transit, tim dapat langsung menjadwalkan stuffing ke kontainer FCL/LCL atau mengirimkan muatan menggunakan armada trucking ke tujuan akhir."]
     ],
     "evidence": [],
     "evidenceNotes": "Portofolio rinci sedang disiapkan: proyek, tanggal shipment, rute, dokumen pendukung, dan izin nama pelanggan."

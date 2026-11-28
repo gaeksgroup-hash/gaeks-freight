@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+require_once __DIR__ . '/_search_intelligence.php';
 // Included by page.php; all displayed content comes from the same CMS as React.
 $groups=$content['branding']['contactGroups']??[];
 $priority=['ppjk','fcl','undername','air','general'];
@@ -24,8 +25,17 @@ if(!$teams)$body.='<p class="phone-empty">'.$e($copy['phoneEmpty']).'</p>';
 $body.='</section><aside class="phone-preparation"><p class="phone-eyebrow">'.$e($copy['phonePreparationLabel']).'</p><h2>'.$e($copy['phonePreparationHeading']).'</h2><ul>';
 foreach(['phonePrepareRoute','phonePrepareCargo','phonePrepareTiming'] as $key)$body.='<li>'.$e($copy[$key]).'</li>';
 $body.='</ul><p>'.$e($copy['phoneFormIntro']).'</p><a href="/kontak/">'.$e($copy['phoneFormCta']).'</a></aside></div></main>';
-$graph=[['@type'=>'ContactPage','name'=>$title,'description'=>$description,'url'=>$url],['@type'=>'BreadcrumbList','itemListElement'=>[
-    ['@type'=>'ListItem','position'=>1,'name'=>$copy['phoneHomeLabel'],'item'=>'https://gaeks.com/'],
-    ['@type'=>'ListItem','position'=>2,'name'=>$copy['phoneContactLabel'],'item'=>'https://gaeks.com/kontak/'],
-    ['@type'=>'ListItem','position'=>3,'name'=>$copy['phonePageLabel'],'item'=>$url]
-]]];
+$orgSchema = gaeks_si_organization_schema();
+$points = gaeks_si_contact_points($content);
+if ($points) $orgSchema['contactPoint'] = $points;
+$graph=[
+    $orgSchema,
+    gaeks_si_local_business_schema(),
+    gaeks_si_website_schema(),
+    ['@type'=>'ContactPage','@id'=>$url.'#webpage','name'=>$title,'description'=>$description,'url'=>$url,'inLanguage'=>'id-ID','isPartOf'=>['@id'=>gaeks_base_url().'/#website']],
+    gaeks_si_breadcrumb_schema([
+        ['name'=>$copy['phoneHomeLabel'],'item'=>'https://gaeks.com/'],
+        ['name'=>$copy['phoneContactLabel'],'item'=>'https://gaeks.com/kontak/'],
+        ['name'=>$copy['phonePageLabel'],'item'=>$url]
+    ]),
+];
