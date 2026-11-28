@@ -185,7 +185,7 @@ export const QuoteForm: React.FC<{
   }, [smart, onRoutingChange]);
 
   const fieldClass =
-    'min-h-12 min-w-0 w-full rounded-lg border border-slate-300 bg-white pl-10 pr-3.5 py-2.5 text-base text-[#12363a] placeholder:text-slate-500 transition-colors focus:border-[#0a5861] focus:outline-none focus:ring-2 focus:ring-[#0a5861]/20 sm:text-sm';
+    'min-h-12 min-w-0 w-full rounded-lg border border-[#cbd8da] bg-[#fcfefe] pl-10 pr-3.5 py-2.5 text-base text-[#12363a] placeholder:text-slate-500 transition-colors hover:border-[#94b2b6] focus:border-[#0a5861] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#0a5861]/20 sm:text-sm';
   const labelClass = 'flex items-center gap-1.5 text-sm font-semibold text-[#12363a]';
   const iconClass = 'pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#0a5861]';
 
@@ -198,9 +198,9 @@ export const QuoteForm: React.FC<{
         event.preventDefault();
         send('whatsapp');
       }}
-      className="quote-surface min-w-0 rounded-2xl border border-slate-200 bg-white shadow-sm"
+      className="quote-surface min-w-0 rounded-2xl border border-[#c7dce2] border-t-4 border-t-[#0b6873] bg-white shadow-[0_24px_48px_-18px_rgba(1,46,52,0.18)]"
     >
-      <div className="rounded-t-2xl border-b border-slate-200 bg-[#f8fbfb] px-5 py-6 sm:px-8">
+      <div className="rounded-t-2xl border-b border-slate-200/90 bg-gradient-to-r from-[#f3f9fa] to-[#f8fbfb] px-5 py-6 sm:px-8">
         <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#0a5861]">Formulir Konsultasi Cepat</p>
         <h2 id={`${formId}-heading`} className="mt-2 font-display text-2xl font-bold tracking-tight text-[#012E34]">
           {copy.quoteOptionalHeading || 'Ceritakan kebutuhan pengiriman Anda'}
