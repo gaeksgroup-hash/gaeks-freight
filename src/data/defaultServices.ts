@@ -112,7 +112,7 @@ export const DETAILED_SERVICES: ServiceDetail[] = [
     description_zh: '提供 20GP/40GP/40HQ 及特种箱，直航印尼三大核心海港。',
     features: ['Alokasi Ruang Kapal Dijamin Saat Peak Season', 'Free Time Demurrage & Detention Lebih Panjang', 'Pilihan Door-to-Door atau Port-to-Port Transparan'],
     equipment: 'Kontainer 20ft, 40ft GP, 40ft HC, Reefer',
-    imageUrl: 'https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80',
+    imageUrl: '/uploads/1789234509_387710.webp',
     commodities: 'Manufaktur massal, bahan baku kimia, resin, komoditas ekspor'
   },
   {

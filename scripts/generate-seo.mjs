@@ -21,15 +21,25 @@ if (staging) {
   await writeFile('dist/robots.txt', 'User-agent: *\nDisallow: /\n');
 }
 const routes = [
-  { path: '/', title: 'GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia', description: 'Rencanakan pengiriman laut, udara, kepabeanan, pergudangan, dan trucking bersama GAEKS Freight.', heading: 'Kargo bergerak dengan rencana yang jelas.', body: 'GAEKS membantu merencanakan moda, dokumen, rute, dan serah terima kargo untuk kebutuhan bisnis.' },
-  { path: '/layanan/', title: 'Layanan Freight Forwarding & Logistik | GAEKS', description: 'Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.', heading: 'Layanan freight untuk setiap jenis kargo.', body: 'Pilih layanan berdasarkan volume, sifat barang, kesiapan dokumen, dan tujuan pengiriman.' },
-  { path: '/rute-pengiriman/', title: 'Rute Pengiriman Laut & Udara | GAEKS', description: 'Jelajahi koridor laut dan udara serta carrier rujukan. Jadwal, kapasitas, dan waktu tempuh dikonfirmasi saat pemesanan.', heading: 'Rute pengiriman laut dan udara.', body: 'Rute dipilih dari asal, tujuan, jenis barang, target waktu, dan kebutuhan dokumen. Waktu tempuh yang tampil merupakan rujukan dan perlu dikonfirmasi untuk setiap shipment.' },
-  { path: '/kalkulator/', title: 'Kalkulator Perencanaan Kargo | GAEKS', description: 'Rencanakan kebutuhan kapasitas dan moda pengiriman sebelum meminta penawaran freight.', heading: 'Rencanakan rute dan kapasitas kargo.', body: 'Masukkan detail barang dan tujuan untuk memulai perencanaan pengiriman.' },
-  { path: '/tracking/', title: 'Lacak Pengiriman | GAEKS', description: 'Periksa status shipment GAEKS menggunakan nomor pengiriman.', heading: 'Lacak status pengiriman.', body: 'Gunakan nomor shipment untuk melihat pembaruan yang tersedia.' },
-  { path: '/berita/', title: 'Berita & Pembaruan Logistik | GAEKS', description: 'Baca pembaruan terkait logistik, rute, dan kepabeanan dari GAEKS.', heading: 'Berita dan pembaruan logistik.', body: 'Informasi untuk membantu keputusan pengiriman.' },
-  { path: '/kontak/', title: 'Kontak & Permintaan Penawaran | GAEKS', description: 'Hubungi tim GAEKS untuk mendiskusikan rute, kargo, dokumen, dan kebutuhan penawaran.', heading: 'Diskusikan kebutuhan pengiriman Anda.', body: 'Sertakan asal, tujuan, jenis komoditas, volume, berat, dan target waktu agar tim dapat meninjau kebutuhan Anda.' },
-  { path: '/terms-of-use/', title: 'Terms of Use Website | GAEKS', description: 'Read the official website terms of use of PT Global Andalan Ekspress (GAEKS), an international freight forwarding and logistics company.', heading: 'Terms of Use Website', body: 'Ketentuan Penggunaan Situs Web PT Global Andalan Ekspress (GAEKS). Effective Date: 1 February 2025. Document Version: 1.0.' },
-  { path: '/privacy-terms/', title: 'Privacy Terms | GAEKS', description: 'Learn how PT Global Andalan Ekspress (GAEKS) collects, processes, protects, and manages personal data in its freight forwarding and logistics activities.', heading: 'Privacy Terms', body: 'Kebijakan Pelindungan Data Pribadi PT Global Andalan Ekspress (GAEKS). Effective Date: 1 February 2025. Document Version: 1.0.' }
+  {
+    path: '/',
+    title: 'GAEKS Freight | Jasa Freight Forwarding, FCL, LCL, PPJK & Air Freight Indonesia',
+    description: 'PT Global Andalan Ekspress (GAEKS Freight) menyediakan jasa pengiriman laut FCL dan LCL, jasa PPJK & customs clearance resmi, jasa pengiriman udara prioritas, undername impor/PI, trucking, dan project cargo di Indonesia.',
+    heading: 'Diperkuat oleh Manusia. Digerakkan oleh Teknologi. Berfokus pada Anda.',
+    body: 'Kami memadukan keahlian, teknologi, dan tindakan nyata untuk menghadirkan solusi logistik FCL, LCL, PPJK customs clearance, freight udara, dan kepabeanan yang lebih cepat, efisien, dan transparan.',
+  },
+  { path: '/layanan/', title: 'Jasa Freight Forwarding FCL, LCL, PPJK & Air Freight | GAEKS Freight', description: 'Bandingkan layanan pengiriman laut FCL & LCL, jasa PPJK & customs clearance, jasa pengiriman udara terbaik, undername impor/PI, pergudangan, trucking, dan project cargo.', heading: 'Layanan freight untuk setiap jenis kargo.', body: 'Pilih layanan pengiriman FCL, LCL, PPJK, air freight, atau trucking berdasarkan volume, sifat barang, kesiapan dokumen, dan tujuan pengiriman.' },
+  { path: '/rute-pengiriman/', title: 'Rute dan Jadwal Pengiriman Laut & Udara | GAEKS Freight', description: 'Jelajahi koridor pelabuhan dan bandara utama untuk pengiriman FCL, LCL, dan kargo udara. Jadwal, kapasitas, dan waktu tempuh dikonfirmasi saat pemesanan.', heading: 'Rute dan jadwal pengiriman laut serta udara.', body: 'Rute dipilih dari asal, tujuan, jenis barang, target waktu, dan kebutuhan dokumen. Waktu tempuh yang tampil merupakan rujukan dan perlu dikonfirmasi untuk setiap pengiriman.' },
+  { path: '/kalkulator/', title: 'Kalkulator Kargo CBM & Berat Volumetrik | GAEKS Freight', description: 'Hitung CBM, berat volumetrik air freight, dan perkiraan kebutuhan kontainer FCL atau LCL sebelum meminta penawaran.', heading: 'Rencanakan rute dan kapasitas kargo.', body: 'Masukkan detail dimensi dan berat barang untuk memulai perencanaan pengiriman FCL, LCL, atau udara.' },
+  { path: '/tarif-pengiriman/', title: 'Tarif Pengiriman FCL, LCL & Kargo Udara | GAEKS Freight', description: 'Dapatkan informasi tarif pengiriman laut FCL, LCL, kargo udara, dan kepabeanan PPJK sesuai rute, komoditas, serta jadwal pengiriman Anda.', heading: 'Rencanakan pengiriman Anda dengan informasi tarif yang tepat.', body: 'Dapatkan informasi tarif yang disesuaikan dengan rute, jenis kargo, kebutuhan layanan, dan jadwal pengiriman Anda.' },
+  { path: '/maskapai-dan-pelayaran/', title: 'Maskapai dan Perusahaan Pelayaran | GAEKS Freight', description: 'Pemilihan maskapai kargo udara dan perusahaan pelayaran FCL/LCL mempertimbangkan rute, kapasitas, jadwal, dan karakteristik komoditas.', heading: 'Pilihan angkutan untuk kebutuhan pengiriman Anda.', body: 'Pemilihan maskapai dan perusahaan pelayaran mempertimbangkan rute, kapasitas, jadwal, karakteristik kargo, serta kebutuhan pengiriman pelanggan.' },
+  { path: '/tentang-kami/', title: 'Tentang Kami | GAEKS Freight · PT Global Andalan Ekspress', description: 'Mengenal PT Global Andalan Ekspress (GAEKS Freight): perusahaan freight forwarding dan logistik internasional di Indonesia dengan fondasi manusia, sistem ERP terintegrasi, dan keahlian kepabeanan.', heading: 'Lebih dari sekadar pengiriman. Kami memahami nilai di baliknya.', body: 'PT Global Andalan Ekspress — Diperkuat oleh Manusia. Digerakkan oleh Teknologi. Berfokus pada Anda.' },
+  { path: '/karier/', title: 'Karier di GAEKS Freight | PT Global Andalan Ekspress', description: 'Bertumbuh bersama PT Global Andalan Ekspress (GAEKS Freight): budaya kerja yang menghargai kesejahteraan, pengembangan kompetensi logistik, dan kolaborasi.', heading: 'Bertumbuh bersama. Membangun masa depan logistik.', body: 'Kami percaya bahwa perusahaan yang kuat dibangun oleh manusia yang dihargai, didukung, dan diberi kesempatan untuk terus berkembang.' },
+  { path: '/tracking/', title: 'Pelacakan Pengiriman HAWB, B/L & Kontainer | GAEKS Freight', description: 'Periksa status milestone pengiriman FCL, LCL, kargo udara, dan customs clearance GAEKS menggunakan nomor referensi HAWB, B/L, atau kontainer.', heading: 'Pelacakan Pengiriman', body: 'Gunakan nomor referensi pengiriman untuk melihat milestone terbaru yang tersedia.' },
+  { path: '/berita/', title: 'Wawasan dan Berita Logistik & Kepabeanan | GAEKS Freight', description: 'Baca wawasan regulasi kepabeanan PPJK, jalur maritim, kargo udara, dan supply chain internasional dari tim GAEKS Freight.', heading: 'Wawasan dan berita logistik.', body: 'Informasi untuk membantu keputusan pengiriman.' },
+  { path: '/kontak/', title: 'Hubungi Kami & Permintaan Penawaran Freight | GAEKS Freight', description: 'Hubungi tim spesialis FCL, LCL, PPJK customs clearance, kargo udara, dan project cargo GAEKS Freight via WhatsApp atau email.', heading: 'Diskusikan kebutuhan pengiriman Anda.', body: 'Sertakan asal, tujuan, jenis komoditas, volume, berat, dan target waktu agar tim dapat meninjau kebutuhan Anda.' },
+  { path: '/terms-of-use/', title: 'Ketentuan Penggunaan Situs Web | GAEKS Freight', description: 'Ketentuan penggunaan resmi situs web PT Global Andalan Ekspress (GAEKS Freight), perusahaan freight forwarding dan logistik internasional.', heading: 'Ketentuan Penggunaan Website', body: 'Ketentuan Penggunaan Situs Web PT Global Andalan Ekspress (GAEKS). Tanggal Efektif: 1 Februari 2025. Versi Dokumen: 1.0.' },
+  { path: '/privacy-terms/', title: 'Kebijakan Privasi | GAEKS Freight', description: 'Kebijakan pelindungan data pribadi PT Global Andalan Ekspress (GAEKS Freight) dalam operasional situs web dan layanan freight forwarding.', heading: 'Kebijakan Privasi', body: 'Kebijakan Pelindungan Data Pribadi PT Global Andalan Ekspress (GAEKS). Tanggal Efektif: 1 Februari 2025. Versi Dokumen: 1.0.' }
 ];
 const slugs = {
   ppjk: 'ppjk-customs-clearance', 'gudang-pbm': 'pergudangan-stevedoring',
@@ -44,8 +54,50 @@ const adPresentations = {
 };
 const orgId = `${baseUrl}/#organization`;
 const generalGroup = serviceContact('general');
-const organization = { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: baseUrl, logo: `${baseUrl}/logos/gaek-symbol.png`, email: generalGroup.email, telephone: generalGroup.whatsappDisplay };
-const localBusiness = { '@type': 'LocalBusiness', '@id': `${baseUrl}/#local-business`, name: 'GAEKS Freight', url: baseUrl, parentOrganization: { '@id': orgId }, address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' }, areaServed: { '@type': 'Country', name: 'Indonesia' } };
+const tradeGroup = serviceContact('ppjk');
+const airGroup = serviceContact('air-shipment');
+const areaServedLocations = [
+  { '@type': 'Country', name: 'Indonesia' },
+  { '@type': 'City', name: 'Jakarta' },
+  { '@type': 'City', name: 'Semarang' },
+  { '@type': 'City', name: 'Surabaya' },
+];
+const organization = {
+  '@type': 'Organization',
+  '@id': orgId,
+  name: 'GAEKS Freight',
+  legalName: 'PT Global Andalan Ekspress',
+  url: baseUrl,
+  logo: `${baseUrl}/logos/gaek-symbol.png`,
+  email: generalGroup.email,
+  telephone: generalGroup.whatsappDisplay,
+  sameAs: ['https://www.instagram.com/gaeksfreight/'],
+  knowsAbout: [
+    'Freight Forwarding Internasional',
+    'Pengiriman Laut FCL (Full Container Load)',
+    'Pengiriman Laut LCL (Less than Container Load)',
+    'Jasa PPJK dan Customs Clearance Indonesia',
+    'Jasa Pengiriman Udara (Air Freight)',
+    'Undername Impor dan Persetujuan Impor (PI)',
+    'Project Cargo dan Heavy Lift',
+    'Trucking Domestik dan Pergudangan',
+  ],
+  contactPoint: [
+    { '@type': 'ContactPoint', contactType: 'Customs Clearance, FCL & Undername', telephone: tradeGroup.whatsappDisplay, email: tradeGroup.email, areaServed: 'ID', availableLanguage: ['Indonesian', 'English'] },
+    { '@type': 'ContactPoint', contactType: 'Air Freight Desk', telephone: airGroup.whatsappDisplay, email: airGroup.email, areaServed: 'ID', availableLanguage: ['Indonesian', 'English'] },
+    { '@type': 'ContactPoint', contactType: 'Project Cargo, Domestic & General CS', telephone: generalGroup.whatsappDisplay, email: generalGroup.email, areaServed: 'ID', availableLanguage: ['Indonesian', 'English'] },
+  ],
+};
+const localBusiness = {
+  '@type': ['LocalBusiness', 'ProfessionalService'],
+  '@id': `${baseUrl}/#local-business`,
+  name: 'GAEKS Freight — PT Global Andalan Ekspress',
+  url: baseUrl,
+  parentOrganization: { '@id': orgId },
+  address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' },
+  areaServed: areaServedLocations,
+  serviceType: ['Freight Forwarding', 'PPJK Customs Clearance', 'FCL Ocean Freight', 'LCL Consolidation', 'Air Freight', 'Undername Impor & PI'],
+};
 const escapeHtml = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const jsonScript = (data) => `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`;
 const breadcrumb = (name, path) => ({ '@type': 'BreadcrumbList', itemListElement: [
@@ -53,6 +105,12 @@ const breadcrumb = (name, path) => ({ '@type': 'BreadcrumbList', itemListElement
   { '@type': 'ListItem', position: 2, name: 'Layanan', item: `${baseUrl}/layanan/` },
   { '@type': 'ListItem', position: 3, name, item: `${baseUrl}${path}` }
 ] });
+const homeAeoFaq = [
+  ['Layanan apa saja yang ditangani GAEKS Freight?', 'PT Global Andalan Ekspress (GAEKS Freight) melayani pengiriman laut FCL dan LCL, jasa kepabeanan PPJK dan customs clearance (PIB/PEB), pengiriman udara prioritas, perizinan impor dan undername/PI, transportasi darat, pergudangan, serta project cargo.'],
+  ['Apa perbedaan pengiriman FCL dan LCL di GAEKS?', 'FCL (Full Container Load) menggunakan satu kontainer penuh secara eksklusif untuk satu pengiriman, cocok untuk volume besar atau muatan khusus. LCL (Less than Container Load) menggabungkan muatan dengan volume lebih kecil secara konsolidasi bersama pengirim lain.'],
+  ['Dokumen apa saja yang diperlukan untuk jasa PPJK dan customs clearance?', 'Dokumen awal meliputi Commercial Invoice, Packing List, dokumen pengangkutan (Bill of Lading atau Air Waybill), uraian barang/HS Code, serta izin khusus komoditas seperti Persetujuan Impor (PI) atau Lartas bila dipersyaratkan.'],
+  ['Bagaimana cara menghitung biaya dan kapasitas kargo udara atau laut?', 'Anda dapat menggunakan Kalkulator Kargo GAEKS di gaeks.com/kalkulator/ untuk menghitung CBM dan berat volumetrik terlebih dahulu, lalu mengirimkan spesifikasi asal, tujuan, dan komoditas ke tim kami untuk penawaran sesuai jadwal aktual.'],
+];
 const routeFaq = [
   ['Apakah waktu tempuh di halaman ini sudah pasti?', 'Belum. Waktu tempuh adalah rujukan dan perlu dikonfirmasi bersama jadwal, transit, dan ketersediaan ruang saat pemesanan.'],
   ['Data apa yang diperlukan untuk meminta rute?', 'Siapkan titik asal dan tujuan, komoditas, berat, volume, kesiapan barang, serta target waktu tiba.'],
@@ -69,14 +127,26 @@ for (const service of content.services) {
 for (const route of routes) {
   const url = baseUrl + route.path;
   const graph = [organization, localBusiness, { '@type': 'WebPage', '@id': url, url, name: route.title, description: route.description, inLanguage: 'id-ID', isPartOf: { '@id': `${baseUrl}/#website` } }];
-  if (route.path === '/') graph.push({ '@type': 'WebSite', '@id': `${baseUrl}/#website`, url: baseUrl, name: 'GAEKS Freight', inLanguage: 'id-ID' });
+  if (route.path === '/') {
+    graph.push({ '@type': 'WebSite', '@id': `${baseUrl}/#website`, url: baseUrl, name: 'GAEKS Freight', inLanguage: 'id-ID' });
+    graph.push({
+      '@type': 'OfferCatalog',
+      name: 'Katalog Layanan Freight Forwarding & Kepabeanan GAEKS Freight',
+      itemListElement: content.services.map((s, idx) => ({
+        '@type': 'Offer',
+        position: idx + 1,
+        itemOffered: { '@type': 'Service', name: s.title, serviceType: s.category, url: `${baseUrl}/layanan/${slugs[s.id] || s.id}/` },
+      })),
+    });
+    graph.push(faqSchema(homeAeoFaq));
+  }
   if (route.service) {
-    graph.push({ '@type': 'Service', name: route.service.title, serviceType: route.service.category, description: route.info.summary, provider: { '@id': orgId }, areaServed: { '@type': 'Country', name: 'Indonesia' }, url });
+    graph.push({ '@type': 'Service', name: route.service.title, serviceType: route.service.category, description: route.info.summary, provider: { '@id': orgId }, areaServed: areaServedLocations, url });
     graph.push(breadcrumb(route.service.title, route.path));
     if (route.info.faq.length) graph.push(faqSchema(route.info.faq));
   }
   if (route.path === '/rute-pengiriman/') graph.push(faqSchema(routeFaq));
-  const head = `<meta name="description" content="${escapeHtml(route.description)}" />\n    <link rel="canonical" href="${url}" />\n    <meta property="og:type" content="website" />\n    <meta property="og:url" content="${url}" />\n    <meta property="og:title" content="${escapeHtml(route.title)}" />\n    <meta property="og:description" content="${escapeHtml(route.description)}" />\n    <meta property="og:image" content="${baseUrl}/uploads/gaeks-hero-cargo-poster.webp" />\n    ${jsonScript({ '@context': 'https://schema.org', '@graph': graph })}`;
+  const head = `<meta name="description" content="${escapeHtml(route.description)}" />\n    <link rel="canonical" href="${url}" />\n    <link rel="alternate" hreflang="id-ID" href="${url}" />\n    <link rel="alternate" hreflang="x-default" href="${url}" />\n    <meta property="og:type" content="website" />\n    <meta property="og:locale" content="id_ID" />\n    <meta property="og:url" content="${url}" />\n    <meta property="og:title" content="${escapeHtml(route.title)}" />\n    <meta property="og:description" content="${escapeHtml(route.description)}" />\n    <meta property="og:image" content="${baseUrl}/uploads/gaeks-hero-cargo-poster.webp" />\n    ${jsonScript({ '@context': 'https://schema.org', '@graph': graph })}`;
   let html = template.replace(/<title>[^<]*<\/title>/, `<title>${escapeHtml(route.title)}</title>`)
     .replace(/<meta name="description"[^>]*\/>/, '')
     .replace(/<link rel="canonical"[^>]*\/>/, '')
@@ -120,8 +190,31 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://w
 await writeFile('public/sitemap.xml', sitemap);
 await writeFile('dist/sitemap.xml', sitemap);
 const serviceLines = content.services.map((item) => `- [${item.title}](${baseUrl}/layanan/${slugs[item.id] || item.id}/): ${serviceInfo(item).summary}`);
-const llms = `# GAEKS Freight\n\nGAEKS Freight (Global Andalan Ekspress) membantu bisnis merencanakan freight laut dan udara, kepabeanan, pergudangan, trucking, dan project cargo di Indonesia. Jadwal, harga, ruang, serta ketentuan dokumen harus dikonfirmasi untuk setiap pengiriman.\n\n## Halaman utama\n\n- [Layanan](${baseUrl}/layanan/)\n- [Rute pengiriman](${baseUrl}/rute-pengiriman/)\n- [Kontak](${baseUrl}/kontak/)\n\n## Panduan layanan\n\n${serviceLines.join('\n')}\n`;
-const full = `${llms}\n## Data untuk penawaran\n\nSiapkan asal, tujuan, jenis komoditas, berat, volume, kemasan, target waktu, invoice dan packing list bila ada. Informasi ini membantu tim meninjau moda, kepabeanan, dan penanganan.\n\n## FAQ layanan\n\n${content.services.map((item) => `### ${item.title}\n${serviceInfo(item).faq.map(([q,a]) => `- ${q} ${a}`).join('\n')}`).join('\n\n')}\n\n## Kontak\n\nEmail: ${generalGroup.email}\nWhatsApp: ${generalGroup.whatsappDisplay}\n`;
+const llms = `# GAEKS Freight (PT Global Andalan Ekspress)
+
+> Tagline Resmi: "Diperkuat oleh Manusia. Digerakkan oleh Teknologi. Berfokus pada Anda." ("Powered by People. Driven by Technology. Focused on You.")
+
+GAEKS Freight (PT Global Andalan Ekspress) adalah perusahaan freight forwarding internasional dan jasa kepabeanan (PPJK) berbasis di Tanjung Priok, Jakarta & Banten, yang melayani pengiriman FCL, LCL, air freight, customs clearance (PIB/PEB), undername impor & Persetujuan Impor (PI), transportasi darat, pergudangan, dan project cargo di seluruh Indonesia (termasuk Jakarta, Semarang, dan Surabaya). Jadwal, tarif, ketersediaan ruang, serta ketentuan dokumen harus dikonfirmasi untuk setiap pengiriman.
+
+## Halaman Utama & Alat Bantu Pengiriman
+
+- [Beranda](${baseUrl}/)
+- [Layanan Freight Forwarding & PPJK](${baseUrl}/layanan/)
+- [Tentang Kami — Visi, Misi & Keunggulan Digital](${baseUrl}/tentang-kami/)
+- [Pelacakan Pengiriman HAWB, B/L & Kontainer](${baseUrl}/tracking/)
+- [Kalkulator Kargo CBM & Berat Volumetrik](${baseUrl}/kalkulator/)
+- [Rute dan Jadwal Pengiriman](${baseUrl}/rute-pengiriman/)
+- [Tarif Pengiriman](${baseUrl}/tarif-pengiriman/)
+- [Maskapai dan Perusahaan Pelayaran](${baseUrl}/maskapai-dan-pelayaran/)
+- [Wawasan dan Berita Logistik](${baseUrl}/berita/)
+- [Karier di GAEKS](${baseUrl}/karier/)
+- [Hubungi Kami & Permintaan Penawaran](${baseUrl}/kontak/)
+
+## Panduan Layanan
+
+${serviceLines.join('\n')}
+`;
+const full = `${llms}\n## Pertanyaan Umum (AEO Reference)\n\n${homeAeoFaq.map(([q, a]) => `- **${q}**: ${a}`).join('\n')}\n\n## Data untuk Penawaran\n\nSiapkan rute asal dan tujuan, moda (FCL, LCL, udara, atau trucking), Incoterms, jenis komoditas, berat kotor, volume CBM/dimensi kemasan, target waktu kirim, serta invoice dan packing list bila tersedia.\n\n## FAQ Spesifik Layanan\n\n${content.services.map((item) => `### ${item.title}\n${serviceInfo(item).faq.map(([q,a]) => `- ${q} ${a}`).join('\n')}`).join('\n\n')}\n\n## Kontak Spesialis\n\n- Kepabeanan (PPJK), FCL & Undername: ${tradeGroup.whatsappDisplay} / ${tradeGroup.email}\n- Kargo Udara (Air Freight): ${airGroup.whatsappDisplay} / ${airGroup.email}\n- Project Cargo, Domestik & CS Umum: ${generalGroup.whatsappDisplay} / ${generalGroup.email}\n`;
 for (const [name, text] of [['llms.txt', llms], ['llms-full.txt', full]]) {
   await writeFile(join('public', name), text);
   await writeFile(join('dist', name), text);

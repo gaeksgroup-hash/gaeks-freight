@@ -19,7 +19,7 @@
   # Serve the React app for routes handled in src/App.tsx.
   RewriteRule ^operator/?$ index.html [L]
   RewriteRule ^tracking/?$ index.html [L]
-  RewriteRule ^(layanan|rute-pengiriman|kalkulator|berita|kontak|terms-of-use|privacy-terms)/?$ index.html [L]
+  RewriteRule ^(layanan|rute-pengiriman|kalkulator|tarif-pengiriman|maskapai-dan-pelayaran|carrier|tentang-kami|karier|berita|kontak|terms-of-use|privacy-terms)/?$ index.html [L]
   RewriteRule ^layanan/[^/]+/?$ index.html [L]
 </IfModule>
 

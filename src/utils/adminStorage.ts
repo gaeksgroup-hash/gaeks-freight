@@ -2,6 +2,7 @@ import contactSeed from '../../public/api/contact_groups_seed.json';
 import uiCopySeed from '../../public/api/ui_copy_seed.json';
 import { NewsletterSubscriber, ServiceDetail } from '../types/freight';
 import { DETAILED_SERVICES } from '../data/defaultServices';
+import { CorporateContent, DEFAULT_CORPORATE_CONTENT } from '../data/corporateContent';
 
 export interface ContactGroup {
   id: string;
@@ -86,6 +87,7 @@ const STORAGE_KEY_SERVICES = 'gaeks_services_v8';
 const STORAGE_KEY_SITE = 'gaeks_site_settings_v1';
 const STORAGE_KEY_SEO = 'gaeks_seo_v1';
 const STORAGE_KEY_ARTICLES = 'gaeks_articles_v15_full';
+const STORAGE_KEY_CORPORATE = 'gaeks_corporate_v1';
 export const GAEKS_UPDATE_EVENT = 'gaeks_auto_update_event';
 let operatorCsrfToken = '';
 let operatorUser: OperatorUser | null = null;
@@ -108,13 +110,13 @@ export const DEFAULT_HERO: HeroSettings = {
   videoUrl: '/uploads/gaeks-hero-cargo-optimized.webm',
   imageUrl: '/uploads/gaeks-hero-cargo-poster.webp',
   videoLoadMode: 'adaptive',
-  videoLoadDelayMs: 1400,
-  eyebrow: 'Freight forwarding dan kepabeanan',
-  titlePrefix: 'Kargo bergerak ',
-  titleHighlight: 'dengan rencana',
-  titleSuffix: ' yang jelas.',
-  caption: 'GAEKS mengatur freight laut dan udara, kepabeanan, serta pengiriman darat melalui satu tim operasional.',
-  primaryLabel: 'Minta estimasi', secondaryLabel: 'Lihat layanan',
+  videoLoadDelayMs: 0,
+  eyebrow: 'FREIGHT FORWARDING DAN LOGISTIK INTERNASIONAL',
+  titlePrefix: 'Diperkuat oleh Manusia.\n',
+  titleHighlight: 'Digerakkan oleh Teknologi.\n',
+  titleSuffix: 'Berfokus pada Anda.',
+  caption: 'Kami memadukan keahlian, teknologi, dan tindakan nyata untuk menghadirkan solusi logistik yang lebih cepat, efisien, dan transparan.',
+  primaryLabel: 'Minta Penawaran', secondaryLabel: 'Lihat Layanan',
   commodityTitle: 'Konsultasi Regulasi & Komoditas Khusus',
   commodityCaption: 'Konsultasikan perizinan Lartas, SNI, dan verifikasi LS komoditas Anda bersama tim ahli kepabeanan kami.',
   networks: [],
@@ -122,17 +124,17 @@ export const DEFAULT_HERO: HeroSettings = {
 };
 export const DEFAULT_SITE_SETTINGS: SiteSettings = {
   uiCopy: uiCopySeed,
-  footerTagline: 'Koordinasi freight, kepabeanan, dan pengiriman darat untuk kargo bisnis.',
-  footerHeading: 'Temukan shipment dari satu nomor referensi.',
+  footerTagline: 'Solusi nyata. Tindakan nyata. Hasil transparan — Diperkuat oleh Manusia, Digerakkan oleh Teknologi, Berfokus pada Anda.',
+  footerHeading: 'Temukan pengiriman Anda dari satu nomor referensi.',
   digitalProductLabel: 'Gaeks Digital Product', digitalProductUrl: 'https://gdp.gaeks.com',
   navigation: [
     { page: 'home', label: 'Beranda', mobileLabel: 'Beranda', visible: true },
     { page: 'services', label: 'Layanan', mobileLabel: 'Layanan', visible: true },
-    { page: 'tracking', label: 'Tracking', mobileLabel: 'Shipment Tracking', visible: true },
-    { page: 'calculator', label: 'Kalkulator', mobileLabel: 'Kalkulator Kargo', visible: true },
-    { page: 'network', label: 'Rute & Jadwal', mobileLabel: 'Rute & Jadwal', visible: true },
-    { page: 'news', label: 'Berita', mobileLabel: 'Berita & Pembaruan', visible: true },
-    { page: 'contact', label: 'Kontak', mobileLabel: 'Hubungi Kami', visible: true },
+    { page: 'tracking', label: 'Pelacakan Pengiriman', mobileLabel: 'Pelacakan Pengiriman', visible: true },
+    { page: 'calculator', label: 'Kalkulator Kargo', mobileLabel: 'Kalkulator Kargo', visible: true },
+    { page: 'network', label: 'Rute dan Jadwal', mobileLabel: 'Rute dan Jadwal', visible: true },
+    { page: 'news', label: 'Wawasan dan Berita', mobileLabel: 'Wawasan dan Berita', visible: true },
+    { page: 'contact', label: 'Hubungi Kami', mobileLabel: 'Hubungi Kami', visible: true },
   ],
   socialLinks: [
     {
@@ -178,6 +180,7 @@ export async function syncFromServer(): Promise<boolean> {
     if (data.hero) storeWhenChanged(STORAGE_KEY_HERO, data.hero);
     if (data.siteSettings) storeWhenChanged(STORAGE_KEY_SITE, data.siteSettings);
     if (data.seo) storeWhenChanged(STORAGE_KEY_SEO, data.seo);
+    if (data.corporate) storeWhenChanged(STORAGE_KEY_CORPORATE, data.corporate);
     if (Array.isArray(data.services)) storeWhenChanged(STORAGE_KEY_SERVICES, data.services);
     if (Array.isArray(data.articles)) storeWhenChanged(STORAGE_KEY_ARTICLES, data.articles);
     if (changed) notifyLocalUpdate();
@@ -186,7 +189,7 @@ export async function syncFromServer(): Promise<boolean> {
 }
 
 export interface ServerSaveResult { success: boolean; message: string; newsletter?: { articles: number; sent: number; failed: number; queued: number }; }
-export async function saveSectionToServer(section: 'branding' | 'hero' | 'siteSettings' | 'services' | 'articles' | 'seo', payload: unknown): Promise<ServerSaveResult> {
+export async function saveSectionToServer(section: 'branding' | 'hero' | 'siteSettings' | 'services' | 'corporate' | 'articles' | 'seo', payload: unknown): Promise<ServerSaveResult> {
   try {
     const response = await operatorFetch('/api/sync.php', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ section, payload }) });
     const result = await response.json();
@@ -195,6 +198,7 @@ export async function saveSectionToServer(section: 'branding' | 'hero' | 'siteSe
     if (section === 'hero') saveStoredHero(payload as HeroSettings);
     if (section === 'siteSettings') saveStoredSiteSettings(payload as SiteSettings);
     if (section === 'services') saveStoredServices(payload as ServiceDetail[]);
+    if (section === 'corporate') saveStoredCorporate(payload as CorporateContent);
     if (section === 'articles') { localStorage.setItem(STORAGE_KEY_ARTICLES, JSON.stringify(payload)); notifyLocalUpdate(); }
     if (section === 'seo') saveStoredSeo(payload as SeoSettings);
     return { success: true, message: result.message || 'Konten tersimpan.', newsletter: result.newsletter };
@@ -235,6 +239,30 @@ export const saveStoredSiteSettings = (data: SiteSettings) => writeObject(STORAG
 export const getSiteCopy = () => ({ ...uiCopySeed, ...getStoredSiteSettings().uiCopy });
 export const getStoredSeo = () => readObject(STORAGE_KEY_SEO, DEFAULT_SEO);
 export const saveStoredSeo = (data: SeoSettings) => writeObject(STORAGE_KEY_SEO, data);
+export const getStoredCorporate = (): CorporateContent => {
+  const stored = readObject<Partial<CorporateContent>>(STORAGE_KEY_CORPORATE, DEFAULT_CORPORATE_CONTENT);
+  return {
+    brand: { ...DEFAULT_CORPORATE_CONTENT.brand, ...stored.brand },
+    homeSignature: { ...DEFAULT_CORPORATE_CONTENT.homeSignature, ...stored.homeSignature },
+    about: { ...DEFAULT_CORPORATE_CONTENT.about, ...stored.about },
+    rateCard: {
+      ...DEFAULT_CORPORATE_CONTENT.rateCard,
+      ...stored.rateCard,
+      items: Array.isArray(stored.rateCard?.items) ? stored.rateCard.items : DEFAULT_CORPORATE_CONTENT.rateCard.items,
+    },
+    carriers: {
+      ...DEFAULT_CORPORATE_CONTENT.carriers,
+      ...stored.carriers,
+      items: Array.isArray(stored.carriers?.items) ? stored.carriers.items : DEFAULT_CORPORATE_CONTENT.carriers.items,
+    },
+    careers: {
+      ...DEFAULT_CORPORATE_CONTENT.careers,
+      ...stored.careers,
+      positions: Array.isArray(stored.careers?.positions) ? stored.careers.positions : DEFAULT_CORPORATE_CONTENT.careers.positions,
+    },
+  };
+};
+export const saveStoredCorporate = (data: CorporateContent) => writeObject(STORAGE_KEY_CORPORATE, data);
 export function getStoredServices(includeDrafts = false): ServiceDetail[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEY_SERVICES);

@@ -138,7 +138,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "Port of Tanjung Pelepas Official Record",
       "Drewry Maritime Financial Research"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "/uploads/1789234509_387710.webp",
     "excerpt": "Debut konsorsium maritim Maersk dan Hapag-Lloyd dalam Gemini Cooperation mengubah pola hub-and-spoke pelayaran kontainer dunia, memusatkan alur transshipment di Selat Malaka serta menambah frekuensi kapal feeder berjadwal ke Indonesia.",
     "excerpt_en": "Gemini Cooperation launch by Maersk and Hapag-Lloyd transforms global container hub-and-spoke networks, concentrating transshipment hubs across Malacca Strait with higher dedicated feeder frequencies to Indonesia.",
     "excerpt_zh": "马士基与赫伯罗特双子星联盟正式投入运营，调整马六甲海峡中转枢纽布局并增加直航印尼的驳船航班频次。",
@@ -414,7 +414,7 @@ export const DEFAULT_ARTICLES: ArticleItem[] = [
       "The Institute of London Underwriters (ILU)",
       "Chartered Insurance Institute"
     ],
-    "imageUrl": "https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&w=1200&q=80",
+    "imageUrl": "/uploads/1789234509_387710.webp",
     "excerpt": "Analisis perbandingan cakupan klaim risiko antara Institute Cargo Clauses A (All Risks), B, dan C serta mitigasi risiko kontribusi kerugian laut umum (General Average) bagi importir.",
     "excerpt_en": "Comparative legal analysis of Institute Cargo Clauses (A, B, C) marine insurance policies, covering physical damage risks and mandatory General Average salvage contributions.",
     "excerpt_zh": "国际海运保险条款（ICC A/B/C）保障范围深度比对与共同海损（General Average）理赔实务指南。",

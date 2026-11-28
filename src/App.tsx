@@ -7,10 +7,11 @@ import { ServicesCarousel } from './components/ServicesCarousel';
 import { Footer } from './components/Footer';
 import { HomeEditorial } from './components/HomeEditorial';
 import { HomeClients, HomeNetworks } from './components/HomePartners';
+import { HomeSignatureSection } from './components/HomeSignatureSection';
 import { Language } from './types/freight';
-import { getStoredBranding, getStoredSeo, getStoredServices, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
+import { getStoredBranding, getStoredCorporate, getStoredSeo, getStoredServices, getStoredSiteSettings, GAEKS_UPDATE_EVENT, syncFromServer } from './utils/adminStorage';
 import { applySiteLanguage, getPreferredLanguage, preloadTranslationEngine } from './utils/siteTranslator';
-import { matchesServiceRoute, pagePaths, servicePath, serviceSlug } from './utils/routes';
+import { matchesServiceRoute, pagePaths, routeAliases, servicePath, serviceSlug } from './utils/routes';
 import { getSiteCopy } from './utils/adminStorage';
 import { isPublishedArticle, serviceContent } from './utils/serviceContent';
 import { getStoredArticles } from './utils/newsStorage';
@@ -43,6 +44,10 @@ const PhoneContactsPage = React.lazy(() => import('./components/PhoneContactsPag
 const LegalDocumentPage = React.lazy(() => import('./components/LegalDocumentPage').then((module) => ({ default: module.LegalDocumentPage })));
 const ServiceDetailPage = React.lazy(() => import('./components/ServiceDetailPage').then((module) => ({ default: module.ServiceDetailPage })));
 const ShipmentTracking = React.lazy(() => import('./components/ShipmentTracking').then((module) => ({ default: module.ShipmentTracking })));
+const AboutPage = React.lazy(() => import('./components/AboutPage').then((module) => ({ default: module.AboutPage })));
+const RateCardPage = React.lazy(() => import('./components/RateCardPage').then((module) => ({ default: module.RateCardPage })));
+const CarriersPage = React.lazy(() => import('./components/CarriersPage').then((module) => ({ default: module.CarriersPage })));
+const CareersPage = React.lazy(() => import('./components/CareersPage').then((module) => ({ default: module.CareersPage })));
 const Toaster = React.lazy(() => import('sonner').then((module) => ({ default: module.Toaster })));
 
 const PageFallback = ({ tracking = false }: { tracking?: boolean }) => <div className={`${tracking ? 'min-h-[736px] bg-[#f8fafc] sm:min-h-[660px]' : 'min-h-[60vh] bg-[#f4f5f1]'} pt-32 text-center text-sm text-slate-500`}>Memuat halaman…</div>;
@@ -75,12 +80,18 @@ export const App: React.FC = () => {
       tracking: 'tracking',
       'rute-pengiriman': 'network',
       kalkulator: 'calculator',
+      'tarif-pengiriman': 'rates',
+      'maskapai-dan-pelayaran': 'carriers',
+      carrier: 'carriers',
+      'tentang-kami': 'about',
+      karier: 'careers',
       berita: 'news',
       kontak: 'contact',
       'terms-of-use': 'terms',
       'privacy-terms': 'privacy'
     };
     if (paths[path]) return paths[path];
+    if (routeAliases[path]) return routeAliases[path];
     return 'home';
   };
 
@@ -122,14 +133,19 @@ export const App: React.FC = () => {
       const seo = getStoredSeo();
       const copy = getSiteCopy();
       const branding = getStoredBranding();
+      const corporate = getStoredCorporate();
       const detailService = currentPage === 'service' ? getStoredServices().find((item) => matchesServiceRoute(item.id, activeServiceSlug)) : undefined;
       const routeTitles: Record<string, string> = {
         services: 'Layanan Freight & Logistik',
-        network: 'Rute Pengiriman',
+        network: 'Rute dan Jadwal',
         calculator: 'Kalkulator Kargo',
-        tracking: 'Lacak Pengiriman',
-        news: 'Berita Logistik',
-        contact: 'Kontak & Permintaan Penawaran',
+        tracking: 'Pelacakan Pengiriman',
+        rates: corporate.rateCard.seoTitle,
+        carriers: corporate.carriers.seoTitle,
+        about: corporate.about.seoTitle,
+        careers: corporate.careers.seoTitle,
+        news: 'Wawasan dan Berita Logistik',
+        contact: 'Hubungi Kami & Permintaan Penawaran',
         terms: LEGAL_DOC_META.terms.seoTitle,
         privacy: LEGAL_DOC_META.privacy.seoTitle
       };
@@ -137,8 +153,12 @@ export const App: React.FC = () => {
         services: copy.servicesMetaDescription,
         network: 'Jelajahi koridor laut dan udara. Jadwal, kapasitas, dan waktu tempuh dikonfirmasi saat pemesanan.',
         calculator: 'Rencanakan kebutuhan kapasitas dan moda pengiriman sebelum meminta penawaran freight.',
-        tracking: 'Periksa status shipment GAEKS menggunakan nomor pengiriman.',
-        news: 'Baca pembaruan terkait logistik, rute, dan kepabeanan dari GAEKS.',
+        tracking: 'Periksa status pengiriman GAEKS menggunakan nomor referensi HAWB, B/L, atau kontainer.',
+        rates: corporate.rateCard.metaDescription,
+        carriers: corporate.carriers.metaDescription,
+        about: corporate.about.metaDescription,
+        careers: corporate.careers.metaDescription,
+        news: 'Baca wawasan dan berita terkait logistik, rute, dan kepabeanan dari GAEKS.',
         contact: copy.contactMetaDescription,
         phones: copy.phoneMetaDescription,
         terms: LEGAL_DOC_META.terms.metaDescription,
@@ -152,6 +172,10 @@ export const App: React.FC = () => {
       if (currentPage === 'services') document.title = copy.servicesMetaTitle;
       if (currentPage === 'contact') document.title = copy.contactMetaTitle;
       if (currentPage === 'phones') document.title = copy.phoneMetaTitle;
+      if (currentPage === 'about') document.title = corporate.about.seoTitle;
+      if (currentPage === 'rates') document.title = corporate.rateCard.seoTitle;
+      if (currentPage === 'carriers') document.title = corporate.carriers.seoTitle;
+      if (currentPage === 'careers') document.title = corporate.careers.seoTitle;
       if (currentPage === 'terms') document.title = LEGAL_DOC_META.terms.seoTitle;
       if (currentPage === 'privacy') document.title = LEGAL_DOC_META.privacy.seoTitle;
       const setMeta = (selector: string, attribute: string, value: string) => {
@@ -176,12 +200,47 @@ export const App: React.FC = () => {
       setMeta('meta[property="og:url"]', 'content', canonical.href);
       const orgId = 'https://gaeks.com/#organization';
       const logoUrl = new URL(branding.symbolLogoUrl || branding.navbarLogoUrl || '/logos/gaek-symbol.png', 'https://gaeks.com').href;
+      const areaServedIndonesia = [
+        { '@type': 'Country', name: 'Indonesia' },
+        { '@type': 'City', name: 'Jakarta' },
+        { '@type': 'City', name: 'Semarang' },
+        { '@type': 'City', name: 'Surabaya' },
+      ];
       const graph: Record<string, unknown>[] = [
-        { '@type': 'Organization', '@id': orgId, name: 'GAEKS Freight', legalName: 'Global Andalan Ekspress', url: 'https://gaeks.com', logo: logoUrl, email: resolveContact('general').email, telephone: resolveContact('general').whatsappDisplay },
-        { '@type': 'LocalBusiness', '@id': 'https://gaeks.com/#local-business', name: 'GAEKS Freight', url: 'https://gaeks.com', parentOrganization: { '@id': orgId }, address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' } },
+        {
+          '@type': 'Organization',
+          '@id': orgId,
+          name: 'GAEKS Freight',
+          legalName: 'PT Global Andalan Ekspress',
+          url: 'https://gaeks.com',
+          logo: logoUrl,
+          email: resolveContact('general').email,
+          telephone: resolveContact('general').whatsappDisplay,
+          sameAs: (getStoredSiteSettings().socialLinks || []).map((s) => s.url).filter(Boolean),
+          knowsAbout: ['Freight Forwarding Internasional', 'Pengiriman Laut FCL', 'Pengiriman Laut LCL', 'Jasa PPJK & Customs Clearance', 'Air Freight', 'Undername Impor & PI', 'Project Cargo', 'Domestic Trucking'],
+        },
+        {
+          '@type': ['LocalBusiness', 'ProfessionalService'],
+          '@id': 'https://gaeks.com/#local-business',
+          name: 'GAEKS Freight — PT Global Andalan Ekspress',
+          url: 'https://gaeks.com',
+          parentOrganization: { '@id': orgId },
+          address: { '@type': 'PostalAddress', addressLocality: 'Tanjung Priok', addressRegion: 'DKI Jakarta', addressCountry: 'ID' },
+          areaServed: areaServedIndonesia,
+        },
         { '@type': 'WebPage', '@id': canonical.href, url: canonical.href, name: document.title, description, inLanguage: 'id-ID' }
       ];
-      if (currentPage === 'home') graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
+      if (currentPage === 'home') {
+        graph.push({ '@type': 'WebSite', '@id': 'https://gaeks.com/#website', url: 'https://gaeks.com', name: 'GAEKS Freight', inLanguage: 'id-ID' });
+        graph.push({
+          '@type': 'FAQPage',
+          mainEntity: [
+            ['Layanan apa saja yang ditangani GAEKS Freight?', 'PT Global Andalan Ekspress (GAEKS Freight) melayani pengiriman laut FCL dan LCL, jasa kepabeanan PPJK dan customs clearance (PIB/PEB), pengiriman udara prioritas, perizinan impor dan undername/PI, transportasi darat, pergudangan, serta project cargo.'],
+            ['Apa perbedaan pengiriman FCL dan LCL di GAEKS?', 'FCL menggunakan satu kontainer penuh secara eksklusif untuk muatan volume besar, sedangkan LCL menggabungkan kargo volume lebih kecil secara konsolidasi bersama pengirim lain.'],
+            ['Dokumen apa yang disiapkan untuk customs clearance PPJK?', 'Siapkan Commercial Invoice, Packing List, dokumen pengangkutan (B/L atau AWB), HS Code atau deskripsi barang, serta izin komoditas terkait seperti Persetujuan Impor (PI) bila diperlukan.'],
+          ].map(([name, text]) => ({ '@type': 'Question', name, acceptedAnswer: { '@type': 'Answer', text } })),
+        });
+      }
       if (currentPage === 'services') {
         graph[2]['@type'] = 'CollectionPage';
         graph.push({ '@type': 'ItemList', name: copy.servicesListLabel, itemListElement: getStoredServices().map((service, index) => ({ '@type': 'ListItem', position: index + 1, name: service.title, url: service.canonical || `https://gaeks.com${servicePath(service.id)}` })) });
@@ -269,7 +328,7 @@ export const App: React.FC = () => {
       } else if (path.startsWith('berita/')) {
         setActiveArticleId(path.substring('berita/'.length));
         setCurrentPage('news');
-      } else if (['home', 'services', 'tracking', 'calculator', 'network', 'news', 'contact'].includes(fullHash)) {
+      } else if (['home', 'services', 'tracking', 'calculator', 'network', 'rates', 'carriers', 'about', 'careers', 'news', 'contact'].includes(fullHash)) {
         setActiveArticleId('');
         setActiveServiceSlug('');
         setCurrentPage(fullHash);
@@ -277,6 +336,9 @@ export const App: React.FC = () => {
         setActiveServiceSlug('');
         setCurrentPage(Object.entries(pagePaths).find(([, value]) => value.replace(/^\/+|\/+$/g, '') === path)?.[0] || 'home');
         if (fullHash) return;
+      } else if (routeAliases[path]) {
+        setActiveServiceSlug('');
+        setCurrentPage(routeAliases[path]);
       } else {
         setCurrentPage('home');
       }
@@ -290,7 +352,21 @@ export const App: React.FC = () => {
   }, []);
 
   const navigateTo = (page: string) => {
+    const slugFromPath = page === 'service' ? getServiceSlug() : '';
+    if (page === 'service' && slugFromPath) {
+      setActiveArticleId('');
+      setActiveServiceSlug(slugFromPath);
+      setCurrentPage('service');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const target = new URL(pagePaths[page] || '/', window.location.origin);
+    if (page === 'contact' && window.location.pathname === target.pathname && (window.location.search || window.location.hash)) {
+      setActiveArticleId('');
+      setActiveServiceSlug('');
+      setCurrentPage('contact');
+      return;
+    }
     if (page === 'contact' && activeServiceSlug) {
       const matched = getStoredServices().find((item) => matchesServiceRoute(item.id, activeServiceSlug));
       const selected = matched
@@ -374,33 +450,6 @@ export const App: React.FC = () => {
     void applySiteLanguage(language);
   };
 
-  useEffect(() => {
-    if (isOperatorPage || typeof IntersectionObserver === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const root = document.getElementById('public-content');
-    if (!root) return;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('scroll-reveal-visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.01, rootMargin: '0px 0px -6% 0px' });
-    const register = () => root.querySelectorAll('section:not(.scroll-reveal):not([data-reveal="custom"])').forEach((section) => {
-      if (section.closest('.service-detail, .contact-page, .phone-page, .services-directory, .legal-page')) return;
-      section.classList.add('scroll-reveal');
-      if (section.getBoundingClientRect().top < window.innerHeight * 0.92) {
-        section.classList.add('scroll-reveal-visible');
-      } else {
-        observer.observe(section);
-      }
-    });
-    register();
-    const mutations = new MutationObserver(register);
-    mutations.observe(root, { childList: true, subtree: true });
-    return () => { mutations.disconnect(); observer.disconnect(); };
-  }, [currentPage, isOperatorPage]);
-
   return (
     <div className="min-h-screen flex flex-col bg-[#f4f5f1] text-[#12363a] font-sans">
       <Suspense fallback={null}>
@@ -464,6 +513,10 @@ export const App: React.FC = () => {
           <ContactPage />
         )}
         {currentPage === 'phones' && <PhoneContactsPage />}
+        {currentPage === 'about' && <AboutPage onNavigate={navigateTo} currentLang={currentLang} />}
+        {currentPage === 'rates' && <RateCardPage onNavigate={navigateTo} />}
+        {currentPage === 'carriers' && <CarriersPage onNavigate={navigateTo} />}
+        {currentPage === 'careers' && <CareersPage onNavigate={navigateTo} />}
         {currentPage === 'terms' && <LegalDocumentPage documentType="terms" onNavigate={navigateTo} />}
         {currentPage === 'privacy' && <LegalDocumentPage documentType="privacy" onNavigate={navigateTo} />}
 
@@ -473,6 +526,7 @@ export const App: React.FC = () => {
             <HomeNetworks />
             <ServicesCarousel onSelectService={handleSelectService} onOpenService={handleOpenService} onViewAll={() => navigateTo('services')} currentLang={currentLang} />
             <HomeClients />
+            <HomeSignatureSection onNavigate={navigateTo} />
             <HomeEditorial
               currentLang={currentLang}
               onNavigate={navigateTo}

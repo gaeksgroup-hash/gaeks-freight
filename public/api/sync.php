@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'hero' => 'site.home',
         'siteSettings' => 'site.navigation',
         'services' => 'site.services',
+        'corporate' => 'site.home',
         'articles' => 'content.news',
         'seo' => 'site.seo',
     ];

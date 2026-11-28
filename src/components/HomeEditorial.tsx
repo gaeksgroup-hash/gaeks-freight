@@ -76,7 +76,7 @@ export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id'
       <div className="page-shell grid min-w-0 grid-cols-[minmax(0,1fr)] gap-12 lg:grid-cols-2 lg:gap-20">
         <div ref={processRef} className="shipping-process min-w-0" data-reveal={reveal}>
           <header className="shipping-process-heading">
-            <p className="section-label">ALUR PENGIRIMAN</p>
+            <p className="section-label">PANDUAN PENGIRIMAN</p>
             <h2 id="process-title" className="section-title">Alur Pengiriman Bersama GAEKS</h2>
             <p className="section-copy max-w-lg">Dari konsultasi kebutuhan logistik hingga barang tiba di tujuan, setiap tahapan dikoordinasikan oleh tim GAEKS Freight.</p>
           </header>
@@ -108,7 +108,7 @@ export const HomeEditorial: React.FC<HomeEditorialProps> = ({ currentLang = 'id'
         </div>
 
         <div>
-          <p className="section-label">Pembaruan</p>
+          <p className="section-label">WAWASAN DAN BERITA</p>
           <h2 className="section-title">Berita dan informasi logistik.</h2>
           {articles.length > 0 && (() => {
             const lead = articles[0];

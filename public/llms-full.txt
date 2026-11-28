@@ -1,14 +1,24 @@
-# GAEKS Freight
+# GAEKS Freight (PT Global Andalan Ekspress)
 
-GAEKS Freight (Global Andalan Ekspress) membantu bisnis merencanakan freight laut dan udara, kepabeanan, pergudangan, trucking, dan project cargo di Indonesia. Jadwal, harga, ruang, serta ketentuan dokumen harus dikonfirmasi untuk setiap pengiriman.
+> Tagline Resmi: "Diperkuat oleh Manusia. Digerakkan oleh Teknologi. Berfokus pada Anda." ("Powered by People. Driven by Technology. Focused on You.")
 
-## Halaman utama
+GAEKS Freight (PT Global Andalan Ekspress) adalah perusahaan freight forwarding internasional dan jasa kepabeanan (PPJK) berbasis di Tanjung Priok, Jakarta & Banten, yang melayani pengiriman FCL, LCL, air freight, customs clearance (PIB/PEB), undername impor & Persetujuan Impor (PI), transportasi darat, pergudangan, dan project cargo di seluruh Indonesia (termasuk Jakarta, Semarang, dan Surabaya). Jadwal, tarif, ketersediaan ruang, serta ketentuan dokumen harus dikonfirmasi untuk setiap pengiriman.
 
-- [Layanan](https://gaeks.com/layanan/)
-- [Rute pengiriman](https://gaeks.com/rute-pengiriman/)
-- [Kontak](https://gaeks.com/kontak/)
+## Halaman Utama & Alat Bantu Pengiriman
 
-## Panduan layanan
+- [Beranda](https://gaeks.com/)
+- [Layanan Freight Forwarding & PPJK](https://gaeks.com/layanan/)
+- [Tentang Kami — Visi, Misi & Keunggulan Digital](https://gaeks.com/tentang-kami/)
+- [Pelacakan Pengiriman HAWB, B/L & Kontainer](https://gaeks.com/tracking/)
+- [Kalkulator Kargo CBM & Berat Volumetrik](https://gaeks.com/kalkulator/)
+- [Rute dan Jadwal Pengiriman](https://gaeks.com/rute-pengiriman/)
+- [Tarif Pengiriman](https://gaeks.com/tarif-pengiriman/)
+- [Maskapai dan Perusahaan Pelayaran](https://gaeks.com/maskapai-dan-pelayaran/)
+- [Wawasan dan Berita Logistik](https://gaeks.com/berita/)
+- [Karier di GAEKS](https://gaeks.com/karier/)
+- [Hubungi Kami & Permintaan Penawaran](https://gaeks.com/kontak/)
+
+## Panduan Layanan
 
 - [PPJK (Customs Clearance)](https://gaeks.com/layanan/ppjk-customs-clearance/): Layanan PPJK membantu importir dan eksportir menyiapkan serta mengajukan dokumen kepabeanan untuk barang yang masuk atau keluar Indonesia. Ruang kerjanya mencakup pemeriksaan invoice dan packing list, peninjauan HS code, pengecekan ketentuan komoditas, serta koordinasi proses PIB atau PEB. Kebutuhan izin dan waktu penyelesaian ditentukan oleh jenis barang dan hasil pemeriksaan otoritas.
 - [Gudang & PBM (Bongkar Muat)](https://gaeks.com/layanan/pergudangan-stevedoring/): Pergudangan dan pekerjaan bongkar muat membantu menghubungkan kedatangan kargo dengan penyerahan berikutnya. Tim perlu mencocokkan jenis barang, jumlah koli, kebutuhan penanganan, waktu kedatangan, dan tujuan distribusi sebelum memilih pengaturan di terminal atau gudang transit. Ketersediaan ruang, peralatan, serta biaya penanganan dikonfirmasi sesuai lokasi dan jadwal aktual.
@@ -19,11 +29,18 @@ GAEKS Freight (Global Andalan Ekspress) membantu bisnis merencanakan freight lau
 - [Air Shipment Priority](https://gaeks.com/layanan/freight-udara/): Air freight digunakan ketika target waktu, nilai barang, atau kebutuhan penanganan membuat pengiriman udara lebih sesuai. Kapasitas dan dasar tagihan dipengaruhi berat aktual serta berat volumetrik. Untuk menyiapkan penawaran, berikan bandara asal dan tujuan, ukuran tiap koli, berat, jenis komoditas, tanggal siap barang, dan dokumen yang tersedia.
 - [Undername Impor & Persetujuan Impor (PI)](https://gaeks.com/layanan/undername-impor-pi/): Undername impor membantu meninjau skema penggunaan entitas importir sesuai dokumen transaksi. Persetujuan Impor (PI) adalah izin yang diperlukan untuk barang tertentu menurut ketentuan yang berlaku. GAEKS membahas kebutuhan keduanya berdasarkan HS code, spesifikasi barang, asal, tujuan, dan kesiapan dokumen sebelum menyusun langkah layanan.
 
-## Data untuk penawaran
+## Pertanyaan Umum (AEO Reference)
 
-Siapkan asal, tujuan, jenis komoditas, berat, volume, kemasan, target waktu, invoice dan packing list bila ada. Informasi ini membantu tim meninjau moda, kepabeanan, dan penanganan.
+- **Layanan apa saja yang ditangani GAEKS Freight?**: PT Global Andalan Ekspress (GAEKS Freight) melayani pengiriman laut FCL dan LCL, jasa kepabeanan PPJK dan customs clearance (PIB/PEB), pengiriman udara prioritas, perizinan impor dan undername/PI, transportasi darat, pergudangan, serta project cargo.
+- **Apa perbedaan pengiriman FCL dan LCL di GAEKS?**: FCL (Full Container Load) menggunakan satu kontainer penuh secara eksklusif untuk satu pengiriman, cocok untuk volume besar atau muatan khusus. LCL (Less than Container Load) menggabungkan muatan dengan volume lebih kecil secara konsolidasi bersama pengirim lain.
+- **Dokumen apa saja yang diperlukan untuk jasa PPJK dan customs clearance?**: Dokumen awal meliputi Commercial Invoice, Packing List, dokumen pengangkutan (Bill of Lading atau Air Waybill), uraian barang/HS Code, serta izin khusus komoditas seperti Persetujuan Impor (PI) atau Lartas bila dipersyaratkan.
+- **Bagaimana cara menghitung biaya dan kapasitas kargo udara atau laut?**: Anda dapat menggunakan Kalkulator Kargo GAEKS di gaeks.com/kalkulator/ untuk menghitung CBM dan berat volumetrik terlebih dahulu, lalu mengirimkan spesifikasi asal, tujuan, dan komoditas ke tim kami untuk penawaran sesuai jadwal aktual.
 
-## FAQ layanan
+## Data untuk Penawaran
+
+Siapkan rute asal dan tujuan, moda (FCL, LCL, udara, atau trucking), Incoterms, jenis komoditas, berat kotor, volume CBM/dimensi kemasan, target waktu kirim, serta invoice dan packing list bila tersedia.
+
+## FAQ Spesifik Layanan
 
 ### PPJK (Customs Clearance)
 - Dokumen apa yang perlu disiapkan untuk customs clearance? Mulailah dengan invoice, packing list, dokumen pengangkutan, dan data komoditas. Dokumen tambahan bergantung pada HS code dan ketentuan barang.
@@ -65,7 +82,8 @@ Siapkan asal, tujuan, jenis komoditas, berat, volume, kemasan, target waktu, inv
 - Apakah semua barang memerlukan PI? Tidak. Kewajiban PI bergantung pada klasifikasi, spesifikasi, dan ketentuan yang berlaku.
 - Apakah status Ready menjamin izin terbit? Tidak. Status Ready menunjukkan kesiapan layanan yang diverifikasi GAEKS, bukan persetujuan dari otoritas.
 
-## Kontak
+## Kontak Spesialis
 
-Email: Cs@gaeks.com
-WhatsApp: +6281393453375
+- Kepabeanan (PPJK), FCL & Undername: +6285608561745 / info@gaeks.com
+- Kargo Udara (Air Freight): +6287722440148 / aksa@gaeks.com
+- Project Cargo, Domestik & CS Umum: +6281393453375 / Cs@gaeks.com

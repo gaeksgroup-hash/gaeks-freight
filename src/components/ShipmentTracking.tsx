@@ -36,17 +36,17 @@ export const ShipmentTracking: React.FC = () => {
         </div>
         <div className="page-shell tracking-hero__inner">
           <div className="tracking-hero__copy">
-            <p className="tracking-eyebrow">ERP System Integrated Report</p>
-            <h1>Shipment Tracking</h1>
-            <p className="tracking-hero__description">Masukkan nomor HAWB, B/L, atau kontainer untuk melihat milestone pengiriman.</p>
+            <p className="tracking-eyebrow">Pelacakan Pengiriman Terintegrasi</p>
+            <h1>Pelacakan Pengiriman</h1>
+            <p className="tracking-hero__description">Masukkan nomor HAWB, B/L, atau kontainer untuk melihat milestone pengiriman Anda.</p>
           </div>
         </div>
       </header>
 
       <div className="page-shell tracking-content">
         <div className="tracking-search-wrap">
-          <form onSubmit={submit} className="tracking-search" aria-label="Lacak shipment" aria-busy={loading}>
-            <label htmlFor="shipment-reference" className="sr-only">Nomor shipment</label>
+          <form onSubmit={submit} className="tracking-search" aria-label="Lacak pengiriman" aria-busy={loading}>
+            <label htmlFor="shipment-reference" className="sr-only">Nomor pengiriman</label>
             <div className="tracking-search__controls">
               <div className="tracking-search__field">
                 <Search size={20} aria-hidden="true" />
@@ -65,7 +65,7 @@ export const ShipmentTracking: React.FC = () => {
                 />
               </div>
               <button type="submit" disabled={loading || !query.trim()}>
-                <span>{loading ? 'Mencari' : 'Lacak shipment'}</span>
+                <span>{loading ? 'Mencari' : 'Lacak Pengiriman'}</span>
                 {loading ? <Loader2 size={18} className="tracking-spinner" aria-hidden="true" /> : <ArrowRight size={18} aria-hidden="true" />}
               </button>
             </div>

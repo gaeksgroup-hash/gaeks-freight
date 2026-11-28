@@ -403,12 +403,12 @@ export const InteractiveMap: React.FC = () => {
 
   const handleInquiryRoute = (origin: string, carrier: string, mode: string, leadTime: string) => {
     const serviceKey = activeTransportMode === 'air' ? 'air' : 'fcl';
-    const text = `Halo Gaek Freight, saya ingin konsultasi jadwal & penawaran rute ${mode}:
+    const text = `Halo tim GAEKS Freight, saya ingin konsultasi jadwal dan penawaran rute ${mode}:
 - Asal: ${origin}
 - Rekomendasi Carrier: ${carrier}
 - Estimasi Lead Time: ${leadTime}
 - Pelabuhan Tujuan: Jakarta (Tanjung Priok) / Surabaya / Semarang
-Mohon info jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
+Mohon informasi jadwal keberangkatan terdekat dan penawaran tarifnya. Terima kasih.`;
 
     const target = resolveServiceContact(serviceKey, { extraBody: text });
     window.open(`https://wa.me/${target.whatsappNumber}?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');

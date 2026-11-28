@@ -1,7 +1,26 @@
 export const pagePaths: Record<string, string> = {
-  home: '/', services: '/layanan/', network: '/rute-pengiriman/', calculator: '/kalkulator/',
-  tracking: '/tracking/', news: '/berita/', contact: '/kontak/', phones: '/kontak/telepon/',
-  terms: '/terms-of-use/', privacy: '/privacy-terms/', operator: '/operator/'
+  home: '/',
+  services: '/layanan/',
+  network: '/rute-pengiriman/',
+  calculator: '/kalkulator/',
+  tracking: '/tracking/',
+  rates: '/tarif-pengiriman/',
+  carriers: '/maskapai-dan-pelayaran/',
+  about: '/tentang-kami/',
+  careers: '/karier/',
+  news: '/berita/',
+  contact: '/kontak/',
+  phones: '/kontak/telepon/',
+  terms: '/terms-of-use/',
+  privacy: '/privacy-terms/',
+  operator: '/operator/',
+};
+
+export const routeAliases: Record<string, string> = {
+  carrier: 'carriers',
+  karir: 'careers',
+  rate: 'rates',
+  about: 'about',
 };
 
 export const serviceSlugs: Record<string, string> = {

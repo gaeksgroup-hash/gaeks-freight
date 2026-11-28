@@ -219,3 +219,123 @@ export function contactLink(
   const resolved = resolveServiceContact(service, options);
   return channel === 'whatsapp' ? resolved.whatsappUrl : resolved.emailUrl;
 }
+
+export interface SmartRoutingResult {
+  primaryServiceId: string;
+  routingReason: string;
+  resolved: ResolvedServiceContact;
+}
+
+const AIR_KEYWORDS = /\b(udara|air freight|air shipment|pesawat|flight|hawb|awb|bandara|cgk|sub|kno|maskapai)\b/i;
+const TRADE_CUSTOMS_KEYWORDS = /\b(fcl|kontainer|container|20\s*ft|40\s*ft|ppjk|customs|clearance|pabean|bea cukai|pib|peb|hs\s*code|undername|persetujuan impor|lartas|sni|roro|breakbulk)\b/i;
+const GENERAL_OPS_KEYWORDS = /\b(project cargo|heavy lift|alat berat|truck|truk|trucking|darat|gudang|warehouse|stevedoring|pbm|bongkar muat|lcl|konsolidasi)\b/i;
+
+export function resolveSmartContact(
+  selectedServices: string[],
+  description = '',
+  options: { extraBody?: string; senderLabel?: string } = {}
+): SmartRoutingResult {
+  const cleanSelected = selectedServices.map((s) => s.trim()).filter(Boolean);
+  let primaryServiceId = 'general';
+  let routingReason = 'Diteruskan ke tim layanan dan koordinasi operasional GAEKS.';
+  let displayGroupName: string | null = null;
+
+  if (cleanSelected.length > 0) {
+    const groupsForSelected = cleanSelected.map((id) => {
+      const group = resolveContact(id);
+      const endpointKey = whatsappDigits(group?.whatsappNumber || '') || (group?.email || '').toLowerCase() || group?.id || '';
+      return { id, group, endpointKey };
+    });
+
+    const tally = new Map<string, { count: number; items: typeof groupsForSelected }>();
+    for (const entry of groupsForSelected) {
+      if (!entry.endpointKey) continue;
+      const bucket = tally.get(entry.endpointKey);
+      if (bucket) {
+        bucket.count += 1;
+        bucket.items.push(entry);
+      } else {
+        tally.set(entry.endpointKey, { count: 1, items: [entry] });
+      }
+    }
+
+    const sortedBuckets = [...tally.entries()].sort((a, b) => b[1].count - a[1].count);
+    const totalVotes = groupsForSelected.length;
+
+    if (sortedBuckets.length === 1) {
+      const [onlyEndpoint, bucket] = sortedBuckets[0];
+      primaryServiceId = bucket.items[0].id;
+      const matchedName =
+        onlyEndpoint === '6285608561745' && bucket.count > 1
+          ? 'Kepabeanan, FCL & Undername'
+          : bucket.items[0].group?.name || 'spesialis';
+      if (onlyEndpoint === '6285608561745' && bucket.count > 1) {
+        displayGroupName = 'Kepabeanan, FCL & Undername';
+      }
+      routingReason =
+        bucket.count === 1
+          ? `Diarahkan ke tim spesialis ${matchedName}.`
+          : `Seluruh layanan terpilih ditangani langsung oleh tim ${matchedName}.`;
+    } else if (sortedBuckets.length > 1) {
+      const [topEndpoint, topBucket] = sortedBuckets[0];
+      const runnerUpCount = sortedBuckets[1][1].count;
+      const hasClearMajority = topBucket.count > runnerUpCount && topBucket.count * 2 > totalVotes;
+
+      if (hasClearMajority) {
+        primaryServiceId = topBucket.items[0].id;
+        const matchedName =
+          topEndpoint === '6285608561745'
+            ? topBucket.count > 1
+              ? 'Kepabeanan, FCL & Undername'
+              : topBucket.items[0].group?.name || 'Kepabeanan, FCL & Undername'
+            : topEndpoint === '6287722440148'
+              ? 'Kargo Udara'
+              : topBucket.items[0].group?.name || 'Project Cargo, Domestik & Gudang';
+        displayGroupName = matchedName;
+        routingReason = `Kombinasi layanan condong ke ${matchedName} (${topBucket.count} dari ${totalVotes} layanan), langsung diarahkan ke tim terkait.`;
+      } else {
+        primaryServiceId = 'general';
+        displayGroupName = 'Tim CS GAEKS (Multi-Layanan)';
+        routingReason = 'Pilihan layanan berimbang (50/50 lintas divisi) — diarahkan ke CS GAEKS untuk koordinasi menyeluruh.';
+      }
+    }
+  } else if (description.trim()) {
+    const note = description.trim();
+    const isAir = AIR_KEYWORDS.test(note);
+    const isTrade = TRADE_CUSTOMS_KEYWORDS.test(note);
+    const isOps = GENERAL_OPS_KEYWORDS.test(note);
+    const matchCount = [isAir, isTrade, isOps].filter(Boolean).length;
+    if (matchCount === 1 && isAir) {
+      primaryServiceId = 'air';
+      routingReason = 'Terdeteksi kebutuhan kargo udara dari deskripsi Anda.';
+    } else if (matchCount === 1 && isTrade) {
+      primaryServiceId = 'ppjk';
+      routingReason = 'Terdeteksi kebutuhan kepabeanan, FCL, atau perizinan impor dari deskripsi Anda.';
+    } else if (matchCount >= 2 || isOps) {
+      primaryServiceId = 'general';
+      if (matchCount >= 2) {
+        displayGroupName = 'Tim CS GAEKS (Multi-Layanan)';
+        routingReason = 'Kebutuhan lintas layanan seimbang — dikoordinasikan melalui CS GAEKS.';
+      } else {
+        routingReason = 'Diarahkan ke tim Project Cargo, Domestik, Gudang & LCL.';
+      }
+    }
+  }
+
+  const resolved = resolveServiceContact(primaryServiceId, { extraBody: options.extraBody });
+  if (displayGroupName) {
+    resolved.group = { ...resolved.group, name: displayGroupName };
+  }
+  if (options.senderLabel) {
+    resolved.emailSubject = `${resolved.emailSubject} — ${options.senderLabel}`;
+    resolved.emailUrl = resolved.email
+      ? `mailto:${resolved.email}?subject=${encodeURIComponent(resolved.emailSubject)}&body=${encodeURIComponent(resolved.whatsappMessage)}`
+      : '#';
+  }
+
+  return {
+    primaryServiceId,
+    routingReason,
+    resolved,
+  };
+}

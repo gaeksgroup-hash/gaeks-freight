@@ -11,9 +11,11 @@ import {
   DEFAULT_BRANDING, DEFAULT_HERO, DEFAULT_SEO, DEFAULT_SITE_SETTINGS,
   BrandingSettings, HeroSettings, ManagedOperator, OperatorRole, OperatorUser, PartnerLogo, SeoSettings, SiteSettings, SocialPlatform,
   deleteOperatorAccount, exportSubscribersToCSV, fetchOperators, getOperatorSession, getStoredBranding,
-  getStoredHero, getStoredSeo, getStoredServices, getStoredSiteSettings, hasPermission, loginOperator,
+  getStoredCorporate, getStoredHero, getStoredSeo, getStoredServices, getStoredSiteSettings, hasPermission, loginOperator,
   logoutOperator, operatorFetch, saveOperatorAccount, saveSectionToServer, syncFromServer,
 } from '../utils/adminStorage';
+import { CorporateContent, DEFAULT_CORPORATE_CONTENT } from '../data/corporateContent';
+import { CorporateCmsPanel } from './CorporateCmsPanel';
 import { getStoredArticles } from '../utils/newsStorage';
 import { fetchNewsletterSubscribers } from '../services/newsletterApi';
 import { ArticleItem, NewsletterSubscriber, ServiceDetail } from '../types/freight';
@@ -22,9 +24,10 @@ import { serviceContent } from '../utils/serviceContent';
 import { slugifyArticle } from '../utils/articleRoutes';
 import { stripStaleTranslations } from '../utils/localizeContent';
 import { PiCatalogAdminPanel } from './PiCatalogAdminPanel';
+import { InquiriesCmsPanel, InquiryRecord } from './InquiriesCmsPanel';
 
-type TabId = 'overview' | 'users' | 'branding' | 'navigation' | 'hero' | 'services' | 'piCatalog' | 'media' | 'news' | 'subscribers' | 'seo';
-type SectionId = 'branding' | 'hero' | 'siteSettings' | 'services' | 'articles' | 'seo';
+type TabId = 'overview' | 'users' | 'branding' | 'navigation' | 'hero' | 'corporate' | 'services' | 'piCatalog' | 'media' | 'news' | 'inquiries' | 'subscribers' | 'seo';
+type SectionId = 'branding' | 'hero' | 'siteSettings' | 'services' | 'corporate' | 'articles' | 'seo';
 
 interface MediaServerItem {
   id: string;
@@ -57,10 +60,12 @@ const tabDefinitions: Array<{ id: TabId; label: string; permission?: string; ico
   { id: 'branding', label: 'Brand & Kontak', permission: 'site.branding', icon: ImageIcon },
   { id: 'navigation', label: 'Navigasi & Footer', permission: 'site.navigation', icon: Settings2 },
   { id: 'hero', label: 'Beranda', permission: 'site.home', icon: FileText },
+  { id: 'corporate', label: 'Perusahaan & Tarif', permission: 'site.home', icon: ShieldCheck },
   { id: 'services', label: 'Layanan', permission: 'site.services', icon: Layers },
   { id: 'piCatalog', label: 'Daftar PI', permission: 'site.services', icon: FileText },
   { id: 'media', label: 'Media', permission: 'media.manage', icon: FolderOpen },
   { id: 'news', label: 'CMS Berita', permission: 'content.news', icon: Newspaper },
+  { id: 'inquiries', label: 'Permintaan Masuk', permission: 'newsletter.read', icon: FileText },
   { id: 'subscribers', label: 'Newsletter', permission: 'newsletter.read', icon: Download },
   { id: 'seo', label: 'SEO', permission: 'site.seo', icon: Search },
 ];
@@ -114,12 +119,14 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
   const [hero, setHero] = useState<HeroSettings>(DEFAULT_HERO);
   const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
   const [seo, setSeo] = useState<SeoSettings>(DEFAULT_SEO);
+  const [corporate, setCorporate] = useState<CorporateContent>(DEFAULT_CORPORATE_CONTENT);
   const [services, setServices] = useState<ServiceDetail[]>([]);
   const [articles, setArticles] = useState<ArticleItem[]>([]);
   const [editingService, setEditingService] = useState<ServiceDetail | null>(null);
   const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
 
   const [mediaList, setMediaList] = useState<MediaServerItem[]>([]);
+  const [inquiries, setInquiries] = useState<InquiryRecord[]>([]);
   const [subscribers, setSubscribers] = useState<NewsletterSubscriber[]>([]);
   const [newsletterSender, setNewsletterSender] = useState('news@gaeks.com');
   const [newsletterQueued, setNewsletterQueued] = useState(0);
@@ -144,17 +151,25 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
     url.searchParams.set('module', tab);
     window.history.replaceState({}, '', `${url.pathname}${url.search}`);
     if (tab === 'users') void loadOperators();
+    if (tab === 'inquiries') void loadInquiries();
     if (tab === 'subscribers') void loadSubscribers();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const loadLocalData = () => {
     setBranding(getStoredBranding()); setHero(getStoredHero()); setSiteSettings(getStoredSiteSettings()); setSeo(getStoredSeo());
-    setServices(getStoredServices(true)); setArticles(getStoredArticles());
+    setCorporate(getStoredCorporate()); setServices(getStoredServices(true)); setArticles(getStoredArticles());
   };
 
   const fetchMediaLibrary = async () => {
     try { const response = await fetch('/api/upload.php', { cache: 'no-store' }); const result = await response.json(); if (response.ok) setMediaList(result.files || []); } catch {}
+  };
+  const loadInquiries = async () => {
+    try {
+      const response = await fetch('/api/inquiries.php', { cache: 'no-store' });
+      const result = await response.json();
+      if (response.ok && Array.isArray(result.inquiries)) setInquiries(result.inquiries);
+    } catch {}
   };
   const loadSubscribers = async () => {
     try {
@@ -173,7 +188,7 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
       loadLocalData();
       const work: Promise<unknown>[] = [];
       if (hasPermission('media.manage', user)) work.push(fetchMediaLibrary());
-      if (hasPermission('newsletter.read', user)) work.push(loadSubscribers());
+      if (hasPermission('newsletter.read', user)) { work.push(loadSubscribers()); work.push(loadInquiries()); }
       if (hasPermission('users.manage', user)) work.push(loadOperators());
       await Promise.all(work);
       setLastSyncedAt(new Date());
@@ -359,6 +374,20 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
               <SaveButton saving={saving} />
             </form></section>}
 
+          {activeTab === 'corporate' && hasPermission('site.home', session) && <section className="space-y-6">
+            <PageTitle title="Perusahaan, Tarif, Carrier &amp; Karier" copy="Kelola identitas resmi, visi dan misi, daftar tarif pengiriman, penyedia angkutan, serta lowongan karier. Hanya entri berstatus Terbit yang tampil kepada pengunjung." />
+            <CorporateCmsPanel
+              value={corporate}
+              saving={saving}
+              onChange={setCorporate}
+              onSave={async (next) => {
+                if (await saveSection('corporate', next, 'Pengaturan perusahaan tersimpan')) {
+                  setCorporate(next);
+                }
+              }}
+            />
+          </section>}
+
           {activeTab === 'services' && hasPermission('site.services', session) && <section className="space-y-6"><PageTitle title="Layanan" copy="Tambah, ubah, atau kurangi layanan yang tampil pada carousel dan halaman layanan." action={<button className={primaryClass} onClick={() => setEditingService(newService())}><Plus className="h-4 w-4" />Tambah layanan</button>} />
             {editingService && <form className={`${panelClass} space-y-4`} onSubmit={async (event) => { event.preventDefault(); if (!(editingService.compare?.length && editingService.faq?.length)) { toast.error('Isi minimal satu pilihan perbandingan dan satu FAQ.'); return; } const previousService = services.find((item) => item.id === editingService.id); const preparedService = stripStaleTranslations(editingService, previousService, ['title', 'category', 'tagline', 'description']); const updated = previousService ? services.map((item) => item.id === editingService.id ? preparedService : item) : [preparedService, ...services]; if (await saveSection('services', updated, 'Layanan tersimpan')) { setServices(updated); setEditingService(null); } }}><div className="grid gap-4 sm:grid-cols-2"><Field label="Nama layanan" value={editingService.title} onChange={(value) => setEditingService({ ...editingService, title: value })} required /><Field label="Kategori" value={editingService.category} onChange={(value) => setEditingService({ ...editingService, category: value })} required /></div><ServiceEditorialEditor service={editingService} onChange={setEditingService} /><Field label="Judul halaman iklan" value={editingService.landingTitle || ''} onChange={(value) => setEditingService({ ...editingService, landingTitle: value })} /><Field label="Deskripsi halaman iklan" rows={3} value={editingService.landingDescription || ''} onChange={(value) => setEditingService({ ...editingService, landingDescription: value })} /><Field label="Tagline" value={editingService.tagline} onChange={(value) => setEditingService({ ...editingService, tagline: value })} /><Field label="Deskripsi" rows={4} value={editingService.description} onChange={(value) => setEditingService({ ...editingService, description: value })} required /><Field label="Ringkasan SEO/GEO (40–60 kata)" rows={4} value={editingService.summary || ''} onChange={(value) => setEditingService({ ...editingService, summary: value })} required /><AssetField label="Foto layanan" value={editingService.imageUrl} onChange={(value) => setEditingService({ ...editingService, imageUrl: value })} uploadMedia={uploadMedia} /><Field label="Fitur (satu per baris)" rows={4} value={editingService.features.join('\n')} onChange={(value) => setEditingService({ ...editingService, features: value.split('\n').map((line) => line.trim()).filter(Boolean) })} /><div className="grid gap-4 sm:grid-cols-2"><Field label="Peralatan" value={editingService.equipment} onChange={(value) => setEditingService({ ...editingService, equipment: value })} /><Field label="Komoditas" value={editingService.commodities} onChange={(value) => setEditingService({ ...editingService, commodities: value })} /></div><ComparisonEditor rows={editingService.compare || []} onChange={(compare) => setEditingService({ ...editingService, compare })} /><FaqEditor rows={editingService.faq || []} onChange={(faq) => setEditingService({ ...editingService, faq })} /><FormActions saving={saving} onCancel={() => setEditingService(null)} /></form>}
             <div className="grid gap-3 sm:grid-cols-2">{services.map((service) => <article key={service.id} className="flex gap-4 border border-cyan-950 bg-[#071d21] p-4"><img src={service.imageUrl} alt="" className="h-20 w-24 shrink-0 object-cover" /><div className="min-w-0 flex-1"><p className="text-xs font-semibold uppercase tracking-wide text-cyan-300">{service.category}</p><h2 className="mt-1 truncate text-sm font-bold">{service.title}</h2><div className="mt-3 flex gap-2"><button className={secondaryClass} onClick={() => setEditingService({ ...service, ...serviceContent(service) })}>Edit</button><button className={secondaryClass} onClick={async () => { if (services.length <= 1) { toast.error('Website harus memiliki minimal satu layanan'); return; } if (!confirm(`Hapus ${service.title}?`)) return; const updated = services.filter((item) => item.id !== service.id); if (await saveSection('services', updated, 'Layanan dihapus')) setServices(updated); }}><Trash2 className="h-4 w-4" /></button></div></div></article>)}</div>
@@ -372,6 +401,8 @@ export const OperatorAdmin: React.FC<{ onNavigate: (page: string) => void }> = (
             {editingArticle && <form className={`${panelClass} space-y-4`} onSubmit={async (event) => { event.preventDefault(); const previousArticle = articles.find((item) => item.id === editingArticle.id); const prepared = stripStaleTranslations({ ...editingArticle, slug: editingArticle.slug && !editingArticle.slug.startsWith('analisis-komprehensif-logistik-maritim-') ? editingArticle.slug : `${slugifyArticle(editingArticle.title)}-${editingArticle.id.toLowerCase()}`, updatedAt: new Date().toISOString() }, previousArticle, ['title', 'category', 'excerpt', 'content']); const updated = previousArticle ? articles.map((item) => item.id === editingArticle.id ? prepared : item) : [prepared, ...articles]; if (await saveSection('articles', updated, 'Berita dipublikasikan')) { setArticles(updated); setEditingArticle(null); await loadSubscribers(); } }}><div className="grid gap-4 sm:grid-cols-2"><Field label="Judul" value={editingArticle.title} onChange={(value) => setEditingArticle({ ...editingArticle, title: value })} required /><Field label="Kategori" value={editingArticle.category} onChange={(value) => setEditingArticle({ ...editingArticle, category: value })} required /><Field label="Tanggal publikasi" type="date" value={editingArticle.publishedDate} onChange={(value) => setEditingArticle({ ...editingArticle, publishedDate: value })} required /><Field label="Penulis" value={editingArticle.author || ''} onChange={(value) => setEditingArticle({ ...editingArticle, author: value })} /><Field label="Waktu baca" value={editingArticle.readTime || ''} onChange={(value) => setEditingArticle({ ...editingArticle, readTime: value })} /></div><Field label="Ringkasan" rows={3} value={editingArticle.excerpt} onChange={(value) => setEditingArticle({ ...editingArticle, excerpt: value })} required /><AssetField label="Foto utama" value={editingArticle.imageUrl} onChange={(value) => setEditingArticle({ ...editingArticle, imageUrl: value })} uploadMedia={uploadMedia} /><label className={labelClass}>Status publikasi<select className={inputClass} value={editingArticle.status || 'published'} onChange={(event) => setEditingArticle({ ...editingArticle, status: event.target.value as ArticleItem['status'] })}><option value="draft">Draf, belum ditampilkan</option><option value="published">Terbit, kirim pembaruan</option></select></label><Field label="Isi artikel" rows={12} value={editingArticle.content} onChange={(value) => setEditingArticle({ ...editingArticle, content: value })} required /><Field label="Sumber (satu per baris)" rows={3} value={(editingArticle.sources || []).join('\n')} onChange={(value) => setEditingArticle({ ...editingArticle, sources: value.split('\n').map((line) => line.trim()).filter(Boolean) })} /><FormActions saving={saving} onCancel={() => setEditingArticle(null)} /></form>}
             <div className="divide-y divide-cyan-950 border border-cyan-950 bg-[#071d21]">{articles.map((article) => <article key={article.id} className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between"><div className="min-w-0"><p className="text-xs text-cyan-300">{article.publishedDate} · {article.category}</p><h2 className="mt-1 truncate text-sm font-bold">{article.title}</h2></div><div className="flex gap-2"><button className={secondaryClass} onClick={() => setEditingArticle(article)}>Edit</button><button className={secondaryClass} onClick={async () => { if (!confirm(`Hapus artikel ${article.title}?`)) return; const updated = articles.filter((item) => item.id !== article.id); if (await saveSection('articles', updated, 'Artikel dihapus')) setArticles(updated); }}><Trash2 className="h-4 w-4" /></button></div></article>)}</div>
           </section>}
+
+          {activeTab === 'inquiries' && hasPermission('newsletter.read', session) && <InquiriesCmsPanel inquiries={inquiries} onReload={loadInquiries} />}
 
           {activeTab === 'subscribers' && hasPermission('newsletter.read', session) && <section className="space-y-6"><PageTitle title="Newsletter" copy={`Pengirim ${newsletterSender} · ${mailStatus} · ${newsletterQueued} email dalam antrean`} action={<button className={primaryClass} onClick={() => exportSubscribersToCSV(subscribers)}><Download className="h-4 w-4" />Ekspor CSV</button>} /><div className="flex flex-wrap gap-2"><button className={secondaryClass} onClick={async () => { try { const response = await operatorFetch('/api/newsletter_jobs.php', { method: 'POST' }); const result = await response.json(); if (!response.ok) throw new Error(result.message); toast.success(`${result.sent} email terkirim; ${result.queued} menunggu`); await loadSubscribers(); } catch (error) { toast.error(error instanceof Error ? error.message : 'Pengiriman gagal'); } }}>Proses antrean</button><button className={secondaryClass} onClick={() => void loadSubscribers()}>Perbarui status</button></div><div className="overflow-x-auto border border-cyan-950 bg-[#071d21]"><table className="w-full min-w-[620px] text-left text-sm"><thead className="bg-[#0b292e] text-xs uppercase tracking-wide text-cyan-300"><tr><th className="p-3">Email</th><th className="p-3">Status</th><th className="p-3">Terdaftar</th><th className="p-3">Konfirmasi</th></tr></thead><tbody className="divide-y divide-cyan-950">{subscribers.map((subscriber) => <tr key={subscriber.email}><td className="p-3 font-semibold">{subscriber.email}</td><td className="p-3">{subscriber.status}</td><td className="p-3 text-slate-400">{subscriber.subscribedAt}</td><td className="p-3 text-slate-400">{subscriber.confirmedAt || 'Belum dikonfirmasi'}</td></tr>)}{subscribers.length === 0 && <tr><td colSpan={4} className="p-8 text-center text-slate-400">Belum ada pelanggan.</td></tr>}</tbody></table></div></section>}
 

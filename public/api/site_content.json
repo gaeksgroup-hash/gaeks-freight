@@ -16,7 +16,7 @@
         "videoUrl": "/uploads/gaeks-hero-cargo-optimized.webm",
         "imageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
         "videoLoadMode": "adaptive",
-        "videoLoadDelayMs": 1400,
+        "videoLoadDelayMs": 0,
         "titlePrefix": "Kargo bergerak ",
         "titleHighlight": "dengan rencana",
         "titleSuffix": " yang jelas.",
@@ -998,12 +998,12 @@
         ]
     },
     "seo": {
-        "siteTitle": "GAEKS Freight | Freight Forwarding & Kepabeanan Indonesia",
-        "metaDescription": "Layanan freight forwarding, customs clearance, ocean freight, air freight, dan trucking untuk kebutuhan kargo bisnis.",
-        "keywords": "freight forwarding, customs clearance, PPJK, ocean freight, air freight, trucking Indonesia",
-        "ogTitle": "GAEKS Freight | Global Andalan Ekspress",
-        "ogDescription": "Koordinasi freight dan kepabeanan untuk kargo bisnis.",
-        "ogImageUrl": "/logos/gaek-full.png?v=7",
+        "siteTitle": "GAEKS Freight | Jasa Freight Forwarding, FCL, LCL, PPJK & Air Freight Indonesia",
+        "metaDescription": "PT Global Andalan Ekspress (GAEKS Freight) melayani jasa freight forwarding FCL, LCL, PPJK customs clearance, air freight, undername impor/PI, trucking, dan project cargo di Indonesia.",
+        "keywords": "jasa freight forwarding Indonesia, jasa pengiriman FCL terbaik, jasa pengiriman LCL, jasa PPJK resmi, jasa customs clearance Jakarta Semarang Surabaya, jasa pengiriman udara terbaik, air freight Indonesia, undername impor PI",
+        "ogTitle": "GAEKS Freight | PT Global Andalan Ekspress",
+        "ogDescription": "Solusi pengiriman FCL, LCL, PPJK customs clearance, kargo udara, undername impor, dan distribusi darat yang terstruktur dan transparan.",
+        "ogImageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
         "robotsIndex": true
     }
 }

@@ -196,6 +196,26 @@ function gaeks_public_content(array $data): array {
         unset($s['evidenceNotes']);
         $s['evidence']=array_values(array_filter($s['evidence']??[],fn($p)=>!empty($p['approved'])&&!empty($p['source'])&&!empty($p['date'])&&!empty($p['detail'])));
     }
+    if (isset($data['corporate']) && is_array($data['corporate'])) {
+        if (isset($data['corporate']['rateCard']['items']) && is_array($data['corporate']['rateCard']['items'])) {
+            $data['corporate']['rateCard']['items'] = array_values(array_filter(
+                $data['corporate']['rateCard']['items'],
+                fn($item) => is_array($item) && ($item['status'] ?? 'draft') === 'published'
+            ));
+        }
+        if (isset($data['corporate']['carriers']['items']) && is_array($data['corporate']['carriers']['items'])) {
+            $data['corporate']['carriers']['items'] = array_values(array_filter(
+                $data['corporate']['carriers']['items'],
+                fn($item) => is_array($item) && ($item['status'] ?? 'draft') === 'published'
+            ));
+        }
+        if (isset($data['corporate']['careers']['positions']) && is_array($data['corporate']['careers']['positions'])) {
+            $data['corporate']['careers']['positions'] = array_values(array_filter(
+                $data['corporate']['careers']['positions'],
+                fn($item) => is_array($item) && ($item['status'] ?? 'draft') === 'published'
+            ));
+        }
+    }
     return $data;
 }
 function gaeks_validate_service_content(string $section, array $payload): void {
