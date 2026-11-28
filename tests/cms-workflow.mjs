@@ -45,7 +45,8 @@ try {
   const headers = { 'Content-Type': 'application/json', Cookie: cookie, 'X-CSRF-Token': auth.csrfToken };
 
   const data = JSON.parse(original);
-  assert.equal(data.serviceCmsVersion, 7);
+  assert.equal(data.serviceCmsVersion, 8);
+  assert.equal(data.branding.faviconUrl, '/favicon.png?v=10');
   assert.equal(data.branding.contactGroups.find((g) => g.id === 'general').serviceIds.includes('project-cargo'), true);
   assert.equal(data.branding.contactGroups.find((g) => g.id === 'fcl').serviceIds.includes('project-cargo'), false);
   assert.equal(data.branding.contactGroups.find((g) => g.id === 'fcl').serviceIds.includes('roro-breakbulk'), true);

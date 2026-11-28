@@ -572,7 +572,7 @@ function gaeks_favicon_mime(string $url): ?string
 
 function gaeks_head_favicon_tags(array $content, callable $escape): string
 {
-    $faviconUrl = trim((string) ($content['branding']['faviconUrl'] ?? '')) ?: '/favicon.svg?v=9';
+    $faviconUrl = trim((string) ($content['branding']['faviconUrl'] ?? '')) ?: '/favicon.png?v=10';
     $mime = gaeks_favicon_mime($faviconUrl);
     $typeAttr = $mime !== null ? ' type="' . $escape($mime) . '"' : '';
     $href = $escape($faviconUrl);

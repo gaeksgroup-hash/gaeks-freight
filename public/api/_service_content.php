@@ -6,7 +6,7 @@ function gaeks_migrate_service_content(string $path): void {
     if (!$lock || !flock($lock, LOCK_EX)) return;
     try {
         $data = gaeks_read_json_file($path, gaeks_read_json_file(__DIR__ . '/site_content.json', []));
-        if (($data['serviceCmsVersion'] ?? 0) >= 7) return;
+        if (($data['serviceCmsVersion'] ?? 0) >= 8) return;
         if (($data['serviceCmsVersion'] ?? 0) < 2) {
             if (is_file($path) && !is_file($path . '.before-service-cms-v1')) copy($path, $path . '.before-service-cms-v1');
             $data['siteSettings']['uiCopy'] = array_replace(gaeks_read_json_file(__DIR__ . '/ui_copy_seed.json', []), $data['siteSettings']['uiCopy'] ?? []);
@@ -126,7 +126,21 @@ function gaeks_migrate_service_content(string $path): void {
         }
         gaeks_migrate_cta_labels($path);
         gaeks_migrate_search_intelligence_v7($path);
+        gaeks_migrate_transparent_favicon_v8($path);
     } finally { flock($lock, LOCK_UN); fclose($lock); }
+}
+
+function gaeks_migrate_transparent_favicon_v8(string $path): void {
+    $data = gaeks_read_json_file($path, []);
+    if ((int)($data['serviceCmsVersion'] ?? 0) >= 8) return;
+    if (is_file($path) && !is_file($path . '.before-transparent-favicon-v8')) {
+        copy($path, $path . '.before-transparent-favicon-v8');
+    }
+    $data['branding'] ??= [];
+    $data['branding']['faviconUrl'] = '/favicon.png?v=10';
+    $data['serviceCmsVersion'] = 8;
+    $data['updatedAt'] = (int) round(microtime(true) * 1000);
+    gaeks_write_json_file($path, $data);
 }
 
 function gaeks_migrate_search_intelligence_v7(string $path): void {

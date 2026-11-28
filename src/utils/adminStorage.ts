@@ -94,7 +94,7 @@ let operatorUser: OperatorUser | null = null;
 
 export const DEFAULT_BRANDING: BrandingSettings = {
   contactGroups: contactSeed,
-  faviconUrl: '/favicon.png?v=8',
+  faviconUrl: '/favicon.png?v=10',
   symbolLogoUrl: '/logos/gaek-symbol.png?v=7',
   fullLogoUrl: '/logos/gaek-full.png?v=7',
   navbarLogoUrl: '/logos/gaek-symbol.png?v=7',

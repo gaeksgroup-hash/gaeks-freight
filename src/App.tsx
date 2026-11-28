@@ -371,7 +371,7 @@ export const App: React.FC = () => {
       let structuredData = document.querySelector('script[type="application/ld+json"]') as HTMLScriptElement | null;
       if (!structuredData) { structuredData = document.createElement('script'); structuredData.type = 'application/ld+json'; document.head.appendChild(structuredData); }
       structuredData.textContent = JSON.stringify({ '@context': 'https://schema.org', '@graph': graph });
-      const faviconUrl = branding.faviconUrl || '/favicon.svg?v=9';
+      const faviconUrl = branding.faviconUrl || '/favicon.png?v=10';
       const faviconMime = inferFaviconMimeType(faviconUrl);
       for (const rel of ['icon', 'shortcut icon', 'apple-touch-icon'] as const) {
         let link = document.querySelector(`link[rel="${rel}"]`) as HTMLLinkElement | null;

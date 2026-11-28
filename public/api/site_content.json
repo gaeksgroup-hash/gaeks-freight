@@ -1,6 +1,6 @@
 {
   "branding": {
-    "faviconUrl": "/favicon.png?v=8",
+    "faviconUrl": "/favicon.png?v=10",
     "symbolLogoUrl": "/logos/gaek-symbol.png?v=7",
     "fullLogoUrl": "/logos/gaek-full.png?v=7",
     "whatsappNumber": "085608561745",
@@ -1744,5 +1744,5 @@
     "ogImageUrl": "/uploads/gaeks-hero-cargo-poster.webp",
     "robotsIndex": true
   },
-  "serviceCmsVersion": 7
+  "serviceCmsVersion": 8
 }
