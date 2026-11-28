@@ -131,7 +131,17 @@ function gaeks_migrate_service_content(string $path): void {
 
 function gaeks_migrate_search_intelligence_v7(string $path): void {
     $data = gaeks_read_json_file($path, []);
-    if ((int)($data['serviceCmsVersion'] ?? 0) >= 7) return;
+    if (!isset($data['branding']['contactGroups']) || !is_array($data['branding']['contactGroups'])) {
+        $data['branding']['contactGroups'] = gaeks_read_json_file(__DIR__ . '/contact_groups_seed.json', []);
+    }
+    $data['siteSettings']['uiCopy'] = array_replace(
+        gaeks_read_json_file(__DIR__ . '/ui_copy_seed.json', []),
+        is_array($data['siteSettings']['uiCopy'] ?? null) ? $data['siteSettings']['uiCopy'] : []
+    );
+    if ((int)($data['serviceCmsVersion'] ?? 0) >= 7) {
+        if (!is_file($path)) gaeks_write_json_file($path, $data);
+        return;
+    }
     if (is_file($path) && !is_file($path . '.before-search-intelligence-v7')) {
         copy($path, $path . '.before-search-intelligence-v7');
     }

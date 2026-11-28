@@ -258,9 +258,15 @@ try {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto(base + '/layanan/');
   await page.waitForTimeout(400);
-  await page.locator('.services-directory-choice').nth(1).click();
-  assert.equal(await page.locator('.services-directory-choice').nth(1).getAttribute('aria-pressed'), 'true');
-  assert.match(await page.locator('.services-directory-preview h2').innerText(), /Gudang/);
+  const secondChoice = page.locator('.services-directory-choice').nth(1);
+  const secondTitle = (await secondChoice.innerText())
+    .split('\n')
+    .map((line) => line.trim())
+    .find((line) => line && !/^\d+$/.test(line));
+  await secondChoice.click();
+  assert.equal(await secondChoice.getAttribute('aria-pressed'), 'true');
+  assert.ok(secondTitle, 'Expected second service title in directory choice');
+  assert.match(await page.locator('.services-directory-preview h2').innerText(), new RegExp(secondTitle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
   // Header CTA on Air Freight says "Chat WhatsApp" while routing to Air Freight team (+6287722440148)
   await page.goto(base + '/layanan/freight-udara/?direction=ekspor');

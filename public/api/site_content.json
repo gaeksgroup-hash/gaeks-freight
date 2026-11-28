@@ -9,7 +9,83 @@
     "infoEmail": "info@gaeks.com",
     "companyAddress": "Tanjung Priok, Jakarta & Banten, Indonesia",
     "navbarLogoUrl": "/logos/gaek-symbol.png?v=7",
-    "footerLogoUrl": "/logos/gaek-symbol.png?v=7"
+    "footerLogoUrl": "/logos/gaek-symbol.png?v=7",
+    "contactGroups": [
+      {
+        "id": "ppjk",
+        "name": "Kepabeanan / PPJK",
+        "whatsappNumber": "6285608561745",
+        "whatsappDisplay": "+6285608561745",
+        "email": "info@gaeks.com",
+        "serviceIds": [
+          "ppjk"
+        ],
+        "ctaText": "Chat WhatsApp",
+        "emailCtaText": "Kirim Email",
+        "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi customs clearance {arah} di {kota}.",
+        "emailSubjectTemplate": "Konsultasi Kepabeanan {arah} {kota}"
+      },
+      {
+        "id": "fcl",
+        "name": "Freight Laut FCL",
+        "whatsappNumber": "6285608561745",
+        "whatsappDisplay": "+6285608561745",
+        "email": "info@gaeks.com",
+        "serviceIds": [
+          "fcl",
+          "roro-breakbulk"
+        ],
+        "ctaText": "Chat WhatsApp",
+        "emailCtaText": "Kirim Email",
+        "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi {service} {arah} di {kota}.",
+        "emailSubjectTemplate": "Konsultasi {service} {arah} {kota}"
+      },
+      {
+        "id": "undername",
+        "name": "Undername Impor & PI",
+        "whatsappNumber": "6285608561745",
+        "whatsappDisplay": "+6285608561745",
+        "email": "info@gaeks.com",
+        "serviceIds": [
+          "undername-impor"
+        ],
+        "ctaText": "Chat WhatsApp",
+        "emailCtaText": "Kirim Email",
+        "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi undername impor dan Persetujuan Impor (PI) di {kota}.",
+        "emailSubjectTemplate": "Konsultasi Undername Impor & PI {kota}"
+      },
+      {
+        "id": "air",
+        "name": "Kargo Udara",
+        "whatsappNumber": "6287722440148",
+        "whatsappDisplay": "+6287722440148",
+        "email": "aksa@gaeks.com",
+        "serviceIds": [
+          "air-shipment"
+        ],
+        "ctaText": "Chat WhatsApp",
+        "emailCtaText": "Kirim Email",
+        "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi air freight {arah} di {kota}.",
+        "emailSubjectTemplate": "Konsultasi Air Freight {arah} {kota}"
+      },
+      {
+        "id": "general",
+        "name": "Project Cargo, Domestik & Gudang",
+        "whatsappNumber": "6281393453375",
+        "whatsappDisplay": "+6281393453375",
+        "email": "Cs@gaeks.com",
+        "serviceIds": [
+          "project-cargo",
+          "domestic-truck",
+          "gudang-pbm",
+          "lcl"
+        ],
+        "ctaText": "Chat WhatsApp",
+        "emailCtaText": "Kirim Email",
+        "whatsappTemplate": "Halo tim GAEKS, saya ingin konsultasi {service} {arah} di {kota}.",
+        "emailSubjectTemplate": "Konsultasi {service} {arah} {kota}"
+      }
+    ]
   },
   "hero": {
     "bgType": "video",
@@ -1581,7 +1657,83 @@
         "platform": "instagram",
         "url": "https://www.instagram.com/gaeksfreight/"
       }
-    ]
+    ],
+    "uiCopy": {
+      "serviceBack": "Layanan",
+      "scopeLabel": "Cakupan layanan",
+      "scopeHeading": "Penanganan yang sesuai dengan kargo Anda.",
+      "guideLabel": "Panduan persiapan",
+      "guideHeading": "Pahami pilihan sebelum mengirim.",
+      "serviceGuideNote": "Daftar dokumen dan ketentuan di bawah ini adalah panduan baca. Anda tetap dapat menghubungi tim terlebih dahulu sebelum menyiapkan berkas lengkap.",
+      "compareHeading": "Perbandingan pilihan",
+      "compareOption": "Pilihan",
+      "compareAudience": "Sesuai untuk",
+      "compareInput": "Data awal",
+      "experienceLabel": "Pengalaman GAEKS",
+      "experienceHeading": "Dari kebutuhan kargo ke keputusan pengiriman.",
+      "faqLabel": "Tanya jawab",
+      "faqHeading": "Sebelum Anda memulai.",
+      "inquiryLabel": "Langkah berikutnya",
+      "inquiryHeading": "Diskusikan kebutuhan pengiriman Anda.",
+      "quoteOptionalHeading": "Tambahkan detail untuk penawaran",
+      "quoteOptionalIntro": "Semua kolom bersifat opsional. Jika belum lengkap, kedua tombol kontak tetap dapat langsung digunakan.",
+      "serviceEmailCta": "Kirim Email",
+      "serviceReassurance": "Bisa langsung bertanya meski belum tahu HS Code, berat barang, rute lengkap, atau dokumen yang dibutuhkan.",
+      "serviceCopyEmailLabel": "Salin email",
+      "serviceCopiedEmailLabel": "Tersalin",
+      "serviceCopyFailedLabel": "Gagal salin",
+      "contactLabel": "Hubungi Kami",
+      "contactHeading": "Pilih tim sesuai kebutuhan pengiriman Anda.",
+      "contactIntro": "Mulai percakapan WhatsApp atau buka draf email langsung ke tim yang menangani layanan Anda.",
+      "contactTeamLabel": "Tim untuk layanan terpilih",
+      "contactDirectory": "Pilih tim layanan yang ingin dihubungi",
+      "contactGroupsIntro": "Hubungi tim terkait dalam satu ketukan meskipun rincian kargo atau dokumen belum lengkap.",
+      "footerTrackingLabel": "Pelacakan Pengiriman",
+      "footerTrackingCta": "Lacak Pengiriman",
+      "footerNavigationLabel": "Navigasi GAEKS",
+      "footerContactLabel": "Hubungi Tim Kami",
+      "footerTeamsLabel": "Kontak langsung per kelompok layanan",
+      "footerDirectory": "Kontak per layanan",
+      "footerPhoneDirectory": "Lihat semua kontak & panduan telepon",
+      "phoneBreadcrumbLabel": "Jejak halaman",
+      "phoneHomeLabel": "Beranda",
+      "phoneContactLabel": "Hubungi Kami",
+      "phonePageLabel": "Telepon",
+      "phoneEyebrow": "Direktori tim GAEKS",
+      "phoneHeading": "Terhubung dengan tim yang tepat.",
+      "phoneIntro": "Pilih kontak sesuai kebutuhan pengiriman Anda. Setiap kelompok menampilkan layanan yang ditangani, WhatsApp, telepon, dan email tim.",
+      "phoneDirectoryLabel": "Nomor telepon dan cakupan layanan",
+      "phoneGeneralTeam": "Project Cargo, Domestik & Gudang",
+      "phoneTradeTeam": "Kepabeanan, FCL & Undername",
+      "phoneGeneralNote": "Mencakup Project Cargo, pengiriman domestik, gudang & PBM, LCL, serta pertanyaan umum.",
+      "phoneMessage": "Halo tim GAEKS, saya ingin konsultasi tentang",
+      "phoneWhatsapp": "WhatsApp",
+      "phoneCall": "Telepon",
+      "phoneEmpty": "Daftar telepon belum tersedia. Silakan gunakan formulir kontak untuk menyampaikan kebutuhan Anda.",
+      "phonePreparationLabel": "Sebelum menghubungi",
+      "phonePreparationHeading": "Tidak perlu menunggu semua data lengkap.",
+      "phonePrepareRoute": "Kota atau pelabuhan asal dan tujuan jika sudah ada.",
+      "phonePrepareCargo": "Jenis barang atau perkiraan volume jika sudah diketahui.",
+      "phonePrepareTiming": "Target waktu pengiriman bila ada tenggat tertentu.",
+      "phoneFormIntro": "Ingin menuliskan detail kebutuhan lebih dulu?",
+      "phoneFormCta": "Tambahkan detail untuk penawaran",
+      "phoneMetaTitle": "Kontak Telepon & WhatsApp Tim | GAEKS Freight",
+      "phoneMetaDescription": "Temukan kontak telepon, WhatsApp, dan email GAEKS untuk kepabeanan, FCL, undername, air freight, project cargo, dan logistik domestik.",
+      "footerCompanyName": "GAEKS · Global Andalan Ekspress",
+      "servicesMetaTitle": "Layanan Freight & Logistik | GAEKS Freight",
+      "servicesMetaDescription": "Bandingkan layanan LCL, FCL, air freight, kepabeanan, pergudangan, trucking, dan project cargo.",
+      "servicesEyebrow": "Layanan GAEKS",
+      "servicesHeading": "Pilih penanganan yang tepat untuk kargo Anda.",
+      "servicesIntro": "Freight laut dan udara, kepabeanan, pengiriman darat, hingga penanganan proyek. Temukan layanan yang sesuai, lalu diskusikan kebutuhan shipment Anda dengan tim kami.",
+      "servicesListLabel": "Jelajahi layanan",
+      "servicesPreviewLabel": "Ruang lingkup layanan",
+      "servicesDetailCta": "Pelajari layanan",
+      "servicesQuoteCta": "Diskusikan shipment",
+      "servicesEmpty": "Belum ada layanan yang dipublikasikan. Tim kami tetap dapat membantu menilai kebutuhan pengiriman Anda.",
+      "servicesEmptyCta": "Hubungi tim GAEKS",
+      "contactMetaTitle": "Kontak & Permintaan Penawaran | GAEKS Freight",
+      "contactMetaDescription": "Hubungi tim GAEKS untuk kepabeanan, FCL, undername, kargo udara, project cargo, dan logistik domestik."
+    }
   },
   "seo": {
     "siteTitle": "Freight Forwarder Indonesia | FCL, Air Freight & Logistik Internasional | GAEKS Freight",

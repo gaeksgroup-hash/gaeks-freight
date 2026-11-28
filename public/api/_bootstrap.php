@@ -212,6 +212,7 @@ function gaeks_private_dir(): string
 function gaeks_content_file(): string
 {
     $path = gaeks_private_dir() . '/site_content.json';
+    gaeks_seed_private_json($path, __DIR__ . '/site_content.json');
     gaeks_migrate_service_content($path);
     return $path;
 }
