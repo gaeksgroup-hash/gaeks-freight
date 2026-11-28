@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowUpRight, ChevronRight, Mail, Phone } from 'lucide-react';
+import { ArrowUpRight, Check, CheckCircle2, ChevronRight, Mail, Phone } from 'lucide-react';
 import { GAEKS_UPDATE_EVENT, getSiteCopy, getStoredBranding, getStoredServices } from '../utils/adminStorage';
 import { contactPhoneTeams, phoneTeamTitle } from '../utils/contactDirectory';
 import { measureContactClick } from '../utils/quoteFlow';
@@ -52,7 +52,7 @@ export function PhoneContactsPage() {
       </header>
 
       <div className="page-shell phone-layout">
-        <section className="phone-directory-sheet" aria-label={copy.phoneDirectoryLabel}>
+        <section className="phone-cards-grid" aria-label={copy.phoneDirectoryLabel}>
           {teams.map(({ number, members }, index) => {
             const first = members[0];
             const ids = [...new Set(members.flatMap((group) => group.serviceIds))];
@@ -64,26 +64,31 @@ export function PhoneContactsPage() {
             const primaryService = ids[0] || 'general';
 
             return (
-              <article className="phone-team" key={number}>
+              <article className="phone-team phone-team-card" key={number}>
                 <div className="phone-team-scope">
-                  <span className="phone-team-index" aria-hidden="true">
+                  <span className="phone-team-badge">
                     0{index + 1} / 0{teams.length}
                   </span>
                   <h2>{title}</h2>
                   {members.some((group) => group.id === 'general') && <p className="phone-team-note">{copy.phoneGeneralNote}</p>}
                   {scope.length > 0 && (
-                    <ul>
+                    <ul className="phone-scope-checklist">
                       {scope.map((service) => (
-                        <li key={service.id}>{service.title}</li>
+                        <li key={service.id}>
+                          <Check size={15} className="mt-1 shrink-0 text-[#0b6873]" aria-hidden="true" />
+                          <span>{service.title}</span>
+                        </li>
                       ))}
                     </ul>
                   )}
                 </div>
-                <div className="phone-team-actions">
+
+                <div className="phone-team-actions phone-team-card-footer">
                   <a className="phone-number" href={'tel:+' + number}>
-                    <Phone size={19} aria-hidden="true" />
+                    <Phone size={18} aria-hidden="true" />
                     <span>{first.whatsappDisplay}</span>
                   </a>
+
                   <div className="phone-action-pair">
                     <a
                       className="phone-whatsapp"
@@ -93,22 +98,24 @@ export function PhoneContactsPage() {
                       onClick={() => measureContactClick('whatsapp', primaryService)}
                       aria-label={copy.phoneWhatsapp + ': ' + title}
                     >
-                      <WhatsAppIcon size={18} />
+                      <WhatsAppIcon size={17} />
                       <span>{copy.phoneWhatsapp}</span>
-                      <ArrowUpRight size={17} aria-hidden="true" />
+                      <ArrowUpRight size={16} aria-hidden="true" />
                     </a>
                     <a className="phone-call" href={'tel:+' + number} aria-label={copy.phoneCall + ': ' + title}>
-                      {copy.phoneCall}
+                      <Phone size={15} aria-hidden="true" />
+                      <span>{copy.phoneCall}</span>
                     </a>
                   </div>
+
                   {emails.map((email) => (
-                    <div key={email} className="mt-2 flex flex-wrap items-center gap-2">
+                    <div key={email} className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-200/70 pt-3">
                       <a
                         className="phone-team-email"
                         href={'mailto:' + email + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(message)}
                         onClick={() => measureContactClick('email', primaryService)}
                       >
-                        <Mail size={16} aria-hidden="true" />
+                        <Mail size={15} aria-hidden="true" />
                         <span>{email}</span>
                       </a>
                       <CopyEmailButton
@@ -127,19 +134,24 @@ export function PhoneContactsPage() {
           {!teams.length && <p className="phone-empty">{copy.phoneEmpty}</p>}
         </section>
 
-        <aside className="phone-preparation">
-          <p className="phone-eyebrow">{copy.phonePreparationLabel}</p>
-          <h2>{copy.phonePreparationHeading}</h2>
-          <ul>
-            <li>{copy.phonePrepareRoute}</li>
-            <li>{copy.phonePrepareCargo}</li>
-            <li>{copy.phonePrepareTiming}</li>
+        <aside className="phone-preparation phone-prep-card">
+          <div>
+            <p className="phone-eyebrow">{copy.phonePreparationLabel}</p>
+            <h2>{copy.phonePreparationHeading}</h2>
+            <p className="mt-2 max-w-xl text-sm leading-6 text-[#496269]">{copy.phoneFormIntro}</p>
+            <a href={pagePaths.contact} className="phone-prep-cta">
+              <span>{copy.phoneFormCta}</span>
+              <ArrowUpRight size={17} aria-hidden="true" />
+            </a>
+          </div>
+          <ul className="phone-prep-checklist">
+            {[copy.phonePrepareRoute, copy.phonePrepareCargo, copy.phonePrepareTiming].map((item) => (
+              <li key={item}>
+                <CheckCircle2 size={18} className="mt-0.5 shrink-0 text-[#0b6873]" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
           </ul>
-          <p>{copy.phoneFormIntro}</p>
-          <a href={pagePaths.contact}>
-            {copy.phoneFormCta}
-            <ArrowUpRight size={18} aria-hidden="true" />
-          </a>
         </aside>
       </div>
     </div>

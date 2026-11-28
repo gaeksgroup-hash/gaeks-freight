@@ -281,9 +281,9 @@ details > summary::-webkit-details-marker { display: none; }
 .service-summary { max-width: 57ch; margin: 1.1rem 0 1rem; color: var(--gaeks-on-brand); font-size: 1.05rem; line-height: 1.7; }
 .service-team-meta { margin-bottom: 1.25rem; color: #b8d8da; font-size: .875rem; font-weight: 500; }
 .service-actions-row { display: flex; flex-wrap: wrap; gap: .75rem; align-items: stretch; }
-.service-primary { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .55rem; border-radius: 6px; padding: .85rem 1.3rem; background: var(--gaeks-action); color: var(--gaeks-brand); font-size: .925rem; font-weight: 700; transition: background-color .15s ease, transform .1s ease; }
-.service-primary:hover { background: white; }
-.service-primary:active { transform: translateY(1px); }
+.service-primary, .service-hero-anchor { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .55rem; border-radius: 6px; padding: .85rem 1.3rem; background: var(--gaeks-action); color: var(--gaeks-brand); font-size: .925rem; font-weight: 700; transition: background-color .15s ease, transform .1s ease; }
+.service-primary:hover, .service-hero-anchor:hover { background: white; }
+.service-primary:active, .service-hero-anchor:active { transform: translateY(1px); }
 .service-email-cta { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: .55rem; border-radius: 6px; border: 1px solid rgba(255, 255, 255, .42); padding: .85rem 1.25rem; background: rgba(255, 255, 255, .06); color: white; font-size: .925rem; font-weight: 700; transition: background-color .15s ease, border-color .15s ease; }
 .service-email-cta:hover { background: rgba(255, 255, 255, .16); border-color: white; }
 .service-primary:focus-visible, .service-overview a:focus-visible, .service-overview button:focus-visible { outline-color: white; }
@@ -322,7 +322,7 @@ details > summary::-webkit-details-marker { display: none; }
 .service-experience article + article { margin-top: 2rem; }
 .service-experience p { line-height: 1.75; }
 .service-experience .service-source { color: var(--gaeks-on-brand); font-size: .75rem; margin-top: 1rem; }
-.service-inquiry { display: grid; gap: 1.8rem; padding-top: 3rem; }
+.service-inquiry { display: grid; gap: 1.8rem; padding-top: 3rem; scroll-margin-top: 5.5rem; }
 .service-email { display: flex; align-items: center; gap: .7rem; min-height: 44px; overflow-wrap: anywhere; font-size: .9rem; text-decoration: underline; text-underline-offset: 4px; }
 .service-email svg { flex-shrink: 0; }
 .quote-surface { border: 1px solid var(--gaeks-rule); border-radius: 12px; box-shadow: var(--gaeks-shadow); scroll-margin-top: 6rem; }
@@ -427,33 +427,31 @@ details > summary::-webkit-details-marker { display: none; }
 .phone-intro .phone-eyebrow { color: #a3edf2; }
 .phone-intro h1 { font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.08; font-weight: 600; letter-spacing: -.04em; max-width: 19ch; text-wrap: balance; }
 .phone-intro-copy { max-width: 46ch; line-height: 1.75; color: #c4dcdc; }
-.phone-layout { display: grid; gap: 2rem; padding-block: 2rem 3rem; align-items: start; }
-.phone-directory-sheet { min-width: 0; border-top: 3px solid #15717a; }
-.phone-team { display: grid; gap: 1.25rem; padding: 1.5rem; background: #fff; border-bottom: 1px solid #c6d5d3; }
-.phone-team:nth-child(even) { background: #eaf1ee; }
-.phone-team-index { display: inline-block; margin-bottom: .5rem; color: #2b7076; font-size: .75rem; font-weight: 700; letter-spacing: .1em; }
-.phone-team h2 { font-size: clamp(1.25rem, 2vw, 1.5rem); line-height: 1.3; font-weight: 650; letter-spacing: -.025em; text-wrap: balance; }
-.phone-team-scope ul { margin-top: .8rem; padding: 0; list-style: none; color: #496269; font-size: .875rem; line-height: 1.65; }
-.phone-team-scope li { position: relative; padding-left: 1rem; }
-.phone-team-scope li::before { content: ""; position: absolute; left: 0; top: .66em; width: 5px; height: 5px; border-radius: 50%; background: #0088aa; }
-.phone-team-scope li + li { margin-top: .2rem; }
-.phone-team-actions { min-width: 0; }
-.phone-number { display: inline-flex; align-items: center; gap: .6rem; min-height: 44px; font-size: clamp(1.05rem, 1.7vw, 1.35rem); letter-spacing: -.025em; font-weight: 650; }
+.phone-layout { display: grid; gap: 2rem; padding-block: 2rem 3.5rem; align-items: start; }
+.phone-cards-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+.phone-team-card { display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; border: 1px solid #c7dce2; border-top: 4px solid #0b6873; border-radius: 1rem; background: #fff; padding: 1.5rem; box-shadow: 0 10px 28px rgba(1, 46, 52, 0.06); }
+.phone-team-badge { display: inline-flex; align-items: center; border-radius: 999px; background: #e6f4f6; padding: .25rem .7rem; margin-bottom: .75rem; color: #0a5861; font-size: .72rem; font-weight: 700; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+.phone-team h2 { font-size: clamp(1.2rem, 1.8vw, 1.4rem); line-height: 1.3; font-weight: 700; letter-spacing: -.025em; text-wrap: balance; color: #012e34; }
+.phone-scope-checklist { margin: 1rem 0 0; padding: 0; list-style: none; display: grid; gap: .5rem; color: #496269; font-size: .875rem; line-height: 1.55; }
+.phone-scope-checklist li { display: flex; align-items: flex-start; gap: .55rem; }
+.phone-team-card-footer { min-width: 0; margin: 1.5rem -1.5rem -1.5rem; padding: 1.25rem 1.5rem 1.35rem; background: #f5f9fa; border-top: 1px solid #dce8ec; }
+.phone-number { display: inline-flex; align-items: center; gap: .55rem; min-height: 44px; font-size: clamp(1.05rem, 1.5vw, 1.25rem); letter-spacing: -.025em; font-weight: 700; color: #012e34; }
 .phone-number span { overflow-wrap: anywhere; }
 .phone-number svg, .phone-team-email svg { flex-shrink: 0; }
 .phone-number:hover span { text-decoration: underline; text-underline-offset: 4px; }
-.phone-action-pair { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; margin-block: .5rem; }
-.phone-whatsapp { display: inline-flex; justify-content: center; align-items: center; gap: .6rem; min-height: 44px; padding: .65rem .8rem; background: #10464e; color: white; border-radius: 5px; font-size: .875rem; font-weight: 600; }
-.phone-whatsapp:hover { background: #082f34; }
-.phone-call { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; font-size: .875rem; }
-.phone-team-email { display: flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; color: #496269; overflow-wrap: anywhere; }
-.phone-team-email:hover { color: #10464e; text-decoration: underline; text-underline-offset: 4px; }
-.phone-preparation { border-left: 3px solid #4f8c91; padding: .25rem 0 .25rem 1.25rem; }
-.phone-preparation h2 { font-size: 1.35rem; font-weight: 600; line-height: 1.35; text-wrap: balance; }
-.phone-preparation ul { list-style: disc; padding-left: 1rem; margin-block: 1rem 1.5rem; }
-.phone-preparation li, .phone-preparation > p:not(.phone-eyebrow) { color: #496269; font-size: .9rem; line-height: 1.7; }
-.phone-preparation li + li { margin-top: .65rem; }
-.phone-preparation > a { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; font-size: .875rem; font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+.phone-action-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .6rem; margin-block: .75rem .25rem; }
+.phone-whatsapp { display: inline-flex; justify-content: center; align-items: center; gap: .45rem; min-height: 44px; padding: .6rem .85rem; background: #012e34; color: white; border-radius: .625rem; font-size: .85rem; font-weight: 700; transition: background-color .15s ease; }
+.phone-whatsapp:hover { background: #064650; }
+.phone-call { display: inline-flex; justify-content: center; align-items: center; gap: .45rem; min-height: 44px; padding: .6rem .85rem; border: 1px solid #b5cdd4; background: #fff; color: #012e34; border-radius: .625rem; font-size: .85rem; font-weight: 700; transition: border-color .15s ease, background-color .15s ease; }
+.phone-call:hover { border-color: #0b6873; background: #eef7f9; }
+.phone-team-email { display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; font-size: .84rem; font-weight: 600; color: #0a5861; overflow-wrap: anywhere; }
+.phone-team-email:hover { color: #012e34; text-decoration: underline; text-underline-offset: 4px; }
+.phone-prep-card { display: grid; gap: 1.5rem; border: 1px solid #c7dce2; border-top: 3px solid #00a8c1; border-radius: 1rem; padding: 1.5rem; background: linear-gradient(145deg, #fff, #eff8fb); box-shadow: 0 8px 24px rgba(1, 46, 52, 0.05); }
+.phone-prep-card h2 { font-size: 1.35rem; font-weight: 700; line-height: 1.3; text-wrap: balance; color: #012e34; }
+.phone-prep-checklist { list-style: none; padding: 0; margin: 0; display: grid; gap: .85rem; align-content: center; }
+.phone-prep-checklist li { display: flex; align-items: flex-start; gap: .7rem; color: #3f5860; font-size: .92rem; line-height: 1.65; }
+.phone-prep-cta { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; margin-top: 1.1rem; padding: .6rem 1.1rem; border-radius: .625rem; background: #012e34; color: #fff; font-size: .875rem; font-weight: 700; transition: background-color .15s ease; }
+.phone-prep-cta:hover { background: #064650; }
 .phone-empty { padding: 2rem; }
 .services-directory { min-height: 100vh; background: #f3f5f1; color: #12363a; }
 .services-directory-hero { position: relative; overflow: hidden; background: #082d33; color: #fff; }
@@ -524,16 +522,7 @@ details > summary::-webkit-details-marker { display: none; }
 .phone-intro-copy { color: #345968; }
 .phone-intro :focus-visible { outline-color: #007c9f; }
 .phone-layout { position: relative; margin-top: -1.5rem; }
-.phone-directory-sheet { overflow: hidden; border: 1px solid #c9dfe9; border-top: 3px solid #00b8f0; border-radius: .875rem; background: #fff; box-shadow: 0 8px 24px #125a7314; }
-.phone-team { background: #fff; }
-.phone-team:nth-child(even) { background: #f3fafe; }
-.phone-team + .phone-team { border-top: 1px solid #dce5e8; }
-.phone-team-index { color: #007c9f; }
-.phone-team-scope ul { color: #52646b; }
 .phone-team-note { max-width: 42ch; margin-top: .45rem; color: #52646b; font-size: .85rem; line-height: 1.6; }
-.phone-whatsapp { background: #012e34; border-radius: .625rem; }
-.phone-whatsapp:hover { background: #064650; }
-.phone-preparation { border-left: 0; border-top: 3px solid #00b8f0; border-radius: .75rem; padding: 1.5rem; background: linear-gradient(145deg, #fff, #e7f5fb); box-shadow: 0 5px 18px #125a7310; }
 .contact-directory { background: linear-gradient(105deg, #edf8ff, #d9f1ff); border-color: #c9dfe9; }
 .contact-directory-mark, .contact-directory > a { background: #012e34; }
 .contact-directory-kicker { color: #0a6783; }
@@ -542,10 +531,12 @@ details > summary::-webkit-details-marker { display: none; }
   .contact-directory { grid-template-columns: auto minmax(0,1fr) auto; gap: 1.5rem; padding: 1.5rem 2rem; }
   .phone-intro { padding-block: 2rem 3rem; }
   .phone-intro-grid { grid-template-columns: minmax(0, 1fr); gap: 1rem; max-width: 58%; }
-  .phone-team { grid-template-columns: minmax(0, 1fr) minmax(240px, .85fr); gap: 2rem; padding: 2rem; }
+  .phone-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .phone-prep-card { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); padding: 2rem; align-items: center; }
 }
-@media (min-width: 75rem) {
-  .phone-layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 3rem; padding-block: 3rem 4rem; }
+@media (min-width: 64rem) {
+  .phone-cards-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .phone-layout { padding-block: 2.5rem 4rem; }
 }
 @media (min-width: 48rem) {
   .footer-tracking { flex-direction: row; align-items: center; justify-content: space-between; padding-block: 2.75rem 2.35rem; }

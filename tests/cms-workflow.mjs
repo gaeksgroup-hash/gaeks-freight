@@ -207,6 +207,9 @@ try {
   await page.setViewportSize({ width: 375, height: 844 });
   await page.goto(base + '/layanan/ppjk-customs-clearance/?city=semarang');
   await page.waitForTimeout(400);
+  // Verify hero header stays clean of inline WhatsApp/Email contact spam, while dedicated inquiry section renders routed contacts
+  assert.equal(await page.locator('header.service-overview a[href^="mailto:"]').count(), 0);
+  assert.equal(await page.locator('header.service-overview a[href*="wa.me"]').count(), 0);
   const ppjkWaHref = await page.locator('.service-primary').getAttribute('href');
   assert.ok(ppjkWaHref.startsWith('https://wa.me/6285608561745?text='), ppjkWaHref);
   assert.match(decodeURIComponent(ppjkWaHref), /Semarang/i);
@@ -492,9 +495,11 @@ try {
   // Restore original CMS file immediately after verification
   await writeFile(contentPath, original);
 
-  // Contact page 3 grouped teams + simplified multi-service QuoteForm + Smart routing + CMS Inquiry DB logging
+  // Contact page 3 grouped teams removed in favor of QuoteForm -> Selected Team -> /kontak/telepon/ card link; hero stays free of social/address clutter
   await page.goto(base + '/kontak/?service=air');
   await page.waitForTimeout(600);
+  assert.equal(await page.locator('header a[href*="instagram"]').count(), 0);
+  assert.equal(await page.locator('#contact-teams-heading').count(), 0);
   assert.equal(await page.locator('.contact-directory a').getAttribute('href'), '/kontak/telepon/');
   assert.ok((await page.locator('a[href^="mailto:aksa@gaeks.com"]').count()) >= 1);
   await page.evaluate(() => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ChevronRight, Mail } from 'lucide-react';
+import { ArrowDown, ChevronRight, Mail } from 'lucide-react';
 import { Language } from '../types/freight';
 import { GAEKS_UPDATE_EVENT, getStoredServices, getSiteCopy } from '../utils/adminStorage';
 import { matchesServiceRoute, pagePaths, servicePath } from '../utils/routes';
@@ -113,42 +113,29 @@ export const ServiceDetailPage: React.FC<{
               <h1>{heroTitle}</h1>
               <p className="service-summary">{heroSummary}</p>
 
-              <div ref={heroActionsRef} className="service-actions-row">
+              <div ref={heroActionsRef} className="service-actions-row mt-7">
                 <a
-                  className="service-primary"
-                  href={contact.whatsappUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => measureContactClick('whatsapp', service.id)}
+                  className="service-hero-anchor"
+                  href="#service-quote-section"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    quoteSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  }}
                 >
-                  <WhatsAppIcon size={18} />
-                  <span>{contact.whatsappLabel}</span>
+                  <span>{isEnRoute ? 'Request Service Quote' : 'Ajukan Penawaran'}</span>
+                  <ArrowDown size={17} aria-hidden="true" />
                 </a>
                 <a
-                  className="service-email-cta"
-                  href={contact.emailUrl}
-                  onClick={() => measureContactClick('email', service.id)}
+                  href="#service-scope-section"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    document.getElementById('service-scope-section')?.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                  className="inline-flex min-h-12 items-center justify-center rounded-md border border-white/30 px-5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
                 >
-                  <Mail size={18} aria-hidden="true" />
-                  <span>{contact.emailLabel}</span>
+                  {isEnRoute ? 'View Service Scope' : 'Lihat Ruang Lingkup'}
                 </a>
               </div>
-
-              <div className="service-email-copy-row">
-                <span className="inline-flex items-center gap-2 text-sm text-[#e1eceb]">
-                  <Mail size={15} aria-hidden="true" />
-                  <span className="select-all font-medium">{contact.email}</span>
-                </span>
-                <CopyEmailButton
-                  email={contact.email}
-                  label={copy.serviceCopyEmailLabel}
-                  copiedLabel={copy.serviceCopiedEmailLabel}
-                  failedLabel={copy.serviceCopyFailedLabel}
-                  tone="dark"
-                />
-              </div>
-
-              <p className="service-reassurance">{copy.serviceReassurance}</p>
             </div>
             {service.imageUrl && (
               <figure className="service-photo">
@@ -161,7 +148,7 @@ export const ServiceDetailPage: React.FC<{
       </header>
 
       <div className="page-shell service-content">
-        <section className="service-scope" aria-labelledby="scope-heading">
+        <section id="service-scope-section" className="service-scope" aria-labelledby="scope-heading">
           <div>
             <p className="section-label">{copy.scopeLabel}</p>
             <h2 id="scope-heading" className="service-heading">
@@ -358,10 +345,53 @@ export const ServiceDetailPage: React.FC<{
           </section>
         )}
 
-        <section ref={quoteSectionRef} className="service-inquiry" aria-label="Tambahkan detail untuk penawaran">
-          <div className="service-inquiry-intro">
-            <p className="section-label">{copy.inquiryLabel}</p>
-            <h2 className="service-heading">{copy.inquiryHeading}</h2>
+        <section id="service-quote-section" ref={quoteSectionRef} className="service-inquiry" aria-label="Tambahkan detail untuk penawaran">
+          <div className="service-inquiry-intro space-y-6">
+            <div>
+              <p className="section-label">{copy.inquiryLabel}</p>
+              <h2 className="service-heading">{copy.inquiryHeading}</h2>
+              <p className="service-muted">{copy.serviceReassurance}</p>
+            </div>
+
+            <div className="rounded-2xl border border-[#0f454c] bg-[#012E34] p-6 text-white shadow-sm">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[#a3edf2]">
+                {isEnRoute ? 'Dedicated Desk' : 'Kontak Langsung Tim'}
+              </p>
+              <h3 className="mt-2 font-display text-lg font-bold text-white">{contact.serviceName}</h3>
+              <div className="mt-4 flex flex-wrap gap-2.5">
+                <a
+                  className="service-primary"
+                  href={contact.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => measureContactClick('whatsapp', service.id)}
+                >
+                  <WhatsAppIcon size={17} />
+                  <span>{contact.whatsappLabel}</span>
+                </a>
+                <a
+                  className="service-email-cta"
+                  href={contact.emailUrl}
+                  onClick={() => measureContactClick('email', service.id)}
+                >
+                  <Mail size={17} aria-hidden="true" />
+                  <span>{contact.emailLabel}</span>
+                </a>
+              </div>
+              <div className="service-email-copy-row mt-4 flex flex-wrap items-center gap-2 border-t border-white/15 pt-4">
+                <span className="inline-flex items-center gap-2 text-sm text-[#e1eceb]">
+                  <Mail size={15} aria-hidden="true" />
+                  <span className="select-all font-medium">{contact.email}</span>
+                </span>
+                <CopyEmailButton
+                  email={contact.email}
+                  label={copy.serviceCopyEmailLabel}
+                  copiedLabel={copy.serviceCopiedEmailLabel}
+                  failedLabel={copy.serviceCopyFailedLabel}
+                  tone="dark"
+                />
+              </div>
+            </div>
           </div>
           <QuoteForm
             key={service.id}
